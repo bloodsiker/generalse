@@ -1,0 +1,406 @@
+body,
+html {
+    font-family: 'GothamProMedium';
+}
+
+a {
+    color: #fff;
+}
+
+.red {
+    background-color: #c1433c
+}
+
+.green {
+    background-color: #66bb6a;
+}
+
+.required {
+    border-left: 5px solid #c1433c !important;
+    &:focus {
+        border-left: 5px solid #c1433c;
+    }
+}
+
+.blue {
+    background-color: #6dcff6 !important;
+}
+
+h1 {
+    color: #fff;
+    font-family: 'GothamProLight';
+}
+
+.text-right {
+    @media screen and (max-width: 640px) {
+        text-align: left;
+    }
+}
+
+h2 {
+    font-size: 24px;
+    color: #495a68;
+    font-family: 'GothamProRegular';
+}
+
+h3 {
+    font-family: 'GothamProBold';
+    margin-bottom: 30px;
+}
+
+header {
+    background-color: #7d7d7d;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    h4 {
+        color: #fff;
+        font-weight: 700;
+    }
+    a {
+        padding: 3px;
+    }
+    .menu {
+        li {
+            a {
+                display: block;
+                font-size: 14px;
+                &:hover {
+                    background-color: rgba(255, 255, 255, 0.33);
+                    color: #fff;
+                }
+                &:visited {
+                    color: #fff;
+                }
+            }
+        }
+    }
+}
+
+.active {
+    background-color: rgba(255, 255, 255, 0.33);
+}
+
+.form,
+.row {
+    input,
+    textarea {
+        border: none;
+        background-color: rgba(255, 255, 255, 0.3);
+        color: #fff;
+        font-size: 16px;
+        font-family: 'GothamProRegular';
+        border-radius: 0;
+        &:focus,
+        &:active {
+            outline: none;
+            box-shadow: none;
+            background-color: rgba(255, 255, 255, 0.37);
+            color: #fff;
+        }
+    }
+    label {
+        color: #fff;
+    }
+    ::-webkit-input-placeholder {
+        color: #fff;
+    }
+    ::-moz-placeholder {
+        color: #fff;
+    }
+    /* Firefox 19+ */
+    :-moz-placeholder {
+        color: #fff;
+    }
+    /* Firefox 18- */
+    :-ms-input-placeholder {
+        color: #fff;
+    }
+    .primary {
+        background-color: #FFF;
+        color: #c1433c;
+        text-transform: uppercase;
+        border: 2px solid #c1433c;
+        outline: none;
+        border-radius: 0;
+        width: 100%;
+        &:hover,
+        &:focus {
+            outline: none;
+            box-shadow: none;
+            background-color: #c1433c !important;
+            color: #fff !important;
+        }
+    }
+    select {
+        border: none;
+        background-color: rgba(255, 255, 255, 0.3);
+        color: #fff;
+        font-size: 16px;
+        font-family: 'GothamProRegular';
+        border-radius: 0;
+        background-image: url("../img/row-select.svg");
+        option {
+            color: #000;
+        }
+    }
+}
+
+.header-content {
+    .menu {
+        background-color: transparent;
+        display: block;
+        li {
+            float: left;
+            display: block;
+            a {
+                display: block;
+                font-size: 14px;
+                &:hover {
+                    background-color: #677b8c;
+                    color: #fff;
+                }
+                &:visited {
+                    color: #fff;
+                }
+            }
+        }
+        .active {
+            background-color: #677b8c;
+        }
+    }
+    .top {
+        padding: 20px;
+        background-color: #c1433c;
+    }
+    .bottom {
+        background-color: #88312c;
+        padding: 20px;
+    }
+    .top-gray {
+        padding: 20px;
+        background-color: #323e48;
+    }
+    .bottom-gray {
+        background-color: #495a68;
+        padding: 20px;
+    }
+    .primary {
+        border: none;
+    }
+    .country {
+        border-left: 5px solid #c1433c;
+    }
+}
+
+.tool {
+    font-size: 14px;
+    margin-top: 20px;
+    width: initial !important;
+}
+
+.body-content {
+    padding-top: 30px;
+    label {
+        color: #000;
+        font-family: 'GothamProBold';
+        font-size: 14px;
+    }
+    .row {
+        margin-bottom: 10px;
+    }
+    input,
+    select,
+    textarea {
+        margin-bottom: 0;
+        background-color: rgba(0, 0, 0, 0);
+        border: 2px solid #323e48;
+        color: #000;
+        font-size: 14px;
+        &:focus {
+            background-color: rgba(0, 0, 0, 0);
+            border: 2px solid #323e48;
+            color: #000;
+        }
+    }
+    textarea {
+        min-height: 80px;
+        border-radius: 0;
+    }
+    select {
+        background-image: url("../img/row-select-body.svg");
+    }
+    ::-webkit-input-placeholder {
+        color: #000;
+    }
+    ::-moz-placeholder {
+        color: #000;
+    }
+    /* Firefox 19+ */
+    :-moz-placeholder {
+        color: #000;
+    }
+    /* Firefox 18- */
+    :-ms-input-placeholder {
+        color: #000;
+    }
+    .none {
+        background-color: #fff;
+        border: none;
+    }
+    thead {
+        background-color: #495a68;
+        color: #fff;
+        border-color: #fff;
+    }
+    td,
+    th {
+        border: 1px solid rgb(184, 184, 184);
+        font-weight: 100;
+    }
+    tbody {
+        border-top: none !important;
+    }
+    .kpi tbody tr td:first-child {
+        background-color: #78909c;
+        color: #fff;
+        max-width: 150px;
+    }
+    table tbody tr:nth-child(even) {
+        background-color: rgba(166, 101, 97, 0.05);
+    }
+}
+
+// calendar
+.ui-datepicker {
+    color: #fff !important;
+    background-color: #bb4640;
+    border: 1px solid #fff;
+    .ui-datepicker-title {
+        text-align: center;
+    }
+    thead:first-child {
+        background-color: #88312c;
+    }
+    table thead,
+    table tbody,
+    table tfoot {
+        border: 1px solid #c1433c;
+        background-color: #c1433c;
+        color: #fff;
+    }
+    table tbody tr:nth-child(even) {
+        background-color: #88312c;
+    }
+    a {
+        &:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+    }
+    .ui-state-highlight {
+        text-decoration: underline;
+    }
+    .ui-datepicker-next {
+        float: right;
+    }
+}
+
+// tabs 
+.warranty {
+    display: none;
+}
+
+.general {
+    display: none;
+}
+
+.checkout {
+    tbody tr td:first-child {
+        background-color: transparent;
+        color: #000;
+        max-width: 150px;
+    }
+}
+
+.filter {
+    display: none;
+}
+
+.reveal {
+    h3 {
+        color: #fff;
+    }
+    background-color: #495a68;
+    border-radius: 0;
+    border-color: #495a68;
+}
+
+.add-checkout-box {
+    display: none;
+}
+
+td,
+th {
+    position: relative;
+    font-size: 12px;
+}
+
+.field-result-search {
+    thead {
+        width: 100%;
+        display: inline-block;
+    }
+    tr {
+        width: initial;
+        display: flex;
+    }
+    th,
+    td {
+        width: 50%;
+        display: inline-block;
+        float: left;
+    }
+    tbody {
+        height: 200px;
+        display: inline-block;
+        overflow: auto;
+        width: 100%;
+    }
+}
+
+.delete-item,
+.delete-cout,
+.check-cout,
+.check-item {
+    position: absolute;
+    top: 10px;
+    right: 50%;
+    font-size: 16px;
+    margin-right: -5px;
+    &:hover {
+        color: red;
+    }
+}
+
+.check-cout,
+.check-item {
+    &:hover {
+        color: green;
+    }
+}
+
+.close-button {
+    color: #ffffff;
+    opacity: 0.9;
+    &:hover {
+        color: #ffffff;
+        opacity: 1;
+    }
+}
+
+.accept-purchase tbody tr td:first-child {
+    background-color: rgba(0, 0, 0, 0);
+    color: #000;
+    max-width: 150px;
+}

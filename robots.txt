@@ -1,0 +1,5 @@
+User-agent: *
+Disallow:
+
+Disallow: /adm/
+Host: generalse.com/

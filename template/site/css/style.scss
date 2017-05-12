@@ -1,0 +1,665 @@
+$pink: #e53935;
+$red: #c1433c;
+$blu: #323e48;
+body {
+   overflow-x: hidden;
+}
+
+h1,
+h2 {
+   font-family: 'GothamProLight';
+   color: #fff;
+   span {
+      font-family: 'GothamProBlack';
+   }
+}
+
+h1 {
+   @media screen and (min-width: 1400px) {
+      font-size: 72px
+   }
+}
+
+h3 {
+   color: #323e48;
+   font-family: 'GothamProBold';
+}
+
+h5 {
+   color: #323e48;
+   font-family: 'GothamProMedium';
+}
+
+p {
+   font-family: 'GothamProRegular';
+   color: #323e48;
+}
+
+a {
+   font-family: 'GothamProMedium';
+   color: #fff;
+   &:hover,
+   &:focus {
+      color: #e53935;
+   }
+}
+
+
+/*==========HEADER===========*/
+
+.home-menu {
+   position: absolute;
+   width: 100%;
+   padding-top: 30px;
+   padding-bottom: 30px;
+   z-index: 99;
+   background-color: rgba(0, 0, 0, 0);
+   .logo {
+      max-width: 100%;
+      @media screen and (max-width: 640px) {
+         margin-bottom: 10px;
+      }
+   }
+}
+
+header {
+   padding-top: 18px;
+   padding-bottom: 18px;
+   background-color: rgba(0, 0, 0, 0.6);
+   width: 100%;
+   .logo {
+      max-width: 50px;
+      @media screen and (max-width: 640px) {
+         margin-bottom: 10px;
+      }
+   }
+   li {
+      position: relative;
+   }
+   .auth {
+      background-color: rgba(0, 0, 0, 0.9);
+      padding: 10px 25px 20px;
+      position: absolute;
+      top: 55px;
+      right: 0;
+      display: none;
+      width: 320px;
+      &:after {
+         content: '';
+         top: -39px;
+         right: 20px;
+         z-index: -1;
+         position: absolute;
+         border: 20px solid transparent;
+         border-bottom: 20px solid rgba(0, 0, 0, 0.9);
+      }
+      h4 {
+         font-family: 'GothamProBold';
+         color: #fff;
+         @media screen and (min-width: 40em) {
+            font-size: 1.1625rem;
+         }
+      }
+      a {
+         color: #fff;
+      }
+      .form {
+         input {
+            background-color: #ddd;
+            color: #fff;
+            margin-bottom: 10px;
+         }
+         button {
+            background-color: $red;
+            color: #fff;
+            &:hover {
+               box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.2);
+            }
+         }
+      }
+   }
+   .button-mobile-menu {
+      @media screen and (min-width: 40em) {
+         display: none;
+      }
+   }
+   .menu-icon {
+      position: absolute;
+      top: 35px;
+      right: 32px;
+      width: 30px;
+      height: 23px;
+      &:after {
+         box-shadow: 0 10px 0 #cacaca, 0 20px 0 #cacaca;
+         background: #cacaca;
+      }
+      &:hover {
+         &:after {
+            box-shadow: 0 10px 0 #fff, 0 20px 0 #fff;
+            background: #fff;
+         }
+      }
+   }
+   nav {
+      .menu {
+         @media screen and (max-width: 640px) {
+            display: block !important;
+            margin-top: 20px;
+         }
+         .home-menu-button {
+            @media screen and (max-width: 758px) {
+               display: none;
+            }
+         }
+         li {
+            a {
+               @media screen and (max-width: 640px) {
+                  display: block !important;
+                  text-align: right;
+               }
+            }
+         }
+      }
+   }
+   img {
+      transition: 1s;
+      max-width: 70%;
+   }
+   .search {
+      position: relative;
+      @media screen and (max-width: 640px) {
+         display: none;
+      }
+      input {
+         background-color: rgba(255, 255, 255, 0.5);
+         box-shadow: none;
+         border: none;
+         margin: 0;
+         &:focus {
+            border: none;
+            box-shadow: none;
+         }
+      }
+      button {
+         position: absolute;
+         z-index: 2;
+         top: 0px;
+         right: 0px;
+         width: 40px;
+         height: 39px;
+         background-color: #e53935;
+         padding: 3px 3px;
+      }
+   }
+}
+
+footer {
+   background-color: $blu;
+   padding-top: 30px;
+   padding-bottom: 10px;
+   p {
+      color: #fff;
+      b {
+         font-family: 'GothamProBold';
+      }
+   }
+   a {
+      color: #fff;
+   }
+   .copyright {
+      margin-top: 20px;
+   }
+}
+
+
+/*==========HOME=============*/
+
+.home {
+   background: url('../img/About/3TJ6NCTIRT.jpg');
+   background-size: cover;
+   padding-bottom: 90px;
+   height: 100%;
+   min-height: 100vh;
+   background-attachment: fixed;
+   position: relative;
+   h1 {
+      @media screen and (min-width: 640px) {
+         margin-top: 235px;
+      }
+   }
+   .arrow {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      margin-left: -90px;
+      @media screen and (max-width: 736px) {
+         display: none;
+      }
+   }
+}
+
+.red-header {
+   padding-right: 35px;
+   padding-top: 10px;
+   padding-left: 35px;
+   padding-bottom: 1px;
+   background-color: #c1433c;
+   -ms-flex-item-align: baseline;
+   align-self: baseline;
+   margin-bottom: 50px;
+}
+
+.about {
+   padding-top: 36px;
+   padding-bottom: 70px;
+   p {
+      @media screen and (min-width: 1024px) {
+         font-size: 20px;
+      }
+   }
+}
+
+.directions {
+   padding-top: 36px;
+   padding-bottom: 30px;
+   background-color: $blu;
+   img {
+      @media screen and (min-width: 1024px) {
+         margin-bottom: 20px;
+         margin-top: 50px;
+      }
+   }
+   p {
+      color: #fff;
+   }
+}
+
+.summary {
+   padding-top: 36px;
+   padding-bottom: 30px;
+   p {
+      font-family: 'GothamProMedium';
+   }
+   img {
+      @media screen and (min-width: 1024px) {
+         margin-bottom: 20px;
+         margin-top: 20px;
+      }
+   }
+   .circle-box {
+      position: relative;
+      .item-1 {
+         width: 1024px;
+         max-width: 1024px;
+         left: 50%;
+         margin-left: -512px;
+         opacity: 0.2;
+         top: 50%;
+         margin-top: -512px;
+         position: absolute;
+         z-index: -1;
+         animation: rotating 41s linear infinite;
+         @media screen and (max-width: 1224px) {
+            display: none;
+         }
+      }
+      .item-2 {
+         width: 1224px;
+         max-width: 1124px;
+         left: 50%;
+         margin-left: -562px;
+         top: 50%;
+         margin-top: -562px;
+         position: absolute;
+         z-index: -1;
+         animation: reverserotating 71s linear infinite;
+         @media screen and (max-width: 1224px) {
+            display: none;
+         }
+      }
+      .item-3 {
+         font-size: 25px;
+         line-height: 1;
+         width: 100%;
+         span {
+            color: $red;
+            font-family: 'GothamProBlack';
+         }
+      }
+      @keyframes rotating {
+         from {
+            transform: rotate(0deg);
+         }
+         to {
+            transform: rotate(360deg);
+         }
+      }
+      @keyframes reverserotating {
+         from {
+            transform: rotate(360deg);
+         }
+         to {
+            transform: rotate(0deg);
+         }
+      }
+   }
+   span {
+      @media screen and (min-width: 1024px) {
+         font-size: 70px;
+         margin-top: 30px;
+      }
+      font-size: 30px;
+      font-family: 'GothamProBlack';
+      color: #032340;
+   }
+}
+
+.experience {
+   padding-top: 36px;
+   padding-bottom: 40px;
+   .row {
+      margin-top: 30px;
+   }
+   img {
+      margin-top: 30px;
+   }
+}
+
+.geography {
+   display: -ms-flexbox;
+   display: flex;
+   -ms-flex-wrap: wrap;
+   flex-wrap: wrap;
+   height: 100%;
+   padding-top: 36px;
+   padding-bottom: 30px;
+   background-size: cover;
+   @media screen and (min-width: 1024px) {
+      height: 90vh;
+   }
+   @media screen and (max-width: 769px) {
+      padding-bottom: 0px;
+      background-size: 133%;
+      background-image: url("../img/About/Map.jpg");
+      background-position: center center;
+      background-repeat: no-repeat;
+   }
+   .medium-5,
+   .medium-4 {
+      -ms-flex-item-align: end;
+      align-self: flex-end;
+   }
+   .markers {
+      background-color: $blu;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      padding-left: 15px;
+      p {
+         color: #fff;
+         font-family: 'GothamProMedium';
+         @media screen and (min-width: 1024px) {
+            font-size: 20px;
+         }
+         i {
+            margin-right: 5px;
+         }
+      }
+   }
+   .red-header {
+      -ms-flex-align: end;
+      align-items: flex-end;
+   }
+}
+
+.businesses {
+   padding-top: 50px;
+   padding-bottom: 30px;
+   img {
+      margin-top: 30px;
+      margin-bottom: 10px;
+      @media screen and (min-width: 640px) {
+         max-width: 50%;
+      }
+   }
+}
+
+.contact-us {
+   padding-top: 30px;
+   padding-bottom: 30px;
+   form {
+      input {
+         background-color: #cccccc;
+         box-shadow: none;
+         border-width: 2px;
+         transition: none;
+         &:focus,
+         &:hover {
+            background-color: #cccccc;
+            border: 2px solid #323e48;
+            box-shadow: none;
+            transition: none;
+         }
+      }
+      ::-webkit-input-placeholder {
+         color: #000;
+         font-family: 'GothamProRegular';
+      }
+      ::-moz-placeholder {
+         color: #000;
+         font-family: 'GothamProRegular';
+      }
+      /* Firefox 19+ */
+      :-moz-placeholder {
+         color: #000;
+         font-family: 'GothamProRegular';
+      }
+      /* Firefox 18- */
+      :-ms-input-placeholder {
+         color: #000;
+         font-family: 'GothamProRegular';
+      }
+      textarea {
+         transition: none;
+         height: 200px;
+         background-color: #cccccc;
+         box-shadow: none;
+         border: none;
+         &:focus,
+         &:hover {
+            background-color: #cccccc;
+            border: 2px solid #323e48;
+            box-shadow: none;
+            transition: none;
+         }
+      }
+      button {
+         padding-top: 10px;
+         padding-bottom: 10px;
+         width: 100%;
+         color: $red;
+         border: 2px solid $red;
+         font-family: 'GothamProMedium';
+         @media screen and (min-width: 640px) {
+            font-size: 16px;
+            &:hover {
+               background-color: $red;
+               color: #fff;
+            }
+         }
+      }
+      .button {
+         background-color: rgba(0, 0, 0, 0);
+         color: $blu;
+         font-family: 'GothamProRegular';
+         &:hover {
+            color: $red;
+         }
+         i {
+            img {
+               margin-right: 10px;
+            }
+         }
+      }
+   }
+}
+
+.services-directions {
+   padding-top: 50px;
+   padding-bottom: 30px;
+   img {
+      @media screen and (min-width: 1024px) {
+         margin-bottom: 20px;
+         margin-top: 20px;
+      }
+      @media screen and (min-width: 640px) {
+         max-width: 80%;
+      }
+   }
+}
+
+.consulting {
+   padding-top: 36px;
+   padding-bottom: 30px;
+   background-color: $blu;
+   .row {
+      /* @media screen and (min-width: 1024px) {*/
+      /*    &:not(:last-child) {*/
+      /*       padding-top: 120px;*/
+      /*    }*/
+      /* }*/
+   }
+   p {
+      color: #fff;
+      @media screen and (min-width: 1024px) {
+         font-size: 20px;
+      }
+   }
+}
+
+.career {
+   padding-top: 50px;
+   padding-bottom: 30px;
+   .item {
+      @media screen and (min-width: 1024px) {
+         padding-top: 30px;
+         padding-bottom: 30px;
+      }
+   }
+   button {
+      border: 2px solid $red;
+      color: $red;
+      padding: 10px 40px;
+      font-family: 'GothamProMedium';
+      @media screen and (min-width: 640px) {
+         font-size: 16px;
+         &:hover {
+            background-color: $red;
+            color: #fff;
+         }
+      }
+   }
+   .medium-4 {
+      p {
+         color: $red;
+      }
+   }
+}
+
+.offices {
+   padding-top: 50px;
+   padding-bottom: 30px;
+   .grey-header {
+      background-color: #adadad;
+      padding-top: 5px;
+      padding-bottom: 1px;
+   }
+   a {
+      color: $red;
+      font-size: 10px;
+   }
+   p {
+      margin-bottom: 5px;
+   }
+   .red {
+      color: $red;
+   }
+   .row {
+      padding-top: 20px;
+      padding-bottom: 20px;
+   }
+}
+
+.reveal {
+   h1 {
+      color: #000;
+   }
+   p {
+      @media screen and (min-width: 1024px) {
+         font-size: 20px;
+      }
+   }
+   h3 {
+      color: $red;
+   }
+   ol {
+      font-family: 'GothamProBlack';
+      @media screen and (min-width: 1024px) {
+         font-size: 24px;
+      }
+      li {
+         font-size: 16px;
+         font-family: 'GothamProRegular';
+         line-height: 2.2;
+      }
+   }
+   .link {
+      padding: 10px 40px;
+      width: 100%;
+      color: $red;
+      border: 2px solid $red;
+      font-family: 'GothamProMedium';
+      @media screen and (min-width: 640px) {
+         font-size: 16px;
+         &:hover {
+            background-color: $red;
+            color: #fff;
+         }
+      }
+   }
+}
+
+.articles {
+   min-height: 90vh;
+   padding-top: 50px;
+   padding-bottom: 30px;
+   h2 {
+      color: $red;
+      font-family: 'GothamProBlack';
+      @media screen and (min-width: 640px) {
+         font-size: 55px;
+      }
+   }
+   article {
+      .construstion {
+         width: 800px;
+         max-width: 800px;
+         margin-left: -562px;
+         top: 20%;
+         margin-top: -562px;
+         position: absolute;
+         z-index: -1;
+         animation: construstion 71s linear infinite;
+         @media screen and (max-width: 1224px) {
+            display: none;
+         }
+      }
+      @keyframes construstion {
+         from {
+            transform: rotate(0deg);
+         }
+         to {
+            transform: rotate(360deg);
+         }
+      }
+   }
+}
