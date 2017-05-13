@@ -18,9 +18,17 @@
                     <div class="medium-12 small-12 columns">
                         <div class="row align-bottom">
                             <div class="medium-4 small-12 columns">
-                                <button class="button primary tool" id="add-checkout-button"><i class="fi-plus"></i> Add</button>
-                                <button class="button primary tool" id="add-checkout-file"><i class="fi-plus"></i> Attach File</button>
-                                <a class="button primary tool" id="export-button"><i class="fi-page-export"></i> Export to Excel</a>
+                                <?php if (AdminBase::checkDenied('crm.purchase.add', 'view')): ?>
+                                    <button class="button primary tool" id="add-checkout-button"><i class="fi-plus"></i> Add</button>
+                                <?php endif;?>
+
+                                <?php if (AdminBase::checkDenied('crm.purchase.attach', 'view')): ?>
+                                    <button class="button primary tool" id="add-checkout-file"><i class="fi-plus"></i> Attach File</button>
+                                <?php endif;?>
+
+                                <?php if (AdminBase::checkDenied('crm.purchase.export', 'view')): ?>
+                                    <a class="button primary tool" id="export-button"><i class="fi-page-export"></i> Export to Excel</a>
+                                <?php endif;?>
                             </div>
                             <div class="medium-4  small-12 columns">
                                 <form action="/adm/crm/purchase/" method="get" id="kpi" class="form">

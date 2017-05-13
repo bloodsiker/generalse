@@ -7,6 +7,14 @@ class RefundRequestController extends AdminBase
 {
 
     /**
+     * RefundRequestController constructor.
+     */
+    public function __construct()
+    {
+        self::checkDenied('adm.refund_request', 'controller');
+    }
+
+    /**
      * @return bool
      */
     public function actionIndex()

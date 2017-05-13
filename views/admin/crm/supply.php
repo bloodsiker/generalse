@@ -15,17 +15,17 @@
                     <div class="medium-12 small-12 columns">
                         <div class="row align-bottom">
                             <div class="medium-3 small-12 columns">
-                                <?php if ($user->name_partner != 'Electrolux Amati Service'
-                                    && $user->name_partner != 'Electrolux DE Service'
-                                    && $user->name_partner != 'Electrolux Electroservice'
-                                    && $user->name_partner != 'Electrolux Kaskad-1'
-                                    && $user->name_partner != 'Electrolux Meridian'
-                                    && $user->name_partner != 'Electrolux Transservice'): ?>
-                                <button data-open="add-supply-modal" class="button primary tool"><i class="fi-plus"></i>
-                                    Create
-                                </button>
-                                <button class="button primary tool" disabled id="send_button" onclick="send()"><i class="fi-check"></i> Accept</button>
-                                <?php endif; ?>
+
+                                <?php if (AdminBase::checkDenied('crm.supply.accept', 'view')): ?>
+                                    <button data-open="add-supply-modal" class="button primary tool"><i class="fi-plus"></i>
+                                        Create
+                                    </button>
+                                <?php endif;?>
+
+
+                                <?php if (AdminBase::checkDenied('crm.supply.create', 'view')): ?>
+                                    <button class="button primary tool" disabled id="send_button" onclick="send()"><i class="fi-check"></i> Accept</button>
+                                <?php endif;?>
                             </div>
                         </div>
                     </div>
@@ -57,12 +57,7 @@
                             <th class="sort">Number</th>
                             <th class="sort">Arriving Date</th>
                             <th class="sort">Status</th>
-                            <?php if ($user->name_partner != 'Electrolux Amati Service'
-                                && $user->name_partner != 'Electrolux DE Service'
-                                && $user->name_partner != 'Electrolux Electroservice'
-                                && $user->name_partner != 'Electrolux Kaskad-1'
-                                && $user->name_partner != 'Electrolux Meridian'
-                                && $user->name_partner != 'Electrolux Transservice'): ?>
+                            <?php if (AdminBase::checkDenied('crm.supply.accept', 'view')): ?>
                                 <th class="sort">Checked</th>
                             <?php endif; ?>
                         </tr>
@@ -75,12 +70,7 @@
                                     <td><?=$supply['supply_id']?></td>
                                     <td><?=Functions::formatDate($supply['expected_arriving_date'])?></td>
                                     <td class="<?=Supply::getStatusSupply($status)?>"><?=$status?></td>
-                                    <?php if ($user->name_partner != 'Electrolux Amati Service'
-                                        && $user->name_partner != 'Electrolux DE Service'
-                                        && $user->name_partner != 'Electrolux Electroservice'
-                                        && $user->name_partner != 'Electrolux Kaskad-1'
-                                        && $user->name_partner != 'Electrolux Meridian'
-                                        && $user->name_partner != 'Electrolux Transservice'): ?>
+                                    <?php if (AdminBase::checkDenied('crm.supply.accept', 'view')): ?>
                                         <td>
                                             <?php if($status != 'Подтверждена'):?>
                                             <input type="checkbox"

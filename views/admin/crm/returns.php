@@ -37,8 +37,11 @@
                                 </form>
                             </div>
                             <div class="medium-3 small-12 columns form">
-                                <a class="button primary tool" id="export-button"><i class="fi-page-export"></i> Export to Excel</a>
-                                <?php if($user->name_partner == 'GS ServicePoint' || $user->role == 'administrator' || $user->role == 'fin-administrator'):?>
+                                <?php if (AdminBase::checkDenied('crm.return.export', 'view')): ?>
+                                    <a class="button primary tool" id="export-button"><i class="fi-page-export"></i> Export to Excel</a>
+                                <?php endif;?>
+
+                                <?php if (AdminBase::checkDenied('crm.return.attach', 'view')): ?>
                                     <button class="button primary tool" id="add-return-file"><i class="fi-plus"></i> Attach File</button>
                                 <?php endif;?>
                             </div>

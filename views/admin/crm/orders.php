@@ -18,10 +18,19 @@
                     <div class="medium-12 small-12 columns">
                         <div class="row align-bottom">
                             <div class="medium-5 small-12 columns">
-                                <button class="button primary tool" id="add-checkout-button"><i class="fi-plus"></i> Add</button>
-                                <button class="button primary tool" id="add-order-file"><i class="fi-plus"></i> Attach File</button>
-                                <a class="button primary tool" id="export-button"><i class="fi-page-export"></i> Export to Excel</a>
-                                <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+                                <?php if (AdminBase::checkDenied('crm.orders.add', 'view')): ?>
+                                    <button class="button primary tool" id="add-checkout-button"><i class="fi-plus"></i> Add</button>
+                                <?php endif;?>
+
+                                <?php if (AdminBase::checkDenied('crm.orders.attach', 'view')): ?>
+                                    <button class="button primary tool" id="add-order-file"><i class="fi-plus"></i> Attach File</button>
+                                <?php endif;?>
+
+                                <?php if (AdminBase::checkDenied('crm.orders.export', 'view')): ?>
+                                    <a class="button primary tool" id="export-button"><i class="fi-page-export"></i> Export to Excel</a>
+                                <?php endif;?>
+
+                                <?php if (AdminBase::checkDenied('crm.orders.batch', 'view')): ?>
                                     <button data-open="add-supply-modal" class="button primary tool"><i class="fi-plus"></i>
                                         Check Batch
                                     </button>

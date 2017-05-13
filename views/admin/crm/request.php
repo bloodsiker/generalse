@@ -18,10 +18,21 @@
                     <div class="medium-12 small-12 columns">
                         <div class="row align-bottom">
                             <div class="medium-5 small-12 columns">
-                                <button class="button primary tool" id="add-request-button"><i class="fi-plus"></i> Request</button>
-                                <button data-open="add-request-import-modal" class="button primary tool"><i class="fi-plus"></i> Import request</button>
-                                <button class="button primary tool" onclick="tableToExcel('goods_data', 'Request Table')" style="width: inherit;"><i class="fi-page-export"></i> Export to Excel</button>
-                                <button class="button primary tool" id="price-button"><i class="fi-plus"></i> Price</button>
+                                <?php if (AdminBase::checkDenied('crm.request.send', 'view')): ?>
+                                    <button class="button primary tool" id="add-request-button"><i class="fi-plus"></i> Request</button>
+                                <?php endif;?>
+
+                                <?php if (AdminBase::checkDenied('crm.request.import', 'view')): ?>
+                                    <button data-open="add-request-import-modal" class="button primary tool"><i class="fi-plus"></i> Import request</button>
+                                <?php endif;?>
+
+                                <?php if (AdminBase::checkDenied('crm.request.export', 'view')): ?>
+                                    <button class="button primary tool" onclick="tableToExcel('goods_data', 'Request Table')" style="width: inherit;"><i class="fi-page-export"></i> Export to Excel</button>
+                                <?php endif;?>
+
+                                <?php if (AdminBase::checkDenied('crm.request.price', 'view')): ?>
+                                    <button class="button primary tool" id="price-button"><i class="fi-plus"></i> Price</button>
+                                <?php endif;?>
                             </div>
                             <div class="medium-4  small-12 columns">
                                 <form action="/adm/crm/request/" method="get" id="kpi" class="form hide">
