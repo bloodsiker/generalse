@@ -342,6 +342,7 @@ class Orders
                     sgoe.goods_name,
                     sgoe.stock_name,
                     sgoe.quantity,
+                    sgoe.price,
                     sgu.site_client_name
                     FROM site_gm_orders sgo
                     INNER JOIN site_gm_orders_elements sgoe
@@ -382,6 +383,7 @@ class Orders
                     sgoe.goods_name,
                     sgoe.stock_name,
                     sgoe.quantity,
+                    sgoe.price,
                     sgu.site_client_name
                 FROM site_gm_orders sgo
                 INNER JOIN site_gm_orders_elements sgoe

@@ -392,6 +392,7 @@
                     <th>Service Order</th>
                     <th>Stock name</th>
                     <th>Quantity</th>
+                    <th>Price</th>
                 </tr>
                 </thead>
                 <tbody id="container-details">
