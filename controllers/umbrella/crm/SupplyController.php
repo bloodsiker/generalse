@@ -179,11 +179,12 @@ class SupplyController extends AdminBase
             $html .= "<tr>";
             $html .= "<td>" . $item['part_number'] . "</td>";
             $html .= "<td>" . iconv('WINDOWS-1251', 'UTF-8', $item['goods_name']) . "</td>";
-            $html .= "<td>" . $item['so_number'] . "</td>";
+            $html .= "<td>" . iconv('WINDOWS-1251', 'UTF-8', $item['so_number']) . "</td>";
             $html .= "<td>" . $item['quantity'] . "</td>";
+            $html .= "<td>" . round($item['price'], 2) . "</td>";
             $html .= "<td>" . $item['tracking_number'] . "</td>";
-            $html .= "<td>" . $item['manufacture_country'] . "</td>";
-            $html .= "<td>" . $item['partner'] . "</td>";
+            $html .= "<td>" . iconv('WINDOWS-1251', 'UTF-8', $item['manufacture_country']) . "</td>";
+            $html .= "<td>" . iconv('WINDOWS-1251', 'UTF-8', $item['partner']) . "</td>";
             $html .= "</tr>";
         }
         print_r($html);

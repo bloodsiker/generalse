@@ -224,6 +224,7 @@
                     <th>Description PN</th>
                     <th>SO Number</th>
                     <th>Quantity</th>
+                    <th>Price</th>
                     <th>Tracking Number</th>
                     <th>Manufacture country</th>
                     <th>Partner</th>
