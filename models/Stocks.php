@@ -22,6 +22,7 @@ class Stocks
                  sgt.subtype_name,
                  sgt.quantity,
                  sgt.serial_number,
+                 sgt.price,
                  sgu.site_client_name
                 FROM site_gm_stocks sgt
                 INNER JOIN tbl_Users tu with (nolock)
@@ -62,6 +63,7 @@ class Stocks
                  sgt.subtype_name,
                  sgt.quantity,
                  sgt.serial_number,
+                 sgt.price,
                  sgu.site_client_name
                 FROM site_gm_stocks sgt
                 INNER JOIN tbl_Users tu with (nolock)
@@ -102,6 +104,7 @@ class Stocks
                  sgt.subtype_name,
                  sgt.quantity,
                  sgt.serial_number,
+                 sgt.price,
                  sgu.site_client_name
                 FROM site_gm_stocks sgt
                 INNER JOIN tbl_Users tu with (nolock)
@@ -140,6 +143,7 @@ class Stocks
                  sgt.subtype_name,
                  sgt.quantity,
                  sgt.serial_number,
+                 sgt.price,
                  sgu.site_client_name
                 FROM site_gm_stocks sgt
                 INNER JOIN tbl_Users tu with (nolock)

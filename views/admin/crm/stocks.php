@@ -109,6 +109,7 @@
                             <th class="sort">Quantity</th>
                             <th class="sort">Sub type</th>
                             <th class="sort">Serial Number</th>
+                            <th class="sort">Price</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -121,6 +122,7 @@
                                     <td><?=$goods['quantity']?></td>
                                     <td><?=iconv('WINDOWS-1251', 'UTF-8', $goods['subtype_name'])?></td>
                                     <td><?=iconv('WINDOWS-1251', 'UTF-8', $goods['serial_number'])?></td>
+                                    <td><?=round($goods['price'], 2)?></td>
                                 </tr>
                             <?php endforeach; ?>
                         <?php endif; ?>
@@ -135,6 +137,7 @@
                             <th class="sort">Quantity</th>
                             <th class="sort">Sub type</th>
                             <th class="sort">Serial Number</th>
+                            <th class="sort">Price</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -148,6 +151,7 @@
                                     <td><?=$goods['quantity']?></td>
                                     <td><?=iconv('WINDOWS-1251', 'UTF-8', $goods['subtype_name'])?></td>
                                     <td><?=iconv('WINDOWS-1251', 'UTF-8', $goods['serial_number'])?></td>
+                                    <td><?=round($goods['price'], 2)?></td>
                                 </tr>
                             <?php endforeach; ?>
                         <?php endif; ?>
