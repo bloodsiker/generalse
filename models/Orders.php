@@ -469,9 +469,9 @@ class Orders
 
         // Текст запроса к БД
         $sql = 'INSERT INTO gm_orders_check '
-            . '(id_user, part_number, part_description, so_number, status_name)'
+            . '(id_user, part_number, part_description, so_number, price, status_name)'
             . 'VALUES '
-            . '(:id_user, :part_number, :part_description, :so_number, :status_name)';
+            . '(:id_user, :part_number, :part_description, :so_number, :price, :status_name)';
 
         // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
@@ -479,6 +479,7 @@ class Orders
         $result->bindParam(':part_number', $options['part_number'], PDO::PARAM_STR);
         $result->bindParam(':part_description', $options['part_description'], PDO::PARAM_STR);
         $result->bindParam(':so_number', $options['so_number'], PDO::PARAM_STR);
+        $result->bindParam(':price', $options['price'], PDO::PARAM_STR);
         $result->bindParam(':status_name', $options['status_name'], PDO::PARAM_STR);
 
         return $result->execute();
@@ -529,6 +530,7 @@ class Orders
                  goc.part_number,
                  goc.part_description,
                  goc.so_number,
+                 goc.price,
                  goc.status_name,
                  goc.date_create,
                  gu.name_partner

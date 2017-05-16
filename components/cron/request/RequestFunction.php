@@ -159,6 +159,94 @@ class RequestFunction
 
 
     /**
+     * Обновляем название товара
+     * @param $id
+     * @param $part_description
+     * @return bool
+     */
+    public static function updateNameProduct($id, $part_description)
+    {
+        // Соединение с БД
+        $db = CronDb::getConnection();
+
+        // Текст запроса к БД
+        $sql = "UPDATE gm_orders_check
+            SET
+                part_description = :part_description
+            WHERE id = :id";
+
+        // Получение и возврат результатов. Используется подготовленный запрос
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $id, PDO::PARAM_INT);
+        $result->bindParam(':part_description', $part_description, PDO::PARAM_STR);
+        return $result->execute();
+    }
+
+
+    /**
+     * Обновляем цены на продукты
+     * @param $id
+     * @param $price
+     * @return bool
+     */
+    public static function updatePriceProduct($id, $price)
+    {
+        // Соединение с БД
+        $db = CronDb::getConnection();
+
+        // Текст запроса к БД
+        $sql = "UPDATE gm_orders_check
+            SET
+                price = :price
+            WHERE id = :id";
+
+        // Получение и возврат результатов. Используется подготовленный запрос
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $id, PDO::PARAM_INT);
+        $result->bindParam(':price', $price, PDO::PARAM_STR);
+        return $result->execute();
+    }
+
+
+    /**
+     * Получаем цену на товар по парт номеру
+     * @param $partNumber
+     * @return int|mixed
+     */
+    public static function getPricePartNumber($partNumber)
+    {
+        $db = CronDb::getConnectionMsSQL();
+
+        $sql = "select
+                       tbl_GoodsNames.partNumber
+                       ,tbl_GoodsNames.mName
+                       ,dbo.ufn_Curencys_Rate_Output_Cross(1, tbl_Produsers.curency_id, dbo.ufn_Curencys_Rate_IsBuh(), dbo.ufn_Date_Current_Short()) * convert(float, tbl_ABCDPrices.price) / 100 as price
+                from tbl_ABCDPrices
+                       inner join tbl_GoodsNames
+                             on tbl_GoodsNames.i_d =  tbl_ABCDPrices.goodsNameID
+                       inner join tbl_Produsers
+                             on tbl_Produsers.i_d = tbl_GoodsNames.produserID
+                where
+                       tbl_ABCDPrices.namePriceID = 5
+                       and tbl_GoodsNames.partNumber = :partNumber";
+
+        // Делаем пдготовленный запрос
+        $result = $db->prepare($sql);
+        $result->bindParam(':partNumber', $partNumber, PDO::PARAM_STR);
+        $result->execute();
+
+        // Получаем ассоциативный массив
+        $price = $result->fetch(PDO::FETCH_ASSOC);
+
+        if ($price) {
+            // Если существует массив, то возращаем 1
+            return $price;
+        }
+        return 0;
+    }
+
+
+    /**
      * Проверяем наличие парт номера в поставках, возвращаем id_supply
      * @param $id_user
      * @param $part_number
@@ -305,7 +393,7 @@ class RequestFunction
     }
 
     /**
-     *  Проверка парт номера в покупках, и возращаем название продукта
+     *  Проверка парт номера в базе, и возращаем название продукта
      * @param $partNumber
      * @return array|int
      */

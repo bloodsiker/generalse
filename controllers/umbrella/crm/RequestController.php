@@ -92,8 +92,10 @@ class RequestController extends AdminBase
                 } else {
                     //Последний шаг
                     $mName = Products::checkPurchasesPartNumber($options['part_number']);
+                    $price = Products::getPricePartNumber($options['part_number']);
                     $options['status_name'] = 'Нет в наличии, формируется поставка';
                     $options['part_description'] = iconv('WINDOWS-1251', 'UTF-8', $mName['mName']);
+                    $options['price'] = ($price['price'] != 0) ? $price['price'] : 0;
                     $ok = Orders::addReserveOrders($options);
                     if($ok){
                         $_SESSION['add_request'] = 'Out of stock, delivery is forming';
@@ -109,7 +111,6 @@ class RequestController extends AdminBase
         } elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager' || $user->name_partner == 'GS Electrolux'){
             $listCheckOrders = Orders::getAllReserveOrders();
         }
-
 
         require_once(ROOT . '/views/admin/crm/request.php');
         return true;
@@ -199,8 +200,10 @@ class RequestController extends AdminBase
                                 } else {
                                     //Последний шаг
                                     $mName = Products::checkPurchasesPartNumber($options['part_number']);
+                                    $price = Products::getPricePartNumber($options['part_number']);
                                     $options['status_name'] = 'Нет в наличии, формируется поставка';
                                     $options['part_description'] = iconv('WINDOWS-1251', 'UTF-8', $mName['mName']);
+                                    $options['price'] = ($price['price'] != 0) ? $price['price'] : 0;
                                     $ok = Orders::addReserveOrders($options);
                                     if($ok){
                                         $_SESSION['add_request'] = 'Out of stock, delivery is forming';
@@ -220,23 +223,14 @@ class RequestController extends AdminBase
 
 
     /**
+     * Получаем цену продукта по парт номеру
      * @return bool
      */
     public function actionPricePartNumAjax()
     {
-
-        // Проверка доступа
-        self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
-        $userId = Admin::CheckLogged();
-
-        // Обьект юзера
-        $user = new User($userId);
-
         $part_number = $_REQUEST['part_number'];
 
-            $result = Products::checkPurchasesPartNumber($part_number);
+            $result = Products::getPricePartNumber($part_number);
             if($result == 0){
                 $data['result'] = 0;
                 $data['action'] = 'not_found';
@@ -244,7 +238,7 @@ class RequestController extends AdminBase
             } else {
                 $data['result'] = 1;
                 $data['action'] = 'purchase';
-                //$data['mName'] = $result['mName'];
+                $data['price'] = round($result['price'], 2);
                 $data['mName'] = iconv('WINDOWS-1251', 'UTF-8', $result['mName']);
                 print_r(json_encode($data));
             }

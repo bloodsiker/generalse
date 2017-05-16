@@ -78,6 +78,44 @@ class Products
         }
         return 0;
     }
+
+
+    /**
+     * Получаем цену на товар по парт номеру
+     * @param $partNumber
+     * @return int|mixed
+     */
+    public static function getPricePartNumber($partNumber)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "select
+                       tbl_GoodsNames.partNumber
+                       ,tbl_GoodsNames.mName
+                       ,dbo.ufn_Curencys_Rate_Output_Cross(1, tbl_Produsers.curency_id, dbo.ufn_Curencys_Rate_IsBuh(), dbo.ufn_Date_Current_Short()) * convert(float, tbl_ABCDPrices.price) / 100 as price
+                from tbl_ABCDPrices
+                       inner join tbl_GoodsNames
+                             on tbl_GoodsNames.i_d =  tbl_ABCDPrices.goodsNameID
+                       inner join tbl_Produsers
+                             on tbl_Produsers.i_d = tbl_GoodsNames.produserID
+                where
+                       tbl_ABCDPrices.namePriceID = 5
+                       and tbl_GoodsNames.partNumber = :partNumber";
+
+        // Делаем пдготовленный запрос
+        $result = $db->prepare($sql);
+        $result->bindParam(':partNumber', $partNumber, PDO::PARAM_STR);
+        $result->execute();
+
+        // Получаем ассоциативный массив
+        $price = $result->fetch(PDO::FETCH_ASSOC);
+
+        if ($price) {
+            // Если существует массив, то возращаем 1
+            return $price;
+        }
+        return 0;
+    }
 	
 	/**
      * В покупках, если выбран сток = Local Source, проверяем есть ли этот партномер на других складах

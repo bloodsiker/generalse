@@ -5,6 +5,7 @@ $('body').on('click', '#add-request-button', function() {
     $('#add-request-modal').foundation('open');
 });
 
+// модальное окно (узнать цену по парт номеру)
 $('body').on('click', '#price-button', function() {
     $('.name-product').text('');
     $('#price-modal form')[0].reset();
@@ -24,14 +25,14 @@ $('[name="part_number"]').keyup(function(e) {
         cache: false,
         success: function (response) {
             var obj = JSON.parse(response);
-            console.log(obj);
+            console.log(response);
             if(obj.result == 1){
                 $("[name='part_number']").removeClass('error_part');
                 $('.name-product').text(obj.mName).css('color', '#4CAF50');
-                $("[name='price']").val(obj.mName);
+                $("[name='price']").val(obj.price);
             } else {
                 $('.name-product').text('not found').css('color', 'red');
-                $("[name='price']").val('not found');
+                $("[name='price']").val('0');
             }
         }
     });

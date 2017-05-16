@@ -17,7 +17,7 @@
                     </div>
                     <div class="medium-12 small-12 columns">
                         <div class="row align-bottom">
-                            <div class="medium-5 small-12 columns">
+                            <div class="medium-7 small-12 columns">
                                 <?php if (AdminBase::checkDenied('crm.request.send', 'view')): ?>
                                     <button class="button primary tool" id="add-request-button"><i class="fi-plus"></i> Request</button>
                                 <?php endif;?>
@@ -34,22 +34,8 @@
                                     <button class="button primary tool" id="price-button"><i class="fi-plus"></i> Price</button>
                                 <?php endif;?>
                             </div>
-                            <div class="medium-4  small-12 columns">
-                                <form action="/adm/crm/request/" method="get" id="kpi" class="form hide">
-                                    <div class="row align-bottom">
-                                        <div class="medium-4 text-left small-12 columns">
-                                            <label for="right-label"><i class="fi-calendar"></i> From date</label>
-                                            <input type="text" id="date-start" value="<?=(isset($_GET['start']) && $_GET['start'] != '') ? $_GET['start'] : ''?>" name="start" required>
-                                        </div>
-                                        <div class="medium-4 small-12 columns">
-                                            <label for="right-label"><i class="fi-calendar"></i> To date</label>
-                                            <input type="text" id="date-end" value="<?=(isset($_GET['end']) && $_GET['end'] != '') ? $_GET['end'] : ''?>" name="end">
-                                        </div>
-                                        <div class="medium-4 small-12 columns">
-                                            <button type="submit" class="button primary"><i class="fi-eye"></i> Show</button>
-                                        </div>
-                                    </div>
-                                </form>
+                            <div class="medium-2  small-12 columns">
+
                             </div>
                             <div class="medium-3 small-12 columns form">
                                 <input type="text" id="goods_search" class="search-input" placeholder="Search..." name="search">
@@ -72,6 +58,7 @@
                         <th class="sort">Part Number</th>
                         <th class="sort">Part Description</th>
                         <th class="sort">SO Number</th>
+                        <th class="sort">Price</th>
                         <th class="sort">Status</th>
                         <th class="sort">Date create</th>
                     </tr>
@@ -83,6 +70,7 @@
                                 <td><?= $order['part_number']?></td>
                                 <td><?= $order['part_description']?></td>
                                 <td><?= $order['so_number']?></td>
+                                <td><?= round($order['price'], 2)?></td>
                                 <td><?= $order['status_name']?></td>
                                 <td><?= Functions::formatDate($order['date_create'])?></td>
                             </tr>
@@ -101,6 +89,7 @@
                             <th class="sort">Part Number</th>
                             <th class="sort">Part Description</th>
                             <th class="sort">SO Number</th>
+                            <th class="sort">Price</th>
                             <th class="sort">Status</th>
                             <th class="sort">Date create</th>
                         </tr>
@@ -113,6 +102,7 @@
                                     <td><?= $order['part_number']?></td>
                                     <td><?= $order['part_description']?></td>
                                     <td><?= $order['so_number']?></td>
+                                    <td><?= round($order['price'], 2)?></td>
                                     <td><?= $order['status_name']?></td>
                                     <td><?= Functions::formatDate($order['date_create'])?></td>
                                 </tr>
