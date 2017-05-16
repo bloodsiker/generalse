@@ -405,7 +405,7 @@ class PurchaseController extends AdminBase
             $html .= "<td>" . $item['so_number'] . "</td>";
             $html .= "<td>" . iconv('WINDOWS-1251', 'UTF-8', $item['goods_name']) . "</td>";
             $html .= "<td>" . $item['quantity'] . "</td>";
-            $html .= "<td>" . $item['price'] . "</td>";
+            $html .= "<td>" . round($item['price'], 2) . "</td>";
             $html .= "</tr>";
         }
 
