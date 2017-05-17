@@ -67,6 +67,7 @@ class OrderController extends AdminBase
 
                         // Выбранный сток
                         $stock = iconv('UTF-8', 'WINDOWS-1251', $_REQUEST['stock']);
+                        $note = iconv('UTF-8', 'WINDOWS-1251', $_REQUEST['notes']);
 
                         $insertArray = [];
                         $arr_error_pn = [];
@@ -115,6 +116,7 @@ class OrderController extends AdminBase
                                 $options['site_id'] = $insert['site_id'];
                                 $options['id_user'] = $insert['id_user'];
                                 $options['so_number'] = iconv('UTF-8', 'WINDOWS-1251', $insert['so_number']);
+                                $options['note'] = $note;
                                 $options['ready'] = 1;
                                 Orders::addOrdersMsSQL($options);
                                 Orders::addOrders($options);
@@ -289,6 +291,7 @@ class OrderController extends AdminBase
         $options['id_user'] = $userId;
         $options['id_user'] = $data_json['id_partner'];
         $options['so_number'] = iconv('UTF-8', 'WINDOWS-1251', $data_json['service_order']);
+        $options['note'] = iconv('UTF-8', 'WINDOWS-1251', $data_json['note']);
         $options['ready'] = 1;
 
         Orders::addOrdersMsSQL($options);
@@ -389,7 +392,7 @@ class OrderController extends AdminBase
             $html .= "<td>" . $item['part_number'] . "</td>";
             $html .= "<td>" . iconv('WINDOWS-1251', 'UTF-8', $item['goods_name']) . "</td>";
             $html .= "<td>" . $item['so_number'] . "</td>";
-            $html .= "<td>" . iconv('WINDOWS-1251', 'UTF-8',$item['stock_name']) . "</td>";
+            $html .= "<td>" . iconv('WINDOWS-1251', 'UTF-8', $item['stock_name']) . "</td>";
             $html .= "<td>" . $item['quantity'] . "</td>";
             $html .= "<td>" . round($item['price'], 2) . "</td>";
             $html .= "</tr>";

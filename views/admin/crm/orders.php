@@ -120,6 +120,10 @@
                             <div class="medium-4 small-12 columns">
                                 <div style="padding-bottom: 37px; color: #fff"><a href="/upload/attach_order/orders_import.xls" style="color: #2ba6cb" download>download</a> a template file to import</div>
                             </div>
+                            <div class="medium-12 small-12 columns">
+                                <label>Note</label>
+                                <textarea rows="3" name="notes"></textarea>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -154,6 +158,7 @@
                         <th class="sort">Order Number</th>
                         <th class="sort">Service Order</th>
                         <th class="sort">Status</th>
+                        <th class="text-center" width="70">Note</th>
                         <th class="sort">Date</th>
                     </tr>
                     </thead>
@@ -166,6 +171,15 @@
                                 <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></td>
                                 <?php $status_name = iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?>
 								<td class="<?=Orders::getStatusRequest($status_name);?>"><?= $status_name?></td>
+                                <td class="text-center">
+                                <?php if(isset($order['note']) && !empty($order['note'])):?>
+                                    <i class="fi-info has-tip [tip-top]" style="font-size: 16px;"
+                                       data-tooltip aria-haspopup="true"
+                                       data-show-on="small"
+                                       data-click-open="true"
+                                       title="<?= iconv('WINDOWS-1251', 'UTF-8', $order['note'])?>"></i>
+                                <?php endif;?>
+                                </td>
                                 <td><?= Functions::formatDate($order['created_on'])?></td>
                             </tr>
                         <?php endforeach;?>
@@ -188,6 +202,7 @@
                             <th class="sort">Order Number</th>
                             <th class="sort">Service Order</th>
                             <th class="sort">Status</th>
+                            <th class="text-center" width="70">Note</th>
                             <th class="sort">Date</th>
                             <th>Action</th>
                         </tr>
@@ -202,6 +217,15 @@
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></td>
                                     <?php $status_name = iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?>
                                     <td class="<?=Orders::getStatusRequest($status_name);?>"><?= $status_name?></td>
+                                    <td class="text-center">
+                                        <?php if(isset($order['note']) && !empty($order['note'])):?>
+                                            <i class="fi-info has-tip [tip-top]" style="font-size: 16px;"
+                                               data-tooltip aria-haspopup="true"
+                                               data-show-on="small"
+                                               data-click-open="true"
+                                               title="<?= iconv('WINDOWS-1251', 'UTF-8', $order['note'])?>"></i>
+                                        <?php endif;?>
+                                    </td>
                                     <td><?= Functions::formatDate($order['created_on'])?></td>
                                     <td class="action-control">
                                         <?php if($status_name == 'Предварительный' || $status_name == 'В обработке'):?>
@@ -277,6 +301,10 @@
             <div class="medium-12 small-12 columns">
                 <label>Quantity <span style="color: #4CAF50;" class="quantity-product"></span></label>
                 <input type="number" value="1" min="1" max="50" class="required" name="quantity" required>
+            </div>
+            <div class="medium-12 small-12 columns">
+                <label>Note</label>
+                <textarea rows="3" name="note"></textarea>
             </div>
             <div class="medium-12 small-12 columns">
                 <button type="submit" class="button primary">Send</button>

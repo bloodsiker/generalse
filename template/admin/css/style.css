@@ -13,6 +13,9 @@ hr{
 .no-margin{
   margin: 0!important;
 }
+.tooltip {
+  max-width: 16rem !important;
+}
 #wait{
   position: fixed;
   top: 0;

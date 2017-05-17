@@ -88,12 +88,13 @@ $('[name="part_number"]').keyup(function(e) {
 });
 
 function hideAllInput() {
-    $('[name="service_order"], [name="part_number"], [name="quantity"]')
+    $('[name="service_order"], [name="part_number"], [name="quantity"], [name="note"]')
         .removeAttr('required')
         .parent().hide();
     $('.name-product').text('');
 	$('.quantity-product').text('');
 	$('[name="part_number"]').val('');
+	$('[name="note"]').val('');
 }
 
 $('#id_partner').change(function(e){
@@ -108,30 +109,35 @@ $('#stock').change(function(e) {
             $('[name="service_order"], [name="part_number"]')
                 .attr('required', '')
                 .parent().show();
+            $('[name="note"]').parent().show();
             break;
         case 'BAD':
             hideAllInput();
             $('[name="part_number"], [name="quantity"]')
                 .attr('required', '')
                 .parent().show();
+            $('[name="note"]').parent().show();
             break;
         case 'Not Used':
             hideAllInput();
             $('[name="service_order"], [name="part_number"]')
                 .attr('required', '')
                 .parent().show();
+            $('[name="note"]').parent().show();
             break;
         case 'Restored':
             hideAllInput();
             $('[name="service_order"], [name="part_number"]')
                 .attr('required', '')
                 .parent().show();
+            $('[name="note"]').parent().show();
             break;
         case 'Dismantling':
             hideAllInput();
             $('[name="service_order"], [name="part_number"]')
                 .attr('required', '')
                 .parent().show();
+            $('[name="note"]').parent().show();
             break;
         default:
 
