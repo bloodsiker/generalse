@@ -170,9 +170,18 @@
                                 <td><?= $order['order_number']?></td>
                                 <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></td>
                                 <?php $status_name = iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?>
-								<td class="<?=Orders::getStatusRequest($status_name);?>"><?= $status_name?></td>
+								<td class="<?=Orders::getStatusRequest($status_name);?>">
+                                    <?= $status_name?>
+                                    <?php if($status_name == 'Отказано'):?>
+                                        <i class="fi-info has-tip [tip-top]" style="font-size: 16px;"
+                                           data-tooltip aria-haspopup="true"
+                                           data-show-on="small"
+                                           data-click-open="true"
+                                           title="<?= iconv('WINDOWS-1251', 'UTF-8', $order['command_text'])?>"></i>
+                                    <?php endif;?>
+                                </td>
                                 <td class="text-center">
-                                <?php if(isset($order['note']) && !empty($order['note'])):?>
+                                <?php if(isset($order['note']) && $order['note'] != ' '):?>
                                     <i class="fi-info has-tip [tip-top]" style="font-size: 16px;"
                                        data-tooltip aria-haspopup="true"
                                        data-show-on="small"
@@ -216,9 +225,18 @@
                                     <td><?= $order['order_number']?></td>
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></td>
                                     <?php $status_name = iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?>
-                                    <td class="<?=Orders::getStatusRequest($status_name);?>"><?= $status_name?></td>
+                                    <td class="<?=Orders::getStatusRequest($status_name);?>">
+                                        <?= $status_name?>
+                                        <?php if($status_name == 'Отказано'):?>
+                                            <i class="fi-info has-tip [tip-top]" style="font-size: 16px;"
+                                               data-tooltip aria-haspopup="true"
+                                               data-show-on="small"
+                                               data-click-open="true"
+                                               title="<?= iconv('WINDOWS-1251', 'UTF-8', $order['command_text'])?>"></i>
+                                        <?php endif;?>
+                                    </td>
                                     <td class="text-center">
-                                        <?php if(isset($order['note']) && !empty($order['note'])):?>
+                                        <?php if(isset($order['note']) && $order['note'] != ' '):?>
                                             <i class="fi-info has-tip [tip-top]" style="font-size: 16px;"
                                                data-tooltip aria-haspopup="true"
                                                data-show-on="small"

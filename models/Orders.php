@@ -165,6 +165,7 @@ class Orders
                               sgo.created_on,
                               sgo.command,
                               sgo.note,
+                              sgo.command_text,
                               sgu.site_client_name
                             FROM site_gm_orders sgo
                               INNER JOIN site_gm_users sgu
@@ -228,6 +229,7 @@ class Orders
                    sgo.status_name,
                    sgo.created_on,
                    sgo.note,
+                   sgo.command_text,
                    sgu.site_client_name
                  FROM site_gm_orders sgo
                    INNER JOIN site_gm_users sgu
