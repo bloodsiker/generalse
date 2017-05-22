@@ -43,6 +43,7 @@ return array(
 
 
     'adm/crm/request/price_part_ajax' => 'request/pricePartNumAjax',
+    'adm/crm/request/delete/([0-9]+)' => 'request/requestDelete/$1',
     'adm/crm/request/import' => 'request/requestImport',
     'adm/crm/request/([a-z0-9-_?&]+)' => 'request/index/$1',
     'adm/crm/request' => 'request/index',

@@ -532,6 +532,7 @@ class Orders
 
         // Получение и возврат результатов
         $sql = "SELECT
+                 goc.id,
                  goc.id_user,
                  goc.part_number,
                  goc.part_description,
@@ -578,6 +579,25 @@ class Orders
         $result = $db->prepare($sql);
         $result->bindParam(':id', $id, PDO::PARAM_INT);
         $result->bindParam(':check_status', $check_status, PDO::PARAM_INT);
+        return $result->execute();
+    }
+
+    /**
+     * Delete request by id
+     * @param $id
+     * @return bool
+     */
+    public static function deleteRequestById($id)
+    {
+        // Соединение с БД
+        $db = MySQL::getConnection();
+
+        // Текст запроса к БД
+        $sql = 'DELETE FROM gm_orders_check WHERE id = :id';
+
+        // Получение и возврат результатов. Используется подготовленный запрос
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $id, PDO::PARAM_INT);
         return $result->execute();
     }
 

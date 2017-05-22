@@ -92,6 +92,9 @@
                             <th class="sort">Price</th>
                             <th class="sort">Status</th>
                             <th class="sort">Date create</th>
+                            <?php if (AdminBase::checkDenied('crm.request.delete', 'view')): ?>
+                                <th>Delete</th>
+                            <?php endif;?>
                         </tr>
                         </thead>
                         <tbody>
@@ -105,6 +108,11 @@
                                     <td><?= round($order['price'], 2)?></td>
                                     <td><?= $order['status_name']?></td>
                                     <td><?= Functions::formatDate($order['date_create'])?></td>
+                                    <?php if (AdminBase::checkDenied('crm.request.delete', 'view')): ?>
+                                        <td class="text-center">
+                                            <a href="/adm/crm/request/delete/<?=$order['id']?>" onclick="return confirm('Вы уверены что хотите удалить?') ? true : false;" class="delete disassemble-delete"><i class="fi-x-circle"></i></a>
+                                        </td>
+                                    <?php endif;?>
                                 </tr>
                             <?php endforeach;?>
                         <?php endif;?>

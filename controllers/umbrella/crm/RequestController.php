@@ -247,4 +247,29 @@ class RequestController extends AdminBase
     }
 
 
+    /**
+     * Delete request
+     * @param $id
+     * @return bool
+     */
+    public function actionRequestDelete($id)
+    {
+        // Проверка доступа
+        self::checkAdmin();
+        self::checkDenied('crm.request.delete', 'controller');
+
+        // Получаем идентификатор пользователя из сессии
+        $userId = Admin::CheckLogged();
+
+        // Обьект юзера
+        $user = new User($userId);
+
+        $ok = Orders::deleteRequestById($id);
+
+        if($ok){
+            Logger::getInstance()->log($user->id_user, 'удалил request #' . $id);
+            header("Location: " . $_SERVER['HTTP_REFERER']);
+        }
+        return true;
+    }
 }
