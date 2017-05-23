@@ -49,6 +49,17 @@
                                 </label>
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <label>Отображение в KPI
+                                    <select name="kpi_view">
+                                        <option value="0" <?php if($userInfo['kpi_view'] == 0) echo 'selected'?>>Не отображать</option>
+                                        <option value="1" <?php if($userInfo['kpi_view'] == 1) echo 'selected'?>>Отображать</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="large-12 columns">
                                 <input type="submit" name="update" class="button small float-right" value="Сохранить">

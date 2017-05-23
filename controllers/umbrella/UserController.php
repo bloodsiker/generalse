@@ -138,6 +138,7 @@ class UserController extends AdminBase
                     $options['id_country'] = $_POST['id_country'];
                     $options['login'] = $_POST['login'];
                     $options['password'] = Functions::hashPass($_POST['password']);
+                    $options['kpi_view'] = $_POST['kpi_view'];
                     $options['date_create'] = date("Y-m-d H:i");
 
                     // Сохраняем изменения
@@ -200,6 +201,7 @@ class UserController extends AdminBase
                     }
                     $options['id_country'] = $_POST['id_country'];
                     $options['login'] = $_POST['login'];
+                    $options['kpi_view'] = $_POST['kpi_view'];
 
                     // Сохраняем изменения
                     $ok = Admin::updateUserById($id, $options);

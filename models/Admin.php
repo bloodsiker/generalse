@@ -312,6 +312,7 @@ class Admin
                    gu.login,
                    gu.id_country,
                    gu.kpi_coefficient,
+                   gu.kpi_view,
                    gu.date_create,
                    gu.date_active,
                    gr.id_role,
@@ -357,9 +358,9 @@ class Admin
 
         // Текст запроса к БД
         $sql = 'INSERT INTO gs_user '
-            . '(id_role, name_partner, id_country, login, password, date_create)'
+            . '(id_role, name_partner, id_country, login, password, kpi_view, date_create)'
             . 'VALUES '
-            . '(:id_role, :name_partner, :id_country, :login, :password, :date_create)';
+            . '(:id_role, :name_partner, :id_country, :login, :password, :kpi_view, :date_create)';
 
         // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
@@ -368,6 +369,7 @@ class Admin
         $result->bindParam(':id_country', $options['id_country'], PDO::PARAM_INT);
         $result->bindParam(':login', $options['login'], PDO::PARAM_STR);
         $result->bindParam(':password', $options['password'], PDO::PARAM_STR);
+        $result->bindParam(':kpi_view', $options['kpi_view'], PDO::PARAM_INT);
         $result->bindParam(':date_create', $options['date_create'], PDO::PARAM_STR);
 
         if ($result->execute()) {
@@ -432,7 +434,8 @@ class Admin
                 id_role = :id_role,
                 name_partner = :name_partner,
                 id_country = :id_country,
-                login = :login
+                login = :login,
+                kpi_view = :kpi_view
             WHERE id_user = :id_user";
 
         // Получение и возврат результатов. Используется подготовленный запрос
@@ -442,6 +445,7 @@ class Admin
         $result->bindParam(':login', $options['login'], PDO::PARAM_STR);
         $result->bindParam(':name_partner', $options['name_partner'], PDO::PARAM_STR);
         $result->bindParam(':id_country', $options['id_country'], PDO::PARAM_INT);
+        $result->bindParam(':kpi_view', $options['kpi_view'], PDO::PARAM_INT);
         return $result->execute();
     }
 
