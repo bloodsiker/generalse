@@ -32,6 +32,12 @@
                                 || $user->name_partner == 'Electrolux Transservice'):?>
                                 <option value="OK (Выборгская, 104)" <?=(isset($_GET['stock']) && $_GET['stock'] == 'OK (Выборгская, 104)') ? 'selected' : ''?>>OK (Выборгская, 104)</option>
                                 <option value="BAD" <?=(isset($_GET['stock']) && $_GET['stock'] == 'BAD') ? 'selected' : ''?>>BAD</option>
+                            <?php elseif($user->name_partner == 'Techpoint'
+                                || $user->name_partner == 'Technoservice'
+                                || $user->name_partner == 'Servisexpress'
+                                || $user->name_partner == 'GS Electrolux GE'):?>
+                                <option value="OK" <?=(isset($_GET['stock']) && $_GET['stock'] == 'OK') ? 'selected' : ''?>>OK</option>
+                                <option value="BAD" <?=(isset($_GET['stock']) && $_GET['stock'] == 'BAD') ? 'selected' : ''?>>BAD</option>
                             <?php else:?>
                                 <option value="BAD" <?=(isset($_GET['stock']) && $_GET['stock'] == 'BAD') ? 'selected' : ''?>>BAD</option>
                                 <option value="Local Source" <?=(isset($_GET['stock']) && $_GET['stock'] == 'Local Source') ? 'selected' : ''?>>Local Source</option>
@@ -63,6 +69,7 @@
                                     <select name="stock" id="stock" class="required" required>
                                         <option value="all" <?=(isset($_GET['stock']) && $_GET['stock'] == 'all') ? 'selected' : ''?>>All</option>
                                         <option value="OK (Выборгская, 104)" <?=(isset($_GET['stock']) && $_GET['stock'] == 'OK (Выборгская, 104)') ? 'selected' : ''?>>OK (Выборгская, 104)</option>
+                                        <option value="OK" <?=(isset($_GET['stock']) && $_GET['stock'] == 'OK') ? 'selected' : ''?>>OK</option>
                                         <option value="BAD" <?=(isset($_GET['stock']) && $_GET['stock'] == 'BAD') ? 'selected' : ''?>>BAD</option>
                                         <option value="Local Source" <?=(isset($_GET['stock']) && $_GET['stock'] == 'Local Source') ? 'selected' : ''?>>Local Source</option>
                                         <option value="Not Used" <?=(isset($_GET['stock']) && $_GET['stock'] == 'Not Used') ? 'selected' : ''?>>Not Used</option>
