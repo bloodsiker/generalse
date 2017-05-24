@@ -92,6 +92,12 @@ $('#stock').change(function(e) {
                 .attr('required', '')
                 .parent().show();
             break;
+        case 'OK':
+            hideAllInput();
+            $('[name="service_order"], [name="part_number"]')
+                .attr('required', '')
+                .parent().show();
+            break;
         case 'BAD':
             hideAllInput();
             $('[name="service_order"], [name="part_number"]')

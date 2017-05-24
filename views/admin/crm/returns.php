@@ -126,6 +126,9 @@
                                                 <?php if($user->name_partner == 'GS Electrolux'):?>
                                                     <option value="6">OK</option>
                                                     <option value="1">BAD</option>
+                                                <?php elseif($user->name_partner == 'GS Electrolux GE'):?>
+                                                    <option value="6">OK</option>
+                                                    <option value="1">BAD</option>
                                                 <?php else:?>
                                                     <option value="1">BAD</option>
                                                     <option value="2">Not Used</option>
@@ -196,6 +199,7 @@
                                                 <option value="3">Restored</option>
                                                 <option value="4">Restore Bad</option>
                                                 <option value="5">Dismantling</option>
+                                                <option value="6">OK</option>
                                             </select>
                                         </td>
                                     <?php else:?>

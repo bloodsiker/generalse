@@ -300,6 +300,12 @@
                         || $user->name_partner == 'Electrolux Transservice'):?>
                         <option value="OK (Выборгская, 104)">OK (Выборгская, 104)</option>
                         <option value="BAD">BAD</option>
+                    <?php elseif($user->name_partner == 'Techpoint'
+                        || $user->name_partner == 'Technoservice'
+                        || $user->name_partner == 'Servisexpress'
+                        || $user->name_partner == 'GS Electrolux GE'):?>
+                        <option value="OK">OK</option>
+                        <option value="BAD">BAD</option>
                     <?php else:?>
                         <option value="BAD">BAD</option>
                         <option value="Not Used">Not Used</option>
