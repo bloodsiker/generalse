@@ -43,13 +43,22 @@
                                     <td><?=$userI['name_role']?></td>
                                     <td><?=$userI['date_create']?></td>
                                     <td><?=$userI['date_active']?></td>
-                                    <td><a href="/adm/user/denied/<?=$userI['id_user']?>" class="button no-margin small"><i class="fi-wrench"></i></a></td>
-                                    <td><a href="/adm/user/control/<?=$userI['id_user']?>" class="button no-margin small"><i class="fi-eye"></i></a></td>
+                                    <td>
+                                        <?php if (AdminBase::checkDenied('user.denied', 'view')): ?>
+                                            <a href="/adm/user/denied/<?=$userI['id_user']?>" class="button no-margin small"><i class="fi-wrench"></i></a>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <?php if (AdminBase::checkDenied('user.control', 'view')): ?>
+                                            <a href="/adm/user/control/<?=$userI['id_user']?>" class="button no-margin small"><i class="fi-eye"></i></a>
+                                        <?php endif; ?>
+                                    </td>
                                     <td>
                                         <?php if ($user->role == 'administrator' || $user->role == 'administrator-fin'): ?>
                                             <?php if (AdminBase::checkDenied('user.delete', 'view')): ?>
                                                 <a href="/adm/user/delete/<?=$userI['id_user']?>" class="button no-margin small" onclick="return confirm('Вы уверены что хотите удалить пользователя?') ? true : false;"><i class="fi-x"></i></a>
                                             <?php endif; ?>
+
                                             <?php if (AdminBase::checkDenied('user.edit', 'view')): ?>
                                                 <a href="/adm/user/update/<?=$userI['id_user']?>" class="button no-margin small"><i class="fi-pencil"></i></a>
                                             <?php endif; ?>
@@ -61,7 +70,38 @@
                         </tbody>
                     </table>
                 </div>
+
                 <div class="medium-3 small-12 columns">
+                    <h2 class="float-left">Group</h2>
+                    <?php if (AdminBase::checkDenied('group.add', 'view')): ?>
+                        <a href="/adm/group/add" class="button small float-right"><i class="fi-plus"></i> Добавить</a>
+                    <?php endif;?>
+                    <div class="clearfix"></div>
+                    <table border="1" cellspacing="0" cellpadding="5">
+                        <thead>
+                        <tr>
+                            <th>Group</th>
+                            <th width="100px">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php if (is_array($groupList)): ?>
+                            <?php foreach ($groupList as $group): ?>
+                                <tr>
+                                    <td><?= $group['group_name']?></td>
+                                    <td>
+                                    <?php if (AdminBase::checkDenied('group.view', 'view')): ?>
+                                        <a href="/adm/group/<?= $group['id'] ?>" class="button no-margin small"><i
+                                                    class="fi-eye"></i></a>
+                                    <?php endif; ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                        </tbody>
+                    </table>
+
+                    <div style="margin-bottom: 50px"></div>
                     <h2 class="float-left">Branch</h2>
                     <?php if (AdminBase::checkDenied('branch.add', 'view')): ?>
                         <a href="/adm/branch/add" class="button small float-right"><i class="fi-plus"></i> Добавить</a>

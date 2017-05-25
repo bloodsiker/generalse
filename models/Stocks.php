@@ -131,10 +131,8 @@ class Stocks
      */
     public static function getGoodsAllPartnerByStock($stock_name)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT
                  sgt.stock_name,
                  sgt.goods_name,
@@ -154,13 +152,25 @@ class Stocks
         // Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':stock_name', $stock_name, PDO::PARAM_STR);
-
-        // Выполнение коменды
         $result->execute();
-
-        //
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
     }
 
+
+    /**
+     * Получаем все склады
+     * @return array
+     */
+    public static function getAllStocks()
+    {
+        $db = MySQL::getConnection();
+
+        $sql = "SELECT * FROM gs_stocks";
+        // Используется подготовленный запрос
+        $result = $db->prepare($sql);
+        $result->execute();
+        $all = $result->fetchAll(PDO::FETCH_ASSOC);
+        return $all;
+    }
 }

@@ -31,6 +31,7 @@ class UserController extends AdminBase
 
         $listUsers = Admin::getAllUsers();
 
+        $groupList = GroupModel::getGroupList();
         $countryList = Country::getAllCountry();
         $branchList = Branch::getBranchList();
 
@@ -404,7 +405,7 @@ class UserController extends AdminBase
     {
         // Проверка доступа
         self::checkAdmin();
-        self::checkDenied('User denied', 'controller');
+        self::checkDenied('user.denied', 'controller');
         // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
         // Обьект юзера

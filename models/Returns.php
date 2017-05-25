@@ -50,7 +50,6 @@ class Returns
     /**
      *  Обновляем статус и склад для возврата
      * @param $id_return
-     * @param $status_name
      * @param $stock
      * @return bool
      */
@@ -63,6 +62,32 @@ class Returns
         $sql = "UPDATE site_gm_stockreturns
             SET
                 update_stock_from_site = :stock,
+                update_status_from_site = 2
+            WHERE stock_return_id = :id_return";
+
+        // Получение и возврат результатов. Используется подготовленный запрос
+        $result = $db->prepare($sql);
+        $result->bindParam(':id_return', $id_return, PDO::PARAM_INT);
+        $result->bindParam(':stock', $stock, PDO::PARAM_INT);
+        return $result->execute();
+    }
+
+
+    /**
+     * Обновляем статус и склад для возврата
+     * @param $id_return
+     * @param $stock
+     * @return bool
+     */
+    public static function updateStatusAndStockReturns($id_return, $stock)
+    {
+        // Соединение с БД
+        $db = MsSQL::getConnection();
+
+        // Текст запроса к БД
+        $sql = "UPDATE site_gm_stockreturns
+            SET
+                stock_name = :stock,
                 update_status_from_site = 2
             WHERE stock_return_id = :id_return";
 

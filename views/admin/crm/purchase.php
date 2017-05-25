@@ -85,19 +85,9 @@
                                 <label><i class="fi-list"></i> Stock
                                     <select name="stock" class="required" required>
                                         <option value="" selected disabled>none</option>
-                                        <?php if($user->name_partner == 'GS Electrolux'):?>
-                                            <option value="OK (Выборгская, 104)">OK (Выборгская, 104)</option>
-                                            <option value="BAD">BAD</option>
-                                        <?php elseif($user->name_partner == 'GS Electrolux GE'):?>
-                                            <option value="OK">OK</option>
-                                            <option value="BAD">BAD</option>
-                                        <?php else:?>
-                                            <option value="BAD">BAD</option>
-                                            <option value="Local Source">Local Source</option>
-                                            <option value="Not Used">Not Used</option>
-                                            <option value="Restored">Restored</option>
-                                            <option value="Restored Bad">Restored Bad</option>
-                                        <?php endif;?>
+                                        <?php foreach ($user->renderSelectStocks($user->id_user, 'purchase') as $stock):?>
+                                            <option value="<?= $stock?>"><?= $stock?></option>
+                                        <?php endforeach;?>
                                     </select>
                                 </label>
                             </div>
@@ -239,19 +229,9 @@
                 <label>Stock</label>
                 <select name="stock" id="stock" class="required" required>
                     <option value="" selected disabled>none</option>
-                    <?php if($user->name_partner == 'GS Electrolux'):?>
-                        <option value="OK (Выборгская, 104)">OK (Выборгская, 104)</option>
-                        <option value="BAD">BAD</option>
-                    <?php elseif($user->name_partner == 'GS Electrolux GE'):?>
-                        <option value="OK">OK</option>
-                        <option value="BAD">BAD</option>
-                    <?php else:?>
-                        <option value="BAD">BAD</option>
-                        <option value="Local Source">Local Source</option>
-                        <option value="Not Used">Not Used</option>
-                        <option value="Restored">Restored</option>
-                        <option value="Restored Bad">Restored Bad</option>
-                    <?php endif;?>
+                    <?php foreach ($user->renderSelectStocks($user->id_user, 'purchase') as $stock):?>
+                        <option value="<?= $stock?>"><?= $stock?></option>
+                    <?php endforeach;?>
                 </select>
             </div>
             <div class="medium-12 small-12 columns">

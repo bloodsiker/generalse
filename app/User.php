@@ -97,4 +97,41 @@ class User
         return false;
     }
 
+    /**
+     * Список пользователей находящихся в одной группе с данным пользователем
+     * @param $id_user
+     * @return mixed
+     */
+    public function idUsersInGroup($id_user)
+    {
+        $group = new Group();
+        return $group->usersFromGroup($this->idGroupUser($id_user));
+    }
+
+    /**
+     * ID группы в которой состоит пользователь
+     * @param $id_user
+     * @return mixed
+     */
+    public function idGroupUser($id_user)
+    {
+        $id_group = GroupModel::getIdGroupUser($id_user);
+        return $id_group['id_group'];
+    }
+
+
+    /**
+     * Возвращаем список складов для выбраного раздела
+     * @param $id_user
+     * @param $section
+     * @return array
+     */
+    public function renderSelectStocks($id_user, $section)
+    {
+        $id_group = $this->idGroupUser($id_user);
+        $group = new Group();
+        $array_stock = $group->stocksFromGroup($id_group, 'name', $section);
+        return $array_stock;
+    }
+
 }

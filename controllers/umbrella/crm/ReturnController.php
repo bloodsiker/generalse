@@ -118,29 +118,31 @@ class ReturnController extends AdminBase
             $id_return = $_REQUEST['id_return'];
             //Предварительный
             //$status = iconv('UTF-8', 'WINDOWS-1251', 'В обработке');
-            switch($stock)
-            {
-                case '1':
-                    $response['stock'] =  'BAD';
-                    break;
-                case '2':
-                    $response['stock'] = 'Not Used';
-                    break;
-                case '3':
-                    $response['stock'] = 'Restored';
-                    break;
-                case '4':
-                    $response['stock'] = 'Restore Bad';
-                    break;
-                case '5':
-                    $response['stock'] = 'Dismantling';
-                    break;
-                case '6':
-                    $response['stock'] = 'OK';
-                    break;
-            }
-
-            $ok = Returns::updateStatusReturns($id_return, $stock);
+//            switch($stock)
+//            {
+//                case '1':
+//                    $response['stock'] =  'BAD';
+//                    break;
+//                case '2':
+//                    $response['stock'] = 'Not Used';
+//                    break;
+//                case '3':
+//                    $response['stock'] = 'Restored';
+//                    break;
+//                case '4':
+//                    $response['stock'] = 'Restore Bad';
+//                    break;
+//                case '5':
+//                    $response['stock'] = 'Dismantling';
+//                    break;
+//                case '6':
+//                    $response['stock'] = 'OK';
+//                    break;
+//            }
+            $response['stock'] = $stock;
+            $stock_name = iconv('UTF-8', 'WINDOWS-1251', $stock);
+            //$ok = Returns::updateStatusReturns($id_return, $stock);
+            $ok = Returns::updateStatusAndStockReturns($id_return, $stock_name);
             if($ok){
                 $response['status'] = 'ok';
                 Logger::getInstance()->log($user->id_user, 'сделал возврат в Returns ' . $id_return);

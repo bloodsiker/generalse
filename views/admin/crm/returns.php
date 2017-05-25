@@ -119,28 +119,18 @@
                                     <td><?=$return['site_client_name']?></td>
                                     <td><?=$return['order_number']?></td>
                                     <td><?=iconv('WINDOWS-1251', 'UTF-8', $return['so_number'])?></td>
-                                    <?php if($return['update_stock_from_site'] == 0):?>
+                                    <?php if(empty($return['stock_name'])):?>
                                         <td class="selectInTable">
                                             <select name="stock" class="required" required>
                                                 <option value="" selected disabled>none</option>
-                                                <?php if($user->name_partner == 'GS Electrolux'):?>
-                                                    <option value="6">OK</option>
-                                                    <option value="1">BAD</option>
-                                                <?php elseif($user->name_partner == 'GS Electrolux GE'):?>
-                                                    <option value="6">OK</option>
-                                                    <option value="1">BAD</option>
-                                                <?php else:?>
-                                                    <option value="1">BAD</option>
-                                                    <option value="2">Not Used</option>
-                                                    <option value="3">Restored</option>
-                                                    <option value="4">Restore Bad</option>
-                                                    <option value="5">Dismantling</option>
-                                                <?php endif?>
+                                                <?php foreach ($user->renderSelectStocks($user->id_user, 'returns') as $stock):?>
+                                                    <option value="<?= $stock?>"><?= $stock?></option>
+                                                <?php endforeach;?>
                                             </select>
                                         </td>
                                     <?php else:?>
                                         <td class="stock">
-                                            <?=$return['stock_name']?>
+                                            <?=iconv('WINDOWS-1251' , 'UTF-8', $return['stock_name']);?>
                                         </td>
                                     <?php endif;?>
                                     <td><?=Functions::formatDate($return['created_on'])?></td>
@@ -190,21 +180,18 @@
                                     <td><?=$return['site_client_name']?></td>
                                     <td><?=$return['order_number']?></td>
                                     <td><?=iconv('WINDOWS-1251', 'UTF-8', $return['so_number'])?></td>
-                                    <?php if($return['update_stock_from_site'] == 0):?>
+                                    <?php if(empty($return['stock_name'])):?>
                                         <td class="selectInTable">
                                             <select name="stock" class="required" required>
                                                 <option value="" selected disabled>none</option>
-                                                <option value="1">BAD</option>
-                                                <option value="2">Not Used</option>
-                                                <option value="3">Restored</option>
-                                                <option value="4">Restore Bad</option>
-                                                <option value="5">Dismantling</option>
-                                                <option value="6">OK</option>
+                                                <?php foreach ($user->renderSelectStocks($user->id_user, 'returns') as $stock):?>
+                                                    <option value="<?= $stock?>"><?= $stock?></option>
+                                                <?php endforeach;?>
                                             </select>
                                         </td>
                                     <?php else:?>
                                         <td class="stock">
-                                            <?=$return['stock_name']?>
+                                            <?=iconv('WINDOWS-1251' , 'UTF-8', $return['stock_name']);?>
                                         </td>
                                     <?php endif;?>
                                     <td><?=Functions::formatDate($return['created_on'])?></td>

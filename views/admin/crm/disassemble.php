@@ -105,8 +105,9 @@
                      <td width="200" class="selectInTable">
                         <select name="stock" class="required">
                            <option value="" selected="" disabled="">none</option>
-                           <option value="BAD">BAD</option>
-                           <option value="Dismantling">Dismantling</option>
+                            <?php foreach ($user->renderSelectStocks($user->id_user, 'disassembly') as $stock):?>
+                                <option value="<?= $stock?>"><?= $stock?></option>
+                            <?php endforeach;?>
                         </select>
                      </td>
                      <td width="100" class="price selectInTable" contenteditable>
@@ -127,41 +128,5 @@
       </div>
    </div>
 </div>
-<div class="reveal" id="add-checkout-modal" data-reveal>
-   <form action="#" id="add-checkout-form" method="post" class="form" data-abide novalidate>
-      <div class="row align-bottom">
-         <div class="medium-12 small-12 columns">
-            <h3>New checkout</h3>
-         </div>
-         <div class="medium-12 small-12 columns">
-            <label>Stock</label>
-            <select name="stock" id="stock" class="required" required>
-               <option value="" selected disabled>none</option>
-               <option value="BAD">BAD</option>
-               <option value="Not Used">Not Used</option>
-               <option value="Restored">Restored</option>
-               <option value="Dismantling">Dismantling</option>
-            </select>
-         </div>
-         <div class="medium-12 small-12 columns">
-            <label>Service Order</label>
-            <input type="text" class="required" name="service_order" required>
-         </div>
-         <div class="medium-12 small-12 columns">
-            <label>Part Number <span style="color: #4CAF50;" class="name-product">Lenovo A 1000</span></label>
-            <input type="text" class="required" name="part_number" required>
-         </div>
-         <div class="medium-12 small-12 columns">
-            <label>Quantity</label>
-            <input type="text" class="required" name="quantity" required>
-         </div>
-         <div class="medium-12 small-12 columns">
-            <button type="submit" class="button primary">Send</button>
-         </div>
-      </div>
-   </form>
-   <button class="close-button" data-close aria-label="Close modal" type="button">
-      <span aria-hidden="true">&times;</span>
-   </button>
-</div>
+
 <?php require_once ROOT . '/views/admin/layouts/footer.php'; ?>

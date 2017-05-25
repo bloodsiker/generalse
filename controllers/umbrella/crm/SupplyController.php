@@ -39,8 +39,8 @@ class SupplyController extends AdminBase
         }
 
         if($user->role == 'partner') {
-            $allSupply = Supply::getAllSupply();
-            //$allSupply = Supply::getSupplyByPartner($user->id_user);
+            //$allSupply = Supply::getAllSupply();
+            $allSupply = Supply::getSupplyByPartner($user->idUsersInGroup($user->id_user));
         } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
             $allSupply = Supply::getAllSupply();
         }
@@ -111,6 +111,10 @@ class SupplyController extends AdminBase
     }
 
 
+    /**
+     * Распределяем детали по складам
+     * @return bool
+     */
     public function actionSupplyAjax()
     {
         // Проверка доступа
@@ -118,6 +122,7 @@ class SupplyController extends AdminBase
 
         // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
+        $user = new User($userId);
         // Получаем массив с site_id
         $json = json_decode($_REQUEST['json'], true);
 
@@ -131,6 +136,8 @@ class SupplyController extends AdminBase
 
             if ($item['manufacturer'] == 'Electrolux' || $item['manufacturer'] == 'electrolux'){
                 $stock = iconv('UTF-8', 'WINDOWS-1251', 'OK (Выборгская, 104)');
+            } elseif ($item['manufacturer'] == 'Electrolux GE' || $item['manufacturer'] == 'electrolux GE'){
+                $stock = iconv('UTF-8', 'WINDOWS-1251', 'OK');
             } else {
                 // Проверяем на наличие в таблице КПИ
                 $count_kpi = Supply::getCountSoNumberOnKpi($item['so_number']);

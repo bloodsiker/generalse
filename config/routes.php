@@ -22,6 +22,13 @@ return array(
     'adm/users' => 'user/index',
 
 
+    'adm/group/delete/user/([0-9]+)/([0-9]+)' => 'group/deleteUser/$1/$2',
+    'adm/group/delete/stock/([0-9]+)' => 'group/deleteStock/$1',
+    'adm/group/([0-9]+)/stock/([a-z0-9-_?&]+)' => 'group/stock/$1/$2',
+    'adm/group/([0-9]+)' => 'group/view/$1',
+    'adm/group/add' => 'group/addGroup',
+
+
     'adm/country/delete/([0-9]+)' => 'country/delete/$1',
     'adm/country/update/([0-9]+)' => 'country/update/$1',
     'adm/country/add' => 'country/addCountry',

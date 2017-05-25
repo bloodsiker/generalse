@@ -23,30 +23,9 @@
                             <label>Stocks</label>
                             <select name="stock" onchange="this.form.submit()" id="stock" class="required" required>
                                 <option value="all" <?=(isset($_GET['stock']) && $_GET['stock'] == 'all') ? 'selected' : ''?>>All</option>
-                            <?php if($user->name_partner == 'GS Electrolux'
-                                || $user->name_partner == 'Electrolux Amati Service'
-                                || $user->name_partner == 'Electrolux DE Service'
-                                || $user->name_partner == 'Electrolux Electroservice'
-                                || $user->name_partner == 'Electrolux Kaskad-1'
-                                || $user->name_partner == 'Electrolux Meridian'
-                                || $user->name_partner == 'Electrolux Transservice'):?>
-                                <option value="OK (Выборгская, 104)" <?=(isset($_GET['stock']) && $_GET['stock'] == 'OK (Выборгская, 104)') ? 'selected' : ''?>>OK (Выборгская, 104)</option>
-                                <option value="BAD" <?=(isset($_GET['stock']) && $_GET['stock'] == 'BAD') ? 'selected' : ''?>>BAD</option>
-                            <?php elseif($user->name_partner == 'Techpoint'
-                                || $user->name_partner == 'Technoservice'
-                                || $user->name_partner == 'Servisexpress'
-                                || $user->name_partner == 'GS Electrolux GE'):?>
-                                <option value="OK" <?=(isset($_GET['stock']) && $_GET['stock'] == 'OK') ? 'selected' : ''?>>OK</option>
-                                <option value="BAD" <?=(isset($_GET['stock']) && $_GET['stock'] == 'BAD') ? 'selected' : ''?>>BAD</option>
-                            <?php else:?>
-                                <option value="BAD" <?=(isset($_GET['stock']) && $_GET['stock'] == 'BAD') ? 'selected' : ''?>>BAD</option>
-                                <option value="Local Source" <?=(isset($_GET['stock']) && $_GET['stock'] == 'Local Source') ? 'selected' : ''?>>Local Source</option>
-                                <option value="Not Used" <?=(isset($_GET['stock']) && $_GET['stock'] == 'Not Used') ? 'selected' : ''?>>Not Used</option>
-                                <option value="Restored" <?=(isset($_GET['stock']) && $_GET['stock'] == 'Restored') ? 'selected' : ''?>>Restored</option>
-                                <option value="Dismantling" <?=(isset($_GET['stock']) && $_GET['stock'] == 'Dismantling') ? 'selected' : ''?>>Dismantling</option>
-                                <option value="Swap" <?=(isset($_GET['stock']) && $_GET['stock'] == 'Swap') ? 'selected' : ''?>>Swap</option>
-                                <option value="Restored Bad" <?=(isset($_GET['stock']) && $_GET['stock'] == 'Restored Bad') ? 'selected' : ''?>>Restored Bad</option>
-                                <?php endif;?>
+                                <?php foreach ($user->renderSelectStocks($user->id_user, 'stocks') as $stock):?>
+                                    <option value="<?= $stock?>" <?=(isset($_GET['stock']) && $_GET['stock'] == $stock) ? 'selected' : ''?>><?= $stock?></option>
+                                <?php endforeach;?>
                             </select>
                         </form>
                         <?php elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
@@ -68,15 +47,9 @@
                                     <label>Stocks</label>
                                     <select name="stock" id="stock" class="required" required>
                                         <option value="all" <?=(isset($_GET['stock']) && $_GET['stock'] == 'all') ? 'selected' : ''?>>All</option>
-                                        <option value="OK (Выборгская, 104)" <?=(isset($_GET['stock']) && $_GET['stock'] == 'OK (Выборгская, 104)') ? 'selected' : ''?>>OK (Выборгская, 104)</option>
-                                        <option value="OK" <?=(isset($_GET['stock']) && $_GET['stock'] == 'OK') ? 'selected' : ''?>>OK</option>
-                                        <option value="BAD" <?=(isset($_GET['stock']) && $_GET['stock'] == 'BAD') ? 'selected' : ''?>>BAD</option>
-                                        <option value="Local Source" <?=(isset($_GET['stock']) && $_GET['stock'] == 'Local Source') ? 'selected' : ''?>>Local Source</option>
-                                        <option value="Not Used" <?=(isset($_GET['stock']) && $_GET['stock'] == 'Not Used') ? 'selected' : ''?>>Not Used</option>
-                                        <option value="Restored" <?=(isset($_GET['stock']) && $_GET['stock'] == 'Restored') ? 'selected' : ''?>>Restored</option>
-                                        <option value="Dismantling" <?=(isset($_GET['stock']) && $_GET['stock'] == 'Dismantling') ? 'selected' : ''?>>Dismantling</option>
-                                        <option value="Swap" <?=(isset($_GET['stock']) && $_GET['stock'] == 'Swap') ? 'selected' : ''?>>Swap</option>
-                                        <option value="Restored Bad" <?=(isset($_GET['stock']) && $_GET['stock'] == 'Restored Bad') ? 'selected' : ''?>>Restored Bad</option>
+                                        <?php foreach ($user->renderSelectStocks($user->id_user, 'stocks') as $stock):?>
+                                            <option value="<?= $stock?>" <?=(isset($_GET['stock']) && $_GET['stock'] == $stock) ? 'selected' : ''?>><?= $stock?></option>
+                                        <?php endforeach;?>
                                     </select>
                                     </div>
                                     <div class="medium-4 small-12 columns">

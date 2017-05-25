@@ -120,10 +120,16 @@ class Supply
     }
 
 
-    public static function getSupplyByPartner($user_id)
+    /**
+     * @param $array_id
+     * @return array
+     */
+    public static function getSupplyByPartner($array_id)
     {
         // Соединение с БД
         $db = MsSQL::getConnection();
+
+        $idS = implode(',', $array_id);
 
         // Получение и возврат результатов
         $sql = "SELECT 
@@ -135,11 +141,11 @@ class Supply
                     sgs.command,
                     sgs.status_name
                 FROM site_gm_supplies sgs
-                WHERE sgs.site_account_id = :user_id
+                WHERE sgs.site_account_id IN({$idS})
                 ORDER BY sgs.id DESC";
         // Используется подготовленный запрос
         $result = $db->prepare($sql);
-        $result->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        //$result->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         // Выполнение коменды
         $result->execute();
 
