@@ -25,7 +25,7 @@
                             <th>Страна</th>
                             <th>Логин</th>
                             <th>Роль</th>
-                            <th>Создан</th>
+                            <th>Группа</th>
                             <th>Активность</th>
                             <th>Доступы</th>
                             <th>Управление <br> пользователями</th>
@@ -41,7 +41,7 @@
                                     <td><?=$userI['short_name'] . " - " . $userI['full_name']?></td>
                                     <td><?=$userI['login']?></td>
                                     <td><?=$userI['name_role']?></td>
-                                    <td><?=$userI['date_create']?></td>
+                                    <td><?=$userI['group_name']?></td>
                                     <td><?=$userI['date_active']?></td>
                                     <td>
                                         <?php if (AdminBase::checkDenied('user.denied', 'view')): ?>

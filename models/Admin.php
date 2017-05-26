@@ -168,31 +168,35 @@ class Admin
 
         // Получение и возврат результатов
         $data = $db->query("SELECT
-                               gu.id_user,
-                               gu.id_role,
-                               gu.name_partner,
-                               gu.id_country,
-                               gu.login,
-                               gu.date_create,
-                               gu.date_active,
-                               gr.id_role,
-                               gr.role,
-                               gr.name_role,
-                               gb.id_branch,
-                               gb.branch_name,
-                               gc.id_country,
-                               gc.short_name,
-                               gc.full_name
-                             FROM gs_user gu
-                               INNER JOIN gs_role gr
-                                 ON gu.id_role = gr.id_role
-                               LEFT JOIN gs_branch_users gbu
-                                 ON gu.id_user = gbu.id_user
-                               LEFT JOIN gs_branch gb
-                                ON gb.id_branch = gbu.id_branch
-                               INNER JOIN gs_country gc
-                                ON gu.id_country = gc.id_country
-                             ORDER BY gu.id_user")->fetchAll(PDO::FETCH_ASSOC);
+                                        gu.id_user,
+                                        gu.id_role,
+                                        gu.name_partner,
+                                        gu.id_country,
+                                        gu.login,
+                                        gu.date_create,
+                                        gu.date_active,
+                                        gg.group_name,
+                                        gr.id_role,
+                                        gr.role,
+                                        gr.name_role,
+                                        gb.id_branch,
+                                        gb.branch_name,
+                                        gc.short_name,
+                                        gc.full_name
+                                    FROM gs_user gu
+                                        INNER JOIN gs_role gr
+                                        ON gu.id_role = gr.id_role
+                                        LEFT JOIN gs_branch_users gbu
+                                        ON gu.id_user = gbu.id_user
+                                        LEFT JOIN gs_branch gb
+                                            ON gb.id_branch = gbu.id_branch
+                                        LEFT JOIN gs_group_user ggu
+                                            ON ggu.id_user = gu.id_user
+                                        LEFT JOIN gs_group gg
+                                            ON gg.id = ggu.id_group
+                                        INNER JOIN gs_country gc
+                                            ON gu.id_country = gc.id_country
+                                    ORDER BY gu.id_user")->fetchAll(PDO::FETCH_ASSOC);
 
         return $data;
     }
