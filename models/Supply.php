@@ -353,36 +353,34 @@ class Supply
 
     /**
      * Проверяем наличие парт номера в поставках, возвращаем id_supply
-     * @param $id_user
+     * @param $users_group
      * @param $part_number
      * @param $status
      * @return array
      */
-    public static function checkPartNumberInSupply($id_user, $part_number, $status)
+    public static function checkPartNumberInSupply($users_group, $part_number, $status)
     {
         // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // Получение и возврат результатов
+        $iDs = implode(',', $users_group);
+
         $sql = "SELECT
                 *
                 FROM site_gm_supplies sgs
                     INNER JOIN site_gm_supplies_parts sgsp
                         ON sgs.site_id = sgsp.site_id
-                WHERE sgs.site_account_id = :id_user
+                WHERE sgs.site_account_id IN ({$iDs})
                 AND sgsp.part_number = :part_number
                 AND sgs.status_name != :status
                 ORDER BY sgsp.id DESC";
         // Используется подготовленный запрос
         $result = $db->prepare($sql);
-        $result->bindParam(':id_user', $id_user, PDO::PARAM_INT);
+        //$result->bindParam(':id_user', $id_user, PDO::PARAM_INT);
         $result->bindParam(':part_number', $part_number, PDO::PARAM_INT);
         $result->bindParam(':status', $status, PDO::PARAM_INT);
 
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
         $all = $result->fetch(PDO::FETCH_ASSOC);
         return $all['supply_id'];
     }

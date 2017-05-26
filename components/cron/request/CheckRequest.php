@@ -1,6 +1,8 @@
 <?php
 include_once ('RequestFunction.php');
 
+$user = new RequestUser();
+$group = new RequestGroup();
 
 $listCheckRequest = RequestFunction::getReserveOrders();
 
@@ -19,7 +21,10 @@ foreach ($listCheckRequest as $request){
     $options['ready'] = 1;
 
     //Проверка по складам
-    $stock = iconv('UTF-8', 'WINDOWS-1251', 'OK (Выборгская, 104)');
+    //$stock = iconv('UTF-8', 'WINDOWS-1251', 'OK (Выборгская, 104)');
+    $stocks_group = $group->stocksFromGroup($user->idGroupUser($options['id_user']), 'name', 'supply');
+    $stock = iconv('UTF-8', 'WINDOWS-1251', $stocks_group[0]);
+
     $check_part_in_stock = RequestFunction::checkOrdersPartNumberMsSql($options['id_user'], $options['part_number'], $stock);
     if($check_part_in_stock){
         // Если есть на складе, создаем заказ
@@ -37,7 +42,9 @@ foreach ($listCheckRequest as $request){
         RequestFunction::updateCheckReserveOrders($request['id'], 1);
     } else {
         //Проверка в поставках
-        $check_part_in_supply = RequestFunction::checkPartNumberInSupply($options['id_user'], $options['part_number'], iconv('UTF-8', 'WINDOWS-1251', 'Подтверждена'));
+        //Проверяем наличие детали в поставках созданим пользователями с одной группы
+        $users_group = $group->usersFromGroup($user->idGroupUser($options['id_user']));
+        $check_part_in_supply = RequestFunction::checkPartNumberInSupply($users_group, $options['part_number'], iconv('UTF-8', 'WINDOWS-1251', 'Подтверждена'));
         if($check_part_in_supply){
             //в случае наличия выписывает заказ и резервирует с поставки товар. (Статус «В поставке № указать номер поставки»)
             //$options['supply_id'] = $check_part_in_supply['supply_id'];

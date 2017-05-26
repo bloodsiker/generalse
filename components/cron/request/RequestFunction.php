@@ -248,15 +248,17 @@ class RequestFunction
 
     /**
      * Проверяем наличие парт номера в поставках, возвращаем id_supply
-     * @param $id_user
+     * @param $users_group
      * @param $part_number
      * @param $status
      * @return array
      */
-    public static function checkPartNumberInSupply($id_user, $part_number, $status)
+    public static function checkPartNumberInSupply($users_group, $part_number, $status)
     {
         // Соединение с БД
         $db = CronDb::getConnectionMsSQL();
+
+        $iDs = implode(',', $users_group);
 
         // Получение и возврат результатов
         $sql = "SELECT
@@ -264,13 +266,12 @@ class RequestFunction
                 FROM site_gm_supplies sgs
                     INNER JOIN site_gm_supplies_parts sgsp
                         ON sgs.site_id = sgsp.site_id
-                WHERE sgs.site_account_id = :id_user
+                WHERE sgs.site_account_id IN ({$iDs})
                 AND sgsp.part_number = :part_number
                 AND sgs.status_name != :status
                 ORDER BY sgsp.id DESC";
         // Используется подготовленный запрос
         $result = $db->prepare($sql);
-        $result->bindParam(':id_user', $id_user, PDO::PARAM_INT);
         $result->bindParam(':part_number', $part_number, PDO::PARAM_INT);
         $result->bindParam(':status', $status, PDO::PARAM_INT);
 
@@ -418,6 +419,134 @@ class RequestFunction
         }
         return 0;
     }
+
+
+    /************   GROUP MODEL  *****************/
+
+    public static function getUsersByGroup($id_group)
+    {
+        $db = CronDb::getConnectionMsSQL();
+
+        $sql = "SELECT 
+                ggu.id_user,
+                gu.name_partner
+                FROM gs_group_user ggu
+                    INNER JOIN gs_user gu
+                        ON ggu.id_user = gu.id_user
+                WHERE ggu.id_group = :id_group";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id_group', $id_group, PDO::PARAM_INT);
+        $result->execute();
+
+        $user = $result->fetchAll(PDO::FETCH_ASSOC);
+        return $user;
+    }
+
+
+    /**
+     * Возвращаем ID группы, в которой стостоит пользователь
+     * @param $id_user
+     * @return mixed
+     */
+    public static function getIdGroupUser($id_user)
+    {
+        $db = CronDb::getConnectionMsSQL();
+
+        $sql = "SELECT 
+                ggu.id_group
+                FROM gs_group_user ggu
+                    INNER JOIN gs_user gu
+                        ON ggu.id_user = gu.id_user
+                WHERE ggu.id_user = :id_user";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id_user', $id_user, PDO::PARAM_INT);
+        $result->execute();
+
+        $user = $result->fetch(PDO::FETCH_ASSOC);
+        return $user;
+    }
+
+    /**
+     * Список складов привязанных к группе
+     * @param $id_group
+     * @param $section
+     * @return array
+     */
+    public static function getStocksFromGroup($id_group, $section)
+    {
+        $db = CronDb::getConnectionMsSQL();
+
+        $sql = "SELECT 
+                ggs.id as id_row,
+                ggs.id_stock,
+                gs.stock_name,
+                gs.id
+                FROM gs_group_stock ggs
+                    INNER JOIN gs_stocks gs
+                        ON ggs.id_stock = gs.id
+                WHERE ggs.id_group = :id_group AND ggs.section = :section";
+        // Используется подготовленный запрос
+        $result = $db->prepare($sql);
+        $result->bindParam(':id_group', $id_group, PDO::PARAM_INT);
+        $result->bindParam(':section', $section, PDO::PARAM_STR);
+        $result->execute();
+        $all = $result->fetchAll(PDO::FETCH_ASSOC);
+        return $all;
+    }
+
+}
+
+
+
+
+class RequestGroup
+{
+
+    /**
+     * ID пользователей состоящий в группе
+     * @param $id_group
+     * @return array
+     */
+    public function usersFromGroup($id_group)
+    {
+        $users_group = RequestFunction::getUsersByGroup($id_group);
+        return array_column($users_group, 'id_user');
+    }
+
+    /**
+     * Возращаем список id складов
+     * @param $id_group
+     * @param string $key
+     * @param $section
+     * @return array
+     */
+    public function stocksFromGroup($id_group, $key = 'id', $section)
+    {
+        $list_stock = RequestFunction::getStocksFromGroup($id_group, $section);
+        if($key == 'id'){
+            return array_column($list_stock, 'id_stock');
+        } elseif($key == 'name'){
+            return array_column($list_stock, 'stock_name');
+        }
+    }
+}
+
+
+class RequestUser
+{
+    /**
+     * ID группы в которой состоит пользователь
+     * @param $id_user
+     * @return mixed
+     */
+    public function idGroupUser($id_user)
+    {
+        $id_group = RequestFunction::getIdGroupUser($id_user);
+        return $id_group['id_group'];
+    }
+
 }
 
 
