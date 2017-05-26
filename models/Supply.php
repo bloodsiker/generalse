@@ -161,25 +161,24 @@ class Supply
      */
     public static function getSupplyPartsByIdS($site_idS)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT
-                    id,
-                    site_id,
-                    part_number,
-                    so_number,
-                    manufacturer
-                FROM site_gm_supplies_parts 
-                where site_id IN ($site_idS)";
+                  sgsp.id,
+                  sgsp.site_id,
+                  sgsp.part_number,
+                  sgsp.so_number,
+                  sgsp.manufacturer,
+                  sgs.site_account_id
+                 FROM site_gm_supplies_parts sgsp
+                    INNER JOIN site_gm_supplies sgs
+                        ON sgsp.site_id = sgs.site_id
+                 WHERE sgsp.site_id IN ($site_idS)";
         // Используется подготовленный запрос
         $result = $db->prepare($sql);
         //$result->bindParam(':site_id', $site_id, PDO::PARAM_STR);
         // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
     }

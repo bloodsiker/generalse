@@ -123,6 +123,7 @@ class SupplyController extends AdminBase
         // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
         $user = new User($userId);
+        $group = new Group();
         // Получаем массив с site_id
         $json = json_decode($_REQUEST['json'], true);
 
@@ -134,11 +135,7 @@ class SupplyController extends AdminBase
 
         foreach ($array_supply as $item){
 
-            if ($item['manufacturer'] == 'Electrolux' || $item['manufacturer'] == 'electrolux'){
-                $stock = iconv('UTF-8', 'WINDOWS-1251', 'OK (Выборгская, 104)');
-            } elseif ($item['manufacturer'] == 'Electrolux GE' || $item['manufacturer'] == 'electrolux GE'){
-                $stock = iconv('UTF-8', 'WINDOWS-1251', 'OK');
-            } else {
+            if($item['manufacturer'] == 'Lenovo' || $item['manufacturer'] == 'lenovo'){
                 // Проверяем на наличие в таблице КПИ
                 $count_kpi = Supply::getCountSoNumberOnKpi($item['so_number']);
                 if($count_kpi > 0){
@@ -155,7 +152,35 @@ class SupplyController extends AdminBase
                         $stock = iconv('UTF-8', 'WINDOWS-1251', 'transit');
                     }
                 }
+            } else {
+                // Используем для поставки склад, который привязанный к группе в которой находиться пользователь создавший поствку
+                $stocks_group = $group->stocksFromGroup($user->idGroupUser($item['site_account_id']), 'name', 'supply');
+                $stock = iconv('UTF-8', 'WINDOWS-1251', $stocks_group[0]);
             }
+
+
+//            if ($item['manufacturer'] == 'Electrolux' || $item['manufacturer'] == 'electrolux'){
+//                $stock = iconv('UTF-8', 'WINDOWS-1251', 'OK (Выборгская, 104)');
+//            } elseif ($item['manufacturer'] == 'Electrolux GE' || $item['manufacturer'] == 'electrolux GE'){
+//                $stock = iconv('UTF-8', 'WINDOWS-1251', 'OK');
+//            } else {
+//                // Проверяем на наличие в таблице КПИ
+//                $count_kpi = Supply::getCountSoNumberOnKpi($item['so_number']);
+//                if($count_kpi > 0){
+//                    $stock = iconv('UTF-8', 'WINDOWS-1251', 'not used');
+//                } else {
+//                    // Если в таблице КПИ не найден, ищем в таблице Refund Request
+//                    $stock = 'transit';
+//                    $status = iconv('UTF-8', 'WINDOWS-1251', 'подтверждено');
+//                    $count_refund = Supply::getCountSoNumberOnRefund($item['so_number'], $status);
+//                    if($count_refund > 0){
+//                        $stock = iconv('UTF-8', 'WINDOWS-1251', 'not used');
+//                        //Supply::updateCommand($item['site_id'], 1);
+//                    } else {
+//                        $stock = iconv('UTF-8', 'WINDOWS-1251', 'transit');
+//                    }
+//                }
+//            }
             Supply::updateStock($item['id'], $stock);
         }
         Supply::updateCommand($site_idS, 1);
