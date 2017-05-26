@@ -89,4 +89,45 @@ class Group
         }
         return false;
     }
+
+
+    /**
+     * Список страниц запрещенных для просмотра пользователей группы
+     * @param $id_group
+     * @return array
+     */
+    public function deniedGroupPage($id_group)
+    {
+        return Denied::getDeniedByGroup($id_group);
+    }
+
+
+    /**
+     * При добавлении нового запрета для группы, добавляем этот запрет и каждому пользователю
+     * @param $array_user
+     * @param $name
+     * @param $slug
+     * @param $id_group
+     * @return bool
+     */
+    public function  addDeniedUserFromGroup($array_user, $name, $slug, $id_group)
+    {
+        foreach ($array_user as $id_user){
+            Denied::addDeniedSlugInUser($id_user, $name, $slug, $id_group);
+        }
+        return true;
+    }
+
+
+    /**
+     * При удалении запретной страницы из группы, она удаляеться у всех членов группы
+     * @param $id_group
+     * @param $slug
+     * @return bool
+     */
+    public function deleteDeniedForGroupUser($id_group, $slug)
+    {
+        Denied::deleteUserFromGroupByDenied($id_group, $slug);
+        return true;
+    }
 }

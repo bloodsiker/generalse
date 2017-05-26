@@ -77,6 +77,13 @@
                             <li><a href="/adm/group/<?=$id_group?>/stock/supply">Supply</a></li>
                         </ul>
                     <?php endif; ?>
+
+
+                    <h2>Group denied</h2>
+                    <ul class="menu-section">
+                        <li><a href="/adm/group/denied/<?=$id_group?>">Denied</a></li>
+                    </ul>
+
                 </div>
 
             </div>

@@ -22,6 +22,9 @@ return array(
     'adm/users' => 'user/index',
 
 
+    'adm/group/denied/([0-9]+)/([0-9]+)/([0-9]+)' => 'group/groupDenied/$1/$2/$3',
+    'adm/group/denied/([0-9]+)/([0-9]+)' => 'group/groupDenied/$1/$2',
+    'adm/group/denied/([0-9]+)' => 'group/groupDenied/$1',
     'adm/group/delete/user/([0-9]+)/([0-9]+)' => 'group/deleteUser/$1/$2',
     'adm/group/delete/stock/([0-9]+)' => 'group/deleteStock/$1',
     'adm/group/([0-9]+)/stock/([a-z0-9-_?&]+)' => 'group/stock/$1/$2',

@@ -56,6 +56,8 @@ class GroupController extends AdminBase
             $id_user = $_POST['id_user'];
             $ok = GroupModel::addUserGroup($id_group, $id_user);
             if($ok){
+                // Добавляем юзеру все запрещенные страницы группы
+                $user->addDeniedForGroupUser($id_group, $id_user);
                 header("Location: " . $_SERVER['HTTP_REFERER']);
             }
         }
@@ -119,7 +121,11 @@ class GroupController extends AdminBase
         $user = new User($userId);
 
         if($user->role == 'administrator'){
-            GroupModel::deleteUserFromGroup($id_group, $id_user);
+            $ok = GroupModel::deleteUserFromGroup($id_group, $id_user);
+            if($ok){
+                // Удаляем запрещенные страницы, которые запрещены для группы в которой находился пользователь
+                $user->deleteDeniedForGroupUser($id_user, $id_group);
+            }
         } else {
             echo "<script>alert('У вас нету прав на удаление')</script>";
         }
@@ -155,6 +161,68 @@ class GroupController extends AdminBase
 
         // Перенаправляем пользователя на страницу управлениями товарами
         header("Location: " . $_SERVER['HTTP_REFERER']);
+        return true;
+    }
+
+
+    /**
+     *
+     * @param $id_group
+     * @param null $p_id
+     * @param null $sub_id
+     * @return bool
+     */
+    public function actionGroupDenied($id_group, $p_id = null, $sub_id = null)
+    {
+        // Проверка доступа
+        self::checkAdmin();
+        //self::checkDenied('user.denied', 'controller');
+        // Получаем идентификатор пользователя из сессии
+        $userId = Admin::CheckLogged();
+        // Обьект юзера
+        $user = new User($userId);
+
+        $group = new Group();
+        // Список страниц
+        $list_page = Denied::getListPageInSystem();
+
+        if($p_id !== null){
+            $sub_menu = Denied::getListPageInSystem(intval($p_id), 0);
+        }
+
+        if($sub_id === null){
+            //Кнопки которые присутсвуют в категорях главного меню
+            $sub_menu_button = Denied::getListPageInSystem(intval($p_id), 0, 1);
+        } else {
+            //Кнопки которые присутсвуют в подкатегориях
+            $sub_menu_button = Denied::getListPageInSystem(intval($sub_id), 0, 1);
+        }
+
+        $list_denied = Denied::getDeniedByGroup($id_group);
+        $new_array = array_column($list_denied, 'slug');
+
+        if(isset($_POST['action']) && $_POST['action'] == 'denied'){
+            $name = $_POST['name'];
+            $slug = $_POST['slug'];
+            $ok = Denied::addDeniedSlugInGroup($id_group, $name, $slug);
+            if($ok){
+                //При добавлении нового запрета для группы, добавляем этот запрет и каждому пользователю
+                $list_user_group = $group->usersFromGroup($id_group);
+                $group->addDeniedUserFromGroup($list_user_group, $name, $slug, $id_group);
+                header("Location: " . $_SERVER['HTTP_REFERER']);
+            }
+        } elseif(isset($_POST['action']) && $_POST['action'] == 'success'){
+            $name = $_POST['name'];
+            $slug = $_POST['slug'];
+            $ok = Denied::deleteSlugInGroup($id_group, $name, $slug);
+            if($ok){
+                //При удалении запретной страницы из группы, она удаляеться у всех членов группы
+                $group->deleteDeniedForGroupUser($id_group, $slug);
+                header("Location: " . $_SERVER['HTTP_REFERER']);
+            }
+        }
+
+        require_once(ROOT . '/views/admin/group/denied.php');
         return true;
     }
 }

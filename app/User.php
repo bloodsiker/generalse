@@ -134,4 +134,34 @@ class User
         return $array_stock;
     }
 
+
+    /**
+     * При добавлении пользователя в группу, применяем для него все правила запрета  которые действуют на группу
+     * @param $id_group
+     * @param $id_user
+     * @return bool
+     */
+    public function  addDeniedForGroupUser($id_group, $id_user)
+    {
+        $group = new Group();
+        $list_denied = $group->deniedGroupPage($id_group);
+        foreach ($list_denied as $denied){
+            Denied::addDeniedSlugInUser($id_user, $denied['name'], $denied['slug'], $id_group);
+        }
+        return true;
+    }
+
+
+    /**
+     * Удаляем все запрещенные страницы, которые относяться к группе в которой находился пользователь
+     * @param $id_user
+     * @param $id_group
+     * @return bool
+     */
+    public function deleteDeniedForGroupUser($id_user, $id_group)
+    {
+        Denied::deleteDeniedUserFromGroup($id_user, $id_group);
+        return true;
+    }
+
 }
