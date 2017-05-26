@@ -425,7 +425,7 @@ class RequestFunction
 
     public static function getUsersByGroup($id_group)
     {
-        $db = CronDb::getConnectionMsSQL();
+        $db = CronDb::getConnection();
 
         $sql = "SELECT 
                 ggu.id_user,
@@ -451,7 +451,7 @@ class RequestFunction
      */
     public static function getIdGroupUser($id_user)
     {
-        $db = CronDb::getConnectionMsSQL();
+        $db = CronDb::getConnection();
 
         $sql = "SELECT 
                 ggu.id_group
@@ -476,7 +476,7 @@ class RequestFunction
      */
     public static function getStocksFromGroup($id_group, $section)
     {
-        $db = CronDb::getConnectionMsSQL();
+        $db = CronDb::getConnection();
 
         $sql = "SELECT 
                 ggs.id as id_row,
