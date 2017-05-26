@@ -30,6 +30,26 @@ class Admin
         return false;
     }
 
+
+    /**
+     * @param $login
+     * @return mixed
+     */
+    public static function checkUserLogin($login)
+    {
+        $db = MySQL::getConnection();
+
+        $sql = 'SELECT count(login) as count FROM gs_user WHERE login = :login';
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':login', $login, PDO::PARAM_STR);
+        $result->execute();
+
+        $count = $result->fetch();
+        return $count['count'];
+    }
+
+
     /**
      * Получаем id пользователя по имени
      * @param $user_name
@@ -427,6 +447,12 @@ class Admin
         return $result->execute();
     }
 
+
+    /**
+     * @param $id
+     * @param $options
+     * @return bool
+     */
     public static function updateUserById($id, $options)
     {
         // Соединение с БД

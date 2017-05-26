@@ -45,7 +45,7 @@
                         <div class="row">
                             <div class="large-12 columns">
                                 <label>Логин
-                                    <input type="text" name="login" required/>
+                                    <input type="text" name="login" id="login" autocomplete="off" required/>
                                 </label>
                             </div>
                         </div>
@@ -70,7 +70,7 @@
 
                         <div class="row">
                             <div class="large-12 columns">
-                                <input type="submit" name="add_user" class="button small float-right" value="Создать">
+                                <input type="submit" id="add_user" name="add_user" class="button small float-right" value="Создать">
                                 <a href="/adm/users" class="button small info"> Назад</a>
                             </div>
                         </div>

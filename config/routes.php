@@ -18,6 +18,7 @@ return array(
 
     'adm/user/delete/([0-9]+)' => 'user/delete/$1',
     'adm/user/update/([0-9]+)' => 'user/update/$1',
+    'adm/user/check_login' => 'user/checkUserLogin',
     'adm/user/add' => 'user/addUser',
     'adm/users' => 'user/index',
 

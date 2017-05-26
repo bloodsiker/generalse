@@ -161,6 +161,20 @@ class UserController extends AdminBase
     }
 
 
+    public function actionCheckUserLogin()
+    {
+        $login = $_REQUEST['login'];
+
+        $count = Admin::checkUserLogin($login);
+        if($count > 0){
+            echo 2;
+        } else {
+            echo 1;
+        }
+        return true;
+    }
+
+
     /**
      * Обновление аккаунта пользователя
      * @param $id

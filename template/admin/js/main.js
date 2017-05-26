@@ -7,6 +7,8 @@
         dateFormat: 'yy-mm-dd'
     });
 
+
+// Scroll top
 $(function () {
     $(window).scroll(function () {
         if ($(this).scrollTop() != 0) {
@@ -20,6 +22,39 @@ $(function () {
         $('body,html').animate({scrollTop: 0}, 300);
     });
 });
+
+
+$("#login").before("<span class='login_busy'></span>");
+$(function() {
+    $(document).on('keyup', '#login', function(e) {
+
+        if ($("#login").val().length > 1) {
+            var login = $("#login").val();
+
+            $.ajax({
+                type: "POST",
+                url: "/adm/user/check_login",
+                data: {login : login},
+                cache: false,
+                success: function(response) {
+                    //alert(response);
+                    console.log(response);
+                    if (response == 2) { // error
+                        $("#login").css('background-color','rgba(198, 15, 19, 0.1)');
+                        $('.login_busy').text(login + ' занят').css('color', 'red');
+                        $('#add_user').attr('disabled', 'true');
+                    } else if (response == 1) { // ok
+                        $("#login").css('background-color','rgba(198, 15, 19, 0)');
+                        $('.login_busy').html('');
+                        $('#add_user').removeAttr('disabled');
+                    }
+                }
+            });
+            return false;
+        }
+    });
+});
+
 
     //=============================================================
     //=======================TABS=============================== 
