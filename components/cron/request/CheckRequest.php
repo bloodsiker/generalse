@@ -19,6 +19,8 @@ foreach ($listCheckRequest as $request){
     $options['so_number'] = iconv('UTF-8', 'WINDOWS-1251', $request['so_number']);
     $options['site_id'] = $lastId;
     $options['ready'] = 1;
+    $options['note'] = iconv('UTF-8', 'WINDOWS-1251', $request['note']);
+    $options['note_mysql'] = $request['note'];
 
     //Проверка по складам
     //$stock = iconv('UTF-8', 'WINDOWS-1251', 'OK (Выборгская, 104)');
@@ -44,7 +46,8 @@ foreach ($listCheckRequest as $request){
         //Проверка в поставках
         //Проверяем наличие детали в поставках созданим пользователями с одной группы
         $users_group = $group->usersFromGroup($user->idGroupUser($options['id_user']));
-        $check_part_in_supply = RequestFunction::checkPartNumberInSupply($users_group, $options['part_number'], iconv('UTF-8', 'WINDOWS-1251', 'Подтверждена'));
+        $status = iconv('UTF-8', 'WINDOWS-1251', 'Подтверждена');
+        $check_part_in_supply = RequestFunction::checkPartNumberInSupply($users_group, $options['part_number'], $status);
         if($check_part_in_supply){
             //в случае наличия выписывает заказ и резервирует с поставки товар. (Статус «В поставке № указать номер поставки»)
             //$options['supply_id'] = $check_part_in_supply['supply_id'];

@@ -295,9 +295,9 @@ class RequestFunction
 
         // Текст запроса к БД
         $sql = 'INSERT INTO site_gm_orders '
-            . '(site_id, site_account_id, so_number, ready)'
+            . '(site_id, site_account_id, so_number, ready, note)'
             . 'VALUES '
-            . '(:site_id, :site_account_id, :so_number, :ready)';
+            . '(:site_id, :site_account_id, :so_number, :ready, :note)';
 
         // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
@@ -305,6 +305,7 @@ class RequestFunction
         $result->bindParam(':site_account_id', $options['id_user'], PDO::PARAM_INT);
         $result->bindParam(':so_number', $options['so_number'], PDO::PARAM_STR);
         $result->bindParam(':ready', $options['ready'], PDO::PARAM_INT);
+        $result->bindParam(':note', $options['note'], PDO::PARAM_STR);
 
         return $result->execute();
     }
@@ -321,9 +322,9 @@ class RequestFunction
 
         // Текст запроса к БД
         $sql = 'INSERT INTO gm_orders '
-            . '(site_id, id_user, so_number, ready)'
+            . '(site_id, id_user, so_number, ready, note)'
             . 'VALUES '
-            . '(:site_id, :id_user, :so_number, :ready)';
+            . '(:site_id, :id_user, :so_number, :ready, :note)';
 
         // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
@@ -331,6 +332,7 @@ class RequestFunction
         $result->bindParam(':id_user', $options['id_user'], PDO::PARAM_INT);
         $result->bindParam(':so_number', $options['so_number'], PDO::PARAM_STR);
         $result->bindParam(':ready', $options['ready'], PDO::PARAM_INT);
+        $result->bindParam(':note', $options['note_mysql'], PDO::PARAM_STR);
 
         return $result->execute();
     }
