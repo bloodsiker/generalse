@@ -22,7 +22,7 @@
                         <form action="/adm/crm/stocks/" method="get" class="form">
                             <label>Stocks</label>
                             <select name="stock" onchange="this.form.submit()" id="stock" class="required" required>
-                                <option value="all" <?=(isset($_GET['stock']) && $_GET['stock'] == 'all') ? 'selected' : ''?>>All</option>
+                                <option value="" <?=(isset($_GET['stock']) && $_GET['stock'] == '') ? 'selected' : ''?>></option>
                                 <?php foreach ($user->renderSelectStocks($user->id_user, 'stocks') as $stock):?>
                                     <option value="<?= $stock?>" <?=(isset($_GET['stock']) && $_GET['stock'] == $stock) ? 'selected' : ''?>><?= $stock?></option>
                                 <?php endforeach;?>

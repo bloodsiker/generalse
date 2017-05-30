@@ -35,14 +35,15 @@ class StockController extends AdminBase
         $partnerList = Admin::getAllPartner();
 
         if($user->role == 'partner') {
-            $allGoodsByPartner = Stocks::getAllGoodsByPartner($user->id_user);
+            //$allGoodsByPartner = Stocks::getAllGoodsByPartner($user->id_user);
             if (isset($_GET['stock'])) {
                 $stock = iconv('UTF-8', 'WINDOWS-1251', $_GET['stock']);
-                if ($stock == 'all') {
-                    $allGoodsByPartner = Stocks::getAllGoodsByPartner($user->id_user);
-                } else {
-                    $allGoodsByPartner = Stocks::getGoodsInStockByPartner($user->id_user, $stock);
-                }
+//                if ($stock == 'all') {
+//                    $allGoodsByPartner = Stocks::getAllGoodsByPartner($user->id_user);
+//                } else {
+//                    $allGoodsByPartner = Stocks::getGoodsInStockByPartner($user->id_user, $stock);
+//                }
+                $allGoodsByPartner = Stocks::getGoodsInStockByPartner($user->id_user, $stock);
             }
         } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
             if (isset($_GET['stock']) && isset($_GET['id_partner'])) {
