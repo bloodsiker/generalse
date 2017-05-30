@@ -17,6 +17,7 @@ class RequestFunction
                 *
                 FROM gm_orders_check
                 WHERE check_status = 0
+                AND to_update = 0
                 ORDER BY id DESC";
         // Используется подготовленный запрос
         $result = $db->prepare($sql);
@@ -204,6 +205,55 @@ class RequestFunction
         $result = $db->prepare($sql);
         $result->bindParam(':id', $id, PDO::PARAM_INT);
         $result->bindParam(':price', $price, PDO::PARAM_STR);
+        return $result->execute();
+    }
+
+
+    /**
+     * Отмечем что запись проверена
+     * @param $id
+     * @param $to_update
+     * @return bool
+     */
+    public static function updateCheckPerHour($id, $to_update = 1)
+    {
+        // Соединение с БД
+        $db = CronDb::getConnection();
+
+        // Текст запроса к БД
+        $sql = "UPDATE gm_orders_check
+            SET
+                to_update = :to_update
+            WHERE id = :id";
+
+        // Получение и возврат результатов. Используется подготовленный запрос
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $id, PDO::PARAM_INT);
+        $result->bindParam(':to_update', $to_update, PDO::PARAM_STR);
+        return $result->execute();
+    }
+
+
+    /**
+     * @param $check_status
+     * @param int $to_update
+     * @return bool
+     */
+    public static function updateCheckPerHourToZero($check_status, $to_update = 0)
+    {
+        // Соединение с БД
+        $db = CronDb::getConnection();
+
+        // Текст запроса к БД
+        $sql = "UPDATE gm_orders_check
+            SET
+                to_update = :to_update
+            WHERE check_status = :check_status";
+
+        // Получение и возврат результатов. Используется подготовленный запрос
+        $result = $db->prepare($sql);
+        $result->bindParam(':check_status', $check_status, PDO::PARAM_INT);
+        $result->bindParam(':to_update', $to_update, PDO::PARAM_STR);
         return $result->execute();
     }
 
