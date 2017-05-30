@@ -33,6 +33,7 @@ class OrderController extends AdminBase
         // Обьект юзера
         $user = new User($userId);
         $partnerList = Admin::getAllPartner();
+        $delivery_address = $user->getDeliveryAddress($user->id_user);
 
         if(isset($_SESSION['error_orders'])){
             unset($_SESSION['error_orders']);
@@ -67,7 +68,12 @@ class OrderController extends AdminBase
 
                         // Выбранный сток
                         $stock = iconv('UTF-8', 'WINDOWS-1251', $_REQUEST['stock']);
-                        $note = iconv('UTF-8', 'WINDOWS-1251', $_REQUEST['notes']);
+                        $note = '';
+                        $note_mysql = '';
+                        if(isset($_REQUEST['notes'])){
+                            $note = iconv('UTF-8', 'WINDOWS-1251', $_REQUEST['notes']);
+                            $note_mysql = $_REQUEST['notes'];
+                        }
 
                         $insertArray = [];
                         $arr_error_pn = [];
@@ -117,6 +123,7 @@ class OrderController extends AdminBase
                                 $options['id_user'] = $insert['id_user'];
                                 $options['so_number'] = iconv('UTF-8', 'WINDOWS-1251', $insert['so_number']);
                                 $options['note'] = $note;
+                                $options['note_mysql'] = $note_mysql;
                                 $options['ready'] = 1;
                                 Orders::addOrdersMsSQL($options);
                                 Orders::addOrders($options);
@@ -287,11 +294,19 @@ class OrderController extends AdminBase
         }
         $lastId++;
 
+        $note = null;
+        $note_mysql = null;
+        if(isset($data_json['note'])){
+            $note = iconv('UTF-8', 'WINDOWS-1251', $data_json['note']);
+            $note_mysql = $data_json['note'];
+        }
+
         $options['site_id'] = $lastId;
         $options['id_user'] = $userId;
         $options['id_user'] = $data_json['id_partner'];
         $options['so_number'] = iconv('UTF-8', 'WINDOWS-1251', $data_json['service_order']);
-        $options['note'] = iconv('UTF-8', 'WINDOWS-1251', $data_json['note']);
+        $options['note'] = $note;
+        $options['note_mysql'] = $note_mysql;
         $options['ready'] = 1;
 
         Orders::addOrdersMsSQL($options);

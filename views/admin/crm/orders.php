@@ -96,6 +96,19 @@
                                     </select>
                                 </label>
                             </div>
+
+                            <?php if(is_array($delivery_address) && !empty($delivery_address)):?>
+                                <div class="medium-2 small-12 columns">
+                                    <label>Delivery address</label>
+                                    <select name="notes" id="notes" class="required" required>
+                                        <option value="" selected disabled>none</option>
+                                        <?php foreach ($delivery_address as $address):?>
+                                            <option value="<?= $address?>"><?= $address?></option>
+                                        <?php endforeach;?>
+                                    </select>
+                                </div>
+                            <?php endif; ?>
+
                             <input type="hidden" name="send_excel_file" value="true">
                             <div class="medium-2 small-12 columns">
                                 <label for="exampleFileUpload" class="button primary">Attach</label>
@@ -105,12 +118,14 @@
                                 <button class="button primary"> send
                                 </button>
                             </div>
-                            <div class="medium-4 small-12 columns">
+                            <div class="medium-3 small-12 columns">
                                 <div style="padding-bottom: 37px; color: #fff"><a href="/upload/attach_order/orders_import.xls" style="color: #2ba6cb" download>download</a> a template file to import</div>
                             </div>
-                            <div class="medium-12 small-12 columns">
+
+
+                            <div class="medium-12 small-12 columns hide">
                                 <label>Note</label>
-                                <textarea rows="3" name="notes"></textarea>
+                                <textarea rows="3" name=""></textarea>
                             </div>
                         </div>
                     </form>
@@ -146,7 +161,7 @@
                         <th class="sort">Order Number</th>
                         <th class="sort">Service Order</th>
                         <th class="sort">Status</th>
-                        <th class="text-center" width="70">Note</th>
+                        <th class="text-center" width="70">Address</th>
                         <th class="sort">Date</th>
                     </tr>
                     </thead>
@@ -199,7 +214,7 @@
                             <th class="sort">Order Number</th>
                             <th class="sort">Service Order</th>
                             <th class="sort">Status</th>
-                            <th class="text-center" width="70">Note</th>
+                            <th class="text-center" width="70">Address</th>
                             <th class="sort">Date</th>
                             <th>Action</th>
                         </tr>
@@ -296,10 +311,22 @@
                 <label>Quantity <span style="color: #4CAF50;" class="quantity-product"></span></label>
                 <input type="number" value="1" min="1" max="50" class="required" name="quantity" required>
             </div>
-            <div class="medium-12 small-12 columns">
+            <div class="medium-12 small-12 columns hide">
                 <label>Note</label>
-                <textarea rows="3" name="note"></textarea>
+                <textarea rows="3" name=""></textarea>
             </div>
+
+            <?php if(is_array($delivery_address) && !empty($delivery_address)):?>
+                <div class="medium-12 small-12 columns">
+                    <label>Delivery address</label>
+                    <select name="note" id="note" class="required" required>
+                        <option value="" selected disabled>none</option>
+                        <?php foreach ($delivery_address as $address):?>
+                            <option value="<?= $address?>"><?= $address?></option>
+                        <?php endforeach;?>
+                    </select>
+                </div>
+            <?php endif; ?>
             <div class="medium-12 small-12 columns">
                 <button type="submit" class="button primary">Send</button>
             </div>

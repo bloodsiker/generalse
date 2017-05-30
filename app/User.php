@@ -164,4 +164,14 @@ class User
         return true;
     }
 
+
+    /**
+     * @param $id_user
+     * @return array
+     */
+    public function getDeliveryAddress($id_user)
+    {
+        $delivery_address = DeliveryAddress::getAddressByPartner($id_user);
+        return array_column($delivery_address, 'address');
+    }
 }

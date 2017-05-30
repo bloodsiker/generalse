@@ -25,7 +25,7 @@ class Orders
         $result->bindParam(':id_user', $options['id_user'], PDO::PARAM_INT);
         $result->bindParam(':so_number', $options['so_number'], PDO::PARAM_STR);
         $result->bindParam(':ready', $options['ready'], PDO::PARAM_INT);
-        $result->bindParam(':note', $options['note'], PDO::PARAM_STR);
+        $result->bindParam(':note', $options['note_mysql'], PDO::PARAM_STR);
 
         return $result->execute();
     }
