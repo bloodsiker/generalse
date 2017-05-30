@@ -63,6 +63,7 @@
                         <th class="sort">Part Description</th>
                         <th class="sort">SO Number</th>
                         <th class="sort">Price</th>
+                        <th class="sort">Address</th>
                         <th class="sort">Status</th>
                         <th class="sort">Date create</th>
                     </tr>
@@ -75,6 +76,7 @@
                                 <td><?= $order['part_description']?></td>
                                 <td><?= $order['so_number']?></td>
                                 <td><?= round($order['price'], 2)?></td>
+                                <td><?= $order['note']?></td>
                                 <td><?= $order['status_name']?></td>
                                 <td><?= Functions::formatDate($order['date_create'])?></td>
                             </tr>
@@ -94,6 +96,7 @@
                             <th class="sort">Part Description</th>
                             <th class="sort">SO Number</th>
                             <th class="sort">Price</th>
+                            <th class="sort">Address</th>
                             <th class="sort">Status</th>
                             <th class="sort">Date create</th>
                             <?php if (AdminBase::checkDenied('crm.request.delete', 'view')): ?>
@@ -110,6 +113,7 @@
                                     <td><?= $order['part_description']?></td>
                                     <td><?= $order['so_number']?></td>
                                     <td><?= round($order['price'], 2)?></td>
+                                    <td><?= $order['note']?></td>
                                     <td><?= $order['status_name']?></td>
                                     <td><?= Functions::formatDate($order['date_create'])?></td>
                                     <?php if (AdminBase::checkDenied('crm.request.delete', 'view')): ?>
@@ -143,6 +147,17 @@
                 <label>SO Number</label>
                 <input type="text" class="required" name="so_number" required>
             </div>
+            <?php if(is_array($delivery_address) && !empty($delivery_address)):?>
+                <div class="medium-12 small-12 columns">
+                    <label>Delivery address</label>
+                    <select name="note" class="required" required>
+                        <option value="" selected disabled>none</option>
+                        <?php foreach ($delivery_address as $address):?>
+                            <option value="<?= $address?>"><?= $address?></option>
+                        <?php endforeach;?>
+                    </select>
+                </div>
+            <?php endif; ?>
             <input type="hidden" name="add_request" value="true">
             <div class="medium-12 small-12 columns">
                 <button type="submit" class="button primary">Send</button>
@@ -186,6 +201,18 @@
             </div>
             <div class="medium-12 small-12 columns">
                 <div class="row">
+                    <?php if(is_array($delivery_address) && !empty($delivery_address)):?>
+                        <div class="medium-12 small-12 columns">
+                            <label>Delivery address</label>
+                            <select name="note" class="required" required>
+                                <option value="" selected disabled>none</option>
+                                <?php foreach ($delivery_address as $address):?>
+                                    <option value="<?= $address?>"><?= $address?></option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                    <?php endif; ?>
+
                     <div class="medium-12 small-12 columns">
                         <div class="row align-bottom ">
                             <div class="medium-12 small-12 columns">

@@ -42,6 +42,7 @@ class RequestController extends AdminBase
         }
 
         $partnerList = Admin::getAllPartner();
+        $delivery_address = $user->getDeliveryAddress($user->id_user);
 
         if(isset($_POST['add_request']) && $_POST['add_request'] == 'true'){
 
@@ -50,9 +51,19 @@ class RequestController extends AdminBase
                 $lastId = 100;
             }
             $lastId++;
+
+            $note = null;
+            $note_mysql = null;
+            if(isset($_POST['note'])){
+                $note = iconv('UTF-8', 'WINDOWS-1251', $_POST['note']);
+                $note_mysql = $_POST['note'];
+            }
+
             $options['id_user'] = $user->id_user;
             $options['part_number'] = $_POST['part_number'];
             $options['so_number'] = $_POST['so_number'];
+            $options['note'] = $note;
+            $options['note_mysql'] = $note_mysql;
             $options['site_id'] = $lastId;
             $options['ready'] = 1;
 
@@ -165,9 +176,19 @@ class RequestController extends AdminBase
                                 $lastId = 100;
                             }
                             $lastId++;
+
+                            $note = null;
+                            $note_mysql = null;
+                            if(isset($_POST['note'])){
+                                $note = iconv('UTF-8', 'WINDOWS-1251', $_REQUEST['note']);
+                                $note_mysql = $_REQUEST['note'];
+                            }
+
                             $options['id_user'] = $user->id_user;
                             $options['part_number'] = $import['part_number'];
                             $options['so_number'] = $import['so_number'];
+                            $options['note'] = $note;
+                            $options['note_mysql'] = $note_mysql;
                             $options['site_id'] = $lastId;
                             $options['ready'] = 1;
 
