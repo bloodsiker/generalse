@@ -342,18 +342,18 @@ class Admin
                    gr.id_role,
                    gr.role,
                    gr.name_role,
-                   gb.id_branch,
-                   gb.branch_name,
+                   gg.id as id_group,
+                   gg.group_name,
                    gc.id_country,
                    gc.short_name,
                    gc.full_name
                  FROM gs_user gu
                    INNER JOIN gs_role gr
                      ON gu.id_role = gr.id_role
-                   LEFT JOIN gs_branch_users gbu
-                     ON gu.id_user = gbu.id_user
-                   LEFT JOIN gs_branch gb
-                    ON gb.id_branch = gbu.id_branch
+                   LEFT JOIN gs_group_user ggu
+                     ON gu.id_user = ggu.id_user
+                   LEFT JOIN gs_group gg
+                    ON gg.id = ggu.id_group
                    INNER JOIN gs_country gc
                     ON gu.id_country = gc.id_country
                  WHERE gu.id_user = :id_user';

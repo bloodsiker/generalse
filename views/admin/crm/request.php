@@ -35,7 +35,7 @@
                                 <?php endif;?>
 
                                 <?php if (AdminBase::checkDenied('crm.request.allprice', 'view')): ?>
-                                    <a href="/upload/attach_request/Price_Electrolux.xlsx" class="button primary tool" download><i class="fi-download"></i> ALL PRICES</a>
+                                    <a href="/upload/attach_request/<?= $user->linkDownloadAllPrice()?>" class="button primary tool" download><i class="fi-download"></i> ALL PRICES</a>
                                 <?php endif;?>
                             </div>
                             <div class="medium-2  small-12 columns">

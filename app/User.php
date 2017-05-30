@@ -15,7 +15,7 @@ class User
         $this->role = $infoUser['role'];
         $this->name_role = $infoUser['name_role'];
         $this->country = $infoUser['full_name'];
-        $this->id_branch = $infoUser['id_branch'];
+        $this->group_name = $infoUser['group_name'];
         $this->coefficient = $infoUser['kpi_coefficient'];
 
         $this->activeUser($this->id_user,date('Y-m-d H:i:s'));
@@ -166,6 +166,7 @@ class User
 
 
     /**
+     * Список адресов доставки привязанных к партнеру
      * @param $id_user
      * @return array
      */
@@ -173,5 +174,25 @@ class User
     {
         $delivery_address = DeliveryAddress::getAddressByPartner($id_user);
         return array_column($delivery_address, 'address');
+    }
+
+
+    /**
+     * Ссылка на скачивание файла с прайсом
+     * @return null|string
+     */
+    public function linkDownloadAllPrice()
+    {
+        switch ($this->group_name)
+        {
+            case 'Electrolux':
+                return 'Price_Electrolux.xlsx';
+                break;
+            case 'GE':
+                return 'Electrolux_Prices_GE.xlsx';
+                break;
+            default:
+                return null;
+        }
     }
 }
