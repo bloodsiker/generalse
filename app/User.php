@@ -186,10 +186,10 @@ class User
         switch ($this->group_name)
         {
             case 'Electrolux':
-                return 'Price_Electrolux.xlsx';
+                return 'Price_Electrolux.zip';
                 break;
             case 'GE':
-                return 'Electrolux_Prices_GE.xlsx';
+                return 'Electrolux_Prices_GE.zip';
                 break;
             default:
                 return null;
