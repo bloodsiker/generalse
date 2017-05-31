@@ -150,13 +150,13 @@
                 </table>
                 <?php elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
                     <table id="goods_data">
-                        <?php if(isset($_GET['start']) && !empty($_GET['start'])):?>
+
                             <caption>Last recordings on
-                                <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Functions::addDays(date('Y-m-d'), '-7 days') ?> &mdash;
+                                <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Functions::addDays(date('Y-m-d'), '-30 days') ?> &mdash;
                                 <?= (isset($_GET['end']) && !empty($_GET['end'])) ? $_GET['end'] : date('Y-m-d') ?>
                                 <span id="count_refund" class="text-green">(<?php if (isset($allReturnsByPartner)) echo count($allReturnsByPartner) ?>)</span>
                             </caption>
-                        <?php endif;?>
+                        
                         <thead>
                         <tr>
                             <th class="sort">Return Number</th>

@@ -93,6 +93,7 @@ class ReturnController extends AdminBase
             $status_1 = iconv('UTF-8', 'WINDOWS-1251', 'Предварительный');
             $status_2 = iconv('UTF-8', 'WINDOWS-1251', 'В обработке');
             $interval = " AND (sgs.status_name = '$status_1' OR sgs.status_name = '$status_2')";
+            $interval .= " AND sgs.created_on >= DATEADD(day, -30, GETDATE())";
             $allReturnsByPartner = Returns::getAllReturns($interval);
         }
 
