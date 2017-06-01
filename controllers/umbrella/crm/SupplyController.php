@@ -208,11 +208,14 @@ class SupplyController extends AdminBase
         //print_r($data);
         $html = "";
         foreach($data as $item){
+            $color = Functions::compareQuantity($item['quantity'], $item['quantity_reserv']);
+            $quantity = "style=color:" . $color ;
             $html .= "<tr>";
             $html .= "<td>" . $item['part_number'] . "</td>";
             $html .= "<td>" . iconv('WINDOWS-1251', 'UTF-8', $item['goods_name']) . "</td>";
             $html .= "<td>" . iconv('WINDOWS-1251', 'UTF-8', $item['so_number']) . "</td>";
-            $html .= "<td>" . $item['quantity'] . "</td>";
+            $html .= "<td {$quantity}><b>" . $item['quantity'] . "</b></td>";
+            $html .= "<td {$quantity}><b>" . $item['quantity_reserv'] . "</b></td>";
             $html .= "<td>" . round($item['price'], 2) . "</td>";
             $html .= "<td>" . $item['tracking_number'] . "</td>";
             $html .= "<td>" . iconv('WINDOWS-1251', 'UTF-8', $item['manufacture_country']) . "</td>";
