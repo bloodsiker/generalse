@@ -50,7 +50,7 @@ function checkRequest(){
             $ok = RequestFunction::updateCheckReserveOrders($request['id'], 1);
             if($ok){
                 RequestFunction::updateCheckPerHour($request['id'], 1);
-                sleep(10);
+                sleep(15);
                 checkRequest();
                 break;
             }
@@ -62,7 +62,7 @@ function checkRequest(){
             $check_part_in_supply = RequestFunction::checkPartNumberInSupply($users_group, $options['part_number'], $status);
             // отмечаем как провереная заявка за текущий час
             RequestFunction::updateCheckPerHour($request['id'], 1);
-            if($check_part_in_supply && $check_part_in_supply['quantity'] > 0){
+            if($check_part_in_supply){
                 //в случае наличия выписывает заказ и резервирует с поставки товар. (Статус «В поставке № указать номер поставки»)
                 //$options['supply_id'] = $check_part_in_supply['supply_id'];
                 $mName = RequestFunction::checkPurchasesPartNumber($options['part_number']);
@@ -81,7 +81,7 @@ function checkRequest(){
                 // Если нашли на складе и выписали заказ, убираем со списка проверяемых заявок
                 $ok = RequestFunction::updateCheckReserveOrders($request['id'], 1);
                 if($ok){
-                    sleep(10);
+                    sleep(15);
                     checkRequest();
                     break;
                 }
