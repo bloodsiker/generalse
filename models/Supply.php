@@ -371,8 +371,9 @@ class Supply
                     INNER JOIN site_gm_supplies_parts sgsp
                         ON sgs.site_id = sgsp.site_id
                 WHERE sgs.site_account_id IN ({$iDs})
-                AND sgsp.part_number = :part_number
                 AND sgs.status_name != :status
+                AND sgsp.part_number = :part_number
+                AND sgsp.quantity > 0
                 ORDER BY sgsp.id DESC";
         // Используется подготовленный запрос
         $result = $db->prepare($sql);
