@@ -38,51 +38,6 @@ class ReturnController extends AdminBase
             unset($_SESSION['error_return']);
         }
 
-        if(isset($_POST['send_excel_file']) && $_REQUEST['send_excel_file'] == 'true'){
-            if(!empty($_FILES['excel_file']['name'])) {
-
-                $options['name_real'] = $_FILES['excel_file']['name'];
-                // Все загруженные файлы помещаются в эту папку
-                $options['file_path'] = "/upload/attach_return/";
-                $randomName = substr_replace(sha1(microtime(true)), '', 5);
-
-                // Получаем расширение файла
-                $getMime = explode('.', $options['name_real']);
-                $mime = end($getMime);
-
-                $randomName = $getMime['0'] . "-" . $randomName . "." . $mime;
-                $options['file_name'] = $randomName;
-
-                if (is_uploaded_file($_FILES["excel_file"]["tmp_name"])) {
-                    if (move_uploaded_file($_FILES['excel_file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . $options['file_path'] . $options['file_name'])) {
-                        $excel_file = $options['file_path'] . $options['file_name'];
-                        // Получаем массив данных из файла
-                        $excelArray = ImportExcel::importReturn($excel_file);
-
-                        $insertArray = [];
-                        $errorReturn = [];
-                        $i = 0;
-                        foreach($excelArray as $excel){
-                            $insertArray[$i]['so_number'] = $excel['so_number'];
-                            $insertArray[$i]['stock'] = Returns::getIntegerStock($excel['stock_name']);
-                            $insertArray[$i]['id_user'] = $user->id_user;
-                            $ok = Returns::getSoNumberByPartnerInReturn($insertArray[$i]);
-                            if($ok){
-                                Returns::updateStatusImportReturns($insertArray[$i]);
-                            } else {
-                                array_push($errorReturn, $insertArray[$i]['so_number']);
-                            }
-                            $i++;
-                        }
-                        Logger::getInstance()->log($user->id_user, 'загрузил массив с excel в Returns');
-                        // Пишем в сессию массив с ненайденными so number
-                        $_SESSION['error_return'] = $errorReturn;
-                    }
-                }
-                header("Location: /adm/crm/returns");
-            }
-        }
-
         $allReturnsByPartner = [];
         if($user->role == 'partner') {
             $interval = " AND sgs.created_on >= DATEADD(day, -7, GETDATE())";
@@ -188,6 +143,69 @@ class ReturnController extends AdminBase
 
 
     /**
+     * Import returns
+     */
+    public function actionImportReturns()
+    {
+        // Проверка доступа
+        self::checkAdmin();
+
+        // Получаем идентификатор пользователя из сессии
+        $userId = Admin::CheckLogged();
+
+        // Обьект юзера
+        $user = new User($userId);
+
+        if(isset($_POST['send_excel_file']) && $_REQUEST['send_excel_file'] == 'true'){
+            if(!empty($_FILES['excel_file']['name'])) {
+
+                $options['name_real'] = $_FILES['excel_file']['name'];
+                // Все загруженные файлы помещаются в эту папку
+                $options['file_path'] = "/upload/attach_return/";
+                $randomName = substr_replace(sha1(microtime(true)), '', 5);
+
+                // Получаем расширение файла
+                $getMime = explode('.', $options['name_real']);
+                $mime = end($getMime);
+
+                $randomName = $getMime['0'] . "-" . $randomName . "." . $mime;
+                $options['file_name'] = $randomName;
+
+                if (is_uploaded_file($_FILES["excel_file"]["tmp_name"])) {
+                    if (move_uploaded_file($_FILES['excel_file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . $options['file_path'] . $options['file_name'])) {
+                        $excel_file = $options['file_path'] . $options['file_name'];
+                        // Получаем массив данных из файла
+                        $excelArray = ImportExcel::importReturn($excel_file);
+
+                        $insertArray = [];
+                        $errorReturn = [];
+                        $i = 0;
+                        foreach($excelArray as $excel){
+                            $insertArray[$i]['so_number'] = iconv('UTF-8', 'WINDOWS-1251', $excel['so_number']);
+                            $insertArray[$i]['stock_name'] = iconv('UTF-8', 'WINDOWS-1251', $excel['stock_name']);
+                            $insertArray[$i]['order_number'] = $excel['order_number'];
+                            $insertArray[$i]['id_user'] = $user->id_user;
+                            $ok = Returns::getSoNumberByPartnerInReturn($insertArray[$i]);
+                            if($ok){
+                                Returns::updateStatusImportReturns($insertArray[$i]);
+                            } else {
+                                array_push($errorReturn, $insertArray[$i]['so_number']);
+                            }
+                            $i++;
+                        }
+                        Logger::getInstance()->log($user->id_user, 'загрузил массив с excel в Returns');
+                        // Пишем в сессию массив с ненайденными so number
+                        $_SESSION['error_return'] = $errorReturn;
+                    }
+                }
+                header("Location: " . $_SERVER['HTTP_REFERER']);
+            }
+        }
+    }
+
+
+
+    /**
      * Фильтр возвратов
      * @param string $filter
      * @return bool
@@ -204,6 +222,11 @@ class ReturnController extends AdminBase
         $user = new User($userId);
 
         $partnerList = Admin::getAllPartner();
+
+        $arr_error_return = (isset($_SESSION['error_return'])) ? $_SESSION['error_return'] : '';
+        if(isset($_SESSION['error_return'])){
+            unset($_SESSION['error_return']);
+        }
 
         if($user->role == 'partner') {
 

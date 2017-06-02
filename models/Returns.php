@@ -111,14 +111,15 @@ class Returns
         // Текст запроса к БД
         $sql = "UPDATE site_gm_stockreturns
             SET
-                update_stock_from_site = :stock,
+                stock_name = :stock_name,
                 update_status_from_site = 2
-            WHERE so_number = :so_number AND site_account_id = :id_user AND update_status_from_site = 0";
+            WHERE so_number = :so_number 
+            AND site_account_id = :id_user";
 
         // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':so_number', $options['so_number'], PDO::PARAM_STR);
-        $result->bindParam(':stock', $options['stock'], PDO::PARAM_INT);
+        $result->bindParam(':stock_name', $options['stock_name'], PDO::PARAM_STR);
         $result->bindParam(':id_user', $options['id_user'], PDO::PARAM_INT);
         return $result->execute();
     }
@@ -134,11 +135,19 @@ class Returns
         $db = MsSQL::getConnection();
 
         // Получение и возврат результатов
-        $sql = "select * from site_gm_stockreturns where site_account_id = :id_user AND update_status_from_site = 0 AND so_number = :so_number";
+        $sql = "SELECT 
+                  sgse.order_number
+                FROM 
+                site_gm_stockreturns sgs
+                    INNER JOIN site_gm_stockreturns_elements sgse
+                        ON sgs.stock_return_id = sgse.stock_return_id
+                WHERE sgs.update_status_from_site = 0 
+                AND sgs.so_number = :so_number
+                AND sgse.order_number = :order_number";
         // Используется подготовленный запрос
         $result = $db->prepare($sql);
-        $result->bindParam(':id_user', $options['id_user'], PDO::PARAM_INT);
         $result->bindParam(':so_number', $options['so_number'], PDO::PARAM_INT);
+        $result->bindParam(':order_number', $options['order_number'], PDO::PARAM_INT);
 
         // Выполнение коменды
         $result->execute();

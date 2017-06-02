@@ -156,6 +156,7 @@ class ImportExcel
         foreach($newArray as $data){
             $pushArray[$i]['so_number'] = $data['A'];
             $pushArray[$i]['stock_name'] = $data['B'];
+            $pushArray[$i]['order_number'] = $data['C'];
             $i++;
         }
         return $pushArray;

@@ -57,7 +57,7 @@
         <div class="purchase-attache-file">
             <div class="row">
                 <div class="medium-12 small-12 columns purchase-file-send">
-                    <form action="" id="return-excel-send" method="post" enctype="multipart/form-data">
+                    <form action="/adm/crm/import_returns" id="return-excel-send" method="post" enctype="multipart/form-data">
                         <div class="row align-bottom">
                             <input type="hidden" name="send_excel_file" value="true">
                             <div class="medium-2 small-12 columns">
@@ -101,6 +101,7 @@
                     </caption>
                     <thead>
                     <tr>
+                        <th class="sort">Return Number</th>
                         <th class="sort">Partner</th>
                         <th class="sort">Order Number</th>
                         <th class="sort">Service Order</th>
@@ -116,6 +117,7 @@
                         <?php if (is_array($allReturnsByPartner)): ?>
                             <?php foreach ($allReturnsByPartner as $return): ?>
                                 <tr data-return="<?=$return['stock_return_id']?>" class="goods">
+                                    <td><?=$return['stock_return_id']?></td>
                                     <td><?=$return['site_client_name']?></td>
                                     <td><?=$return['order_number']?></td>
                                     <td><?=iconv('WINDOWS-1251', 'UTF-8', $return['so_number'])?></td>

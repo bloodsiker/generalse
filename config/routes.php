@@ -82,6 +82,7 @@ return array(
 
     'adm/crm/export/returns/([a-z0-9-_?&]+)' => 'return/exportReturns/$1',
     'adm/crm/returns/filter/([a-z0-9-_?&]+)' => 'return/filterReturns/$1',
+    'adm/crm/import_returns' => 'return/importReturns',
     'adm/crm/returns_ajax' => 'return/returnsAjax',
     'adm/crm/returns' => 'return/returns',
 
