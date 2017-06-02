@@ -86,39 +86,51 @@ class RequestController extends AdminBase
                 Orders::addOrdersElements($options);
                 $_SESSION['add_request'] = 'Order created';
             } else {
-                //Проверка в поставках
-                $status = iconv('UTF-8', 'WINDOWS-1251', 'Подтверждена');
-                //Проверяем наличие детали в поставках созданим пользователями с одной группы
-                $users_group = $group->usersFromGroup($user->idGroupUser($user->id_user));
-                $check_part_in_supply = Supply::checkPartNumberInSupply($users_group, $options['part_number'], $status);
-                if($check_part_in_supply){
-                    //в случае наличия выписывает заказ и резервирует с поставки товар. (Статус «В поставке № указать номер поставки»)
-                    $mName = Products::checkPurchasesPartNumber($options['part_number']);
-                    $options['goods_mysql_name'] = iconv('WINDOWS-1251', 'UTF-8', $mName['mName']);
-                    $options['goods_name'] = $mName['mName'];
-                    $options['stock_name'] = 'Supply';
-                    $options['quantity'] = 1;
-                    $options['supply_id'] = $check_part_in_supply['supply_id'];
-                    $is_supply = 1;
-                    //....
-
-                    Orders::addOrdersMsSQL($options);
-                    Orders::addOrders($options);
-                    Orders::addOrdersElementsMsSql($options, $is_supply);
-                    Orders::addOrdersElements($options);
-                    $_SESSION['add_request'] = 'Order created';
-                } else {
-                    //Последний шаг
-                    $mName = Products::checkPurchasesPartNumber($options['part_number']);
-                    $price = Products::getPricePartNumber($options['part_number']);
-                    $options['status_name'] = 'Нет в наличии, формируется поставка';
-                    $options['part_description'] = iconv('WINDOWS-1251', 'UTF-8', $mName['mName']);
-                    $options['price'] = ($price['price'] != 0) ? $price['price'] : 0;
-                    $ok = Orders::addReserveOrders($options);
-                    if($ok){
-                        $_SESSION['add_request'] = 'Out of stock, delivery is forming';
-                    }
+                //Последний шаг
+                $mName = Products::checkPurchasesPartNumber($options['part_number']);
+                $price = Products::getPricePartNumber($options['part_number']);
+                $options['status_name'] = 'Нет в наличии, формируется поставка';
+                $options['part_description'] = iconv('WINDOWS-1251', 'UTF-8', $mName['mName']);
+                $options['price'] = ($price['price'] != 0) ? $price['price'] : 0;
+                $ok = Orders::addReserveOrders($options);
+                if($ok){
+                    $_SESSION['add_request'] = 'Out of stock, delivery is forming';
                 }
+
+//                //Проверка в поставках
+//                $status = iconv('UTF-8', 'WINDOWS-1251', 'Подтверждена');
+//                //Проверяем наличие детали в поставках созданим пользователями с одной группы
+//                $users_group = $group->usersFromGroup($user->idGroupUser($user->id_user));
+//                $check_part_in_supply = Supply::checkPartNumberInSupply($users_group, $options['part_number'], $status);
+//                if($check_part_in_supply){
+//                    //в случае наличия выписывает заказ и резервирует с поставки товар. (Статус «В поставке № указать номер поставки»)
+//                    $mName = Products::checkPurchasesPartNumber($options['part_number']);
+//                    $options['goods_mysql_name'] = iconv('WINDOWS-1251', 'UTF-8', $mName['mName']);
+//                    $options['goods_name'] = $mName['mName'];
+//                    $options['stock_name'] = 'Supply';
+//                    $options['quantity'] = 1;
+//                    $options['supply_id'] = $check_part_in_supply['supply_id'];
+//                    $is_supply = 1;
+//                    //....
+//
+//                    Orders::addOrdersMsSQL($options);
+//                    Orders::addOrders($options);
+//                    Orders::addOrdersElementsMsSql($options, $is_supply);
+//                    Orders::addOrdersElements($options);
+//                    $_SESSION['add_request'] = 'Order created';
+//
+//                } else {
+//                    //Последний шаг
+//                    $mName = Products::checkPurchasesPartNumber($options['part_number']);
+//                    $price = Products::getPricePartNumber($options['part_number']);
+//                    $options['status_name'] = 'Нет в наличии, формируется поставка';
+//                    $options['part_description'] = iconv('WINDOWS-1251', 'UTF-8', $mName['mName']);
+//                    $options['price'] = ($price['price'] != 0) ? $price['price'] : 0;
+//                    $ok = Orders::addReserveOrders($options);
+//                    if($ok){
+//                        $_SESSION['add_request'] = 'Out of stock, delivery is forming';
+//                    }
+//                }
             }
             Logger::getInstance()->log($user->id_user, 'создал новый запрос в Request');
             header("Location: " . $_SERVER['HTTP_REFERER']);
@@ -211,38 +223,49 @@ class RequestController extends AdminBase
                                 Orders::addOrdersElements($options);
                                 //$_SESSION['add_request'] = 'Orders created';
                             } else {
-                                //Проверка в поставках
-                                //Проверяем наличие детали в поставках созданим пользователями с одной группы
-                                $users_group = $group->usersFromGroup($user->idGroupUser($user->id_user));
-                                $check_part_in_supply = Supply::checkPartNumberInSupply($users_group, $options['part_number'], iconv('UTF-8', 'WINDOWS-1251', 'Подтверждена'));
-                                if($check_part_in_supply){
-                                    //в случае наличия выписывает заказ и резервирует с поставки товар. (Статус «В поставке № указать номер поставки»)
-                                    $mName = Products::checkPurchasesPartNumber($options['part_number']);
-                                    $options['goods_mysql_name'] = iconv('WINDOWS-1251', 'UTF-8', $mName['mName']);
-                                    $options['goods_name'] = $mName['mName'];
-                                    $options['stock_name'] = 'Supply';
-                                    $options['quantity'] = 1;
-                                    $options['supply_id'] = $check_part_in_supply['supply_id'];
-                                    $is_supply = 1;
-                                    //....
-
-                                    Orders::addOrdersMsSQL($options);
-                                    Orders::addOrders($options);
-                                    Orders::addOrdersElementsMsSql($options, $is_supply);
-                                    Orders::addOrdersElements($options);
-                                    //$_SESSION['add_request'] = 'Orders created';
-                                } else {
-                                    //Последний шаг
-                                    $mName = Products::checkPurchasesPartNumber($options['part_number']);
-                                    $price = Products::getPricePartNumber($options['part_number']);
-                                    $options['status_name'] = 'Нет в наличии, формируется поставка';
-                                    $options['part_description'] = iconv('WINDOWS-1251', 'UTF-8', $mName['mName']);
-                                    $options['price'] = ($price['price'] != 0) ? $price['price'] : 0;
-                                    $ok = Orders::addReserveOrders($options);
-                                    if($ok){
-                                        $_SESSION['add_request'] = 'Out of stock, delivery is forming';
-                                    }
+                                //Последний шаг
+                                $mName = Products::checkPurchasesPartNumber($options['part_number']);
+                                $price = Products::getPricePartNumber($options['part_number']);
+                                $options['status_name'] = 'Нет в наличии, формируется поставка';
+                                $options['part_description'] = iconv('WINDOWS-1251', 'UTF-8', $mName['mName']);
+                                $options['price'] = ($price['price'] != 0) ? $price['price'] : 0;
+                                $ok = Orders::addReserveOrders($options);
+                                if($ok){
+                                    $_SESSION['add_request'] = 'Out of stock, delivery is forming';
                                 }
+
+//                                //Проверка в поставках
+//                                //Проверяем наличие детали в поставках созданим пользователями с одной группы
+//                                $users_group = $group->usersFromGroup($user->idGroupUser($user->id_user));
+//                                $check_part_in_supply = Supply::checkPartNumberInSupply($users_group, $options['part_number'], iconv('UTF-8', 'WINDOWS-1251', 'Подтверждена'));
+//                                if($check_part_in_supply){
+//                                    //в случае наличия выписывает заказ и резервирует с поставки товар. (Статус «В поставке № указать номер поставки»)
+//                                    $mName = Products::checkPurchasesPartNumber($options['part_number']);
+//                                    $options['goods_mysql_name'] = iconv('WINDOWS-1251', 'UTF-8', $mName['mName']);
+//                                    $options['goods_name'] = $mName['mName'];
+//                                    $options['stock_name'] = 'Supply';
+//                                    $options['quantity'] = 1;
+//                                    $options['supply_id'] = $check_part_in_supply['supply_id'];
+//                                    $is_supply = 1;
+//                                    //....
+//
+//                                    Orders::addOrdersMsSQL($options);
+//                                    Orders::addOrders($options);
+//                                    Orders::addOrdersElementsMsSql($options, $is_supply);
+//                                    Orders::addOrdersElements($options);
+//                                    //$_SESSION['add_request'] = 'Orders created';
+//                                } else {
+//                                    //Последний шаг
+//                                    $mName = Products::checkPurchasesPartNumber($options['part_number']);
+//                                    $price = Products::getPricePartNumber($options['part_number']);
+//                                    $options['status_name'] = 'Нет в наличии, формируется поставка';
+//                                    $options['part_description'] = iconv('WINDOWS-1251', 'UTF-8', $mName['mName']);
+//                                    $options['price'] = ($price['price'] != 0) ? $price['price'] : 0;
+//                                    $ok = Orders::addReserveOrders($options);
+//                                    if($ok){
+//                                        $_SESSION['add_request'] = 'Out of stock, delivery is forming';
+//                                    }
+//                                }
                             }
                         }
                         Logger::getInstance()->log($user->id_user, 'загрузил массив с excel в Request');
