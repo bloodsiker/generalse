@@ -71,14 +71,14 @@
                     <tbody>
                     <?php if(is_array($listCheckOrders)):?>
                         <?php foreach($listCheckOrders as $order):?>
-                            <tr class="goods <?= (Functions::calcDiffSec($order['date_create']) < 120) ? 'check_lenovo_ok' : ''?>">
+                            <tr class="goods <?= (Functions::calcDiffSec($order['created_on']) < 120) ? 'check_lenovo_ok' : ''?>">
                                 <td><?= $order['part_number']?></td>
-                                <td><?= $order['part_description']?></td>
-                                <td><?= $order['so_number']?></td>
+                                <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['goods_name'])?></td>
+                                <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></td>
                                 <td><?= round($order['price'], 2)?></td>
-                                <td><?= $order['note']?></td>
-                                <td><?= $order['status_name']?></td>
-                                <td><?= Functions::formatDate($order['date_create'])?></td>
+                                <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['note'])?></td>
+                                <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?></td>
+                                <td><?= Functions::formatDate($order['created_on'])?></td>
                             </tr>
                         <?php endforeach;?>
                     <?php endif;?>
@@ -107,15 +107,15 @@
                         <tbody>
                         <?php if(is_array($listCheckOrders)):?>
                             <?php foreach($listCheckOrders as $order):?>
-                                <tr class="goods <?= (Functions::calcDiffSec($order['date_create']) < 120) ? 'check_lenovo_ok' : ''?>">
-                                    <td><?= $order['name_partner']?></td>
+                                <tr class="goods <?= (Functions::calcDiffSec($order['created_on']) < 120) ? 'check_lenovo_ok' : ''?>">
+                                    <td><?= $order['site_client_name']?></td>
                                     <td><?= $order['part_number']?></td>
-                                    <td><?= $order['part_description']?></td>
-                                    <td><?= $order['so_number']?></td>
+                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['goods_name'])?></td>
+                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></td>
                                     <td><?= round($order['price'], 2)?></td>
-                                    <td><?= $order['note']?></td>
-                                    <td><?= $order['status_name']?></td>
-                                    <td><?= Functions::formatDate($order['date_create'])?></td>
+                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['note'])?></td>
+                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?></td>
+                                    <td><?= Functions::formatDate($order['created_on'])?></td>
                                     <?php if (AdminBase::checkDenied('crm.request.delete', 'view')): ?>
                                         <td class="text-center">
                                             <a href="/adm/crm/request/delete/<?=$order['id']?>" onclick="return confirm('Вы уверены что хотите удалить?') ? true : false;" class="delete disassemble-delete"><i class="fi-x-circle"></i></a>

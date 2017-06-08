@@ -494,6 +494,36 @@ class Orders
 
 
     /**
+     * @param $options
+     * @return bool
+     */
+    public static function addReserveOrdersMsSQL($options)
+    {
+        // Соединение с БД
+        $db = MsSQL::getConnection();
+
+        // Текст запроса к БД
+        $sql = 'INSERT INTO site_gm_ordering_goods '
+            . '(site_account_id, part_number, goods_name, so_number, price, note, status_name, created_on)'
+            . 'VALUES '
+            . '(:site_account_id, :part_number, :goods_name, :so_number, :price, :note, :status_name, :created_on)';
+
+        // Получение и возврат результатов. Используется подготовленный запрос
+        $result = $db->prepare($sql);
+        $result->bindParam(':site_account_id', $options['id_user'], PDO::PARAM_INT);
+        $result->bindParam(':part_number', $options['part_number'], PDO::PARAM_STR);
+        $result->bindParam(':goods_name', $options['goods_name'], PDO::PARAM_STR);
+        $result->bindParam(':so_number', $options['so_number'], PDO::PARAM_STR);
+        $result->bindParam(':price', $options['price'], PDO::PARAM_STR);
+        $result->bindParam(':note', $options['note'], PDO::PARAM_STR);
+        $result->bindParam(':status_name', $options['status_name'], PDO::PARAM_STR);
+        $result->bindParam(':created_on', $options['created_on'], PDO::PARAM_STR);
+
+        return $result->execute();
+    }
+
+
+    /**
      * Получаем список заказов для партнера со статусом (Нет в наличии, формируется поставка)
      * @param $id_user
      * @return array
@@ -513,14 +543,37 @@ class Orders
         // Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $id_user, PDO::PARAM_INT);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
     }
+
+
+    /**
+     * Получаем список заказов для партнера со статусом (Нет в наличии, формируется поставка)
+     * @param $id_user
+     * @return array
+     */
+    public static function getReserveOrdersByPartnerMsSQL($id_user)
+    {
+        // Соединение с БД
+        $db = MsSQL::getConnection();
+
+        // Получение и возврат результатов
+        $sql = "SELECT
+                *
+                FROM site_gm_ordering_goods
+                WHERE processed = 0
+                AND site_account_id = :site_account_id
+                ORDER BY id DESC";
+        // Используется подготовленный запрос
+        $result = $db->prepare($sql);
+        $result->bindParam(':site_account_id', $id_user, PDO::PARAM_INT);
+        $result->execute();
+        $all = $result->fetchAll(PDO::FETCH_ASSOC);
+        return $all;
+    }
+
 
     /**
      * Получаем весь список заказов со статусом (Нет в наличии, формируется поставка)
@@ -528,10 +581,8 @@ class Orders
      */
     public static function getAllReserveOrders()
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT
                  goc.id,
                  goc.id_user,
@@ -548,17 +599,45 @@ class Orders
                     ON goc.id_user = gu.id_user
                  WHERE goc.check_status = 0
                  ORDER BY goc.id DESC";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
-        //$result->bindParam(':id_user', $id_user, PDO::PARAM_INT);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
     }
+
+
+    /**
+     * Получаем весь список заказов со статусом (Нет в наличии, формируется поставка)
+     * @return array
+     */
+    public static function getAllReserveOrdersMsSQL()
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "SELECT
+                    sgog.id,
+                    sgog.site_account_id,
+                    sgog.part_number,
+                    sgog.goods_name,
+                    sgog.so_number,
+                    sgog.price,
+                    sgog.note,
+                    sgog.status_name,
+                    sgog.created_on,
+                    sgu.site_client_name
+                FROM site_gm_ordering_goods sgog
+                    INNER JOIN site_gm_users sgu
+                        ON sgog.site_account_id = sgu.site_account_id
+                WHERE sgog.processed = 0
+                ORDER BY sgog.id DESC";
+
+        $result = $db->prepare($sql);
+        $result->execute();
+        $all = $result->fetchAll(PDO::FETCH_ASSOC);
+        return $all;
+    }
+
 
     /**
      * Обновялем статус заявки
