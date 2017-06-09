@@ -55,7 +55,7 @@ class RequestController extends AdminBase
             $options['so_number'] = iconv('UTF-8', 'WINDOWS-1251', $_POST['so_number']);
             $options['note'] = $note;
             $mName = Products::checkPurchasesPartNumber($options['part_number']);
-            $price = Products::getPricePartNumber($options['part_number']);
+            $price = Products::getPricePartNumber($options['part_number'], $user->id_user);
             $options['goods_name'] = $mName['mName'];
             $options['price'] = ($price['price'] != 0) ? $price['price'] : 0;
             $options['status_name'] = iconv('UTF-8', 'WINDOWS-1251', 'Нет в наличии, формируется поставка');
@@ -124,7 +124,7 @@ class RequestController extends AdminBase
                             $options['so_number'] = iconv('UTF-8', 'WINDOWS-1251', $import['so_number']);
                             $options['note'] = $note;
                             $mName = Products::checkPurchasesPartNumber($options['part_number']);
-                            $price = Products::getPricePartNumber($options['part_number']);
+                            $price = Products::getPricePartNumber($options['part_number'], $user->id_user);
                             $options['goods_name'] = $mName['mName'];
                             $options['price'] = ($price['price'] != 0) ? $price['price'] : 0;
                             $options['status_name'] = iconv('UTF-8', 'WINDOWS-1251', 'Нет в наличии, формируется поставка');
@@ -152,9 +152,11 @@ class RequestController extends AdminBase
      */
     public function actionPricePartNumAjax()
     {
+        self::checkAdmin();
+        $userId = Admin::CheckLogged();
         $part_number = $_REQUEST['part_number'];
 
-            $result = Products::getPricePartNumber($part_number);
+            $result = Products::getPricePartNumber($part_number, $userId);
             if($result == 0){
                 $data['result'] = 0;
                 $data['action'] = 'not_found';

@@ -83,28 +83,36 @@ class Products
     /**
      * Получаем цену на товар по парт номеру
      * @param $partNumber
+     * @param $user_id
      * @return int|mixed
      */
-    public static function getPricePartNumber($partNumber)
+    public static function getPricePartNumber($partNumber, $user_id)
     {
         $db = MsSQL::getConnection();
 
         $sql = "select
                        tbl_GoodsNames.partNumber
                        ,tbl_GoodsNames.mName
-                       ,dbo.ufn_Curencys_Rate_Output_Cross(1, tbl_Produsers.curency_id, dbo.ufn_Curencys_Rate_IsBuh(), dbo.ufn_Date_Current_Short()) * convert(float, tbl_ABCDPrices.price) / 100 as price
+                       ,dbo.ufn_Curencys_Rate_Output_Cross(1, tbl_Produsers.curency_id, tbl_Clients.curency_id, dbo.ufn_Date_Current_Short()) * convert(float, tbl_ABCDPrices.price) / 100 as price
                 from tbl_ABCDPrices
-                       inner join tbl_GoodsNames
-                             on tbl_GoodsNames.i_d =  tbl_ABCDPrices.goodsNameID
-                       inner join tbl_Produsers
-                             on tbl_Produsers.i_d = tbl_GoodsNames.produserID
+                    inner join tbl_GoodsNames
+                        on tbl_GoodsNames.i_d =  tbl_ABCDPrices.goodsNameID
+                    inner join tbl_Produsers
+                        on tbl_Produsers.i_d = tbl_GoodsNames.produserID
+                       inner join tbl_Clients 
+                             on tbl_Clients.abcd_id = tbl_ABCDPrices.namePriceID
+                       inner join tbl_Users
+                             on tbl_Users.client_id = tbl_Clients.i_d
+                       inner join site_gm_users
+                             on site_gm_users.id = tbl_Users.site_gs_account_id
                 where
-                       tbl_ABCDPrices.namePriceID = 5
-                       and tbl_GoodsNames.partNumber = :partNumber";
+                    tbl_GoodsNames.partNumber = :partNumber
+                       and site_gm_users.site_account_id = :user_id";
 
         // Делаем пдготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':partNumber', $partNumber, PDO::PARAM_STR);
+        $result->bindParam(':user_id', $user_id, PDO::PARAM_STR);
         $result->execute();
 
         // Получаем ассоциативный массив
