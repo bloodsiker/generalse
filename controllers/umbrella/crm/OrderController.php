@@ -406,7 +406,7 @@ class OrderController extends AdminBase
             $html .= "<tr>";
             $html .= "<td>" . $item['part_number'] . "</td>";
             $html .= "<td>" . iconv('WINDOWS-1251', 'UTF-8', $item['goods_name']) . "</td>";
-            $html .= "<td>" . $item['so_number'] . "</td>";
+            $html .= "<td>" . iconv('WINDOWS-1251', 'UTF-8', $item['so_number']) . "</td>";
             $html .= "<td>" . iconv('WINDOWS-1251', 'UTF-8', $item['stock_name']) . "</td>";
             $html .= "<td>" . $item['quantity'] . "</td>";
             $html .= "<td>" . round($item['price'], 2) . "</td>";
