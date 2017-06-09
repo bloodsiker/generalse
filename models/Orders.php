@@ -682,4 +682,24 @@ class Orders
         return $result->execute();
     }
 
+
+    /**
+     * Delete request by id
+     * @param $id
+     * @return bool
+     */
+    public static function deleteRequestMsSQLById($id)
+    {
+        // Соединение с БД
+        $db = MsSQL::getConnection();
+
+        // Текст запроса к БД
+        $sql = 'DELETE FROM site_gm_ordering_goods WHERE id = :id';
+
+        // Получение и возврат результатов. Используется подготовленный запрос
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $id, PDO::PARAM_INT);
+        return $result->execute();
+    }
+
 }

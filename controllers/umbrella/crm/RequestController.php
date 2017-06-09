@@ -190,7 +190,7 @@ class RequestController extends AdminBase
         // Обьект юзера
         $user = new User($userId);
 
-        $ok = Orders::deleteRequestById($id);
+        $ok = Orders::deleteRequestMsSQLById($id);
 
         if($ok){
             Logger::getInstance()->log($user->id_user, 'удалил request #' . $id);
