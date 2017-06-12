@@ -130,11 +130,12 @@ class RequestController extends AdminBase
                             $options['status_name'] = iconv('UTF-8', 'WINDOWS-1251', 'Нет в наличии, формируется поставка');
                             $options['created_on'] = date('Y-m-d H:i:s');
 
-                            $ok = Orders::addReserveOrdersMsSQL($options);
-                            if($ok){
-                                $_SESSION['add_request'] = 'Out of stock, delivery is forming';
+                            if(!empty($options['part_number'])){
+                                Orders::addReserveOrdersMsSQL($options);
                             }
                         }
+                        $_SESSION['add_request'] = 'Out of stock, delivery is forming';
+
                         Logger::getInstance()->log($user->id_user, 'загрузил массив с excel в Request');
                         header("Location: /adm/crm/request");
                     }
