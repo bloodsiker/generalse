@@ -309,8 +309,8 @@ class OrderController extends AdminBase
         $options['note_mysql'] = $note_mysql;
         $options['ready'] = 1;
 
-        Orders::addOrdersMsSQL($options);
-        $ok = Orders::addOrders($options);
+        $ok = Orders::addOrdersMsSQL($options);
+        Orders::addOrders($options);
 
         if($ok){
             $options['stock_name'] = iconv('UTF-8', 'WINDOWS-1251', $data_json['stock']);
