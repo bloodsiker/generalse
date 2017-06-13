@@ -151,7 +151,7 @@ class OrderController extends AdminBase
         if($user->role == 'partner') {
 
             $filter = "";
-            $interval = " AND sgo.created_on >= DATEADD(day, -7, GETDATE())";
+            $interval = " AND sgo.created_on >= DATEADD(day, -14, GETDATE())";
 
             if(!empty($_GET['end']) && !empty($_GET['start'])){
                 $start = $_GET['start']. " 00:00";
@@ -207,7 +207,7 @@ class OrderController extends AdminBase
         if($user->role == 'partner') {
 
             $filter = "";
-            $interval = " AND sgo.created_on >= DATEADD(day, -7, GETDATE())";
+            $interval = " AND sgo.created_on >= DATEADD(day, -14, GETDATE())";
 
             if(!empty($_GET['end']) && !empty($_GET['start'])){
                 $start = $_GET['start']. " 00:00";
