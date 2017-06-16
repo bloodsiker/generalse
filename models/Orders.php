@@ -215,11 +215,8 @@ class Orders
      */
     public static function getOrdersByPartnerMsSql($array_id, $filter = '')
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
-
         $idS = implode(',', $array_id);
-        // Получение и возврат результатов
         $sql = "SELECT
                    sgo.site_id,
                    sgo.order_id,
@@ -239,11 +236,7 @@ class Orders
         // Используется подготовленный запрос
         $result = $db->prepare($sql);
         //$result->bindParam(':id_user', $id_partner, PDO::PARAM_INT);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
     }
@@ -554,21 +547,34 @@ class Orders
      * @param $id_user
      * @return array
      */
-    public static function getReserveOrdersByPartnerMsSQL($id_user)
+    public static function getReserveOrdersByPartnerMsSQL($array_id)
     {
         // Соединение с БД
         $db = MsSQL::getConnection();
 
+        $idS = implode(',', $array_id);
+
         // Получение и возврат результатов
         $sql = "SELECT
-                *
-                FROM site_gm_ordering_goods
-                WHERE processed = 0
-                AND site_account_id = :site_account_id
-                ORDER BY id DESC";
+                 sgog.id,
+                 sgog.site_account_id,
+                 sgog.part_number,
+                 sgog.goods_name,
+                 sgog.so_number,
+                 sgog.price,
+                 sgog.note,
+                 sgog.status_name,
+                 sgog.created_on,
+                 sgu.site_client_name
+             FROM site_gm_ordering_goods sgog
+                 INNER JOIN site_gm_users sgu
+                     ON sgog.site_account_id = sgu.site_account_id
+             WHERE sgog.processed = 0
+             AND sgog.site_account_id IN({$idS})
+             ORDER BY sgog.id DESC";
         // Используется подготовленный запрос
         $result = $db->prepare($sql);
-        $result->bindParam(':site_account_id', $id_user, PDO::PARAM_INT);
+        //$result->bindParam(':site_account_id', $id_user, PDO::PARAM_INT);
         $result->execute();
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;

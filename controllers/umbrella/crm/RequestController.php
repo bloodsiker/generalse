@@ -69,10 +69,10 @@ class RequestController extends AdminBase
             header("Location: " . $_SERVER['HTTP_REFERER']);
         }
 
-        if($user->role == 'partner' && $user->name_partner != 'GS Electrolux'){
+        if($user->role == 'partner'){
             //$listCheckOrders = Orders::getReserveOrdersByPartner($user->id_user);
-            $listCheckOrders = Orders::getReserveOrdersByPartnerMsSQL($user->id_user);
-        } elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager' || $user->name_partner == 'GS Electrolux'){
+            $listCheckOrders = Orders::getReserveOrdersByPartnerMsSQL($user->controlUsers($user->id_user));
+        } elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
             //$listCheckOrders = Orders::getAllReserveOrders();
             $listCheckOrders = Orders::getAllReserveOrdersMsSQL();
         }

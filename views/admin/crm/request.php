@@ -55,10 +55,11 @@
                 <?php if(isset($request_message) && $request_message != ''):?>
                     <div class="alert-success" style="margin: 0px auto 10px;"><?=$request_message?></div>
                 <?php endif;?>
-                <?php if($user->role == 'partner' && $user->name_partner != 'GS Electrolux'):?>
+                <?php if($user->role == 'partner'):?>
                 <table id="goods_data">
                     <thead>
                     <tr>
+                        <th class="sort">Partner</th>
                         <th class="sort">Part Number</th>
                         <th class="sort">Part Description</th>
                         <th class="sort">SO Number</th>
@@ -72,6 +73,7 @@
                     <?php if(is_array($listCheckOrders)):?>
                         <?php foreach($listCheckOrders as $order):?>
                             <tr class="goods <?= (Functions::calcDiffSec($order['created_on']) < 120) ? 'check_lenovo_ok' : ''?>">
+                                <td><?= $order['site_client_name']?></td>
                                 <td><?= $order['part_number']?></td>
                                 <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['goods_name'])?></td>
                                 <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></td>
@@ -86,8 +88,7 @@
                 </table>
                 <?php elseif($user->role == 'administrator'
                     || $user->role == 'administrator-fin'
-                    || $user->role == 'manager'
-                    || $user->name_partner == 'GS Electrolux'):?>
+                    || $user->role == 'manager'):?>
                     <table id="goods_data">
                         <thead>
                         <tr>
