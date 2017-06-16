@@ -107,9 +107,15 @@
                         <tbody>
                         <?php if(is_array($listCheckOrders)):?>
                             <?php foreach($listCheckOrders as $order):?>
-                                <tr class="goods <?= (Functions::calcDiffSec($order['created_on']) < 120) ? 'check_lenovo_ok' : ''?>">
+                                <tr class="goods <?= (Functions::calcDiffSec($order['created_on']) < 120) ? 'check_lenovo_ok' : ''?>"
+                                    data-id="<?= $order['id']?>">
                                     <td><?= $order['site_client_name']?></td>
-                                    <td><?= $order['part_number']?></td>
+                                    <td data-pn="<?= $order['part_number']?>" class="order-tr-pn">
+                                        <span class="order_part_num"><?= $order['part_number']?></span>
+                                        <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+                                            <a href="" class="button edit-pn delete"><i class="fi-pencil"></i></a>
+                                        <?php endif;?>
+                                    </td>
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['goods_name'])?></td>
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></td>
                                     <td><?= round($order['price'], 2)?></td>
@@ -238,6 +244,31 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </form>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="reveal" id="edit-pn" data-reveal>
+    <form action="#" method="post" class="form" novalidate="">
+        <div class="row align-bottom">
+            <div class="medium-12 small-12 columns">
+                <h3>Edit part number</h3>
+            </div>
+            <div class="medium-12 small-12 columns">
+                <div class="row">
+                    <input type="hidden" name="add-parts" value="true">
+                    <div class="medium-12 small-12 columns">
+                        <label>Part number <span class="lenovo_num"></span></label>
+                        <input type="text" id="order_pn" name="order_pn" autocomplete="off">
+                    </div>
+                </div>
+            </div>
+            <div class="medium-12 small-12 columns">
+                <button type="button" id="send-order-pn" class="button primary">Edit</button>
             </div>
         </div>
     </form>

@@ -53,6 +53,7 @@ return array(
     'adm/dashboard' => 'dashboard/index',
 
 
+    'adm/crm/request/request_ajax' => 'request/requestAjax',
     'adm/crm/request/price_part_ajax' => 'request/pricePartNumAjax',
     'adm/crm/request/delete/([0-9]+)' => 'request/requestDelete/$1',
     'adm/crm/request/import' => 'request/requestImport',

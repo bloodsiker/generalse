@@ -860,6 +860,13 @@ td select {
 }
 .add-lenovo-num { display: none; }
 .comment:hover .add-lenovo-num  { display: inline; }
+
+.order-tr-pn{
+  text-align: center;
+}
+.edit-pn { display: none; }
+.order-tr-pn:hover .edit-pn  { display: inline; }
+
 .modal_comment{
   background: #fff;
   padding: 10px;

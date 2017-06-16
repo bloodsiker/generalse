@@ -640,6 +640,31 @@ class Orders
 
 
     /**
+     * Редактируем парт номер в таблице резерва
+     * @param $id
+     * @param $part_number
+     * @return bool
+     */
+    public static function editPartNumberFromCheckOrdersById($id, $part_number)
+    {
+        // Соединение с БД
+        $db = MsSQL::getConnection();
+
+        // Текст запроса к БД
+        $sql = "UPDATE site_gm_ordering_goods
+            SET
+                part_number = :part_number
+            WHERE id = :id";
+
+        // Получение и возврат результатов. Используется подготовленный запрос
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $id, PDO::PARAM_INT);
+        $result->bindParam(':part_number', $part_number, PDO::PARAM_STR);
+        return $result->execute();
+    }
+
+
+    /**
      * Обновялем статус заявки
      * @param $id
      * @param $check_status
@@ -701,5 +726,4 @@ class Orders
         $result->bindParam(':id', $id, PDO::PARAM_INT);
         return $result->execute();
     }
-
 }

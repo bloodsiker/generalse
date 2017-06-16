@@ -53,3 +53,36 @@ $('#add-request-import-form').submit(function(e) {
         }, 3000);
     }
 });
+
+
+// Открываем модальное окно, и редактируем парт номер
+var id_order = null;
+$(document).on('click', '.edit-pn', function(e) {
+    e.preventDefault();
+    $('#edit-pn').foundation('open');
+    var order_pn = $(this).siblings('.order_part_num').text();
+    $("#order_pn").val(order_pn);
+    id_order = $(this).parent('td').parent('tr').data('id');
+});
+// Вносим изменения в модальном окне
+$(document).on('click', '#send-order-pn', function(e) {
+    e.preventDefault();
+    var order_pn = $("#order_pn").val();
+    var data = "action=edit_pn&id_order=" + id_order + "&order_pn=" + order_pn;
+
+    $.ajax({
+        url: "/adm/crm/request/request_ajax",
+        type: "POST",
+        data: data,
+        cache: false,
+        success: function (response) {
+            if(response == 200){
+                $('[data-id="' + id_order + '"]').find('.order_part_num').text(order_pn).css('color', 'green');
+                $('#edit-pn form')[0].reset();
+                $('#edit-pn').foundation('close');
+            } else {
+                alert('Ошибка! Не удалось обновить запись!');
+            }
+        }
+    });
+});

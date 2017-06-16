@@ -174,6 +174,22 @@ class RequestController extends AdminBase
     }
 
 
+    public function actionRequestAjax()
+    {
+        // Пишем номер с леново
+        if($_REQUEST['action'] == 'edit_pn'){
+            $id_order = $_REQUEST['id_order'];
+            $order_pn = $_REQUEST['order_pn'];
+
+            $ok = Orders::editPartNumberFromCheckOrdersById($id_order, $order_pn);
+            if($ok){
+                print_r(200);
+            }
+        }
+        return true;
+    }
+
+
     /**
      * Delete request
      * @param $id
