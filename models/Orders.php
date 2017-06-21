@@ -117,6 +117,19 @@ class Orders
     }
 
 
+    /**
+     * Получаем список типоп гарантии для заказов
+     * @return array
+     */
+    public static function getAllOrderTypes()
+    {
+        $db = MsSQL::getConnection();
+        $sql = "SELECT * FROM site_gm_orders_types";
+        $result = $db->prepare($sql);
+        $result->execute();
+        $all = $result->fetchAll(PDO::FETCH_ASSOC);
+        return $all;
+    }
 
     /**
      * Получить список всех заказов
@@ -166,10 +179,13 @@ class Orders
                               sgo.command,
                               sgo.note,
                               sgo.command_text,
-                              sgu.site_client_name
+                              sgu.site_client_name,
+                              sgot.name as type_name
                             FROM site_gm_orders sgo
                               INNER JOIN site_gm_users sgu
                                 ON sgo.site_account_id = sgu.site_account_id
+                              LEFT JOIN site_gm_orders_types sgot
+                                ON sgot.id = sgo.order_type_id
                               WHERE 1 = 1 {$filter}
                               ORDER BY sgo.id DESC")->fetchAll(PDO::FETCH_ASSOC);
         return $data;
@@ -227,10 +243,13 @@ class Orders
                    sgo.created_on,
                    sgo.note,
                    sgo.command_text,
-                   sgu.site_client_name
+                   sgu.site_client_name,
+                   sgot.name as type_name
                  FROM site_gm_orders sgo
                    INNER JOIN site_gm_users sgu
-                     ON sgo.site_account_id = sgu.site_account_id
+                      ON sgo.site_account_id = sgu.site_account_id
+                    LEFT JOIN site_gm_orders_types sgot
+                      ON sgot.id = sgo.order_type_id
                    WHERE sgo.site_account_id IN({$idS}) {$filter}
                    ORDER BY sgo.id DESC";
         // Используется подготовленный запрос
@@ -342,12 +361,15 @@ class Orders
                     sgoe.stock_name,
                     sgoe.quantity,
                     sgoe.price,
-                    sgu.site_client_name
+                    sgu.site_client_name,
+                    sgot.name as type_name
                     FROM site_gm_orders sgo
                     INNER JOIN site_gm_orders_elements sgoe
                         ON sgo.order_id = sgoe.order_id
                     INNER JOIN site_gm_users sgu 
                         ON sgo.site_account_id = sgu.site_account_id
+                    LEFT JOIN site_gm_orders_types sgot
+                        ON sgot.id = sgo.order_type_id
                     WHERE sgo.site_account_id IN({$idS})
                     AND sgo.created_on BETWEEN :start AND :end
                     ORDER BY sgo.id DESC";
@@ -383,12 +405,15 @@ class Orders
                     sgoe.stock_name,
                     sgoe.quantity,
                     sgoe.price,
-                    sgu.site_client_name
+                    sgu.site_client_name,
+                    sgot.name as type_name
                 FROM site_gm_orders sgo
                 INNER JOIN site_gm_orders_elements sgoe
                    ON sgo.order_id = sgoe.order_id
                 INNER JOIN site_gm_users sgu 
                     ON sgo.site_account_id = sgu.site_account_id
+                LEFT JOIN site_gm_orders_types sgot
+                    ON sgot.id = sgo.order_type_id
                 WHERE sgo.created_on BETWEEN :start AND :end
                 ORDER BY sgo.id DESC";
         // Используется подготовленный запрос
@@ -497,9 +522,9 @@ class Orders
 
         // Текст запроса к БД
         $sql = 'INSERT INTO site_gm_ordering_goods '
-            . '(site_account_id, part_number, goods_name, so_number, price, note, status_name, created_on)'
+            . '(site_account_id, part_number, goods_name, so_number, price, note, status_name, created_on, order_type_id)'
             . 'VALUES '
-            . '(:site_account_id, :part_number, :goods_name, :so_number, :price, :note, :status_name, :created_on)';
+            . '(:site_account_id, :part_number, :goods_name, :so_number, :price, :note, :status_name, :created_on, :order_type_id)';
 
         // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
@@ -511,6 +536,7 @@ class Orders
         $result->bindParam(':note', $options['note'], PDO::PARAM_STR);
         $result->bindParam(':status_name', $options['status_name'], PDO::PARAM_STR);
         $result->bindParam(':created_on', $options['created_on'], PDO::PARAM_STR);
+        $result->bindParam(':order_type_id', $options['order_type_id'], PDO::PARAM_INT);
 
         return $result->execute();
     }
@@ -565,10 +591,13 @@ class Orders
                  sgog.note,
                  sgog.status_name,
                  sgog.created_on,
-                 sgu.site_client_name
+                 sgu.site_client_name,
+                 sgot.name as type_name
              FROM site_gm_ordering_goods sgog
                  INNER JOIN site_gm_users sgu
                      ON sgog.site_account_id = sgu.site_account_id
+                 LEFT JOIN site_gm_orders_types sgot
+                     ON sgot.id = sgog.order_type_id
              WHERE sgog.processed = 0
              AND sgog.site_account_id IN({$idS})
              ORDER BY sgog.id DESC";
@@ -631,10 +660,13 @@ class Orders
                     sgog.note,
                     sgog.status_name,
                     sgog.created_on,
-                    sgu.site_client_name
+                    sgu.site_client_name,
+                    sgot.name as type_name
                 FROM site_gm_ordering_goods sgog
                     INNER JOIN site_gm_users sgu
                         ON sgog.site_account_id = sgu.site_account_id
+                    LEFT JOIN site_gm_orders_types sgot
+                        ON sgot.id = sgog.order_type_id
                 WHERE sgog.processed = 0
                 ORDER BY sgog.id DESC";
 
@@ -666,6 +698,30 @@ class Orders
         $result = $db->prepare($sql);
         $result->bindParam(':id', $id, PDO::PARAM_INT);
         $result->bindParam(':part_number', $part_number, PDO::PARAM_STR);
+        return $result->execute();
+    }
+
+    /**
+     * Редактируем so номер в таблице резерва
+     * @param $id
+     * @param $so_number
+     * @return bool
+     */
+    public static function editSoNumberFromCheckOrdersById($id, $so_number)
+    {
+        // Соединение с БД
+        $db = MsSQL::getConnection();
+
+        // Текст запроса к БД
+        $sql = "UPDATE site_gm_ordering_goods
+            SET
+                so_number = :so_number
+            WHERE id = :id";
+
+        // Получение и возврат результатов. Используется подготовленный запрос
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $id, PDO::PARAM_INT);
+        $result->bindParam(':so_number', $so_number, PDO::PARAM_STR);
         return $result->execute();
     }
 

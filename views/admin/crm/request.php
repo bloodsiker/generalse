@@ -59,14 +59,15 @@
                 <table id="goods_data">
                     <thead>
                     <tr>
-                        <th class="sort">Partner</th>
-                        <th class="sort">Part Number</th>
-                        <th class="sort">Part Description</th>
-                        <th class="sort">SO Number</th>
-                        <th class="sort">Price</th>
-                        <th class="sort">Address</th>
-                        <th class="sort">Status</th>
-                        <th class="sort">Date create</th>
+                        <th>Partner</th>
+                        <th>Part Number</th>
+                        <th>Part Description</th>
+                        <th>SO Number</th>
+                        <th>Price</th>
+                        <th>Address</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Date create</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -79,6 +80,7 @@
                                 <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></td>
                                 <td><?= round($order['price'], 2)?></td>
                                 <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['note'])?></td>
+                                <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['type_name'])?></td>
                                 <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?></td>
                                 <td><?= Functions::formatDate($order['created_on'])?></td>
                             </tr>
@@ -92,14 +94,15 @@
                     <table id="goods_data">
                         <thead>
                         <tr>
-                            <th class="sort">Partner</th>
-                            <th class="sort">Part Number</th>
-                            <th class="sort">Part Description</th>
-                            <th class="sort">SO Number</th>
-                            <th class="sort">Price</th>
-                            <th class="sort">Address</th>
-                            <th class="sort">Status</th>
-                            <th class="sort">Date create</th>
+                            <th>Partner</th>
+                            <th>Part Number</th>
+                            <th>Part Description</th>
+                            <th>SO Number</th>
+                            <th>Price</th>
+                            <th>Address</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Date create</th>
                             <?php if (AdminBase::checkDenied('crm.request.delete', 'view')): ?>
                                 <th>Delete</th>
                             <?php endif;?>
@@ -118,9 +121,15 @@
                                         <?php endif;?>
                                     </td>
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['goods_name'])?></td>
-                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></td>
+                                    <td class="order-tr-so">
+                                        <span class="order_so"><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></span>
+                                        <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+                                            <a href="" class="button edit-so delete"><i class="fi-pencil"></i></a>
+                                        <?php endif;?>
+                                    </td>
                                     <td><?= round($order['price'], 2)?></td>
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['note'])?></td>
+                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['type_name'])?></td>
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?></td>
                                     <td><?= Functions::formatDate($order['created_on'])?></td>
                                     <?php if (AdminBase::checkDenied('crm.request.delete', 'view')): ?>
@@ -153,6 +162,15 @@
             <div class="medium-12 small-12 columns">
                 <label>SO Number</label>
                 <input type="text" class="required" name="so_number" required>
+            </div>
+            <div class="medium-12 small-12 columns">
+                <label>Type</label>
+                <select name="order_type_id" class="required" required>
+                    <option value="" selected disabled>none</option>
+                    <?php foreach ($order_type as $type):?>
+                        <option value="<?= $type['id']?>"><?= iconv('WINDOWS-1251', 'UTF-8', $type['name'])?></option>
+                    <?php endforeach;?>
+                </select>
             </div>
             <?php if(is_array($delivery_address) && !empty($delivery_address)):?>
                 <div class="medium-12 small-12 columns">
@@ -221,6 +239,16 @@
                     <?php endif; ?>
 
                     <div class="medium-12 small-12 columns">
+                        <label>Type</label>
+                        <select name="order_type_id" class="required" required>
+                            <option value="" selected disabled>none</option>
+                            <?php foreach ($order_type as $type):?>
+                                <option value="<?= $type['id']?>"><?= iconv('WINDOWS-1251', 'UTF-8', $type['name'])?></option>
+                            <?php endforeach;?>
+                        </select>
+                    </div>
+
+                    <div class="medium-12 small-12 columns">
                         <div class="row align-bottom ">
                             <div class="medium-12 small-12 columns">
                                 <label for="upload_file_form" class="button primary">Attach</label>
@@ -270,6 +298,31 @@
             </div>
             <div class="medium-12 small-12 columns">
                 <button type="button" id="send-order-pn" class="button primary">Edit</button>
+            </div>
+        </div>
+    </form>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="reveal" id="edit-so" data-reveal>
+    <form action="#" method="post" class="form" novalidate="">
+        <div class="row align-bottom">
+            <div class="medium-12 small-12 columns">
+                <h3>Edit SO number</h3>
+            </div>
+            <div class="medium-12 small-12 columns">
+                <div class="row">
+                    <input type="hidden" name="add-parts" value="true">
+                    <div class="medium-12 small-12 columns">
+                        <label>SO number <span class="lenovo_num"></span></label>
+                        <input type="text" id="order_so" name="order_so" autocomplete="off">
+                    </div>
+                </div>
+            </div>
+            <div class="medium-12 small-12 columns">
+                <button type="button" id="send-order-so" class="button primary">Edit</button>
             </div>
         </div>
     </form>

@@ -86,3 +86,34 @@ $(document).on('click', '#send-order-pn', function(e) {
         }
     });
 });
+
+
+// Изменяем SO
+$(document).on('click', '.edit-so', function(e) {
+    e.preventDefault();
+    $('#edit-so').foundation('open');
+    var order_so = $(this).siblings('.order_so').text();
+    $("#order_so").val(order_so);
+    id_order = $(this).parent('td').parent('tr').data('id');
+});
+$(document).on('click', '#send-order-so', function(e) {
+    e.preventDefault();
+    var order_so = $("#order_so").val();
+    var data = "action=edit_so&id_order=" + id_order + "&order_so=" + order_so;
+
+    $.ajax({
+        url: "/adm/crm/request/request_ajax",
+        type: "POST",
+        data: data,
+        cache: false,
+        success: function (response) {
+            if(response == 200){
+                $('[data-id="' + id_order + '"]').find('.order_so').text(order_so).css('color', 'green');
+                $('#edit-so form')[0].reset();
+                $('#edit-so').foundation('close');
+            } else {
+                alert('Ошибка! Не удалось обновить запись!');
+            }
+        }
+    });
+});

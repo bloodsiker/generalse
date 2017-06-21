@@ -46,6 +46,7 @@
             <th style="text-align: center;">Stock name</th>
             <th style="text-align: center;">Quantity</th>
             <th style="text-align: center;">Price</th>
+            <th style="text-align: center;">Type</th>
             <th style="text-align: center;">Status</th>
             <th style="text-align: center;">Date create</th>
         </tr>
@@ -62,6 +63,7 @@
                     <td style="text-align: center;"><?=iconv('WINDOWS-1251', 'UTF-8',$export['stock_name'])?></td>
                     <td style="text-align: center;"><?=$export['quantity']?></td>
                     <td style="text-align: center;"><?=round($export['price'], 2)?></td>
+                    <td style="text-align: center;"><?=iconv('WINDOWS-1251', 'UTF-8',$export['type_name'])?></td>
                     <td style="text-align: center;"><?=iconv('WINDOWS-1251', 'UTF-8',$export['status_name'])?></td>
                     <td style="text-align: center;"><?=$export['created_on']?></td>
                 </tr>

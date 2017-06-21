@@ -867,6 +867,9 @@ td select {
 .edit-pn { display: none; }
 .order-tr-pn:hover .edit-pn  { display: inline; }
 
+.edit-so { display: none; }
+.order-tr-so:hover .edit-so  { display: inline; }
+
 .modal_comment{
   background: #fff;
   padding: 10px;

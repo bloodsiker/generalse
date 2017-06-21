@@ -160,6 +160,7 @@
                         <th class="sort">Partner</th>
                         <th class="sort">Order Number</th>
                         <th class="sort">Service Order</th>
+                        <th class="sort">Type</th>
                         <th class="sort">Status</th>
                         <th class="text-center" width="70">Address</th>
                         <th class="sort">Date</th>
@@ -172,6 +173,7 @@
                                 <td><?= $order['site_client_name']?></td>
                                 <td><?= $order['order_number']?></td>
                                 <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></td>
+                                <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['type_name'])?></td>
                                 <?php $status_name = iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?>
 								<td class="<?=Orders::getStatusRequest($status_name);?>">
                                     <?= $status_name?>
@@ -213,6 +215,7 @@
                             <th class="sort">Partner</th>
                             <th class="sort">Order Number</th>
                             <th class="sort">Service Order</th>
+                            <th class="sort">Type</th>
                             <th class="sort">Status</th>
                             <th class="text-center" width="70">Address</th>
                             <th class="sort">Date</th>
@@ -227,6 +230,7 @@
                                     <td><?= $order['site_client_name']?></td>
                                     <td><?= $order['order_number']?></td>
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></td>
+                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['type_name'])?></td>
                                     <?php $status_name = iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?>
                                     <td class="<?=Orders::getStatusRequest($status_name);?>">
                                         <?= $status_name?>

@@ -42,6 +42,7 @@ class RequestController extends AdminBase
         }
 
         $partnerList = Admin::getAllPartner();
+        $order_type = Orders::getAllOrderTypes();
         $delivery_address = $user->getDeliveryAddress($user->id_user);
 
         if(isset($_POST['add_request']) && $_POST['add_request'] == 'true'){
@@ -60,6 +61,7 @@ class RequestController extends AdminBase
             $options['price'] = ($price['price'] != 0) ? $price['price'] : 0;
             $options['status_name'] = iconv('UTF-8', 'WINDOWS-1251', 'Нет в наличии, формируется поставка');
             $options['created_on'] = date('Y-m-d H:i:s');
+            $options['order_type_id'] = $_POST['order_type_id'];
 
             $ok = Orders::addReserveOrdersMsSQL($options);
             if($ok){
@@ -129,6 +131,7 @@ class RequestController extends AdminBase
                             $options['price'] = ($price['price'] != 0) ? $price['price'] : 0;
                             $options['status_name'] = iconv('UTF-8', 'WINDOWS-1251', 'Нет в наличии, формируется поставка');
                             $options['created_on'] = date('Y-m-d H:i:s');
+                            $options['order_type_id'] = $_REQUEST['order_type_id'];
 
                             if(!empty($options['part_number'])){
                                 Orders::addReserveOrdersMsSQL($options);
@@ -136,7 +139,7 @@ class RequestController extends AdminBase
                         }
                         $_SESSION['add_request'] = 'Out of stock, delivery is forming';
 
-                        Logger::getInstance()->log($user->id_user, 'загрузил массив с excel в Request');
+                        Logger::getInstance()->log($user->id_user, ' загрузил массив с excel в Request');
                         header("Location: /adm/crm/request");
                     }
                 }
@@ -176,13 +179,34 @@ class RequestController extends AdminBase
 
     public function actionRequestAjax()
     {
+        // Проверка доступа
+        self::checkAdmin();
+
+        // Получаем идентификатор пользователя из сессии
+        $userId = Admin::CheckLogged();
+
+        // Обьект юзера
+        $user = new User($userId);
+
         // Пишем номер с леново
         if($_REQUEST['action'] == 'edit_pn'){
             $id_order = $_REQUEST['id_order'];
-            $order_pn = $_REQUEST['order_pn'];
+            $order_pn = trim($_REQUEST['order_pn']);
 
             $ok = Orders::editPartNumberFromCheckOrdersById($id_order, $order_pn);
             if($ok){
+                Logger::getInstance()->log($user->id_user, ' изменил part number в request #' . $id_order . ' на ' . $order_pn);
+                print_r(200);
+            }
+        }
+
+        if($_REQUEST['action'] == 'edit_so'){
+            $id_order = $_REQUEST['id_order'];
+            $order_so = trim(iconv('UTF-8', 'WINDOWS-1251', $_REQUEST['order_so']));
+
+            $ok = Orders::editSoNumberFromCheckOrdersById($id_order, $order_so);
+            if($ok){
+                Logger::getInstance()->log($user->id_user, ' изменил so number в request #' . $id_order . ' на ' . $order_so);
                 print_r(200);
             }
         }
