@@ -61,7 +61,7 @@ $(document).on('click', '.edit-pn', function(e) {
     e.preventDefault();
     $('#edit-pn').foundation('open');
     var order_pn = $(this).siblings('.order_part_num').text();
-    $("#order_pn").val(order_pn);
+    $("#order_pn").val(order_pn.trim());
     id_order = $(this).parent('td').parent('tr').data('id');
 });
 // Вносим изменения в модальном окне
@@ -93,7 +93,7 @@ $(document).on('click', '.edit-so', function(e) {
     e.preventDefault();
     $('#edit-so').foundation('open');
     var order_so = $(this).siblings('.order_so').text();
-    $("#order_so").val(order_so);
+    $("#order_so").val(order_so.trim());
     id_order = $(this).parent('td').parent('tr').data('id');
 });
 $(document).on('click', '#send-order-so', function(e) {
