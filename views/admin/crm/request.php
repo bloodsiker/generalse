@@ -183,6 +183,10 @@
                     </select>
                 </div>
             <?php endif; ?>
+            <div class="medium-12 small-12 columns">
+                <label>Note</label>
+                <textarea rows="3" name="note1"></textarea>
+            </div>
             <input type="hidden" name="add_request" value="true">
             <div class="medium-12 small-12 columns">
                 <button type="submit" class="button primary">Send</button>
@@ -246,6 +250,11 @@
                                 <option value="<?= $type['id']?>"><?= iconv('WINDOWS-1251', 'UTF-8', $type['name'])?></option>
                             <?php endforeach;?>
                         </select>
+                    </div>
+
+                    <div class="medium-12 small-12 columns">
+                        <label>Note</label>
+                        <textarea rows="3" name="note1"></textarea>
                     </div>
 
                     <div class="medium-12 small-12 columns">

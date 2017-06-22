@@ -62,6 +62,7 @@ class RequestController extends AdminBase
             $options['status_name'] = iconv('UTF-8', 'WINDOWS-1251', 'Нет в наличии, формируется поставка');
             $options['created_on'] = date('Y-m-d H:i:s');
             $options['order_type_id'] = $_POST['order_type_id'];
+            $options['note1'] = isset($_POST['note1']) ? iconv('UTF-8', 'WINDOWS-1251', $_POST['note1']): null;
 
             $ok = Orders::addReserveOrdersMsSQL($options);
             if($ok){
@@ -132,6 +133,7 @@ class RequestController extends AdminBase
                             $options['status_name'] = iconv('UTF-8', 'WINDOWS-1251', 'Нет в наличии, формируется поставка');
                             $options['created_on'] = date('Y-m-d H:i:s');
                             $options['order_type_id'] = $_REQUEST['order_type_id'];
+                            $options['note1'] = isset($_POST['note1']) ? iconv('UTF-8', 'WINDOWS-1251', $_POST['note1']): null;
 
                             if(!empty($options['part_number'])){
                                 Orders::addReserveOrdersMsSQL($options);

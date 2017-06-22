@@ -522,9 +522,9 @@ class Orders
 
         // Текст запроса к БД
         $sql = 'INSERT INTO site_gm_ordering_goods '
-            . '(site_account_id, part_number, goods_name, so_number, price, note, status_name, created_on, order_type_id)'
+            . '(site_account_id, part_number, goods_name, so_number, price, note, status_name, created_on, order_type_id, note1)'
             . 'VALUES '
-            . '(:site_account_id, :part_number, :goods_name, :so_number, :price, :note, :status_name, :created_on, :order_type_id)';
+            . '(:site_account_id, :part_number, :goods_name, :so_number, :price, :note, :status_name, :created_on, :order_type_id, :note1)';
 
         // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
@@ -537,6 +537,7 @@ class Orders
         $result->bindParam(':status_name', $options['status_name'], PDO::PARAM_STR);
         $result->bindParam(':created_on', $options['created_on'], PDO::PARAM_STR);
         $result->bindParam(':order_type_id', $options['order_type_id'], PDO::PARAM_INT);
+        $result->bindParam(':note1', $options['note1'], PDO::PARAM_INT);
 
         return $result->execute();
     }
