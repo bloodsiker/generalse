@@ -66,6 +66,7 @@
                         <th>Price</th>
                         <th>Address</th>
                         <th>Type</th>
+                        <th>Note</th>
                         <th>Status</th>
                         <th>Date create</th>
                     </tr>
@@ -81,6 +82,15 @@
                                 <td><?= round($order['price'], 2)?></td>
                                 <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['note'])?></td>
                                 <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['type_name'])?></td>
+                                <td class="text-center">
+                                    <?php if($order['note1'] != ' ' && $order['note1'] != null):?>
+                                        <i class="fi-info has-tip [tip-top]" style="font-size: 16px;"
+                                           data-tooltip aria-haspopup="true"
+                                           data-show-on="small"
+                                           data-click-open="true"
+                                           title="<?= iconv('WINDOWS-1251', 'UTF-8', $order['note1'])?>"></i>
+                                    <?php endif;?>
+                                </td>
                                 <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?></td>
                                 <td><?= Functions::formatDate($order['created_on'])?></td>
                             </tr>
@@ -101,6 +111,7 @@
                             <th>Price</th>
                             <th>Address</th>
                             <th>Type</th>
+                            <th>Note</th>
                             <th>Status</th>
                             <th>Date create</th>
                             <?php if (AdminBase::checkDenied('crm.request.delete', 'view')): ?>
@@ -130,6 +141,15 @@
                                     <td><?= round($order['price'], 2)?></td>
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['note'])?></td>
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['type_name'])?></td>
+                                    <td class="text-center">
+                                        <?php if($order['note1'] != ' ' && $order['note1'] != null):?>
+                                            <i class="fi-info has-tip [tip-top]" style="font-size: 16px;"
+                                               data-tooltip aria-haspopup="true"
+                                               data-show-on="small"
+                                               data-click-open="true"
+                                               title="<?= iconv('WINDOWS-1251', 'UTF-8', $order['note1'])?>"></i>
+                                        <?php endif;?>
+                                    </td>
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?></td>
                                     <td><?= Functions::formatDate($order['created_on'])?></td>
                                     <?php if (AdminBase::checkDenied('crm.request.delete', 'view')): ?>

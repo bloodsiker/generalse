@@ -592,6 +592,7 @@ class Orders
                  sgog.note,
                  sgog.status_name,
                  sgog.created_on,
+                 sgog.note1,
                  sgu.site_client_name,
                  sgot.name as type_name
              FROM site_gm_ordering_goods sgog
@@ -661,6 +662,7 @@ class Orders
                     sgog.note,
                     sgog.status_name,
                     sgog.created_on,
+                    sgog.note1,
                     sgu.site_client_name,
                     sgot.name as type_name
                 FROM site_gm_ordering_goods sgog
