@@ -106,7 +106,7 @@
 
                 <div class="medium-3 small-12 columns">
                     <?php if(isset($sub_menu_button) && is_array($sub_menu_button) && !empty($sub_menu_button)):?>
-                        <h2 class="float-left">Button</h2>
+                        <h2 class="float-left">Button && elements</h2>
                         <div class="clearfix"></div>
                         <table border="1" cellspacing="0" cellpadding="5">
                             <thead>
