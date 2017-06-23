@@ -448,7 +448,17 @@ class OrderController extends AdminBase
                 $end = $_GET['end'] . ' 23:59';
             }
 
-            $listExport = Orders::getExportOrdersByPartner($user->controlUsers($user->id_user), $start, $end);
+            if(isset($_GET['id_partner']) && !empty($_GET['id_partner'])){
+                if($_GET['id_partner'] == 'all'){
+                    $listExport = Orders::getExportOrdersByPartner($user->controlUsers($user->id_user), $start, $end);
+                } else {
+                    $user_id[] = $_GET['id_partner'];
+                    $listExport = Orders::getExportOrdersByPartner($user_id, $start, $end);
+                }
+
+            } else {
+                $listExport = Orders::getExportOrdersByPartner($user->controlUsers($user->id_user), $start, $end);
+            }
 
         } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager' ){
 

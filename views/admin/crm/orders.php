@@ -198,7 +198,13 @@
                                        title="<?= iconv('WINDOWS-1251', 'UTF-8', $order['note'])?>"></i>
                                 <?php endif;?>
                                 </td>
-                                <td><?= Functions::formatDate($order['created_on'])?></td>
+                                <td>
+                                    <?php if($user->name_partner == 'GS Electrolux' && $status_name == 'Выдан'):?>
+                                        <?= Functions::formatDate($order['shipped_on'])?>
+                                    <?php else:?>
+                                        <?= Functions::formatDate($order['created_on'])?>
+                                    <?php endif;?>
+                                </td>
                             </tr>
                         <?php endforeach;?>
                     <?php endif;?>
@@ -260,7 +266,9 @@
                                                title="<?= iconv('WINDOWS-1251', 'UTF-8', $order['note'])?>"></i>
                                         <?php endif;?>
                                     </td>
-                                    <td><?= Functions::formatDate($order['created_on'])?></td>
+                                    <td>
+                                        <?= Functions::formatDate($order['created_on'])?>
+                                    </td>
                                     <td class="action-control">
                                         <?php if($status_name == 'Предварительный' || $status_name == 'В обработке'):?>
                                         <a href="" class="accept order-accept"><i class="fi-check"></i></a>
@@ -374,6 +382,22 @@
                     </div>
                 </div>
             <?php endif;?>
+
+            <?php if($user->role == 'partner' && $user->name_partner == 'GS Electrolux'):?>
+                <div class="medium-12 small-12 columns">
+                    <div class="row">
+                        <div class="medium-12 small-12 columns">
+                            <label><i class="fi-list"></i> Partner
+                                <select name="id_partner" class="required" required>
+                                    <option value="all">All partners</option>
+                                    <?php $user->renderSelectControlUsers($user->id_user);?>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            <?php endif;?>
+
             <div class="medium-12 small-12 columns">
                 <div class="row">
                     <div class="medium-6 small-12 columns">

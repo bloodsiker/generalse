@@ -48,7 +48,8 @@
             <th style="text-align: center;">Price</th>
             <th style="text-align: center;">Type</th>
             <th style="text-align: center;">Status</th>
-            <th style="text-align: center;">Date create</th>
+            <th style="text-align: center;">Date</th>
+            <th style="text-align: center;">Date request</th>
         </tr>
         </thead>
         <tbody>
@@ -64,8 +65,16 @@
                     <td style="text-align: center;"><?=$export['quantity']?></td>
                     <td style="text-align: center;"><?=round($export['price'], 2)?></td>
                     <td style="text-align: center;"><?=iconv('WINDOWS-1251', 'UTF-8',$export['type_name'])?></td>
-                    <td style="text-align: center;"><?=iconv('WINDOWS-1251', 'UTF-8',$export['status_name'])?></td>
-                    <td style="text-align: center;"><?=$export['created_on']?></td>
+                    <?php $status_name = iconv('WINDOWS-1251', 'UTF-8', $export['status_name'])?>
+                    <td style="text-align: center;"><?= $status_name?></td>
+                    <td style="text-align: center;">
+                        <?php if($user->name_partner == 'GS Electrolux' && $status_name == 'Выдан'):?>
+                            <?= Functions::formatDate($export['shipped_on'])?>
+                        <?php else:?>
+                            <?= Functions::formatDate($export['created_on'])?>
+                        <?php endif;?>
+                    </td>
+                    <td style="text-align: center;"><?=Functions::formatDate($export['date_request'])?></td>
                 </tr>
             <?php endforeach;?>
         <?php endif?>
