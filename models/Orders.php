@@ -365,14 +365,14 @@ class Orders
                     sgo.status_name,
                     sgo.created_on,
                     sgo.shipped_on,
+                    sgo.request_date,
                     sgoe.part_number,
                     sgoe.goods_name,
                     sgoe.stock_name,
                     sgoe.quantity,
                     sgoe.price,
                     sgu.site_client_name,
-                    sgot.name as type_name,
-                    sgog.created_on as date_request
+                    sgot.name as type_name
                     FROM site_gm_orders sgo
                     INNER JOIN site_gm_orders_elements sgoe
                         ON sgo.order_id = sgoe.order_id
@@ -380,10 +380,6 @@ class Orders
                         ON sgo.site_account_id = sgu.site_account_id
                     LEFT JOIN site_gm_orders_types sgot
                         ON sgot.id = sgo.order_type_id
-                    LEFT JOIN site_gm_ordering_goods sgog
-                        ON sgo.so_number = sgog.so_number
-                        AND sgoe.part_number = sgog.part_number
-                        AND sgo.site_account_id = sgog.site_account_id
                     WHERE sgo.site_account_id IN({$idS})
                     AND sgo.created_on BETWEEN :start AND :end
                     ORDER BY sgo.id DESC";
@@ -420,14 +416,14 @@ class Orders
                     sgo.status_name,
                     sgo.created_on,
                     sgo.shipped_on,
+                    sgo.request_date,
                     sgoe.part_number,
                     sgoe.goods_name,
                     sgoe.stock_name,
                     sgoe.quantity,
                     sgoe.price,
                     sgu.site_client_name,
-                    sgot.name as type_name,
-                    sgog.created_on as date_request
+                    sgot.name as type_name
                 FROM site_gm_orders sgo
                 INNER JOIN site_gm_orders_elements sgoe
                    ON sgo.order_id = sgoe.order_id
@@ -435,10 +431,6 @@ class Orders
                     ON sgo.site_account_id = sgu.site_account_id
                 LEFT JOIN site_gm_orders_types sgot
                     ON sgot.id = sgo.order_type_id
-                LEFT JOIN site_gm_ordering_goods sgog
-                    ON sgo.so_number = sgog.so_number
-                    AND sgoe.part_number = sgog.part_number
-                    AND sgo.site_account_id = sgog.site_account_id
                 WHERE sgo.created_on BETWEEN :start AND :end
                 ORDER BY sgo.id DESC";
         // Используется подготовленный запрос

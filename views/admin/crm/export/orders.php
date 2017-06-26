@@ -74,7 +74,7 @@
                             <?= Functions::formatDate($export['created_on'])?>
                         <?php endif;?>
                     </td>
-                    <td style="text-align: center;"><?=Functions::formatDate($export['date_request'])?></td>
+                    <td style="text-align: center;"><?= isset($export['date_request']) ? Functions::formatDate($export['request_date']) : null?></td>
                 </tr>
             <?php endforeach;?>
         <?php endif?>
