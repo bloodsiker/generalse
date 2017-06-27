@@ -7,6 +7,7 @@ function autoloadClass($class_name)
 {
     $array_paths = array(
         '/app/',
+        '/app/Services/',
         '/models/',
         '/components/',
         '/components/Db/',

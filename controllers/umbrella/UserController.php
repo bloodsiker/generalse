@@ -145,6 +145,8 @@ class UserController extends AdminBase
                     // Сохраняем изменения
                     $id_user = Admin::addUser($options);
                     if($options['id_role'] == 2){
+                        $denied_lithograph = new UserService($id_user);
+                        $denied_lithograph->addDeniedLithograph();
                         //Admin::addUserMsSql($id_user, $options['name_partner']);
                     }
                     if($id_user){
