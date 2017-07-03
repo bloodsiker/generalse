@@ -486,10 +486,13 @@ class Orders
                 return 'red';
                 break;
             case 'Предварительный':
-                return 'yellow';
+                return 'orange';
                 break;
             case 'В обработке':
                 return 'yellow';
+                break;
+            case 'Резерв':
+                return 'aqua';
                 break;
         }
 

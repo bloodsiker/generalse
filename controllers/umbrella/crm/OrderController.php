@@ -169,7 +169,8 @@ class OrderController extends AdminBase
             $filter = "";
             $status_1 = iconv('UTF-8', 'WINDOWS-1251', 'Предварительный');
             $status_2 = iconv('UTF-8', 'WINDOWS-1251', 'В обработке');
-            $interval = " AND (sgo.status_name = '$status_1' OR sgo.status_name = '$status_2')";
+            $status_3 = iconv('UTF-8', 'WINDOWS-1251', 'Резерв');
+            $interval = " AND (sgo.status_name = '$status_1' OR sgo.status_name = '$status_2' OR sgo.status_name = '$status_3')";
 
             if(!empty($_GET['end']) && !empty($_GET['start'])){
                 $start = $_GET['start']. " 00:00";
