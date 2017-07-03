@@ -179,6 +179,7 @@ class Orders
                               sgo.shipped_on,
                               sgo.command,
                               sgo.note,
+                              sgo.note1,
                               sgo.command_text,
                               sgu.site_client_name,
                               sgot.name as type_name
@@ -244,6 +245,7 @@ class Orders
                    sgo.created_on,
                    sgo.shipped_on,
                    sgo.note,
+                   sgo.note1,
                    sgo.command_text,
                    sgu.site_client_name,
                    sgot.name as type_name
