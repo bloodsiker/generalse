@@ -131,7 +131,12 @@
                                             <a href="" class="button edit-pn delete"><i class="fi-pencil"></i></a>
                                         <?php endif;?>
                                     </td>
-                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['goods_name'])?></td>
+                                    <td class="order-tr-goods-name">
+                                        <span class="pn_goods_name"><?= iconv('WINDOWS-1251', 'UTF-8', $order['goods_name'])?></span>
+                                        <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+                                            <a href="" class="button clear_goods_name delete" onclick="return confirm('Вы уверены что хотите очистить название?') ? true : false;"><i class="fi-loop"></i></a>
+                                        <?php endif;?>
+                                    </td>
                                     <td class="order-tr-so">
                                         <span class="order_so"><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></span>
                                         <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>

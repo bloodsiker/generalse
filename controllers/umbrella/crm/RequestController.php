@@ -190,7 +190,7 @@ class RequestController extends AdminBase
         // Обьект юзера
         $user = new User($userId);
 
-        // Пишем номер с леново
+        // Редактируем парт номер
         if($_REQUEST['action'] == 'edit_pn'){
             $id_order = $_REQUEST['id_order'];
             $order_pn = trim($_REQUEST['order_pn']);
@@ -202,6 +202,7 @@ class RequestController extends AdminBase
             }
         }
 
+        // Редактируем СО_номер номер
         if($_REQUEST['action'] == 'edit_so'){
             $id_order = $_REQUEST['id_order'];
             $order_so = trim(iconv('UTF-8', 'WINDOWS-1251', $_REQUEST['order_so']));
@@ -209,6 +210,18 @@ class RequestController extends AdminBase
             $ok = Orders::editSoNumberFromCheckOrdersById($id_order, $order_so);
             if($ok){
                 Logger::getInstance()->log($user->id_user, ' изменил so number в request #' . $id_order . ' на ' . $order_so);
+                print_r(200);
+            }
+        }
+
+        // Очищаем название парт номера
+        if($_REQUEST['action'] == 'clear_goods_name'){
+            $id_order = $_REQUEST['id_order'];
+            $goods_name = null;
+
+            $ok = Orders::clearGoodsNameFromCheckOrdersById($id_order, $goods_name);
+            if($ok){
+                Logger::getInstance()->log($user->id_user, ' очистил(а) название part_number в request #' . $id_order);
                 print_r(200);
             }
         }

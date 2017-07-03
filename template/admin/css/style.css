@@ -880,6 +880,9 @@ td select {
 .edit-so { display: none; }
 .order-tr-so:hover .edit-so  { display: inline; }
 
+.clear_goods_name { display: none; }
+.order-tr-goods-name:hover .clear_goods_name  { display: inline; }
+
 .modal_comment{
   background: #fff;
   padding: 10px;

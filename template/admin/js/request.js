@@ -117,3 +117,24 @@ $(document).on('click', '#send-order-so', function(e) {
         }
     });
 });
+
+// Чистим название парт номера
+$(document).on('click', '.clear_goods_name', function(e) {
+    e.preventDefault();
+    var id_order = $(this).parent('td').parent('tr').data('id');
+    var data = "action=clear_goods_name&id_order=" + id_order;
+
+    $.ajax({
+        url: "/adm/crm/request/request_ajax",
+        type: "POST",
+        data: data,
+        cache: false,
+        success: function (response) {
+            if(response == 200){
+                $('[data-id="' + id_order + '"]').find('.pn_goods_name').text('');
+            } else {
+                alert('Ошибка! Не удалось очистить название!');
+            }
+        }
+    });
+});

@@ -750,6 +750,31 @@ class Orders
 
 
     /**
+     * Чистим описание детали
+     * @param $id
+     * @param $goods_name
+     * @return bool
+     */
+    public static function clearGoodsNameFromCheckOrdersById($id, $goods_name)
+    {
+        // Соединение с БД
+        $db = MsSQL::getConnection();
+
+        // Текст запроса к БД
+        $sql = "UPDATE site_gm_ordering_goods
+            SET
+                goods_name = :goods_name
+            WHERE id = :id";
+
+        // Получение и возврат результатов. Используется подготовленный запрос
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $id, PDO::PARAM_INT);
+        $result->bindParam(':goods_name', $goods_name, PDO::PARAM_STR);
+        return $result->execute();
+    }
+
+
+    /**
      * Обновялем статус заявки
      * @param $id
      * @param $check_status
