@@ -181,6 +181,7 @@ class Orders
                               sgo.note,
                               sgo.note1,
                               sgo.command_text,
+                              sgo.request_id,
                               sgu.site_client_name,
                               sgot.name as type_name
                             FROM site_gm_orders sgo
@@ -247,6 +248,7 @@ class Orders
                    sgo.note,
                    sgo.note1,
                    sgo.command_text,
+                   sgo.request_id,
                    sgu.site_client_name,
                    sgot.name as type_name
                  FROM site_gm_orders sgo
@@ -772,6 +774,29 @@ class Orders
         $result = $db->prepare($sql);
         $result->bindParam(':id', $id, PDO::PARAM_INT);
         $result->bindParam(':goods_name', $goods_name, PDO::PARAM_STR);
+        return $result->execute();
+    }
+
+
+    /**
+     * Возвращаем выписанные заказ в реквесты
+     * @param $id
+     * @return bool
+     */
+    public static function returnOrderToRequestById($id)
+    {
+        // Соединение с БД
+        $db = MsSQL::getConnection();
+
+        // Текст запроса к БД
+        $sql = "UPDATE site_gm_ordering_goods
+            SET
+                processed = 0
+            WHERE id = :id";
+
+        // Получение и возврат результатов. Используется подготовленный запрос
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $id, PDO::PARAM_INT);
         return $result->execute();
     }
 

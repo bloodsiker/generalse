@@ -379,6 +379,21 @@ class OrderController extends AdminBase
             }
             echo json_encode($status);
         }
+
+        if($_REQUEST['action'] == 'return'){
+            $request_id = $_REQUEST['request_id'];
+            $ok = Orders::returnOrderToRequestById($request_id);
+            if($ok){
+                $status['ok'] = 1;
+                $status['class'] = 'green';
+                $status['text'] = 'Вернули в Request';
+            } else {
+                $status['ok'] = 0;
+                $status['error'] = 'Ошибка подтверждения!';
+            }
+            echo json_encode($status);
+        }
+
         return true;
     }
 

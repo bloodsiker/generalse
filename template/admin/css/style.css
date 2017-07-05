@@ -931,6 +931,12 @@ td select {
   padding: 3px 5px;
   border-radius: 3px;
 }
+.return{
+  display: inline-block;
+  background: rgba(41, 125, 203, 0.68);
+  padding: 3px 5px;
+  border-radius: 3px;
+}
 .delete{
   background: rgba(0, 0, 0, 0.68);
   padding: 3px 5px;
