@@ -761,16 +761,13 @@ class Orders
      */
     public static function clearGoodsNameFromCheckOrdersById($id, $goods_name)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // Текст запроса к БД
         $sql = "UPDATE site_gm_ordering_goods
             SET
                 goods_name = :goods_name
             WHERE id = :id";
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id', $id, PDO::PARAM_INT);
         $result->bindParam(':goods_name', $goods_name, PDO::PARAM_STR);
@@ -785,16 +782,13 @@ class Orders
      */
     public static function returnOrderToRequestById($id)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // Текст запроса к БД
         $sql = "UPDATE site_gm_ordering_goods
             SET
-                processed = 0
+                cancel = 1
             WHERE id = :id";
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id', $id, PDO::PARAM_INT);
         return $result->execute();
