@@ -74,6 +74,7 @@
                         <div class="medium-12 small-12 columns">
                             <label><i class="fi-list"></i> Partner
                                 <select name="id_partner" class="required" required>
+                                    <option value="all">All</option>
                                     <?php if(is_array($listPartner)):?>
                                         <?php foreach($listPartner as $partner):?>
                                             <option value="<?=$partner['id_user']?>"><?=$partner['name_partner']?></option>

@@ -38,6 +38,9 @@
                         </caption>
                         <thead>
                         <tr>
+                            <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+                                <th class="sort">Partner</th>
+                            <?php endif; ?>
                             <th class="sort">Part Number</th>
                             <th class="sort">Description</th>
                             <th class="sort" width="100">Count</th>
@@ -47,6 +50,9 @@
                         <?php if (is_array($listUsage)): ?>
                             <?php foreach ($listUsage as $usage): ?>
                                 <tr class="goods">
+                                    <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+                                        <td><?=$usage['SERVICE_PROVIDE_NAME']?></td>
+                                    <?php endif; ?>
                                     <td><?=$usage['Item_Product_ID']?></td>
                                     <td><?=iconv('WINDOWS-1251', 'UTF-8', $usage['Item_Product_Desc'])?></td>
                                     <td><?=$usage['total']?></td>
@@ -79,6 +85,7 @@
                         <div class="medium-12 small-12 columns">
                             <label><i class="fi-list"></i> Partner
                                 <select name="id_partner" class="required" required>
+                                    <option value="all">All</option>
                                     <?php if(is_array($listPartner)):?>
                                         <?php foreach($listPartner as $partner):?>
                                             <option value="<?=$partner['id_user']?>"><?=$partner['name_partner']?></option>

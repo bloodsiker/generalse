@@ -789,11 +789,10 @@ class Data
      */
     public static function getUsageByAdmin($id_user, $start, $end)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
         $sql = "SELECT
+                 gk.SERVICE_PROVIDE_NAME,
                  gk.Item_Product_ID,
                  gk.Item_Product_Desc,
                  COUNT(*) AS total
@@ -806,18 +805,41 @@ class Data
                   'DPSTDW6', 'DPMIDW1', 'DPMIDW2', 'DPMOW02', 'TPSTDW6', 'PHREPL1', 'DPSTDW9') 
                 GROUP BY gk.Item_Product_ID";
 
-        // Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $id_user, PDO::PARAM_INT);
         $result->bindParam(':start_date', $start, PDO::PARAM_STR);
         $result->bindParam(':end_date', $end, PDO::PARAM_STR);
-
-        // Указываем, что хотим получить данные в виде массива
         $result->setFetchMode(PDO::FETCH_ASSOC);
-
-        // Выполнение коменды
         $result->execute();
+        return $result->fetchAll();
+    }
 
+
+    /**
+     * @param $start
+     * @param $end
+     * @return array
+     */
+    public static function getAllUsageByAdmin($start, $end)
+    {
+        $db = MySQL::getConnection();
+
+        $sql = "SELECT
+                    gk.SERVICE_PROVIDE_NAME,
+                    gk.Item_Product_ID,
+                    gk.Item_Product_Desc,
+                  COUNT(*) AS total
+                  FROM gs_kpi gk 
+                 WHERE gk.Service_Complete_Date BETWEEN :start_date AND :end_date
+                 AND gk.Item_Product_ID NOT IN('SWAPLAB', 'PHREPL0', 'DPSTDW3', 'DPSTDW1', 'PHREPL2', 'TPSTDW3',
+                   'DPSTDW6', 'DPMIDW1', 'DPMIDW2', 'DPMOW02', 'TPSTDW6', 'PHREPL1', 'DPSTDW9') 
+                GROUP BY gk.Item_Product_ID";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':start_date', $start, PDO::PARAM_STR);
+        $result->bindParam(':end_date', $end, PDO::PARAM_STR);
+        $result->setFetchMode(PDO::FETCH_ASSOC);
+        $result->execute();
         return $result->fetchAll();
     }
 

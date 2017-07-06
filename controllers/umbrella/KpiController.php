@@ -75,7 +75,15 @@ class KpiController extends AdminBase
 
             $listPartner = Admin::getPartnerViewKpi(1);
 
-            if(isset($_GET['id_partner']) && !empty($_GET['id_partner'])){
+            if(isset($_GET['id_partner']) && $_GET['id_partner'] == 'all'){
+                $start = $_GET['start'];
+                $end = $_GET['end'];
+
+                $listUsage = Data::getAllUsageByAdmin($start, $end);
+                Logger::getInstance()->log($user->id_user, "Посмотрел Usage c {$start} - {$end} для {$name}");
+
+            } else {
+
                 $start = $_GET['start'];
                 $end = $_GET['end'];
                 $id_partner = $_GET['id_partner'];
