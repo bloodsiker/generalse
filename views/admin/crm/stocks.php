@@ -17,53 +17,16 @@
                     </div>
                 </div>
                 <div class="row align-justify align-bottom">
-                    <div class="medium-6 small-12 columns">
-                        <?php if($user->role == 'partner'):?>
-                        <form action="/adm/crm/stocks/" method="get" class="form">
-                            <label>Stocks</label>
-                            <select name="stock" onchange="this.form.submit()" id="stock" class="required" required>
-                                <option value="" <?=(isset($_GET['stock']) && $_GET['stock'] == '') ? 'selected' : ''?>></option>
-                                <?php foreach ($user->renderSelectStocks($user->id_user, 'stocks') as $stock):?>
-                                    <option value="<?= $stock?>" <?=(isset($_GET['stock']) && $_GET['stock'] == $stock) ? 'selected' : ''?>><?= $stock?></option>
-                                <?php endforeach;?>
-                            </select>
-                        </form>
-                        <?php elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
-                            <form action="/adm/crm/stocks/" method="get" class="form">
-                                <div class="row align-bottom">
-                                    <div class="medium-4 small-12 columns">
-                                        <label><i class="fi-list"></i> Partner
-                                            <select name="id_partner">
-                                                <option value="all">All partners</option>
-                                                <?php if(is_array($partnerList)):?>
-                                                    <?php foreach($partnerList as $partner):?>
-                                                        <option <?php echo (isset($id_partner) && $id_partner == $partner['id_user']) ? 'selected' : '' ?> value="<?=$partner['id_user']?>"><?=$partner['name_partner']?></option>
-                                                    <?php endforeach;?>
-                                                <?php endif;?>
-                                            </select>
-                                        </label>
-                                    </div>
-                                    <div class="medium-4 small-12 columns">
-                                    <label>Stocks</label>
-                                    <select name="stock" id="stock" class="required" required>
-                                        <option value="all" <?=(isset($_GET['stock']) && $_GET['stock'] == 'all') ? 'selected' : ''?>>All</option>
-                                        <?php foreach ($user->renderSelectStocks($user->id_user, 'stocks') as $stock):?>
-                                            <option value="<?= $stock?>" <?=(isset($_GET['stock']) && $_GET['stock'] == $stock) ? 'selected' : ''?>><?= $stock?></option>
-                                        <?php endforeach;?>
-                                    </select>
-                                    </div>
-                                    <div class="medium-4 small-12 columns">
-                                        <button type="submit" class="button primary"><i class="fi-eye"></i> Show</button>
-                                    </div>
-                                </div>
-                            </form>
-                        <?php endif;?>
-                    </div>
-                    <div class="medium-3 small-12 columns">
+                    <div class="medium-9 small-12 columns">
+                        <button data-open="stock-filter" class="button primary tool"><i class="fi-filter"></i>
+                            Filter
+                        </button>
+
                         <?php if(isset($allGoodsByPartner) && count($allGoodsByPartner) > 0):?>
-                            <button class="button primary" onclick="tableToExcel('goods_data', 'W3C Example Table')" style="width: inherit;"><i class="fi-page-export"></i> Export to Excel</button>
+                            <button class="button primary tool" onclick="tableToExcel('goods_data', 'W3C Example Table')" style="width: inherit;"><i class="fi-page-export"></i> Export to Excel</button>
                         <?php endif;?>
                     </div>
+
                      <div class="medium-3 small-12 columns form">
                         <input type="text" id="goods_search" class="search-input" placeholder="Search..." name="search">
                     </div>
@@ -74,74 +37,102 @@
         <div class="body-content checkout">
             <div class="row">
                 <table id="goods_data">
-					<?php if(isset($_GET['stock']) && $_GET['stock'] == 'all'):?>
-                        <caption>Stocks is <span class="text-green"><?=count($allGoodsByPartner)?></span> units</caption>
+					<?php if(isset($_POST['stock']) && count($_POST['stock']) > 1):?>
+                        <caption>Stocks is <span class="text-green">
+                                <?=implode(', ', $_POST['stock'])?></span> is <span class="text-green"><?=(isset($allGoodsByPartner)) ? count($allGoodsByPartner) : 0?></span>  units
+                        </caption>
+                    <?php elseif(isset($_POST['stock']) && count($_POST['stock']) == 1):?>
+                        <caption>Stocks is <span class="text-green">
+                                <?=$_POST['stock'][0] ?></span> is <span class="text-green"><?=(isset($allGoodsByPartner)) ? count($allGoodsByPartner) : 0?></span>  units
+                        </caption>
                     <?php else:?>
                         <caption>Stock <span class="text-green"><?=(isset($_GET['stock']) ? $_GET['stock'] : '')?></span> is <span class="text-green"><?=(isset($allGoodsByPartner)) ? count($allGoodsByPartner) : 0?></span>  units</caption>
                     <?php endif;?>
 
-                    <?php if($user->role == 'partner'):?>
-                        <thead>
-                        <tr>
-                            <th class="sort">Part Number</th>
-                            <th class="sort">Description</th>
-                            <th class="sort">Stock name</th>
-                            <th class="sort">Quantity</th>
-                            <th class="sort">Sub type</th>
-                            <th class="sort">Serial Number</th>
-                            <th class="sort">Price</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php if (isset($allGoodsByPartner)): ?>
-                            <?php foreach ($allGoodsByPartner as $goods): ?>
-                                <tr class="goods">
-                                    <td><?=$goods['part_number']?></td>
-                                    <td><?=iconv('WINDOWS-1251', 'UTF-8', $goods['goods_name'])?></td>
-                                    <td><?=iconv('WINDOWS-1251', 'UTF-8', $goods['stock_name'])?></td>
-                                    <td><?=$goods['quantity']?></td>
-                                    <td><?=iconv('WINDOWS-1251', 'UTF-8', $goods['subtype_name'])?></td>
-                                    <td><?=iconv('WINDOWS-1251', 'UTF-8', $goods['serial_number'])?></td>
-                                    <td><?=round($goods['price'], 2)?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                        </tbody>
-                    <?php elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
-                        <thead>
-                        <tr>
-                            <th class="sort">Partner</th>
-                            <th class="sort">Part Number</th>
-                            <th class="sort">Description</th>
-                            <th class="sort">Stock name</th>
-                            <th class="sort">Quantity</th>
-                            <th class="sort">Sub type</th>
-                            <th class="sort">Serial Number</th>
-                            <th class="sort">Price</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php if (isset($allGoodsByPartner)): ?>
-                            <?php foreach ($allGoodsByPartner as $goods): ?>
-                                <tr class="goods">
-                                    <td><?=$goods['site_client_name']?></td>
-                                    <td><?=$goods['part_number']?></td>
-                                    <td><?=iconv('WINDOWS-1251', 'UTF-8', $goods['goods_name'])?></td>
-                                    <td><?=iconv('WINDOWS-1251', 'UTF-8', $goods['stock_name'])?></td>
-                                    <td><?=$goods['quantity']?></td>
-                                    <td><?=iconv('WINDOWS-1251', 'UTF-8', $goods['subtype_name'])?></td>
-                                    <td><?=iconv('WINDOWS-1251', 'UTF-8', $goods['serial_number'])?></td>
-                                    <td><?=round($goods['price'], 2)?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                        </tbody>
-                    <?php endif;?>
+                    <thead>
+                    <tr>
+                        <th class="sort">Partner</th>
+                        <th class="sort">Part Number</th>
+                        <th class="sort">Description</th>
+                        <th class="sort">Stock name</th>
+                        <th class="sort">Quantity</th>
+                        <th class="sort">Sub type</th>
+                        <th class="sort">Serial Number</th>
+                        <th class="sort">Price</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php if (isset($allGoodsByPartner)): ?>
+                        <?php foreach ($allGoodsByPartner as $goods): ?>
+                            <tr class="goods">
+                                <td><?=$goods['site_client_name']?></td>
+                                <td><?=$goods['part_number']?></td>
+                                <td><?=iconv('WINDOWS-1251', 'UTF-8', $goods['goods_name'])?></td>
+                                <td><?=iconv('WINDOWS-1251', 'UTF-8', $goods['stock_name'])?></td>
+                                <td><?=$goods['quantity']?></td>
+                                <td><?=iconv('WINDOWS-1251', 'UTF-8', $goods['subtype_name'])?></td>
+                                <td><?=iconv('WINDOWS-1251', 'UTF-8', $goods['serial_number'])?></td>
+                                <td><?=round($goods['price'], 2)?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                    </tbody>
 
                 </table>
             </div>
         </div>
     </div>
+</div>
+
+<div class="reveal small" id="stock-filter" data-reveal>
+    <div class="row align-bottom">
+        <div class="medium-12 small-12 columns">
+            <h3>Stock filter</h3>
+        </div>
+        <div class="medium-12 small-12 columns">
+            <form action="" method="POST" id="stock_filter">
+
+                <h4 style="color: #fff">Stocks</h4>
+                <div class="row align-bottom" style="background: #323e48; padding-top: 10px; margin-bottom: 10px">
+                    <?php if(is_array($new_stock)):?>
+                        <?php foreach($new_stock as $new_arr):?>
+                            <div class="medium-4 small-4 columns">
+                                <?php foreach($new_arr as $stock):?>
+                                    <?php $checked = Stocks::checkStocks(isset($_POST['stock']) ? $_POST['stock'] : [], $stock)?>
+                                    <input type="checkbox" <?=($checked ? 'checked' : '')?> onclick="checkColor(event)" id="<?=$stock ?>" name="stock[]" value="<?=$stock ?>">
+                                    <label for="<?=$stock ?>" style="color: <?= ($checked ? 'green' : '')?>;"><?=$stock ?></label><br>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
+
+                <h4 style="color: #fff">Partners</h4>
+                <div class="row align-bottom" style="background: #323e48; padding-top: 10px">
+                    <?php if(is_array($new_partner)):?>
+                        <?php foreach($new_partner as $new_arr):?>
+                            <div class="medium-4 small-4 columns">
+                                <?php foreach($new_arr as $partner):?>
+                                    <?php $checked = Stocks::checkUser(isset($_POST['id_partner']) ? $_POST['id_partner'] : [], $partner['id_user'])?>
+                                    <input type="checkbox" <?= ($checked ? 'checked' : '')?> onclick="checkColor(event)" id="id-<?=$partner['id_user'] ?>" name="id_partner[]" value="<?=$partner['id_user'] ?>">
+                                    <label for="id-<?=$partner['id_user'] ?>" style="color: <?= ($checked ? 'green' : '')?>;"><?=$partner['name_partner'] ?></label><br>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
+
+                <div class="row align-bottom" style="padding-top: 10px; margin-top: 10px">
+                    <div class="medium-3 small-3 medium-offset-9 columns">
+                        <button type="submit" id="apply-stock-filter" class="button primary"><i class="fi-filter"></i> Apply</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
 </div>
 
 <script type="text/javascript">

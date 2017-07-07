@@ -237,7 +237,30 @@ class Admin
                                       FROM gs_user 
                                       INNER JOIN gs_country gc 
                                         ON gs_user.id_country = gc.id_country 
-                                      WHERE id_role = 2")->fetchAll(PDO::FETCH_ASSOC);
+                                      WHERE id_role = 2 ORDER BY name_partner ASC")->fetchAll(PDO::FETCH_ASSOC);
+
+        return $data;
+    }
+
+    /**
+     * Список партнеров которыми может управлять пользователь
+     * @param $users
+     * @return array
+     */
+    public static function getPartnerControlUsers($users)
+    {
+        // Соединение с БД
+        $db = MySQL::getConnection();
+
+        $ids = implode(',', $users);
+
+        $data = $db->query("SELECT 
+                                      * 
+                                      FROM gs_user 
+                                      INNER JOIN gs_country gc 
+                                        ON gs_user.id_country = gc.id_country 
+                                      WHERE id_role = 2
+                                      AND id_user IN({$ids}) ORDER BY name_partner ASC")->fetchAll(PDO::FETCH_ASSOC);
 
         return $data;
     }

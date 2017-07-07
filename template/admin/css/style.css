@@ -1107,3 +1107,13 @@ td select {
 .active-section{
   background: #297dcb !important;
 }
+
+/***  resize modal   ***/
+@media screen and (min-width: 40em){
+  .reveal.small {
+    width: 60%;
+    max-width: 100rem;
+    min-width: 1060px;
+  }
+}
+

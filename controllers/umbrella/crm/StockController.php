@@ -32,34 +32,38 @@ class StockController extends AdminBase
         // Обьект юзера
         $user = new User($userId);
 
-        $partnerList = Admin::getAllPartner();
-
         if($user->role == 'partner') {
-            //$allGoodsByPartner = Stocks::getAllGoodsByPartner($user->id_user);
-            if (isset($_GET['stock'])) {
-                $stock = iconv('UTF-8', 'WINDOWS-1251', $_GET['stock']);
-//                if ($stock == 'all') {
-//                    $allGoodsByPartner = Stocks::getAllGoodsByPartner($user->id_user);
-//                } else {
-//                    $allGoodsByPartner = Stocks::getGoodsInStockByPartner($user->id_user, $stock);
-//                }
-                $allGoodsByPartner = Stocks::getGoodsInStockByPartner($user->id_user, $stock);
+
+            $user_ids = $user->controlUsers($user->id_user);
+            $partnerList = Admin::getPartnerControlUsers($user_ids);
+            if(count($partnerList) > 3){
+                $new_partner = array_chunk($partnerList, (int)count($partnerList) / 3);
+            } else {
+                $new_partner[] = $partnerList;
             }
+            $list_stock = $user->renderSelectStocks($user->id_user, 'stocks');
+            if(count($list_stock) > 3){
+                $new_stock = array_chunk($list_stock, (int)count($list_stock) / 3);
+            } else {
+                $new_stock[] = $list_stock;
+            }
+
+            $stocks =  isset($_POST['stock']) ? $_POST['stock'] : [];
+            $id_partners = isset($_POST['id_partner']) ? $_POST['id_partner'] : [];
+            $allGoodsByPartner = Stocks::getGoodsInStocksPartners($id_partners, $stocks);
+
         } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
-            if (isset($_GET['stock']) && isset($_GET['id_partner'])) {
-                $stock = iconv('UTF-8', 'WINDOWS-1251', $_GET['stock']);
-                $id_partner = $_GET['id_partner'];
-                if ($stock == 'all' && $id_partner == 'all') {
-                    $allGoodsByPartner = Stocks::getAllGoodsAllPartner();
-                } elseif ($stock != 'all' && $id_partner == 'all'){
-                    $allGoodsByPartner = Stocks::getGoodsAllPartnerByStock($stock);
-                } elseif ($stock == 'all') {
-                    $allGoodsByPartner = Stocks::getAllGoodsByPartner($id_partner);
-                } else {
-                    $allGoodsByPartner = Stocks::getGoodsInStockByPartner($id_partner, $stock);
-                }
-            }
+
+            $partnerList = Admin::getAllPartner();
+            $new_partner = array_chunk($partnerList, (int)count($partnerList) / 3);
+            $list_stock = $user->renderSelectStocks($user->id_user, 'stocks');
+            $new_stock = array_chunk($list_stock, (int)count($list_stock) / 3);
+
+            $stocks =  isset($_POST['stock']) ? $_POST['stock'] : [];
+            $id_partners = isset($_POST['id_partner']) ? $_POST['id_partner'] : [];
+            $allGoodsByPartner = Stocks::getGoodsInStocksPartners($id_partners, $stocks);
         }
+
         require_once(ROOT . '/views/admin/crm/stocks.php');
         return true;
 
