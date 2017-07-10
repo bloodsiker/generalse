@@ -187,7 +187,7 @@ class Functions
      * @param $arg_2
      * @return string
      */
-    public function compareQuantity($arg_1, $arg_2)
+    public static function compareQuantity($arg_1, $arg_2)
     {
         if($arg_1 == $arg_2){
             return 'red';

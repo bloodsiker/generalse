@@ -84,7 +84,7 @@
 
                     <?php if (isset($listDisassembly) && is_array($listDisassembly)): ?>
                         <?php foreach ($listDisassembly as $dis): ?>
-                            <?php $info = Disassembly::checkStatusRequest($dis['part_number'], $dis['serial_number']);
+                            <?php $info = Disassembly::checkStatusRequestMSSQL($dis['site_id']);
                             $id_gs = iconv('WINDOWS-1251', 'UTF-8', $info['decompile_id'])?>
 
                             <tr class="goods" data-siteid="<?=$dis['site_id']?>" data-decompile="<?=$id_gs?>">

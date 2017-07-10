@@ -337,15 +337,36 @@ class Disassembly
                 AND serial_number = :serial_number
                 ORDER BY id DESC";
 
-        // Делаем пдготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':part_number', $part_number, PDO::PARAM_STR);
         $result->bindParam(':serial_number', $serial_number, PDO::PARAM_STR);
         $result->execute();
-
-        // Получаем ассоциативный массив
         $status = $result->fetch();
+        return $status;
+    }
 
+
+    /**
+     * Получаем статус и ID из GS
+     * @param $site_id
+     * @return mixed
+     */
+    public static function checkStatusRequestMSSQL($site_id)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "SELECT
+                    decompile_id,
+                    status_name,
+                    command
+                FROM site_gm_decompiles
+                WHERE site_id = :site_id
+                ORDER BY id DESC";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':site_id', $site_id, PDO::PARAM_INT);
+        $result->execute();
+        $status = $result->fetch();
         return $status;
     }
 
