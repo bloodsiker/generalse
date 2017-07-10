@@ -155,7 +155,12 @@
                                                title="<?= iconv('WINDOWS-1251', 'UTF-8', $order['note1'])?>"></i>
                                         <?php endif;?>
                                     </td>
-                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?></td>
+                                    <td class="order-tr-status">
+                                        <span class="order_status"><?= iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?></span>
+                                        <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+                                            <a href="" class="button edit-status delete"><i class="fi-pencil"></i></a>
+                                        <?php endif;?>
+                                    </td>
                                     <td><?= Functions::formatDate($order['created_on'])?></td>
                                     <?php if (AdminBase::checkDenied('crm.request.delete', 'view')): ?>
                                         <td class="text-center">
@@ -323,9 +328,8 @@
             </div>
             <div class="medium-12 small-12 columns">
                 <div class="row">
-                    <input type="hidden" name="add-parts" value="true">
                     <div class="medium-12 small-12 columns">
-                        <label>Part number <span class="lenovo_num"></span></label>
+                        <label>Part number </label>
                         <input type="text" id="order_pn" name="order_pn" autocomplete="off">
                     </div>
                 </div>
@@ -348,15 +352,39 @@
             </div>
             <div class="medium-12 small-12 columns">
                 <div class="row">
-                    <input type="hidden" name="add-parts" value="true">
                     <div class="medium-12 small-12 columns">
-                        <label>SO number <span class="lenovo_num"></span></label>
+                        <label>SO number</label>
                         <input type="text" id="order_so" name="order_so" autocomplete="off">
                     </div>
                 </div>
             </div>
             <div class="medium-12 small-12 columns">
                 <button type="button" id="send-order-so" class="button primary">Edit</button>
+            </div>
+        </div>
+    </form>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+
+<div class="reveal" id="edit-status" data-reveal>
+    <form action="#" method="post" class="form" novalidate="">
+        <div class="row align-bottom">
+            <div class="medium-12 small-12 columns">
+                <h3>Edit status</h3>
+            </div>
+            <div class="medium-12 small-12 columns">
+                <div class="row">
+                    <div class="medium-12 small-12 columns">
+                        <label>Status</label>
+                        <textarea name="" id="order_status" cols="30" rows="4"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="medium-12 small-12 columns">
+                <button type="button" id="send-order-status" class="button primary">Edit</button>
             </div>
         </div>
     </form>

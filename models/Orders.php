@@ -778,6 +778,28 @@ class Orders
 
 
     /**
+     * Изменяем статус реквеста
+     * @param $id
+     * @param $status
+     * @return bool
+     */
+    public static function editStatusFromCheckOrdersById($id, $status)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "UPDATE site_gm_ordering_goods
+            SET
+                status_name = :status_name
+            WHERE id = :id";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $id, PDO::PARAM_INT);
+        $result->bindParam(':status_name', $status, PDO::PARAM_STR);
+        return $result->execute();
+    }
+
+
+    /**
      * Возвращаем выписанные заказ в реквесты
      * @param $id
      * @return bool

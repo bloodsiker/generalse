@@ -138,3 +138,34 @@ $(document).on('click', '.clear_goods_name', function(e) {
         }
     });
 });
+
+
+// Редиктируем статус реквеста
+$(document).on('click', '.edit-status', function(e) {
+    e.preventDefault();
+    $('#edit-status').foundation('open');
+    var order_status = $(this).siblings('.order_status').text();
+    $("#order_status").val(order_status.trim());
+    id_order = $(this).parent('td').parent('tr').data('id');
+});
+$(document).on('click', '#send-order-status', function(e) {
+    e.preventDefault();
+    var order_status = $("#order_status").val();
+    var data = "action=edit_status&id_order=" + id_order + "&order_status=" + order_status;
+
+    $.ajax({
+        url: "/adm/crm/request/request_ajax",
+        type: "POST",
+        data: data,
+        cache: false,
+        success: function (response) {
+            if(response == 200){
+                $('[data-id="' + id_order + '"]').find('.order_status').text(order_status).css('color', 'green');
+                $('#edit-status form')[0].reset();
+                $('#edit-status').foundation('close');
+            } else {
+                alert('Ошибка! Не удалось обновить запись!');
+            }
+        }
+    });
+});

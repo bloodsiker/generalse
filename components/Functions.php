@@ -141,6 +141,46 @@ class Functions
         return date_format($date, 'Y-m-d');
     }
 
+
+    /**
+     * Получаем день недели
+     * @param $date
+     * @return int
+     */
+    public static function whatDayOfTheWeekAndAdd($date)
+    {
+        $day = strftime("%a", strtotime($date));
+
+        switch ($day){
+            case 'Mon':
+                $add_day = 15;
+                break;
+            case 'Tue':
+                $add_day = 14;
+                break;
+            case 'Wed':
+                $add_day = 13;
+                break;
+            case 'Thu':
+                $add_day = 12;
+                break;
+            case 'Fri':
+                $add_day = 11;
+                break;
+            case 'Sat':
+                $add_day = 10;
+                break;
+            case 'Sun':
+                $add_day = 9;
+                break;
+            default:
+                $add_day = 15;
+        }
+
+        return self::addDays(date('Y-m-d'), "{$add_day} days");
+    }
+
+
     /**
      * Сравнение количества товаров в поставке и резерве
      * @param $arg_1

@@ -52,14 +52,14 @@ class RequestController extends AdminBase
                 $note = iconv('UTF-8', 'WINDOWS-1251', $_POST['note']);
             }
             $options['id_user'] = $user->id_user;
-            $options['part_number'] = iconv('UTF-8', 'WINDOWS-1251', $_POST['part_number']);
-            $options['so_number'] = iconv('UTF-8', 'WINDOWS-1251', $_POST['so_number']);
+            $options['part_number'] = iconv('UTF-8', 'WINDOWS-1251', trim($_POST['part_number']));
+            $options['so_number'] = iconv('UTF-8', 'WINDOWS-1251', trim($_POST['so_number']));
             $options['note'] = $note;
             $mName = Products::checkPurchasesPartNumber($options['part_number']);
             $price = Products::getPricePartNumber($options['part_number'], $user->id_user);
             $options['goods_name'] = $mName['mName'];
             $options['price'] = ($price['price'] != 0) ? $price['price'] : 0;
-            $options['status_name'] = iconv('UTF-8', 'WINDOWS-1251', 'Нет в наличии, формируется поставка');
+            $options['status_name'] = iconv('UTF-8', 'WINDOWS-1251', 'Нет в наличии, формируется поставка, ориентировочная дата поставки на наш склад ' . Functions::whatDayOfTheWeekAndAdd(date('Y-m-d')));
             $options['created_on'] = date('Y-m-d H:i:s');
             $options['order_type_id'] = $_POST['order_type_id'];
             $options['note1'] = isset($_POST['note1']) ? iconv('UTF-8', 'WINDOWS-1251', $_POST['note1']): null;
@@ -123,14 +123,14 @@ class RequestController extends AdminBase
                                 $note = iconv('UTF-8', 'WINDOWS-1251', $_REQUEST['note']);
                             }
                             $options['id_user'] = $user->id_user;
-                            $options['part_number'] = iconv('UTF-8', 'WINDOWS-1251', $import['part_number']);
-                            $options['so_number'] = iconv('UTF-8', 'WINDOWS-1251', $import['so_number']);
+                            $options['part_number'] = iconv('UTF-8', 'WINDOWS-1251', trim($import['part_number']));
+                            $options['so_number'] = iconv('UTF-8', 'WINDOWS-1251', trim($import['so_number']));
                             $options['note'] = $note;
                             $mName = Products::checkPurchasesPartNumber($options['part_number']);
                             $price = Products::getPricePartNumber($options['part_number'], $user->id_user);
                             $options['goods_name'] = $mName['mName'];
                             $options['price'] = ($price['price'] != 0) ? $price['price'] : 0;
-                            $options['status_name'] = iconv('UTF-8', 'WINDOWS-1251', 'Нет в наличии, формируется поставка');
+                            $options['status_name'] = iconv('UTF-8', 'WINDOWS-1251', 'Нет в наличии, формируется поставка, ориентировочная дата поставки на наш склад ' . Functions::whatDayOfTheWeekAndAdd(date('Y-m-d')));
                             $options['created_on'] = date('Y-m-d H:i:s');
                             $options['order_type_id'] = $_REQUEST['order_type_id'];
                             $options['note1'] = isset($_POST['note1']) ? iconv('UTF-8', 'WINDOWS-1251', $_POST['note1']): null;
@@ -225,6 +225,18 @@ class RequestController extends AdminBase
                 print_r(200);
             }
         }
+
+        if($_REQUEST['action'] == 'edit_status'){
+            $id_order = $_REQUEST['id_order'];
+            $order_status = trim(iconv('UTF-8', 'WINDOWS-1251', $_REQUEST['order_status']));
+
+            $ok = Orders::editStatusFromCheckOrdersById($id_order, $order_status);
+            if($ok){
+                Logger::getInstance()->log($user->id_user, ' изменил Status в request #' . $id_order);
+                print_r(200);
+            }
+        }
+
         return true;
     }
 
