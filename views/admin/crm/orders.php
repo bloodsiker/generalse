@@ -157,6 +157,9 @@
                     </caption>
                     <thead>
                     <tr>
+                        <?php if (AdminBase::checkDenied('crm.orders.request_id', 'view')): ?>
+                            <th class="sort">Request id</th>
+                        <?php endif; ?>
                         <th class="sort">Partner</th>
                         <th class="sort">Order Number</th>
                         <th class="sort">Service Order</th>
@@ -173,6 +176,9 @@
                     <?php if(is_array($allOrders)):?>
                         <?php foreach($allOrders as $order):?>
                             <tr data-order-id="<?=$order['order_id']?>" class="goods">
+                                <?php if (AdminBase::checkDenied('crm.orders.request_id', 'view')): ?>
+                                    <td><?= $order['request_id']?></td>
+                                <?php endif;?>
                                 <td><?= $order['site_client_name']?></td>
                                 <td><?= $order['order_number']?></td>
                                 <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></td>
@@ -233,7 +239,7 @@
                         <?php endif;?>
                         <thead>
                         <tr>
-                            <th class="sort">Order id</th>
+                            <th class="sort">Request id</th>
                             <th class="sort">Partner</th>
                             <th class="sort">Order Number</th>
                             <th class="sort">Service Order</th>
@@ -251,7 +257,9 @@
                         <?php if(is_array($allOrders)):?>
                             <?php foreach($allOrders as $order):?>
                                 <tr data-order-id="<?=$order['order_id']?>" class="goods">
-                                    <td><?= $order['order_id']?></td>
+                                    <?php if (AdminBase::checkDenied('crm.orders.request_id', 'view')): ?>
+                                        <td><?= $order['request_id']?></td>
+                                    <?php endif;?>
                                     <td><?= $order['site_client_name']?></td>
                                     <td><?= $order['order_number']?></td>
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></td>

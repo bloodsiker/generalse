@@ -51,6 +51,9 @@
             <th style="text-align: center;">Status</th>
             <th style="text-align: center;">Date</th>
             <th style="text-align: center;">Date request</th>
+            <?php if (AdminBase::checkDenied('crm.orders.request_id', 'view')): ?>
+                <th style="text-align: center;">Request id</th>
+            <?php endif?>
         </tr>
         </thead>
         <tbody>
@@ -77,6 +80,9 @@
                         <?php endif;?>
                     </td>
                     <td style="text-align: center;"><?= isset($export['request_date']) ? Functions::formatDate($export['request_date']) : null?></td>
+                    <?php if (AdminBase::checkDenied('crm.orders.request_id', 'view')): ?>
+                        <td style="text-align: center;"><?= $export['request_id']?></td>
+                    <?php endif?>
                 </tr>
             <?php endforeach;?>
         <?php endif?>

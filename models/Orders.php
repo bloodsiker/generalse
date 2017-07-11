@@ -371,6 +371,7 @@ class Orders
                     sgo.shipped_on,
                     sgo.request_date,
                     sgo.note1,
+                    sgo.request_id,
                     sgoe.part_number,
                     sgoe.goods_name,
                     sgoe.stock_name,

@@ -59,6 +59,7 @@
                 <table id="goods_data">
                     <thead>
                     <tr>
+                        <th>Request id</th>
                         <th>Partner</th>
                         <th>Part Number</th>
                         <th>Part Description</th>
@@ -75,6 +76,7 @@
                     <?php if(is_array($listCheckOrders)):?>
                         <?php foreach($listCheckOrders as $order):?>
                             <tr class="goods <?= (Functions::calcDiffSec($order['created_on']) < 120) ? 'check_lenovo_ok' : ''?>">
+                                <td><?= $order['id']?></td>
                                 <td><?= $order['site_client_name']?></td>
                                 <td><?= $order['part_number']?></td>
                                 <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['goods_name'])?></td>
@@ -104,6 +106,7 @@
                     <table id="goods_data">
                         <thead>
                         <tr>
+                            <th>Request id</th>
                             <th>Partner</th>
                             <th>Part Number</th>
                             <th>Part Description</th>
@@ -124,6 +127,7 @@
                             <?php foreach($listCheckOrders as $order):?>
                                 <tr class="goods <?= (Functions::calcDiffSec($order['created_on']) < 120) ? 'check_lenovo_ok' : ''?>"
                                     data-id="<?= $order['id']?>">
+                                    <td><?= $order['id']?></td>
                                     <td><?= $order['site_client_name']?></td>
                                     <td data-pn="<?= $order['part_number']?>" class="order-tr-pn">
                                         <span class="order_part_num"><?= $order['part_number']?></span>
