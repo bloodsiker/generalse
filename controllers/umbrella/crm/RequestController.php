@@ -48,27 +48,35 @@ class RequestController extends AdminBase
         if(isset($_POST['add_request']) && $_POST['add_request'] == 'true'){
 
             $note = null;
+            $note_mysql = null;
             if(isset($_POST['note'])){
                 $note = iconv('UTF-8', 'WINDOWS-1251', $_POST['note']);
+                $note_mysql = $_POST['note'];
             }
             $options['id_user'] = $user->id_user;
             $options['part_number'] = iconv('UTF-8', 'WINDOWS-1251', trim($_POST['part_number']));
             $options['so_number'] = iconv('UTF-8', 'WINDOWS-1251', trim($_POST['so_number']));
             $options['note'] = $note;
+            $options['note_mysql'] = $note_mysql;
             $mName = Products::checkPurchasesPartNumber($options['part_number']);
             $price = Products::getPricePartNumber($options['part_number'], $user->id_user);
             $options['goods_name'] = $mName['mName'];
             $options['price'] = ($price['price'] != 0) ? $price['price'] : 0;
             $options['status_name'] = iconv('UTF-8', 'WINDOWS-1251', 'Нет в наличии, формируется поставка, ориентировочная дата поставки на наш склад ' . Functions::whatDayOfTheWeekAndAdd(date('Y-m-d')));
+            $options['status_name_mysql'] = 'Нет в наличии, формируется поставка, ориентировочная дата поставки на наш склад ' . Functions::whatDayOfTheWeekAndAdd(date('Y-m-d'));
             $options['created_on'] = date('Y-m-d H:i:s');
             $options['order_type_id'] = $_POST['order_type_id'];
             $options['note1'] = isset($_POST['note1']) ? iconv('UTF-8', 'WINDOWS-1251', $_POST['note1']): null;
+            $options['note1_mysql'] = isset($_POST['note1']) ? $_POST['note1']: null;
 
             $ok = Orders::addReserveOrdersMsSQL($options);
             if($ok){
+                $options['request_id'] = $ok;
+                //Пишем в mysql
+                Orders::addReserveOrders($options);
                 $_SESSION['add_request'] = 'Out of stock, delivery is forming';
+                Logger::getInstance()->log($user->id_user, ' создал новый запрос в Request');
             }
-            Logger::getInstance()->log($user->id_user, ' создал новый запрос в Request');
             header("Location: " . $_SERVER['HTTP_REFERER']);
         }
 

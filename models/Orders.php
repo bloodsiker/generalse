@@ -520,19 +520,21 @@ class Orders
 
         // Текст запроса к БД
         $sql = 'INSERT INTO gm_orders_check '
-            . '(id_user, part_number, part_description, so_number, price, note, status_name)'
+            . '(id_user, request_id, part_number, so_number, price, note, note1, status_name, order_type_id)'
             . 'VALUES '
-            . '(:id_user, :part_number, :part_description, :so_number, :price, :note, :status_name)';
+            . '(:id_user, :request_id, :part_number, :so_number, :price, :note, :note1, :status_name, :order_type_id)';
 
         // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $options['id_user'], PDO::PARAM_INT);
+        $result->bindParam(':request_id', $options['request_id'], PDO::PARAM_INT);
         $result->bindParam(':part_number', $options['part_number'], PDO::PARAM_STR);
-        $result->bindParam(':part_description', $options['part_description'], PDO::PARAM_STR);
         $result->bindParam(':so_number', $options['so_number'], PDO::PARAM_STR);
         $result->bindParam(':price', $options['price'], PDO::PARAM_STR);
         $result->bindParam(':note', $options['note_mysql'], PDO::PARAM_STR);
-        $result->bindParam(':status_name', $options['status_name'], PDO::PARAM_STR);
+        $result->bindParam(':note1', $options['note1_mysql'], PDO::PARAM_STR);
+        $result->bindParam(':status_name', $options['status_name_mysql'], PDO::PARAM_STR);
+        $result->bindParam(':order_type_id', $options['order_type_id'], PDO::PARAM_INT);
 
         return $result->execute();
     }
@@ -544,16 +546,13 @@ class Orders
      */
     public static function addReserveOrdersMsSQL($options)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'INSERT INTO site_gm_ordering_goods '
             . '(site_account_id, part_number, goods_name, so_number, price, note, status_name, created_on, order_type_id, note1)'
             . 'VALUES '
             . '(:site_account_id, :part_number, :goods_name, :so_number, :price, :note, :status_name, :created_on, :order_type_id, :note1)';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':site_account_id', $options['id_user'], PDO::PARAM_INT);
         $result->bindParam(':part_number', $options['part_number'], PDO::PARAM_STR);
@@ -566,7 +565,10 @@ class Orders
         $result->bindParam(':order_type_id', $options['order_type_id'], PDO::PARAM_INT);
         $result->bindParam(':note1', $options['note1'], PDO::PARAM_INT);
 
-        return $result->execute();
+        if ($result->execute()) {
+            return $db->lastInsertId();
+        }
+        return 0;
     }
 
 
