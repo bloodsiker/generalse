@@ -30,7 +30,7 @@
 
 <div class="btn-group pull-left" role="group" aria-label="...">
     <button type="button" class="btn btn-primary" onclick="window.history.go(-1); return false;"><span class="glyphicon glyphicon-arrow-left"></span> В кабинет</button>
-    <button type="button" class="btn btn-danger" onclick="tableToExcel('orders', 'W3C Example Table')"><span class="glyphicon glyphicon-export"></span> Export</button>
+    <button type="button" class="btn btn-danger" onclick="tableToExcel('orders', 'Orders export')"><span class="glyphicon glyphicon-export"></span> Export</button>
 </div>
 
 <div id="orders">
@@ -67,7 +67,7 @@
                     <td><?=iconv('WINDOWS-1251', 'UTF-8',$export['goods_name'])?></td>
                     <td style="text-align: center;"><?=iconv('WINDOWS-1251', 'UTF-8',$export['stock_name'])?></td>
                     <td style="text-align: center;"><?=$export['quantity']?></td>
-                    <td style="text-align: center;"><?=round($export['price'], 2)?></td>
+                    <td style="text-align: center;"><?=str_replace('.',',', round($export['price'], 2))?></td>
                     <td style="text-align: center;"><?=iconv('WINDOWS-1251', 'UTF-8',$export['type_name'])?></td>
                     <td style="text-align: center;"><?=iconv('WINDOWS-1251', 'UTF-8',$export['note1'])?></td>
                     <?php $status_name = iconv('WINDOWS-1251', 'UTF-8', $export['status_name'])?>

@@ -70,7 +70,7 @@
                     <td><?=(isset($status)) ? $status : ''?></td>
                 </tr>
                 <?php else:?>
-                    <?php $status = Disassembly::checkStatusRequest($export['part_number'], $export['serial_number']);
+                    <?php $status = Disassembly::checkStatusRequestMSSQL($export['site_id']);
                     $id_gs = iconv('WINDOWS-1251', 'UTF-8', $status['decompile_id']);
                     $status = iconv('WINDOWS-1251', 'UTF-8', $status['status_name'])?>
 
