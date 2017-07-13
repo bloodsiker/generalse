@@ -56,6 +56,9 @@
                     <div class="alert-success" style="margin: 0px auto 10px;"><?=$request_message?></div>
                 <?php endif;?>
                 <?php if($user->role == 'partner'):?>
+                <caption>List requests
+                    <span id="count_refund" class="text-green">(<?php if (isset($listCheckOrders)) echo count($listCheckOrders) ?>)</span>
+                </caption>
                 <table id="goods_data">
                     <thead>
                     <tr>
@@ -63,6 +66,9 @@
                         <th>Partner</th>
                         <th>Part Number</th>
                         <th>Part Description</th>
+                        <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
+                            <th>Subtype</th>
+                        <?php endif?>
                         <th>SO Number</th>
                         <th>Price</th>
                         <th>Address</th>
@@ -80,8 +86,11 @@
                                 <td><?= $order['site_client_name']?></td>
                                 <td><?= $order['part_number']?></td>
                                 <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['goods_name'])?></td>
+                                <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
+                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['subtype_name'])?></td>
+                                <?php endif?>
                                 <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></td>
-                                <td><?= round($order['price'], 2)?></td>
+                                <td><?= str_replace('.',',', round($order['price'], 2))?></td>
                                 <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['note'])?></td>
                                 <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['type_name'])?></td>
                                 <td class="text-center">
@@ -104,12 +113,16 @@
                     || $user->role == 'administrator-fin'
                     || $user->role == 'manager'):?>
                     <table id="goods_data">
+                        <caption>List requests
+                            <span id="count_refund" class="text-green">(<?php if (isset($listCheckOrders)) echo count($listCheckOrders) ?>)</span>
+                        </caption>
                         <thead>
                         <tr>
                             <th>Request id</th>
                             <th>Partner</th>
                             <th>Part Number</th>
                             <th>Part Description</th>
+                            <th>Subtype</th>
                             <th>SO Number</th>
                             <th>Price</th>
                             <th>Address</th>
@@ -141,13 +154,16 @@
                                             <a href="" class="button clear_goods_name delete" onclick="return confirm('Вы уверены что хотите очистить название?') ? true : false;"><i class="fi-loop"></i></a>
                                         <?php endif;?>
                                     </td>
+                                    <td>
+                                        <?= iconv('WINDOWS-1251', 'UTF-8', $order['subtype_name'])?>
+                                    </td>
                                     <td class="order-tr-so">
                                         <span class="order_so"><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></span>
                                         <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
                                             <a href="" class="button edit-so delete"><i class="fi-pencil"></i></a>
                                         <?php endif;?>
                                     </td>
-                                    <td><?= round($order['price'], 2)?></td>
+                                    <td><?= str_replace('.',',', round($order['price'], 2))?></td>
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['note'])?></td>
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['type_name'])?></td>
                                     <td class="text-center">
