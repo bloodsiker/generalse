@@ -82,16 +82,61 @@ class RequestController extends AdminBase
 
         if($user->role == 'partner'){
             //$listCheckOrders = Orders::getReserveOrdersByPartner($user->id_user);
-            $listCheckOrders = Orders::getReserveOrdersByPartnerMsSQL($user->controlUsers($user->id_user));
+            $listCheckOrders = Orders::getReserveOrdersByPartnerMsSQL($user->controlUsers($user->id_user), 0);
         } elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
             //$listCheckOrders = Orders::getAllReserveOrders();
-            $listCheckOrders = Orders::getAllReserveOrdersMsSQL();
+            $listCheckOrders = Orders::getAllReserveOrdersMsSQL(0);
         }
 
         require_once(ROOT . '/views/admin/crm/request.php');
         return true;
     }
 
+
+
+    /**
+     * Completed request
+     * @return bool
+     */
+    public function actionCompletedRequest()
+    {
+        self::checkAdmin();
+        $userId = Admin::CheckLogged();
+        $user = new User($userId);
+
+        if($user->role == 'partner'){
+
+            $filter = "";
+            $interval = " AND sgog.created_on >= DATEADD(day, -30, GETDATE())";
+
+            if(!empty($_GET['end']) && !empty($_GET['start'])){
+                $start = $_GET['start']. " 00:00";
+                $end = $_GET['end']. " 23:59";
+                $filter .= " AND sgog.created_on BETWEEN '$start' AND '$end'";
+                $interval = '';
+            }
+            $filter .= $interval;
+
+            $listCheckOrders = Orders::getCompletedRequestInOrdersByPartnerMsSQL($user->controlUsers($user->id_user), $filter);
+        } elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
+
+            $filter = "";
+            $interval = " AND sgog.created_on >= DATEADD(day, -30, GETDATE())";
+
+            if(!empty($_GET['end']) && !empty($_GET['start'])){
+                $start = $_GET['start']. " 00:00";
+                $end = $_GET['end']. " 23:59";
+                $filter .= " AND sgog.created_on BETWEEN '$start' AND '$end'";
+                $interval = '';
+            }
+            $filter .= $interval;
+
+            $listCheckOrders = Orders::getAllCompletedRequestInOrdersMsSQL($filter);
+        }
+
+        require_once(ROOT . '/views/admin/crm/request_completed.php');
+        return true;
+    }
 
     /**
      * @return bool

@@ -600,10 +600,11 @@ class Orders
 
     /**
      * Получаем список заказов для партнера со статусом (Нет в наличии, формируется поставка)
-     * @param $id_user
+     * @param $array_id
+     * @param $completed
      * @return array
      */
-    public static function getReserveOrdersByPartnerMsSQL($array_id)
+    public static function getReserveOrdersByPartnerMsSQL($array_id, $completed = 0)
     {
         // Соединение с БД
         $db = MsSQL::getConnection();
@@ -630,12 +631,12 @@ class Orders
                      ON sgog.site_account_id = sgu.site_account_id
                  LEFT JOIN site_gm_orders_types sgot
                      ON sgot.id = sgog.order_type_id
-             WHERE sgog.processed = 0
+             WHERE sgog.processed = :processed
              AND sgog.site_account_id IN({$idS})
              ORDER BY sgog.id DESC";
         // Используется подготовленный запрос
         $result = $db->prepare($sql);
-        //$result->bindParam(':site_account_id', $id_user, PDO::PARAM_INT);
+        $result->bindParam(':processed', $completed, PDO::PARAM_INT);
         $result->execute();
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
@@ -676,9 +677,10 @@ class Orders
 
     /**
      * Получаем весь список заказов со статусом (Нет в наличии, формируется поставка)
+     * @param int $completed
      * @return array
      */
-    public static function getAllReserveOrdersMsSQL()
+    public static function getAllReserveOrdersMsSQL($completed = 0)
     {
         $db = MsSQL::getConnection();
 
@@ -701,7 +703,98 @@ class Orders
                         ON sgog.site_account_id = sgu.site_account_id
                     LEFT JOIN site_gm_orders_types sgot
                         ON sgot.id = sgog.order_type_id
-                WHERE sgog.processed = 0
+                WHERE sgog.processed = :processed
+                ORDER BY sgog.id DESC";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':processed', $completed, PDO::PARAM_INT);
+        $result->execute();
+        $all = $result->fetchAll(PDO::FETCH_ASSOC);
+        return $all;
+    }
+
+
+    /**
+     * @param $array_id
+     * @param $filter
+     * @return array
+     */
+    public static function getCompletedRequestInOrdersByPartnerMsSQL($array_id, $filter)
+    {
+        // Соединение с БД
+        $db = MsSQL::getConnection();
+
+        $idS = implode(',', $array_id);
+
+        // Получение и возврат результатов
+        $sql = "SELECT
+                 sgog.id,
+                 sgog.site_account_id,
+                 sgog.part_number,
+                 sgog.goods_name,
+                 sgog.so_number,
+                 sgog.price,
+                 sgog.note,
+                 sgog.created_on,
+                 sgog.note1,
+                 sgog.subtype_name,
+                 sgu.site_client_name,
+                 sgot.name as type_name,
+                 sgo.order_number,
+                 sgo.status_name,
+                 sgo.command_text
+             FROM site_gm_ordering_goods sgog
+                 INNER JOIN site_gm_users sgu
+                     ON sgog.site_account_id = sgu.site_account_id
+                 LEFT JOIN site_gm_orders_types sgot
+                     ON sgot.id = sgog.order_type_id
+                 LEFT JOIN site_gm_orders sgo
+                     ON sgog.id = sgo.request_id
+             WHERE sgog.processed = 1
+             AND sgog.site_account_id IN({$idS}) {$filter}
+             ORDER BY sgog.id DESC";
+        // Используется подготовленный запрос
+        $result = $db->prepare($sql);
+        $result->execute();
+        $all = $result->fetchAll(PDO::FETCH_ASSOC);
+        return $all;
+    }
+
+
+    /**
+     * Реквесты которые были выписаны
+     * @param string $filter
+     * @return array
+     */
+    public static function getAllCompletedRequestInOrdersMsSQL($filter = '')
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "SELECT
+                    sgog.id,
+                    sgog.site_account_id,
+                    sgog.part_number,
+                    sgog.goods_name,
+                    sgog.so_number,
+                    sgog.price,
+                    sgog.note,
+                    sgog.status_name,
+                    sgog.created_on,
+                    sgog.note1,
+                    sgog.subtype_name,
+                    sgu.site_client_name,
+                    sgot.name as type_name,
+                    sgo.order_number,
+                    sgo.status_name,
+                    sgo.command_text
+                FROM site_gm_ordering_goods sgog
+                    INNER JOIN site_gm_users sgu
+                        ON sgog.site_account_id = sgu.site_account_id
+                    LEFT JOIN site_gm_orders_types sgot
+                        ON sgot.id = sgog.order_type_id
+                    LEFT JOIN site_gm_orders sgo
+                  		ON sgog.id = sgo.request_id
+                WHERE sgog.processed = 1 {$filter}
                 ORDER BY sgog.id DESC";
 
         $result = $db->prepare($sql);

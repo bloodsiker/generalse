@@ -17,28 +17,30 @@
                     </div>
                     <div class="medium-12 small-12 columns">
                         <div class="row align-bottom">
-                            <div class="medium-9 small-12 columns">
-                                <?php if (AdminBase::checkDenied('crm.request.send', 'view')): ?>
-                                    <button class="button primary tool" id="add-request-button"><i class="fi-plus"></i> Request</button>
-                                <?php endif;?>
+                            <div class="medium-4 small-12 columns">
 
-                                <?php if (AdminBase::checkDenied('crm.request.import', 'view')): ?>
-                                    <button data-open="add-request-import-modal" class="button primary tool"><i class="fi-plus"></i> Import request</button>
-                                <?php endif;?>
+                                <a href="/adm/crm/request" class="button primary tool"><i class="fi-arrow-left"></i> Back to request</a>
 
                                 <?php if (AdminBase::checkDenied('crm.request.export', 'view')): ?>
                                     <button class="button primary tool" onclick="tableToExcel('goods_data', 'Request Table')" style="width: inherit;"><i class="fi-page-export"></i> Export to Excel</button>
                                 <?php endif;?>
-
-                                <?php if (AdminBase::checkDenied('crm.request.price', 'view')): ?>
-                                    <button class="button primary tool" id="price-button"><i class="fi-plus"></i> Price</button>
-                                <?php endif;?>
-
-                                <?php if (AdminBase::checkDenied('crm.request.allprice', 'view')): ?>
-                                    <a href="/upload/attach_request/<?= $user->linkDownloadAllPrice()?>" class="button primary tool" download><i class="fi-download"></i> ALL PRICES</a>
-                                <?php endif;?>
-
-                                <a href="/adm/crm/request/completed" class="button primary tool"><i class="fi-check"></i> Completed request</a>
+                            </div>
+                            <div class="medium-5  small-12 columns">
+                                <form action="/adm/crm/request/completed/" method="get" class="form">
+                                    <div class="row align-bottom">
+                                        <div class="medium-4 text-left small-12 columns">
+                                            <label for="right-label"><i class="fi-calendar"></i> From date</label>
+                                            <input type="text" id="date-start" value="<?=(isset($_GET['start']) && $_GET['start'] != '') ? $_GET['start'] : ''?>" name="start" required>
+                                        </div>
+                                        <div class="medium-4 small-12 columns">
+                                            <label for="right-label"><i class="fi-calendar"></i> To date</label>
+                                            <input type="text" id="date-end" value="<?=(isset($_GET['end']) && $_GET['end'] != '') ? $_GET['end'] : ''?>" name="end">
+                                        </div>
+                                        <div class="medium-4 small-12 columns">
+                                            <button type="submit" class="button primary"><i class="fi-eye"></i> Show</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                             <div class="medium-3 small-12 columns form">
                                 <input type="text" id="goods_search" class="search-input" placeholder="Search..." name="search">
@@ -56,12 +58,15 @@
                 <?php endif;?>
                 <?php if($user->role == 'partner'):?>
                 <table id="goods_data">
-                    <caption>List requests
+                    <caption>Last requests on
+                        <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Functions::addDays(date('Y-m-d'), '-30 days') ?> &mdash;
+                        <?= (isset($_GET['end']) && !empty($_GET['end'])) ? $_GET['end'] : date('Y-m-d') ?>
                         <span id="count_refund" class="text-green">(<?php if (isset($listCheckOrders)) echo count($listCheckOrders) ?>)</span>
                     </caption>
                     <thead>
                     <tr>
                         <th>Request id</th>
+                        <th>Order number</th>
                         <th>Partner</th>
                         <th>Part Number</th>
                         <th>Part Description</th>
@@ -74,7 +79,7 @@
                         <th>Type</th>
                         <th>Note</th>
                         <th>Status</th>
-                        <th>Date create</th>
+                        <th>Date request</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -82,6 +87,7 @@
                         <?php foreach($listCheckOrders as $order):?>
                             <tr class="goods <?= (Functions::calcDiffSec($order['created_on']) < 120) ? 'check_lenovo_ok' : ''?>">
                                 <td><?= $order['id']?></td>
+                                <td><?= $order['order_number']?></td>
                                 <td><?= $order['site_client_name']?></td>
                                 <td><?= $order['part_number']?></td>
                                 <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['goods_name'])?></td>
@@ -101,7 +107,17 @@
                                            title="<?= iconv('WINDOWS-1251', 'UTF-8', $order['note1'])?>"></i>
                                     <?php endif;?>
                                 </td>
-                                <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?></td>
+                                <?php $status_name = iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?>
+                                <td class="<?=Orders::getStatusRequest($status_name);?>">
+                                    <?= $status_name?>
+                                    <?php if($status_name == 'Отказано'):?>
+                                        <i class="fi-info has-tip [tip-top]" style="font-size: 16px;"
+                                           data-tooltip aria-haspopup="true"
+                                           data-show-on="small"
+                                           data-click-open="true"
+                                           title="<?= iconv('WINDOWS-1251', 'UTF-8', $order['command_text'])?>"></i>
+                                    <?php endif;?>
+                                </td>
                                 <td><?= Functions::formatDate($order['created_on'])?></td>
                             </tr>
                         <?php endforeach;?>
@@ -112,12 +128,15 @@
                     || $user->role == 'administrator-fin'
                     || $user->role == 'manager'):?>
                     <table id="goods_data">
-                        <caption>List requests
+                        <caption>Last requests on
+                            <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Functions::addDays(date('Y-m-d'), '-30 days') ?> &mdash;
+                            <?= (isset($_GET['end']) && !empty($_GET['end'])) ? $_GET['end'] : date('Y-m-d') ?>
                             <span id="count_refund" class="text-green">(<?php if (isset($listCheckOrders)) echo count($listCheckOrders) ?>)</span>
                         </caption>
                         <thead>
                         <tr>
                             <th>Request id</th>
+                            <th>Order number</th>
                             <th>Partner</th>
                             <th>Part Number</th>
                             <th>Part Description</th>
@@ -128,10 +147,7 @@
                             <th>Type</th>
                             <th>Note</th>
                             <th>Status</th>
-                            <th>Date create</th>
-                            <?php if (AdminBase::checkDenied('crm.request.delete', 'view')): ?>
-                                <th>Delete</th>
-                            <?php endif;?>
+                            <th>Date request</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -140,28 +156,12 @@
                                 <tr class="goods <?= (Functions::calcDiffSec($order['created_on']) < 120) ? 'check_lenovo_ok' : ''?>"
                                     data-id="<?= $order['id']?>">
                                     <td><?= $order['id']?></td>
+                                    <td><?= $order['order_number']?></td>
                                     <td><?= $order['site_client_name']?></td>
-                                    <td data-pn="<?= $order['part_number']?>" class="order-tr-pn">
-                                        <span class="order_part_num"><?= $order['part_number']?></span>
-                                        <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
-                                            <a href="" class="button edit-pn delete"><i class="fi-pencil"></i></a>
-                                        <?php endif;?>
-                                    </td>
-                                    <td class="order-tr-goods-name">
-                                        <span class="pn_goods_name"><?= iconv('WINDOWS-1251', 'UTF-8', $order['goods_name'])?></span>
-                                        <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
-                                            <a href="" class="button clear_goods_name delete" onclick="return confirm('Вы уверены что хотите очистить название?') ? true : false;"><i class="fi-loop"></i></a>
-                                        <?php endif;?>
-                                    </td>
-                                    <td>
-                                        <?= iconv('WINDOWS-1251', 'UTF-8', $order['subtype_name'])?>
-                                    </td>
-                                    <td class="order-tr-so">
-                                        <span class="order_so"><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></span>
-                                        <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
-                                            <a href="" class="button edit-so delete"><i class="fi-pencil"></i></a>
-                                        <?php endif;?>
-                                    </td>
+                                    <td><span class="order_part_num"><?= $order['part_number']?></span></td>
+                                    <td><span class="pn_goods_name"><?= iconv('WINDOWS-1251', 'UTF-8', $order['goods_name'])?></span></td>
+                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['subtype_name'])?></td>
+                                    <td><span class="order_so"><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></span></td>
                                     <td><?= str_replace('.',',', round($order['price'], 2))?></td>
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['note'])?></td>
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['type_name'])?></td>
@@ -174,18 +174,18 @@
                                                title="<?= iconv('WINDOWS-1251', 'UTF-8', $order['note1'])?>"></i>
                                         <?php endif;?>
                                     </td>
-                                    <td class="order-tr-status">
-                                        <span class="order_status"><?= iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?></span>
-                                        <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
-                                            <a href="" class="button edit-status delete"><i class="fi-pencil"></i></a>
+                                    <?php $status_name = iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?>
+                                    <td class="order-tr-status <?=Orders::getStatusRequest($status_name);?>">
+                                        <span class="order_status"><?= $status_name?></span>
+                                        <?php if($status_name == 'Отказано'):?>
+                                            <i class="fi-info has-tip [tip-top]" style="font-size: 16px;"
+                                               data-tooltip aria-haspopup="true"
+                                               data-show-on="small"
+                                               data-click-open="true"
+                                               title="<?= iconv('WINDOWS-1251', 'UTF-8', $order['command_text'])?>"></i>
                                         <?php endif;?>
                                     </td>
                                     <td><?= Functions::formatDate($order['created_on'])?></td>
-                                    <?php if (AdminBase::checkDenied('crm.request.delete', 'view')): ?>
-                                        <td class="text-center">
-                                            <a href="/adm/crm/request/delete/<?=$order['id']?>" onclick="return confirm('Вы уверены что хотите удалить?') ? true : false;" class="delete disassemble-delete"><i class="fi-x-circle"></i></a>
-                                        </td>
-                                    <?php endif;?>
                                 </tr>
                             <?php endforeach;?>
                         <?php endif;?>
