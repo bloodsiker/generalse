@@ -381,7 +381,7 @@
                                 <label>Lenovo SO</label>
                             </div>
                             <div class="medium-7 small-12 columns">
-                                <input type="text" name="Lenovo_SO" class="required" pattern="[0-9]{10,}" required>
+                                <input type="text" name="Lenovo_SO" class="required" required>
                             </div>
                         </div>
                         <div class="row align-middle multiple-request-hide">
