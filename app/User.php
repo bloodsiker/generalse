@@ -57,7 +57,10 @@ class User
         //$new_array = array_reverse($stock_users_id);
         if($control_users_id){
             $array = array_column($control_users_id, 'control_user_id');
-            $array[] = $id_user;
+            $new_user = new User($id_user);
+            if($new_user->role == 'partner'){
+                $array[] = $id_user;
+            }
             $new_array = array_reverse($array);
             //$list = implode(',', $array);
             return $new_array;

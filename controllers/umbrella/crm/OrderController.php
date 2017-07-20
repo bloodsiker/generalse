@@ -148,23 +148,37 @@ class OrderController extends AdminBase
         }
 
 
-        if($user->role == 'partner') {
+        if($user->role == 'partner' || $user->role == 'manager') {
 
             $filter = "";
-            $interval = " AND sgo.created_on >= DATEADD(day, -14, GETDATE())";
+            $status = "";
+            $interval = "";
+
+            if($user->role == 'partner'){
+                $interval = " AND sgo.created_on >= DATEADD(day, -14, GETDATE())";
+            }
+
+            if($user->role == 'manager'){
+                $status_1 = iconv('UTF-8', 'WINDOWS-1251', 'Предварительный');
+                $status_2 = iconv('UTF-8', 'WINDOWS-1251', 'В обработке');
+                $status_3 = iconv('UTF-8', 'WINDOWS-1251', 'Резерв');
+                $status = " AND (sgo.status_name = '$status_1' OR sgo.status_name = '$status_2' OR sgo.status_name = '$status_3')";
+            }
 
             if(!empty($_GET['end']) && !empty($_GET['start'])){
                 $start = $_GET['start']. " 00:00";
                 $end = $_GET['end']. " 23:59";
                 $filter .= " AND sgo.created_on BETWEEN '$start' AND '$end'";
                 $interval = "";
+                $status = "";
             }
             $filter .= $interval;
+            $filter .= $status;
 
             //$allOrders = Orders::getOrdersByPartner($userId, $filter);
             $allOrders = Orders::getOrdersByPartnerMsSql($user->controlUsers($userId), $filter);
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
+        } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
 
             $filter = "";
             $status_1 = iconv('UTF-8', 'WINDOWS-1251', 'Предварительный');
@@ -205,20 +219,33 @@ class OrderController extends AdminBase
         $arr_error_pn = (isset($_SESSION['error_orders'])) ? $_SESSION['error_orders'] : '';
         $arr_error_text = (isset($_SESSION['error_orders_text'])) ? $_SESSION['error_orders_text'] : '';
 
-        if($user->role == 'partner') {
+        if($user->role == 'partner' || $user->role == 'manager') {
 
             $filter = "";
-            $interval = " AND sgo.created_on >= DATEADD(day, -14, GETDATE())";
+            $status = "";
+            $interval = "";
+
+            if($user->role == 'partner'){
+                $interval = " AND sgo.created_on >= DATEADD(day, -14, GETDATE())";
+            }
+
+            if($user->role == 'manager'){
+                $status_1 = iconv('UTF-8', 'WINDOWS-1251', 'Предварительный');
+                $status_2 = iconv('UTF-8', 'WINDOWS-1251', 'В обработке');
+                $status_3 = iconv('UTF-8', 'WINDOWS-1251', 'Резерв');
+                $status = " AND (sgo.status_name = '$status_1' OR sgo.status_name = '$status_2' OR sgo.status_name = '$status_3')";
+            }
 
             if(!empty($_GET['end']) && !empty($_GET['start'])){
                 $start = $_GET['start']. " 00:00";
                 $end = $_GET['end']. " 23:59";
                 $filter .= " AND sgo.created_on BETWEEN '$start' AND '$end'";
                 $interval = "";
+                $status = "";
             }
-
             $filter .= $interval;
-            //$allOrders = Orders::getOrdersByPartner($userId, $filter);
+            $filter .= $status;
+
             $allOrders = Orders::getOrdersByPartnerMsSql($user->controlUsers($userId), $filter);
 
         } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
@@ -450,9 +477,9 @@ class OrderController extends AdminBase
         // Обьект юзера
         $user = new User($userId);
 
-        if($user->role == 'partner'){
+        if($user->role == 'partner' || $user->role == 'manager'){
 
-            $listExport =[];
+            $listExport = [];
             $start = '';
             $end ='';
 
@@ -476,9 +503,9 @@ class OrderController extends AdminBase
                 $listExport = Orders::getExportOrdersByPartner($user->controlUsers($user->id_user), $start, $end);
             }
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager' ){
+        } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
 
-            $listExport =[];
+            $listExport = [];
             $start = '';
             $end ='';
 

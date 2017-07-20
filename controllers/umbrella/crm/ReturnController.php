@@ -39,11 +39,18 @@ class ReturnController extends AdminBase
         }
 
         $allReturnsByPartner = [];
-        if($user->role == 'partner') {
-            $interval = " AND sgs.created_on >= DATEADD(day, -7, GETDATE())";
+        if($user->role == 'partner' || $user->role == 'manager') {
+            $interval = "";
+            if($user->role == 'manager'){
+                $status_1 = iconv('UTF-8', 'WINDOWS-1251', 'Предварительный');
+                $status_2 = iconv('UTF-8', 'WINDOWS-1251', 'В обработке');
+                $interval = " AND (sgs.status_name = '$status_1' OR sgs.status_name = '$status_2')";
+            }
+
+            $interval .= " AND sgs.created_on >= DATEADD(day, -30, GETDATE())";
             $allReturnsByPartner = Returns::getReturnsByPartner($user->controlUsers($user->id_user), $interval);
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
+        } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
 
             $status_1 = iconv('UTF-8', 'WINDOWS-1251', 'Предварительный');
             $status_2 = iconv('UTF-8', 'WINDOWS-1251', 'В обработке');
@@ -228,7 +235,7 @@ class ReturnController extends AdminBase
             unset($_SESSION['error_return']);
         }
 
-        if($user->role == 'partner') {
+        if($user->role == 'partner' || $user->role == 'manager') {
 
             $filter = "";
 
@@ -239,7 +246,7 @@ class ReturnController extends AdminBase
             }
             $allReturnsByPartner = Returns::getReturnsByPartner($user->controlUsers($user->id_user), $filter);
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
+        } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
 
             $filter = "";
 
@@ -287,7 +294,7 @@ class ReturnController extends AdminBase
 
             $listExport = Returns::getExportReturnsByPartner($user->controlUsers($user->id_user), $start, $end);
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager' ){
+        } elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager' ){
 
             $listExport = [];
             $start = '';

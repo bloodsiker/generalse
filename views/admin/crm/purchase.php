@@ -61,7 +61,7 @@
                 <div class="medium-12 small-12 columns purchase-file-send">
                     <form action="/adm/crm/purchase" id="purchase-excel-send" method="post" enctype="multipart/form-data">
                         <div class="row align-bottom">
-						<?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+						<?php if($user->role == 'administrator' || $user->role == 'administrator-fin'):?>
                                 <div class="medium-2 small-12 columns">
                                     <label><i class="fi-list"></i> Partner</label>
                                     <select name="id_partner" id="id_partner_one" class="required" required>
@@ -73,13 +73,25 @@
                                         <?php endif;?>
                                     </select>
                                 </div>
-                            <?php elseif ($user->role == 'partner'):?>
+
+                            <?php elseif ($user->role == 'manager'):?>
+
                                 <div class="medium-2 small-12 columns">
                                     <label><i class="fi-list"></i> Partner</label>
                                     <select name="id_partner" id="id_partner_one" class="required" required>
                                         <?php $user->renderSelectControlUsers($user->id_user);?>
                                     </select>
                                 </div>
+
+                            <?php elseif ($user->role == 'partner'):?>
+
+                                <div class="medium-2 small-12 columns">
+                                    <label><i class="fi-list"></i> Partner</label>
+                                    <select name="id_partner" id="id_partner_one" class="required" required>
+                                        <?php $user->renderSelectControlUsers($user->id_user);?>
+                                    </select>
+                                </div>
+
                             <?php endif;?>
                             <div class="medium-2 small-12 columns">
                                 <label><i class="fi-list"></i> Stock
@@ -205,7 +217,8 @@
             <div class="medium-12 small-12 columns">
                 <h3>New checkout</h3>
             </div>
-			<?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+			<?php if($user->role == 'administrator' || $user->role == 'administrator-fin'):?>
+
             <div class="medium-12 small-12 columns">
                 <label>Partner</label>
                 <select name="id_partner" id="id_partner" class="required" required>
@@ -217,14 +230,27 @@
                     <?php endif;?>
                 </select>
             </div>
-            <?php elseif ($user->role == 'partner'):?>
+
+            <?php elseif ($user->role == 'manager'):?>
+
                 <div class="medium-12 small-12 columns">
                     <label><i class="fi-list"></i> Partner</label>
                     <select name='id_partner' id='id_partner' class='required' required>
                         <?php $user->renderSelectControlUsers($user->id_user);?>
                     </select>
                 </div>
+
+            <?php elseif ($user->role == 'partner'):?>
+
+                <div class="medium-12 small-12 columns">
+                    <label><i class="fi-list"></i> Partner</label>
+                    <select name='id_partner' id='id_partner' class='required' required>
+                        <?php $user->renderSelectControlUsers($user->id_user);?>
+                    </select>
+                </div>
+
             <?php endif;?>
+
             <div class="medium-12 small-12 columns">
                 <label>Stock</label>
                 <select name="stock" id="stock" class="required" required>

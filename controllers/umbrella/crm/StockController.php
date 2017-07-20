@@ -32,7 +32,7 @@ class StockController extends AdminBase
         // Обьект юзера
         $user = new User($userId);
 
-        if($user->role == 'partner') {
+        if($user->role == 'partner' || $user->role == 'manager') {
 
             $user_ids = $user->controlUsers($user->id_user);
             $partnerList = Admin::getPartnerControlUsers($user_ids);
@@ -52,7 +52,7 @@ class StockController extends AdminBase
             $id_partners = isset($_POST['id_partner']) ? $_POST['id_partner'] : [];
             $allGoodsByPartner = Stocks::getGoodsInStocksPartners($id_partners, $stocks);
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
+        } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
 
             $partnerList = Admin::getAllPartner();
             $new_partner = array_chunk($partnerList, (int)count($partnerList) / 3);

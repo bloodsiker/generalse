@@ -161,7 +161,7 @@ class PurchaseController extends AdminBase
         }
 
 
-        if($user->role == 'partner') {
+        if($user->role == 'partner' || $user->role == 'manager') {
 
             $filter = "";
             $interval = " AND sgp.created_on >= DATEADD(day, -7, GETDATE())";
@@ -176,7 +176,7 @@ class PurchaseController extends AdminBase
             //$listPurchases = Purchases::getPurchasesByPartner($userId, $filter);
             $listPurchases = Purchases::getPurchasesByPartnerMsSql($user->controlUsers($userId), $filter);
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
+        } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
 
             $filter = "";
             $interval = " AND sgp.created_on >= DATEADD(day, -7, GETDATE())";
@@ -216,7 +216,7 @@ class PurchaseController extends AdminBase
         $arr_error_pn = $_SESSION['error_purchase'];
         $arr_check_stock = $_SESSION['error_check_stock'];
 
-        if($user->role == 'partner') {
+        if($user->role == 'partner' || $user->role == 'manager') {
 
             $filter = "";
             $interval = " AND sgp.created_on >= DATEADD(day, -7, GETDATE())";
@@ -231,7 +231,7 @@ class PurchaseController extends AdminBase
             //$listPurchases = Purchases::getPurchasesByPartner($userId, $filter);
             $listPurchases = Purchases::getPurchasesByPartnerMsSql($user->controlUsers($userId), $filter);
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
+        } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
 
             $filter = "";
             $interval = " AND sgp.created_on >= DATEADD(day, -7, GETDATE())";
@@ -430,7 +430,7 @@ class PurchaseController extends AdminBase
         // Обьект юзера
         $user = new User($userId);
 
-        if($user->role == 'partner'){
+        if($user->role == 'partner' || $user->role == 'manager'){
             $listExport = [];
             $start = '';
             $end = '';
@@ -445,7 +445,7 @@ class PurchaseController extends AdminBase
 
             $listExport = Purchases::getExportPurchaseByPartner($user->id_user, $start, $end);
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager' ){
+        } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
 
             $listExport = [];
             $start = '';

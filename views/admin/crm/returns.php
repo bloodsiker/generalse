@@ -229,7 +229,8 @@
             <div class="medium-12 small-12 columns">
                 <h3>Generate report</h3>
             </div>
-            <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+            <?php if($user->role == 'administrator' || $user->role == 'administrator-fin'):?>
+
                 <div class="medium-12 small-12 columns">
                     <div class="row">
                         <div class="medium-12 small-12 columns">
@@ -246,7 +247,23 @@
                         </div>
                     </div>
                 </div>
+
+            <?php elseif($user->role == 'manager'):?>
+
+                <div class="medium-12 small-12 columns">
+                    <div class="row">
+                        <div class="medium-12 small-12 columns">
+                            <label><i class="fi-list"></i> Partner
+                                <select name="id_partner" class="required" required>
+                                    <option value="all">All partners</option>
+                                    <?php $user->renderSelectControlUsers($user->id_user);?>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+                </div>
             <?php endif;?>
+
             <div class="medium-12 small-12 columns">
                 <div class="row">
                     <div class="medium-6 small-12 columns">
