@@ -1,11 +1,12 @@
 <?php
 
 /**
+ * Calculate KPI the result service centers
  * Class KPI
  */
 class KPI
 {
-    const ROUND_TO_THE_POINT = 1;  // Кол-во знаков для округления, после точки
+    const ROUND_TO_THE_POINT = 1;
     const email_CSAT = 87;
     const call_CSAT = 90;
     const ECR = 40;
@@ -23,8 +24,13 @@ class KPI
     const Refund_Rate = 5;
     const LS_Rate = 40;
 
-    //public $name;
 
+    /**
+     * KPI constructor.
+     * @param $name_partner
+     * @param $start
+     * @param $end
+     */
     public function __construct($name_partner, $start, $end)
     {
         $this->name = $name_partner;
@@ -293,6 +299,7 @@ class KPI
 
 
     /**
+     * 12) FTP_30_DAYS
      * @return float
      */
     public function FTP_30_DAYS()
@@ -355,6 +362,10 @@ class KPI
     }
 
 
+    /**
+     * 13)FTP_90_DAYS
+     * @return mixed
+     */
     public function FTP_90_DAYS()
     {
         $start = $this->start;
@@ -471,7 +482,11 @@ class KPI
     }
 
 
-
+    /**
+     * Level of implementation of the norm
+     * @param $result
+     * @param $target
+     */
     public function controlTargetUp($result, $target){
 
         if( $result > ($target)){
@@ -485,6 +500,12 @@ class KPI
         }
     }
 
+
+    /**
+     * Level of implementation of the norm
+     * @param $result
+     * @param $target
+     */
     public function controlTargetDown($result, $target){
 
         if( $result <= ($target)){
@@ -499,6 +520,11 @@ class KPI
 
     }
 
+    /**
+     * Level of implementation of the norm
+     * @param $result
+     * @param $target
+     */
     public function controlTargetPPl($result, $target){
 
         if( $result <= ($target)){
