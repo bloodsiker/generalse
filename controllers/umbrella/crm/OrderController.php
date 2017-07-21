@@ -24,13 +24,9 @@ class OrderController extends AdminBase
      */
     public function actionOrders($filter = "")
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
         $partnerList = Admin::getAllPartner();
         $delivery_address = $user->getDeliveryAddress($user->id_user);
@@ -175,8 +171,16 @@ class OrderController extends AdminBase
             $filter .= $interval;
             $filter .= $status;
 
-            //$allOrders = Orders::getOrdersByPartner($userId, $filter);
             $allOrders = Orders::getOrdersByPartnerMsSql($user->controlUsers($userId), $filter);
+
+            // Параметры для формирование фильтров
+            $user_ids = $user->controlUsers($user->id_user);
+            $partnerList = Admin::getPartnerControlUsers($user_ids);
+            if(count($partnerList) > 3){
+                $new_partner = array_chunk($partnerList, (int)count($partnerList) / 3);
+            } else {
+                $new_partner[] = $partnerList;
+            }
 
         } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
 
@@ -195,6 +199,10 @@ class OrderController extends AdminBase
             $filter .= $interval;
             //$allOrders = Orders::getAllOrders($filter);
             $allOrders = Orders::getAllOrdersMsSql($filter);
+
+            // Параметры для формирование фильтров
+            $partnerList = Admin::getAllPartner();
+            $new_partner = array_chunk($partnerList, (int)count($partnerList) / 3);
         }
 
         require_once(ROOT . '/views/admin/crm/orders.php');
@@ -206,13 +214,8 @@ class OrderController extends AdminBase
      */
     public function actionOrdersSuccess()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-
-        // Обьект юзера
         $user = new User($userId);
         $partnerList = Admin::getAllPartner();
 
@@ -248,7 +251,16 @@ class OrderController extends AdminBase
 
             $allOrders = Orders::getOrdersByPartnerMsSql($user->controlUsers($userId), $filter);
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
+            // Параметры для формирование фильтров
+            $user_ids = $user->controlUsers($user->id_user);
+            $partnerList = Admin::getPartnerControlUsers($user_ids);
+            if(count($partnerList) > 3){
+                $new_partner = array_chunk($partnerList, (int)count($partnerList) / 3);
+            } else {
+                $new_partner[] = $partnerList;
+            }
+
+        } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
 
             $filter = "";
             $status_1 = iconv('UTF-8', 'WINDOWS-1251', 'Предварительный');
@@ -262,8 +274,11 @@ class OrderController extends AdminBase
                 $interval = "";
             }
             $filter .= $interval;
-            //$allOrders = Orders::getAllOrders($filter);
             $allOrders = Orders::getAllOrdersMsSql($filter);
+
+            // Параметры для формирование фильтров
+            $partnerList = Admin::getAllPartner();
+            $new_partner = array_chunk($partnerList, (int)count($partnerList) / 3);
         }
 
         require_once(ROOT . '/views/admin/crm/orders.php');
@@ -277,13 +292,8 @@ class OrderController extends AdminBase
      */
     public function actionOrdersPartNumAjax()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-
-        // Обьект юзера
         $user = new User($userId);
 
         $part_number = $_REQUEST['part_number'];
@@ -302,13 +312,8 @@ class OrderController extends AdminBase
 
     public function actionOrdersAjax()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-
-        // Обьект юзера
         $user = new User($userId);
 
         $data = $_REQUEST['json'];
@@ -369,13 +374,8 @@ class OrderController extends AdminBase
      */
     public function actionOrdersAction()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-
-        // Обьект юзера
         $user = new User($userId);
 
         if($_REQUEST['action'] == 'accept'){
@@ -431,19 +431,12 @@ class OrderController extends AdminBase
      */
     public function actionShowDetailOrders()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-
-        // Обьект юзера
         $user = new User($userId);
 
         $order_id = $_REQUEST['order_id'];
-        //$data = Orders::getShowDetailsOrders($order_id);
         $data = Orders::getShowDetailsOrdersMsSql($order_id);
-        //print_r($data);
         $html = "";
         foreach($data as $item){
             $html .= "<tr>";
@@ -455,77 +448,25 @@ class OrderController extends AdminBase
             $html .= "<td>" . round($item['price'], 2) . "</td>";
             $html .= "</tr>";
         }
-
         print_r($html);
-
         return true;
     }
 
+
     /**
      * генерация таблицы заказов для экспорта
-     * @param $data
      * @return bool
      */
-    public function actionExportOrders($data)
+    public function actionExportOrders()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-
-        // Обьект юзера
         $user = new User($userId);
 
-        if($user->role == 'partner' || $user->role == 'manager'){
-
-            $listExport = [];
-            $start = '';
-            $end ='';
-
-            if(isset($_GET['start']) && !empty($_GET['start'])){
-                $start = $_GET['start'] .' 00:00';
-            }
-
-            if(isset($_GET['end']) && !empty($_GET['end'])){
-                $end = $_GET['end'] . ' 23:59';
-            }
-
-            if(isset($_GET['id_partner']) && !empty($_GET['id_partner'])){
-                if($_GET['id_partner'] == 'all'){
-                    $listExport = Orders::getExportOrdersByPartner($user->controlUsers($user->id_user), $start, $end);
-                } else {
-                    $user_id[] = $_GET['id_partner'];
-                    $listExport = Orders::getExportOrdersByPartner($user_id, $start, $end);
-                }
-
-            } else {
-                $listExport = Orders::getExportOrdersByPartner($user->controlUsers($user->id_user), $start, $end);
-            }
-
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
-
-            $listExport = [];
-            $start = '';
-            $end ='';
-
-            if(isset($_GET['start']) && !empty($_GET['start'])){
-                $start = $_GET['start'] .' 00:00';
-            }
-
-            if(isset($_GET['end']) && !empty($_GET['end'])){
-                $end = $_GET['end'] . ' 23:59';
-            }
-
-            if(isset($_GET['id_partner']) && !empty($_GET['id_partner'])){
-                if($_GET['id_partner'] == 'all'){
-                    $listExport = Orders::getExportOrdersAllPartner($start, $end);
-                } else {
-                    $user_id = $_GET['id_partner'];
-                    $listExport = Orders::getExportOrdersByPartner($user->controlUsers($user_id), $start, $end);
-                }
-            }
-        }
+        $start =  isset($_POST['start']) ? $_POST['start'] .' 00:00' : '';
+        $end =  isset($_POST['end']) ? $_POST['end'] .' 23:59' : '';
+        $id_partners = isset($_POST['id_partner']) ? $_POST['id_partner'] : [];
+        $listExport = Orders::getExportOrdersByPartner($id_partners, $start, $end);
 
         require_once (ROOT . '/views/admin/crm/export/orders.php');
         return true;

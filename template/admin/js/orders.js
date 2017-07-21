@@ -1,8 +1,3 @@
-// ОТкрываем модальное окно для выбора даты експорта
-$(document).on('click', '#export-button', function(e) {
-    $('#export-modal form')[0].reset();
-    $('#export-modal').foundation('open');
-});
 
 
 $('#add-batch-form').submit(function(e) {
@@ -17,6 +12,82 @@ $('#add-batch-form').submit(function(e) {
         }, 3000);
     }
 });
+
+
+// Поиск по чекбоксам
+var checkedArr = [];
+$('#search').focus(function (event) {
+
+    var checkedLength = $('label.check:not(.all)').length;
+    console.log();
+    for(var i = 0; i < checkedLength; i++) {
+        checkedArr.push({id: i, text:$('label.check:not(.all)')[i].innerText})
+    }
+});
+
+$('#search').keyup(function (event) {
+
+    var value = $('#search').val();
+
+    if(value.length > 0){
+        $('label.check.all').parent().css('display', 'none');
+    } else {
+        $('label.check.all').parent().css('display', '');
+    }
+
+    // Нет совпадений
+    var arr_not_search = checkedArr.filter(function (key) {
+        return key.text.toLowerCase().indexOf(event.target.value.toLowerCase()) === -1;
+    });
+
+    $('label.check:not(.all)').parent().removeAttr('style');
+
+    arr_not_search.forEach(function (key) {
+        var label_not = $('label.check:not(.all)');
+        var label = $('label.check');
+        label_not[key.id].parentNode.style.display = 'none';
+        label.siblings("input[type=checkbox]").prop('checked', false);
+        label.css('color', '#fff');
+    });
+});
+
+
+//Клик по кнопке Генерация excel
+$('#form-generate-excel').submit(function(e) {
+    e.preventDefault();
+
+    $('#form-generate-excel').find('button').prop('disabled', true);
+    $('#wait').removeClass('hide');
+    setTimeout(function () {
+        e.target.submit()
+    }, 2000);
+});
+
+
+var checkAllCheckbox = function (event) {
+
+    var label = $('.check');
+    if (event.target.checked) {
+        $("input[type=checkbox]").prop('checked', true);
+        label.css('color', 'green');
+    } else {
+        $("input[type=checkbox]").prop('checked', false);
+        label.css('color', '#fff');
+    }
+
+};
+
+// Отмечаем зеленным цветом выбраный чекбокс
+var checkColor = function (event) {
+
+    var label = $(event.target).siblings('[for="'+event.target.id+'"]');
+    if (event.target.checked) {
+        label.css('color', 'green');
+    } else {
+        label.css('color', '#fff');
+    }
+};
+
 
 // открыть окно добавления корзины
 $('body').on('click', '#add-checkout-button', function() {

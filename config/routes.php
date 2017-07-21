@@ -88,7 +88,7 @@ return array(
     'adm/crm/returns_ajax' => 'return/returnsAjax',
     'adm/crm/returns' => 'return/returns',
 
-    'adm/crm/export/orders/([a-z0-9-_?&]+)' => 'order/exportOrders/$1',
+    'adm/crm/export/orders' => 'order/exportOrders',
     'adm/crm/orders/([a-z0-9-_?&]+)' => 'order/orders/$1',
     'adm/crm/orders_part_num_ajax' => 'order/ordersPartNumAjax',
     'adm/crm/show_orders' => 'order/showDetailOrders',

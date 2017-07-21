@@ -35,7 +35,7 @@
 
 <div id="orders">
     <table border="1" cellpadding="5" cellspacing="0" width="100%">
-        <caption>Export &laquo; Orders &raquo; <?=(isset($_GET['start'])) ? $_GET['start'] : $_GET['start']?> &mdash; <?=(isset($_GET['end'])) ? $_GET['end'] : $_GET['end']?></caption>
+        <caption>Export &laquo; Orders &raquo; <?=(isset($_POST['start'])) ? $_POST['start'] : $_POST['start']?> &mdash; <?=(isset($_POST['end'])) ? $_POST['end'] : $_POST['end']?></caption>
         <thead>
         <tr>
             <th>Partner</th>
