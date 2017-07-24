@@ -58,6 +58,34 @@ class Supply
         return $result->execute();
     }
 
+
+    /**
+     * @param $site_id
+     * @param $ready
+     * @return bool
+     */
+    public static function updateReady($site_id, $ready)
+    {
+        // Соединение с БД
+        $db = MsSQL::getConnection();
+
+        // Текст запроса к БД
+        $sql = "UPDATE site_gm_supplies
+            SET
+                ready = :ready
+            WHERE site_id = :site_id";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':site_id', $site_id, PDO::PARAM_INT);
+        $result->bindParam(':ready', $ready, PDO::PARAM_INT);
+        return $result->execute();
+    }
+
+
+    /**
+     * @param $options
+     * @return bool
+     */
     public static function addSupplyPartsMSSQL($options)
     {
         // Соединение с БД

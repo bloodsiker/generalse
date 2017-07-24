@@ -71,7 +71,7 @@ class SupplyController extends AdminBase
                         $options['site_account_id'] = $user->id_user;
                         $options['supply_name'] = iconv('UTF-8', 'WINDOWS-1251', $_POST['supply_name']);
                         $options['arriving_date'] = $_POST['arriving_date'];
-                        $options['ready'] = 1;
+                        $options['ready'] = 0;
                         Supply::addSupplyMSSQL($options);
 
                         $supply_error_part = [];
@@ -94,6 +94,8 @@ class SupplyController extends AdminBase
                                     array_push($supply_error_part, $insert['part_number']);
                                 }
                             }
+
+                            //Supply::updateReady($options['site_id'], 1);
                         }
                         Logger::getInstance()->log($user->id_user, 'Загрузил excel файл с поставками');
                         // Пишем в сессию массив с ненайденными партномерами
