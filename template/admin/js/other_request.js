@@ -1,45 +1,3 @@
-// открыть окно добавления корзины
-$('body').on('click', '#add-request-button', function() {
-    $('.name-product').text('');
-    $('#add-request-modal form')[0].reset();
-    $('#add-request-modal').foundation('open');
-});
-
-// модальное окно (узнать цену по парт номеру)
-$('body').on('click', '#price-button', function() {
-    $('.name-product').text('');
-    $('#price-modal form')[0].reset();
-    $('#price-modal').foundation('open');
-});
-
-
-//PART NUMBER SEARCH
-$('[name="part_number"]').keyup(function(e) {
-    //ajax e.target.value
-    var part_number = e.target.value;
-
-    $.ajax({
-        url: "/adm/crm/request/price_part_ajax",
-        type: "POST",
-        data: {part_number : part_number},
-        cache: false,
-        success: function (response) {
-            var obj = JSON.parse(response);
-            console.log(response);
-            if(obj.result == 1){
-                $("[name='part_number']").removeClass('error_part');
-                $('.name-product').text(obj.mName).css('color', '#4CAF50');
-                $("[name='price']").val(obj.price);
-            } else {
-                $('.name-product').text('not found').css('color', 'red');
-                $("[name='price']").val('0');
-            }
-        }
-    });
-
-    return false;
-});
-
 
 $('#add-request-import-form').submit(function(e) {
     e.preventDefault();
@@ -55,31 +13,31 @@ $('#add-request-import-form').submit(function(e) {
 });
 
 
-// Открываем модальное окно, и редактируем парт номер
-var id_order = null;
-$(document).on('click', '.edit-pn', function(e) {
+// Открываем модальное окно, и редактируем price
+var id_request = null;
+$(document).on('click', '.edit-price', function(e) {
     e.preventDefault();
-    $('#edit-pn').foundation('open');
-    var order_pn = $(this).siblings('.order_part_num').text();
-    $("#order_pn").val(order_pn.trim());
-    id_order = $(this).parent('td').parent('tr').data('id');
+    $('#edit-price').foundation('open');
+    var request_price = $(this).siblings('.request_price').text();
+    $("#request_price").val(request_price.trim());
+    id_request = $(this).parent('td').parent('tr').data('id');
 });
 // Вносим изменения в модальном окне
-$(document).on('click', '#send-order-pn', function(e) {
+$(document).on('click', '#send-request-price', function(e) {
     e.preventDefault();
-    var order_pn = $("#order_pn").val();
-    var data = "action=edit_pn&id_order=" + id_order + "&order_pn=" + order_pn;
+    var request_price = $("#request_price").val();
+    var data = "action=edit_price&id_request=" + id_request + "&request_price=" + request_price;
 
     $.ajax({
-        url: "/adm/crm/request/request_ajax",
+        url: "/adm/crm/other-request/request_ajax",
         type: "POST",
         data: data,
         cache: false,
         success: function (response) {
             if(response == 200){
-                $('[data-id="' + id_order + '"]').find('.order_part_num').text(order_pn).css('color', 'green');
-                $('#edit-pn form')[0].reset();
-                $('#edit-pn').foundation('close');
+                $('[data-id="' + id_request + '"]').find('.request_price').text(request_price).css('color', 'green');
+                $('#edit-price form')[0].reset();
+                $('#edit-price').foundation('close');
             } else {
                 alert('Ошибка! Не удалось обновить запись!');
             }
@@ -88,84 +46,121 @@ $(document).on('click', '#send-order-pn', function(e) {
 });
 
 
-// Изменяем SO
-$(document).on('click', '.edit-so', function(e) {
+// Мягкое удаление
+$(document).on('click', '.request-delete', function(e) {
     e.preventDefault();
-    $('#edit-so').foundation('open');
-    var order_so = $(this).siblings('.order_so').text();
-    $("#order_so").val(order_so.trim());
-    id_order = $(this).parent('td').parent('tr').data('id');
-});
-$(document).on('click', '#send-order-so', function(e) {
-    e.preventDefault();
-    var order_so = $("#order_so").val();
-    var data = "action=edit_so&id_order=" + id_order + "&order_so=" + order_so;
+    if (confirm("Вы уверены что хотите удалить?")) {
 
-    $.ajax({
-        url: "/adm/crm/request/request_ajax",
-        type: "POST",
-        data: data,
-        cache: false,
-        success: function (response) {
-            if(response == 200){
-                $('[data-id="' + id_order + '"]').find('.order_so').text(order_so).css('color', 'green');
-                $('#edit-so form')[0].reset();
-                $('#edit-so').foundation('close');
-            } else {
-                alert('Ошибка! Не удалось обновить запись!');
+        id_request = $(this).parent('td').parent('tr').data('id');
+        var data = "action=request_delete&id_request=" + id_request;
+
+        $.ajax({
+            url: "/adm/crm/other-request/request_ajax",
+            type: "POST",
+            data: data,
+            cache: false,
+            success: function (response) {
+                if(response == 200){
+                    var html = '<td>' + id_request + '</td>'
+                        + '<td colspan="12" class="text-center">Request deleted</td>';
+                    $('[data-id="' + id_request + '"]').html(html).css('background', '#9ef19d');
+                } else {
+                    alert('Ошибка! Не удалось удалить запись!');
+                }
             }
-        }
-    });
+        });
+    } else {
+        return false;
+    }
 });
 
-// Чистим название парт номера
-$(document).on('click', '.clear_goods_name', function(e) {
-    e.preventDefault();
-    var id_order = $(this).parent('td').parent('tr').data('id');
-    var data = "action=clear_goods_name&id_order=" + id_order;
 
-    $.ajax({
-        url: "/adm/crm/request/request_ajax",
-        type: "POST",
-        data: data,
-        cache: false,
-        success: function (response) {
-            if(response == 200){
-                $('[data-id="' + id_order + '"]').find('.pn_goods_name').text('');
-            } else {
-                alert('Ошибка! Не удалось очистить название!');
+// Согласование цен
+$(document).on('click', '.request-action', function(e) {
+    e.preventDefault();
+
+    id_request = $(this).parent('td').parent('tr').data('id');
+    var action = $(this).data('action');
+    var data = "action=action&id_request=" + id_request + '&user_action=' + action;
+
+    if (action == 4) {
+        // Добавляем блок с комментариями
+        var html = "<div class='dismiss-container'>" +
+            "<textarea class='dismiss-comment' cols='30' placeholder='Комментарий' rows='3'></textarea>" +
+            "<button id='send-dismiss'>Disagree</button>" +
+            "<button id='send-close'>Close</button>" +
+            "</div>";
+        $(this).after(html);
+
+        //Отправляем
+        $('#send-dismiss').click(function () {
+            var comment = $('.dismiss-comment').val();
+            data += '&comment=' + comment;
+            console.log(data);
+            $.ajax({
+                url: "/adm/crm/other-request/request_ajax",
+                type: "POST",
+                data: data,
+                cache: false,
+                success: function (response) {
+                    console.log(response);
+                    if(response == 200){
+                        if (action == 4) {
+                            $('[data-id="' + id_request + '"]').find('.action-control').text('Нет согласия').css('color', 'red');
+                            $('[data-id="' + id_request + '"]').find('.status').text('Нет согласия').removeClass('aqua').addClass('red');
+                        }
+                    } else {
+                        alert('Ошибка! Не удалось отклонить!');
+                    }
+                }
+            });
+            return false;
+        });
+
+        // Удаляем блок с комментариями
+        $('#send-close').click(function () {
+            $('.dismiss-container').remove();
+        });
+
+    } else {
+
+        $.ajax({
+            url: "/adm/crm/other-request/request_ajax",
+            type: "POST",
+            data: data,
+            cache: false,
+            success: function (response) {
+                if(response == 200){
+                    var element = $('[data-id="' + id_request + '"]');
+
+                    if (action == 1) {
+                        element.find('.action-control').text('Ожидаем действия партнера').css('color', 'green');
+                        element.find('.status').text('Согласование').removeClass('yellow').addClass('aqua');
+                        element.find('.edit-price').remove();
+                    } else if(action == 2) {
+                        element.find('.action-control').text('Отказано').css('color', 'red');
+                        element.find('.status').text('Отказано').removeClass('yellow').addClass('red');
+                        element.find('.edit-price').remove();
+                    } else if(action == 3) {
+                        element.find('.action-control').text('Ожидается отправка').css('color', 'orange');
+                        element.find('.status').text('Отправка').removeClass('aqua').addClass('orange');
+                    } else if(action == 5) {
+                        element.find('.action-control').text('Выполненный запрос').css('color', 'orange');
+                        element.find('.status').text('Выполненный').removeClass('orange').addClass('green');
+                    }
+
+                } else {
+                    if (action == 1) {
+                        alert('Ошибка! Не удалось отправить на согласование!');
+                    } else if(action == 2) {
+                        alert('Ошибка! Не удалось отклонить!');
+                    } else if(action == 3) {
+                        alert('Ошибка! Не удалось принять!');
+                    } else if(action == 5) {
+                        alert('Ошибка! Не удалось выполнить запрос!');
+                    }
+                }
             }
-        }
-    });
-});
-
-
-// Редиктируем статус реквеста
-$(document).on('click', '.edit-status', function(e) {
-    e.preventDefault();
-    $('#edit-status').foundation('open');
-    var order_status = $(this).siblings('.order_status').text();
-    $("#order_status").val(order_status.trim());
-    id_order = $(this).parent('td').parent('tr').data('id');
-});
-$(document).on('click', '#send-order-status', function(e) {
-    e.preventDefault();
-    var order_status = $("#order_status").val();
-    var data = "action=edit_status&id_order=" + id_order + "&order_status=" + order_status;
-
-    $.ajax({
-        url: "/adm/crm/request/request_ajax",
-        type: "POST",
-        data: data,
-        cache: false,
-        success: function (response) {
-            if(response == 200){
-                $('[data-id="' + id_order + '"]').find('.order_status').text(order_status).css('color', 'green');
-                $('#edit-status form')[0].reset();
-                $('#edit-status').foundation('close');
-            } else {
-                alert('Ошибка! Не удалось обновить запись!');
-            }
-        }
-    });
+        });
+    }
 });

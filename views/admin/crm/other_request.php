@@ -18,27 +18,17 @@
                     <div class="medium-12 small-12 columns">
                         <div class="row align-bottom">
                             <div class="medium-9 small-12 columns">
-                                <?php if (AdminBase::checkDenied('crm.request.send', 'view')): ?>
-                                    <button class="button primary tool" id="add-request-button"><i class="fi-plus"></i> Request</button>
+                                <?php if (AdminBase::checkDenied('crm.other.request.send', 'view')): ?>
+                                    <button data-open="add-request-modal" class="button primary tool" id="add-request-button"><i class="fi-plus"></i> Request</button>
                                 <?php endif;?>
 
-                                <?php if (AdminBase::checkDenied('crm.request.import', 'view')): ?>
+                                <?php if (AdminBase::checkDenied('crm.other.request.import', 'view')): ?>
                                     <button data-open="add-request-import-modal" class="button primary tool"><i class="fi-plus"></i> Import request</button>
                                 <?php endif;?>
 
-                                <?php if (AdminBase::checkDenied('crm.request.export', 'view')): ?>
+                                <?php if (AdminBase::checkDenied('crm.other.request.export', 'view')): ?>
                                     <button class="button primary tool" onclick="tableToExcel('goods_data', 'Request Table')" style="width: inherit;"><i class="fi-page-export"></i> Export to Excel</button>
                                 <?php endif;?>
-
-                                <?php if (AdminBase::checkDenied('crm.request.price', 'view')): ?>
-                                    <button class="button primary tool" id="price-button"><i class="fi-plus"></i> Price</button>
-                                <?php endif;?>
-
-                                <?php if (AdminBase::checkDenied('crm.request.allprice', 'view')): ?>
-                                    <a href="/upload/attach_request/<?= $user->linkDownloadAllPrice()?>" class="button primary tool" download><i class="fi-download"></i> ALL PRICES</a>
-                                <?php endif;?>
-
-                                <a href="/adm/crm/request/completed" class="button primary tool"><i class="fi-check"></i> Completed request</a>
                             </div>
                             <div class="medium-3 small-12 columns form">
                                 <input type="text" id="goods_search" class="search-input" placeholder="Search..." name="search">
@@ -57,7 +47,7 @@
                 <?php if($user->role == 'partner'):?>
                 <table id="goods_data">
                     <caption>List requests
-                        <span id="count_refund" class="text-green">(<?php if (isset($listCheckOrders)) echo count($listCheckOrders) ?>)</span>
+                        <span id="count_refund" class="text-green">(<?php if (isset($listRequests)) echo count($listRequests) ?>)</span>
                     </caption>
                     <thead>
                     <tr>
@@ -65,9 +55,6 @@
                         <th>Partner</th>
                         <th>Part Number</th>
                         <th>Part Description</th>
-                        <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
-                            <th>Subtype</th>
-                        <?php endif?>
                         <th>SO Number</th>
                         <th>Price</th>
                         <th>Address</th>
@@ -75,34 +62,53 @@
                         <th>Note</th>
                         <th>Status</th>
                         <th>Date create</th>
+                        <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <?php if(is_array($listCheckOrders)):?>
-                        <?php foreach($listCheckOrders as $order):?>
-                            <tr class="goods <?= (Functions::calcDiffSec($order['created_on']) < 120) ? 'check_lenovo_ok' : ''?>">
-                                <td><?= $order['id']?></td>
-                                <td><?= $order['site_client_name']?></td>
-                                <td><?= $order['part_number']?></td>
-                                <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['goods_name'])?></td>
-                                <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
-                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['subtype_name'])?></td>
-                                <?php endif?>
-                                <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></td>
-                                <td><?= str_replace('.',',', round($order['price'], 2))?></td>
-                                <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['note'])?></td>
-                                <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['type_name'])?></td>
+                    <?php if(is_array($listRequests)):?>
+                        <?php foreach ($listRequests as $request):?>
+                            <tr class="goods <?= (Functions::calcDiffSec($request['date_create']) < 120) ? 'check_lenovo_ok' : ''?>">
+                                <td><?= $request['id']?></td>
+                                <td><?= $request['name_partner']?></td>
+                                <td><?= $request['part_number']?></td>
+                                <td><?= $request['part_description']?></td>
+                                <td><?= $request['so_number']?></td>
+                                <td><?= $request['price']?></td>
+                                <td><?= $request['address']?></td>
+                                <td><?= $request['order_type']?></td>
                                 <td class="text-center">
-                                    <?php if($order['note1'] != ' ' && $order['note1'] != null):?>
+                                    <?php if($request['note'] != ' ' && $request['note'] != null):?>
                                         <i class="fi-info has-tip [tip-top]" style="font-size: 16px;"
                                            data-tooltip aria-haspopup="true"
                                            data-show-on="small"
                                            data-click-open="true"
-                                           title="<?= iconv('WINDOWS-1251', 'UTF-8', $order['note1'])?>"></i>
+                                           title="<?= $request['note']?>"></i>
                                     <?php endif;?>
                                 </td>
-                                <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?></td>
-                                <td><?= Functions::formatDate($order['created_on'])?></td>
+                                <td><?= $request['status_name']?></td>
+                                <td><?= Functions::formatDate($request['date_create'])?></td>
+                                <td class="action-control">
+                                    <?php if($request['action'] == 0):?>
+
+                                    <?php elseif($request['action'] == 1):?>
+                                        <a href="" data-action="3" class="success request-action">Agree</a>
+                                        <a href="" data-action="4" class="dismiss request-action">Disagree</a>
+                                    <?php elseif($request['action'] == 2):?>
+                                        <span style="color: red">Отказано</span>
+                                    <?php elseif($request['action'] == 3):?>
+                                        <span style="color: orange">Ожидается отправка</span>
+                                    <?php elseif($request['action'] == 4):?>
+                                        <span style="color: red">Нет согласия</span>
+                                        <i class="fi-info has-tip [tip-top]" style="font-size: 16px;"
+                                           data-tooltip aria-haspopup="true"
+                                           data-show-on="small"
+                                           data-click-open="true"
+                                           title="<?= $request['comment_disagree']?>"></i>
+                                    <?php elseif($request['action'] == 5):?>
+                                        <span style="color: green">Выполненный запрос</span>
+                                    <?php endif;?>
+                                </td>
                             </tr>
                         <?php endforeach;?>
                     <?php endif;?>
@@ -113,7 +119,7 @@
                     || $user->role == 'manager'):?>
                     <table id="goods_data">
                         <caption>List requests
-                            <span id="count_refund" class="text-green">(<?php if (isset($listCheckOrders)) echo count($listCheckOrders) ?>)</span>
+                            <span id="count_refund" class="text-green">(<?php if (isset($listRequests)) echo count($listRequests) ?>)</span>
                         </caption>
                         <thead>
                         <tr>
@@ -121,7 +127,6 @@
                             <th>Partner</th>
                             <th>Part Number</th>
                             <th>Part Description</th>
-                            <th>Subtype</th>
                             <th>SO Number</th>
                             <th>Price</th>
                             <th>Address</th>
@@ -129,61 +134,67 @@
                             <th>Note</th>
                             <th>Status</th>
                             <th>Date create</th>
+                            <th class="text-center">Actions</th>
                             <?php if (AdminBase::checkDenied('crm.request.delete', 'view')): ?>
-                                <th>Delete</th>
+                                <th class="text-center">Delete</th>
                             <?php endif;?>
                         </tr>
                         </thead>
                         <tbody>
-                        <?php if(is_array($listCheckOrders)):?>
-                            <?php foreach($listCheckOrders as $order):?>
-                                <tr class="goods <?= (Functions::calcDiffSec($order['created_on']) < 120) ? 'check_lenovo_ok' : ''?>"
-                                    data-id="<?= $order['id']?>">
-                                    <td><?= $order['id']?></td>
-                                    <td><?= $order['site_client_name']?></td>
-                                    <td data-pn="<?= $order['part_number']?>" class="order-tr-pn">
-                                        <span class="order_part_num"><?= $order['part_number']?></span>
-                                        <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
-                                            <a href="" class="button edit-pn delete"><i class="fi-pencil"></i></a>
+                        <?php if(is_array($listRequests)):?>
+                            <?php foreach ($listRequests as $request):?>
+                                <tr class="goods <?= (Functions::calcDiffSec($request['date_create']) < 120) ? 'check_lenovo_ok' : ''?>"
+                                    data-id="<?= $request['id']?>">
+                                    <td><?= $request['id']?></td>
+                                    <td><?= $request['name_partner']?></td>
+                                    <td><?= $request['part_number']?></td>
+                                    <td><?= $request['part_description']?></td>
+                                    <td><?= $request['so_number']?></td>
+                                    <td class="request-price">
+                                        <span class="request_price"><?= $request['price']?></span>
+                                        <?php if($request['action'] == 0):?>
+                                            <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+                                                <a href="" class="button edit-price delete"><i class="fi-pencil"></i></a>
+                                            <?php endif;?>
                                         <?php endif;?>
                                     </td>
-                                    <td class="order-tr-goods-name">
-                                        <span class="pn_goods_name"><?= iconv('WINDOWS-1251', 'UTF-8', $order['goods_name'])?></span>
-                                        <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
-                                            <a href="" class="button clear_goods_name delete" onclick="return confirm('Вы уверены что хотите очистить название?') ? true : false;"><i class="fi-loop"></i></a>
-                                        <?php endif;?>
-                                    </td>
-                                    <td>
-                                        <?= iconv('WINDOWS-1251', 'UTF-8', $order['subtype_name'])?>
-                                    </td>
-                                    <td class="order-tr-so">
-                                        <span class="order_so"><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></span>
-                                        <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
-                                            <a href="" class="button edit-so delete"><i class="fi-pencil"></i></a>
-                                        <?php endif;?>
-                                    </td>
-                                    <td><?= str_replace('.',',', round($order['price'], 2))?></td>
-                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['note'])?></td>
-                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['type_name'])?></td>
+                                    <td><?= $request['address']?></td>
+                                    <td><?= $request['order_type']?></td>
                                     <td class="text-center">
-                                        <?php if($order['note1'] != ' ' && $order['note1'] != null):?>
+                                        <?php if($request['note'] != ' ' && $request['note'] != null):?>
                                             <i class="fi-info has-tip [tip-top]" style="font-size: 16px;"
                                                data-tooltip aria-haspopup="true"
                                                data-show-on="small"
                                                data-click-open="true"
-                                               title="<?= iconv('WINDOWS-1251', 'UTF-8', $order['note1'])?>"></i>
+                                               title="<?= $request['note']?>"></i>
                                         <?php endif;?>
                                     </td>
-                                    <td class="order-tr-status">
-                                        <span class="order_status"><?= iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?></span>
-                                        <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
-                                            <a href="" class="button edit-status delete"><i class="fi-pencil"></i></a>
+                                    <td class="status <?= OtherRequest::getStatusRequest($request['status_name'])?>"><?= $request['status_name']?></td>
+                                    <td><?= Functions::formatDate($request['date_create'])?></td>
+                                    <td class="action-control">
+                                        <?php if($request['action'] == 0):?>
+                                            <a href="" data-action="1" class="return request-action">Согласование</a>
+                                            <a href="" data-action="2" class="dismiss request-action">Отказ</a>
+                                        <?php elseif($request['action'] == 1):?>
+                                            <span style="color: green">Ожидаем действия партнера</span>
+                                        <?php elseif($request['action'] == 2):?>
+                                            <span style="color: red">Отказано</span>
+                                        <?php elseif($request['action'] == 3):?>
+                                            <a href="" data-action="5" class="accept request-action">Выполненить запрос</a>
+                                        <?php elseif($request['action'] == 4):?>
+                                            <span style="color: red">Нет согласия</span>
+                                            <i class="fi-info has-tip [tip-top]" style="font-size: 16px;"
+                                               data-tooltip aria-haspopup="true"
+                                               data-show-on="small"
+                                               data-click-open="true"
+                                               title="<?= $request['comment_disagree']?>"></i>
+                                        <?php elseif($request['action'] == 5):?>
+                                            <span style="color: green">Выполненный запрос</span>
                                         <?php endif;?>
                                     </td>
-                                    <td><?= Functions::formatDate($order['created_on'])?></td>
                                     <?php if (AdminBase::checkDenied('crm.request.delete', 'view')): ?>
                                         <td class="text-center">
-                                            <a href="/adm/crm/request/delete/<?=$order['id']?>" onclick="return confirm('Вы уверены что хотите удалить?') ? true : false;" class="delete disassemble-delete"><i class="fi-x-circle"></i></a>
+                                            <a href="" class="delete request-delete"><i class="fi-x-circle"></i></a>
                                         </td>
                                     <?php endif;?>
                                 </tr>
@@ -214,17 +225,16 @@
             </div>
             <div class="medium-12 small-12 columns">
                 <label>Type</label>
-                <select name="order_type_id" class="required" required>
+                <select name="order_type" class="required" required>
                     <option value="" selected disabled>none</option>
-                    <?php foreach ($order_type as $type):?>
-                        <option value="<?= $type['id']?>"><?= iconv('WINDOWS-1251', 'UTF-8', $type['name'])?></option>
-                    <?php endforeach;?>
+                    <option value="Гарантия">Гарантия</option>
+                    <option value="Не гарантия">Не гарантия</option>
                 </select>
             </div>
             <?php if(is_array($delivery_address) && !empty($delivery_address)):?>
                 <div class="medium-12 small-12 columns">
                     <label>Delivery address</label>
-                    <select name="note" class="required" required>
+                    <select name="address" class="required" required>
                         <option value="" selected disabled>none</option>
                         <?php foreach ($delivery_address as $address):?>
                             <option value="<?= $address?>"><?= $address?></option>
@@ -234,7 +244,7 @@
             <?php endif; ?>
             <div class="medium-12 small-12 columns">
                 <label>Note</label>
-                <textarea rows="3" name="note1"></textarea>
+                <textarea rows="3" name="note"></textarea>
             </div>
             <input type="hidden" name="add_request" value="true">
             <div class="medium-12 small-12 columns">
@@ -247,27 +257,6 @@
     </button>
 </div>
 
-
-<div class="reveal" id="price-modal" data-reveal>
-    <form action="" id="price-form" method="post" class="form" data-abide novalidate>
-        <div class="row align-bottom">
-            <div class="medium-12 small-12 columns">
-                <h3>Price</h3>
-            </div>
-            <div class="medium-12 small-12 columns">
-                <label>Part Number <span style="color: #4CAF50;" class="name-product"></span></label>
-                <input type="text" class="required" name="part_number" required>
-            </div>
-            <div class="medium-12 small-12 columns">
-                <label>Price </label>
-                <input type="text" class="required" name="price" disabled>
-            </div>
-        </div>
-    </form>
-    <button class="close-button" data-close aria-label="Close modal" type="button">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
 
 
 <div class="reveal" id="add-request-import-modal" data-reveal>
@@ -295,9 +284,8 @@
                         <label>Type</label>
                         <select name="order_type_id" class="required" required>
                             <option value="" selected disabled>none</option>
-                            <?php foreach ($order_type as $type):?>
-                                <option value="<?= $type['id']?>"><?= iconv('WINDOWS-1251', 'UTF-8', $type['name'])?></option>
-                            <?php endforeach;?>
+                            <option value="Гарантия">Гарантия</option>
+                            <option value="Не гарантия">Не гарантия</option>
                         </select>
                     </div>
 
@@ -339,22 +327,22 @@
     </button>
 </div>
 
-<div class="reveal" id="edit-pn" data-reveal>
+<div class="reveal" id="edit-price" data-reveal>
     <form action="#" method="post" class="form" novalidate="">
         <div class="row align-bottom">
             <div class="medium-12 small-12 columns">
-                <h3>Edit part number</h3>
+                <h3>Edit price</h3>
             </div>
             <div class="medium-12 small-12 columns">
                 <div class="row">
                     <div class="medium-12 small-12 columns">
-                        <label>Part number </label>
-                        <input type="text" id="order_pn" name="order_pn" autocomplete="off">
+                        <label>Price </label>
+                        <input type="text" id="request_price" name="request_price" autocomplete="off">
                     </div>
                 </div>
             </div>
             <div class="medium-12 small-12 columns">
-                <button type="button" id="send-order-pn" class="button primary">Edit</button>
+                <button type="button" id="send-request-price" class="button primary">Edit</button>
             </div>
         </div>
     </form>
@@ -363,54 +351,6 @@
     </button>
 </div>
 
-<div class="reveal" id="edit-so" data-reveal>
-    <form action="#" method="post" class="form" novalidate="">
-        <div class="row align-bottom">
-            <div class="medium-12 small-12 columns">
-                <h3>Edit SO number</h3>
-            </div>
-            <div class="medium-12 small-12 columns">
-                <div class="row">
-                    <div class="medium-12 small-12 columns">
-                        <label>SO number</label>
-                        <input type="text" id="order_so" name="order_so" autocomplete="off">
-                    </div>
-                </div>
-            </div>
-            <div class="medium-12 small-12 columns">
-                <button type="button" id="send-order-so" class="button primary">Edit</button>
-            </div>
-        </div>
-    </form>
-    <button class="close-button" data-close aria-label="Close modal" type="button">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-
-
-<div class="reveal" id="edit-status" data-reveal>
-    <form action="#" method="post" class="form" novalidate="">
-        <div class="row align-bottom">
-            <div class="medium-12 small-12 columns">
-                <h3>Edit status</h3>
-            </div>
-            <div class="medium-12 small-12 columns">
-                <div class="row">
-                    <div class="medium-12 small-12 columns">
-                        <label>Status</label>
-                        <textarea name="" id="order_status" cols="30" rows="4"></textarea>
-                    </div>
-                </div>
-            </div>
-            <div class="medium-12 small-12 columns">
-                <button type="button" id="send-order-status" class="button primary">Edit</button>
-            </div>
-        </div>
-    </form>
-    <button class="close-button" data-close aria-label="Close modal" type="button">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
 
 
 <script type="text/javascript">

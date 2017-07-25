@@ -47,3 +47,7 @@
 <?php if (AdminBase::checkDenied('crm.request', 'view')): ?>
     <li><a href="/adm/crm/request" class="<?= Url::IsActive('/crm/request', 'active') ?>">Request</a></li>
 <?php endif; ?>
+
+<?php if (AdminBase::checkDenied('crm.other.request', 'view')): ?>
+    <li><a href="/adm/crm/other-request" class="<?= Url::IsActive('/crm/other-request', 'active') ?>">Lenovo Request</a></li>
+<?php endif; ?>

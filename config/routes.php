@@ -52,6 +52,8 @@ return array(
     'adm/dashboard/([a-z0-9-_?&]+)' => 'dashboard/index/$1',
     'adm/dashboard' => 'dashboard/index',
 
+    'adm/crm/other-request/request_ajax' => 'otherRequest/requestAjax',
+    'adm/crm/other-request' => 'otherRequest/index',
 
     'adm/crm/request/request_ajax' => 'request/requestAjax',
     'adm/crm/request/price_part_ajax' => 'request/pricePartNumAjax',

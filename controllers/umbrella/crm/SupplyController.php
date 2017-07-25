@@ -95,7 +95,7 @@ class SupplyController extends AdminBase
                                 }
                             }
 
-                            //Supply::updateReady($options['site_id'], 1);
+                            Supply::updateReady($options['site_id'], 1);
                         }
                         Logger::getInstance()->log($user->id_user, 'Загрузил excel файл с поставками');
                         // Пишем в сессию массив с ненайденными партномерами
