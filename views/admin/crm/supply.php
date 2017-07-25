@@ -55,6 +55,7 @@
                         <thead>
                         <tr>
                             <th class="sort">Number</th>
+                            <th class="sort">Name</th>
                             <th class="sort">Arriving Date</th>
                             <th class="sort">Status</th>
                             <?php if (AdminBase::checkDenied('crm.supply.accept', 'view')): ?>
@@ -68,6 +69,7 @@
                                 <?php $status = iconv('WINDOWS-1251', 'UTF-8', $supply['status_name'])?>
                                 <tr data-siteid="<?=$supply['site_id']?>" class="">
                                     <td><?=$supply['supply_id']?></td>
+                                    <td><?=$supply['name']?></td>
                                     <td><?=Functions::formatDate($supply['expected_arriving_date'])?></td>
                                     <td class="<?=Supply::getStatusSupply($status)?>"><?=$status?></td>
                                     <?php if (AdminBase::checkDenied('crm.supply.accept', 'view')): ?>
@@ -95,6 +97,7 @@
                         <tr>
                             <th class="sort">Partner</th>
                             <th class="sort">Number</th>
+                            <th class="sort">Name</th>
                             <th class="sort">Arriving Date</th>
                             <th class="sort">Status</th>
                             <th class="sort">Checked</th>
@@ -107,6 +110,7 @@
                                 <tr data-siteid="<?=$supply['site_id']?>" class="">
                                     <td><?=$supply['site_client_name']?></td>
                                     <td><?=$supply['supply_id']?></td>
+                                    <td><?=$supply['name']?></td>
                                     <td><?=Functions::formatDate($supply['expected_arriving_date'])?></td>
                                     <td class="<?=Supply::getStatusSupply($status)?>"><?=$status?></td>
                                     <td>
