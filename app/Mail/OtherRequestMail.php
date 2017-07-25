@@ -66,7 +66,13 @@ class OtherRequestMail
         $mailToManager .= "<b>SO Number:</b> " . $options['so_number'] . "<br>";
         $mailToManager .= "<b>Price:</b> " . $options['price'] . "<br>";
 
-        mail($options['email'], 'Lenovo Request. Согласование цены на вашу заявку', $mailToManager, $headers);
+        $emails = explode(',', $options['email']);
+
+        if(is_array($emails)){
+            foreach ($emails as $email){
+                mail($email, 'Lenovo Request. Согласование цены на вашу заявку', $mailToManager, $headers);
+            }
+        }
     }
 
 
