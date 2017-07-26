@@ -92,7 +92,7 @@
                                     <?php if($request['action'] == 0):?>
 
                                     <?php elseif($request['action'] == 1):?>
-                                        <a href="" data-action="3" class="success request-action">Agree</a>
+                                        <a href="" data-action="3" class="accept request-action">Agree</a>
                                         <a href="" data-action="4" class="dismiss request-action">Disagree</a>
                                     <?php elseif($request['action'] == 2):?>
                                         <span style="color: red">Отказано</span>
