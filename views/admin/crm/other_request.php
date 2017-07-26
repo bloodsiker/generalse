@@ -181,7 +181,7 @@
                                         <?php elseif($request['action'] == 2):?>
                                             <span style="color: red">Отказано</span>
                                         <?php elseif($request['action'] == 3):?>
-                                            <a href="" data-action="5" class="accept request-action">Выполненить запрос</a>
+                                            <a href="" data-action="5" class="accept request-action">Выполнить запрос</a>
                                         <?php elseif($request['action'] == 4):?>
                                             <span style="color: red">Нет согласия</span>
                                             <i class="fi-info has-tip [tip-top]" style="font-size: 16px;"
