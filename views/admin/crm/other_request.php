@@ -68,7 +68,8 @@
                     <tbody>
                     <?php if(is_array($listRequests)):?>
                         <?php foreach ($listRequests as $request):?>
-                            <tr class="goods <?= (Functions::calcDiffSec($request['date_create']) < 120) ? 'check_lenovo_ok' : ''?>">
+                            <tr class="goods <?= (Functions::calcDiffSec($request['date_create']) < 120) ? 'check_lenovo_ok' : ''?>"
+                                data-id="<?= $request['id']?>">
                                 <td><?= $request['id']?></td>
                                 <td><?= $request['name_partner']?></td>
                                 <td><?= $request['part_number']?></td>
@@ -86,7 +87,7 @@
                                            title="<?= $request['note']?>"></i>
                                     <?php endif;?>
                                 </td>
-                                <td><?= $request['status_name']?></td>
+                                <td class="status <?= OtherRequest::getStatusRequest($request['status_name'])?>"><?= $request['status_name']?></td>
                                 <td><?= Functions::formatDate($request['date_create'])?></td>
                                 <td class="action-control">
                                     <?php if($request['action'] == 0):?>
