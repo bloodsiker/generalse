@@ -45,7 +45,7 @@ class OtherRequestMail
         $mailToManager .= "<b>Address:</b> " . $options['address'] . "<br>";
         $mailToManager .= "<b>Note:</b> " . $options['note'] . "<br>";
 
-        mail('gsteam@generalse.com', 'Lenovo Request. Новый запрос', $mailToManager, $headers);
+        mail('vv@generalse.com', 'Lenovo Request. Новый запрос', $mailToManager, $headers);
         mail('maldini2@ukr.net', 'Lenovo Request. Новый запрос', $mailToManager, $headers);
     }
 
@@ -92,7 +92,7 @@ class OtherRequestMail
         $mailToManager .= "<b>SO Number:</b> " . $options['so_number'] . "<br>";
         $mailToManager .= "<b>Price:</b> " . $options['price'] . "<br>";
 
-        mail('gsteam@generalse.com', 'Lenovo Request. Партнер согласился с ценой ', $mailToManager, $headers);
+        mail('vv@generalse.com', 'Lenovo Request. Партнер согласился с ценой ', $mailToManager, $headers);
     }
 
 
@@ -113,7 +113,7 @@ class OtherRequestMail
         $mailToManager .= "<b>Price:</b> " . $options['price'] . "<br>";
         $mailToManager .= "<b>Comment:</b> " . $options['comment_disagree'] . "<br>";
 
-        mail('gsteam@generalse.com', 'Lenovo Request. Партнер не согласился с ценой', $mailToManager, $headers);
+        mail('vv@generalse.com', 'Lenovo Request. Партнер не согласился с ценой', $mailToManager, $headers);
     }
 
 }

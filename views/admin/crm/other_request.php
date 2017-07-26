@@ -23,7 +23,7 @@
                                 <?php endif;?>
 
                                 <?php if (AdminBase::checkDenied('crm.other.request.import', 'view')): ?>
-                                    <button data-open="add-request-import-modal" class="button primary tool"><i class="fi-plus"></i> Import request</button>
+                                    <button data-open="add-request-import-modal" class="button primary tool hide"><i class="fi-plus"></i> Import request</button>
                                 <?php endif;?>
 
                                 <?php if (AdminBase::checkDenied('crm.other.request.export', 'view')): ?>
