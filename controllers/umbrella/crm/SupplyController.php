@@ -24,13 +24,8 @@ class SupplyController extends AdminBase
      */
     public function actionSupply()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-
-        // Обьект юзера
         $user = new User($userId);
 
         if(isset($_SESSION['error_supply'])){
@@ -38,15 +33,14 @@ class SupplyController extends AdminBase
             unset($_SESSION['error_supply']);
         }
 
-        if($user->role == 'partner') {
-            //$allSupply = Supply::getAllSupply();
+        if ($user->role == 'partner') {
             $allSupply = Supply::getSupplyByPartner($user->idUsersInGroup($user->id_user));
         } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
             $allSupply = Supply::getAllSupply();
         }
 
-        if(isset($_POST['add_supply']) && $_POST['add_supply'] == 'true'){
-            if(!empty($_FILES['excel_file']['name'])) {
+        if (isset($_POST['add_supply']) && $_POST['add_supply'] == 'true') {
+            if (!empty($_FILES['excel_file']['name'])) {
 
                 $options['name_real'] = $_FILES['excel_file']['name'];
                 // Все загруженные файлы помещаются в эту папку
@@ -61,6 +55,8 @@ class SupplyController extends AdminBase
                         $excel_file = $options['file_path'] . $options['file_name'];
                         // Получаем массив данных из файла
                         $excelArray = ImportExcel::importSupply($excel_file);
+//                        echo "<pre>";
+//                        print_r($excelArray);
 
                         $lastId = Supply::getLastSupplyId();
                         if($lastId == false){
@@ -87,21 +83,19 @@ class SupplyController extends AdminBase
                                 $insert['partner'] = $excel['partner'];
                                 $insert['manufacturer'] = iconv('WINDOWS-1251', 'UTF-8', $excel['manufacturer']);
 
-                                $part_num = Products::checkPurchasesPartNumber($insert['part_number']);
-                                if($part_num != 0){
-                                    Supply::addSupplyPartsMSSQL($insert);
-                                } else {
-                                    array_push($supply_error_part, $insert['part_number']);
+                                if(!empty($insert['part_number'])){
+                                    $part_num = Products::checkPurchasesPartNumber($insert['part_number']);
+                                    if($part_num != 0){
+                                        Supply::addSupplyPartsMSSQL($insert);
+                                    } else {
+                                        array_push($supply_error_part, $insert['part_number']);
+                                    }
                                 }
                             }
-
-                            Supply::updateReady($options['site_id'], 1);
                         }
                         Logger::getInstance()->log($user->id_user, 'Загрузил excel файл с поставками');
                         // Пишем в сессию массив с ненайденными партномерами
                         $_SESSION['error_supply'] = $supply_error_part;
-//                        echo "<pre>";
-//                        print_r($error_part);
                     }
                 }
                 header("Location: /adm/crm/supply");
@@ -109,6 +103,73 @@ class SupplyController extends AdminBase
         }
 
         require_once(ROOT . '/views/admin/crm/supply.php');
+        return true;
+    }
+
+
+    /**
+     * Added parts in supply
+     * @return bool
+     */
+    public function actionImportAddParts()
+    {
+        self::checkAdmin();
+        $userId = Admin::CheckLogged();
+        $user = new User($userId);
+
+        if (isset($_POST['add_parts_supply']) && $_POST['add_parts_supply'] == 'true') {
+            if (!empty($_FILES['excel_file']['name'])) {
+
+                $options['name_real'] = $_FILES['excel_file']['name'];
+                // Все загруженные файлы помещаются в эту папку
+                $options['file_path'] = "/upload/attach_supply/";
+                $randomName = substr_replace(sha1(microtime(true)), '', 5);
+
+                $randomName = $user->name_partner . '-' . $randomName . "-" . $options['name_real'];
+                $options['file_name'] = $randomName;
+
+                if (is_uploaded_file($_FILES["excel_file"]["tmp_name"])) {
+                    if (move_uploaded_file($_FILES['excel_file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . $options['file_path'] . $options['file_name'])) {
+                        $excel_file = $options['file_path'] . $options['file_name'];
+                        // Получаем массив данных из файла
+                        $excelArray = ImportExcel::importSupply($excel_file);
+
+                        $site_id = $_POST['site_id'];
+
+                        $supply_error_part = [];
+                        if(!empty($site_id)){
+                            if(count($excelArray) > 0){
+                                foreach($excelArray as $excel) {
+                                    $insert['site_id'] = $site_id;
+                                    $insert['part_number'] = $excel['part_number'];
+                                    $insert['so_number'] = $excel['so_number'];
+                                    $insert['price'] = $excel['price'];
+                                    $insert['quantity'] = $excel['quantity'];
+                                    $insert['tracking_number'] = $excel['tracking_number'];
+                                    $insert['manufacture_country'] = $excel['manufacture_country'];
+                                    $insert['partner'] = $excel['partner'];
+                                    $insert['manufacturer'] = iconv('WINDOWS-1251', 'UTF-8', $excel['manufacturer']);
+
+                                    if(!empty($insert['part_number'])){
+                                        $part_num = Products::checkPurchasesPartNumber($insert['part_number']);
+                                        if($part_num != 0){
+                                            Supply::addSupplyPartsMSSQL($insert);
+                                        } else {
+                                            array_push($supply_error_part, $insert['part_number']);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        Logger::getInstance()->log($user->id_user, 'Загрузил excel файл с дополнениями к поставке ID-' . $site_id);
+                        // Пишем в сессию массив с ненайденными партномерами
+                        $_SESSION['error_supply'] = $supply_error_part;
+                    }
+                }
+                header("Location: /adm/crm/supply");
+            }
+        }
         return true;
     }
 
@@ -159,30 +220,6 @@ class SupplyController extends AdminBase
                 $stocks_group = $group->stocksFromGroup($user->idGroupUser($item['site_account_id']), 'name', 'supply');
                 $stock = iconv('UTF-8', 'WINDOWS-1251', $stocks_group[0]);
             }
-
-
-//            if ($item['manufacturer'] == 'Electrolux' || $item['manufacturer'] == 'electrolux'){
-//                $stock = iconv('UTF-8', 'WINDOWS-1251', 'OK (Выборгская, 104)');
-//            } elseif ($item['manufacturer'] == 'Electrolux GE' || $item['manufacturer'] == 'electrolux GE'){
-//                $stock = iconv('UTF-8', 'WINDOWS-1251', 'OK');
-//            } else {
-//                // Проверяем на наличие в таблице КПИ
-//                $count_kpi = Supply::getCountSoNumberOnKpi($item['so_number']);
-//                if($count_kpi > 0){
-//                    $stock = iconv('UTF-8', 'WINDOWS-1251', 'not used');
-//                } else {
-//                    // Если в таблице КПИ не найден, ищем в таблице Refund Request
-//                    $stock = 'transit';
-//                    $status = iconv('UTF-8', 'WINDOWS-1251', 'подтверждено');
-//                    $count_refund = Supply::getCountSoNumberOnRefund($item['so_number'], $status);
-//                    if($count_refund > 0){
-//                        $stock = iconv('UTF-8', 'WINDOWS-1251', 'not used');
-//                        //Supply::updateCommand($item['site_id'], 1);
-//                    } else {
-//                        $stock = iconv('UTF-8', 'WINDOWS-1251', 'transit');
-//                    }
-//                }
-//            }
             Supply::updateStock($item['id'], $stock);
         }
         Supply::updateCommand($site_idS, 1);
@@ -196,13 +233,8 @@ class SupplyController extends AdminBase
      */
     public function actionShowDetailSupply()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-
-        // Обьект юзера
         $user = new User($userId);
 
         $site_id = $_REQUEST['site_id'];
@@ -225,6 +257,72 @@ class SupplyController extends AdminBase
             $html .= "</tr>";
         }
         print_r($html);
+        return true;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function actionActionSupplyAjax()
+    {
+        // Поиск поставки по site_id
+        if($_REQUEST['action'] == 'search_site_id'){
+            $site_id = $_REQUEST['site_id'];
+            $data = Supply::getInfoSupply($site_id);
+            $status = iconv('WINDOWS-1251', 'UTF-8', $data['status_name']);
+            if ($data == false) {
+                $result['name'] = "Supply not found";
+                $result['status'] = 404;
+            } elseif($status == 'Подтверждена') {
+                $result['name'] = iconv('WINDOWS-1251', 'UTF-8', $data['name']);
+                $result['warning'] = '(Невозможно дополнить поставку!)';
+                $result['status'] = 403;
+            } else {
+                $result['name'] = iconv('WINDOWS-1251', 'UTF-8', $data['name']);
+                $result['status'] = 200;
+            }
+            echo json_encode($result);
+        }
+
+        // Привязываем поставку к GM для дальнейшей обработки
+        if($_REQUEST['action'] == 'quantity'){
+            $site_id = $_REQUEST['site_id'];
+            $count = Supply::getCountDetailsInSupply($site_id);
+            echo $count;
+        }
+
+        // Привязываем поставку к GM для дальнейшей обработки
+        if($_REQUEST['action'] == 'bind_gm'){
+            $site_id = $_REQUEST['site_id'];
+            $ok = Supply::updateReady($site_id, 1);
+            if ($ok == false) {
+                $status = 404;
+            } else {
+                $status = 200;
+            }
+            echo json_encode($status);
+        }
+
+        // Привязываем поставку к GM для дальнейшей обработки
+        if($_REQUEST['action'] == 'delete_supply'){
+            $site_id = $_REQUEST['site_id'];
+            $data = Supply::getInfoSupply($site_id);
+            $status = iconv('WINDOWS-1251', 'UTF-8', $data['status_name']);
+            if($status == 'Подтверждена'){
+                $status = 403;
+            } else {
+                $ok = Supply::deleteSupplyBySiteId($site_id);
+                $okk = Supply::deleteSupplyPartsBySiteId($site_id);
+                if ($ok == false) {
+                    $status = 404;
+                } else {
+                    $status = 200;
+                }
+            }
+            echo json_encode($status);
+        }
+
         return true;
     }
 

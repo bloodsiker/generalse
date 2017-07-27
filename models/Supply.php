@@ -217,24 +217,40 @@ class Supply
      */
     public static function getShowDetailsSupply($site_id)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT
 				  *
                  FROM dbo.site_gm_supplies_parts
                  WHERE site_id = :site_id";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $site_id, PDO::PARAM_INT);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
+    }
+
+
+    /**
+     * Кол-во деталей в поставке
+     * @param $site_id
+     * @return array
+     */
+    public static function getCountDetailsInSupply($site_id)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "SELECT
+				  sum(quantity) as count
+                 FROM dbo.site_gm_supplies_parts
+                 WHERE site_id = :site_id";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':site_id', $site_id, PDO::PARAM_INT);
+        $result->execute();
+        $count = $result->fetch(PDO::FETCH_ASSOC);
+        return $count['count'];
     }
 
     /**
@@ -244,18 +260,13 @@ class Supply
      */
     public static function getUsersIdByName($name_partner)
     {
-        // Соединение с базой данных
         $db = MySQL::getConnection();
 
-        // Делаем запрос к базе данных
         $sql = "SELECT id_user FROM gs_user WHERE name_partner = :name_partner";
 
-        // Делаем подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':name_partner', $name_partner, PDO::PARAM_INT);
         $result->execute();
-
-        // Получаем ассоциативный массив
         $user = $result->fetch(PDO::FETCH_ASSOC);
         return $user['id_user'];
     }
@@ -379,38 +390,58 @@ class Supply
         return true;
     }
 
+
     /**
-     * Проверяем наличие парт номера в поставках, возвращаем id_supply
-     * @param $users_group
-     * @param $part_number
-     * @param $status
-     * @return array
+     * @param $site_id
+     * @return mixed
      */
-    public static function checkPartNumberInSupply($users_group, $part_number, $status)
+    public static function getInfoSupply($site_id)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        $iDs = implode(',', $users_group);
-
         $sql = "SELECT
-                *
-                FROM site_gm_supplies sgs
-                    INNER JOIN site_gm_supplies_parts sgsp
-                        ON sgs.site_id = sgsp.site_id
-                WHERE sgs.site_account_id IN ({$iDs})
-                AND sgs.status_name != :status
-                AND sgsp.part_number = :part_number
-                AND sgsp.quantity > 0
-                ORDER BY sgsp.id DESC";
-        // Используется подготовленный запрос
-        $result = $db->prepare($sql);
-        //$result->bindParam(':id_user', $id_user, PDO::PARAM_INT);
-        $result->bindParam(':part_number', $part_number, PDO::PARAM_INT);
-        $result->bindParam(':status', $status, PDO::PARAM_INT);
+				  *
+                 FROM dbo.site_gm_supplies
+                 WHERE site_id = :site_id";
 
+        $result = $db->prepare($sql);
+        $result->bindParam(':site_id', $site_id, PDO::PARAM_INT);
         $result->execute();
         $all = $result->fetch(PDO::FETCH_ASSOC);
-        return $all['supply_id'];
+        return $all;
     }
+
+
+    /**
+     * Delete supply
+     * @param $id
+     * @return bool
+     */
+    public static function deleteSupplyBySiteId($id)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = 'DELETE FROM site_gm_supplies WHERE site_id = :site_id';
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':site_id', $id, PDO::PARAM_INT);
+        return $result->execute();
+    }
+
+    /**
+     * Delete supply parts
+     * @param $id
+     * @return bool
+     */
+    public static function deleteSupplyPartsBySiteId($id)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = 'DELETE FROM site_gm_supplies_parts WHERE site_id = :site_id';
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':site_id', $id, PDO::PARAM_INT);
+        return $result->execute();
+    }
+
 }
