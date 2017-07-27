@@ -83,14 +83,27 @@ $(document).on('click', '.request-action', function(e) {
     var action = $(this).data('action');
     var data = "action=action&id_request=" + id_request + '&user_action=' + action;
 
-    if (action == 4) {
+    if (action == 4 || action == 2) {
+
         // Добавляем блок с комментариями
-        var html = "<div class='dismiss-container'>" +
-            "<textarea class='dismiss-comment' cols='30' placeholder='Комментарий' rows='3'></textarea>" +
-            "<button id='send-dismiss'>Disagree</button>" +
-            "<button id='send-close'>Close</button>" +
-            "</div>";
-        $(this).after(html);
+        if (action == 4) {
+
+            var html = "<div class='dismiss-container'>" +
+                "<textarea class='dismiss-comment' cols='30' placeholder='Комментарий' rows='3'></textarea>" +
+                "<button id='send-dismiss'>Disagree</button>" +
+                "<button id='send-close'>Close</button>" +
+                "</div>";
+            $(this).after(html);
+
+        } else if (action == 2) {
+
+            var html = "<div class='dismiss-container'>" +
+                "<textarea class='dismiss-comment' cols='30' placeholder='Комментарий' rows='3'></textarea>" +
+                "<button id='send-dismiss'>Отказать</button>" +
+                "<button id='send-close'>Закрить</button>" +
+                "</div>";
+            $(this).after(html);
+        }
 
         //Отправляем
         $('#send-dismiss').click(function () {
@@ -105,9 +118,15 @@ $(document).on('click', '.request-action', function(e) {
                 success: function (response) {
                     console.log(response);
                     if(response == 200){
+                        var element = $('[data-id="' + id_request + '"]');
+
                         if (action == 4) {
-                            $('[data-id="' + id_request + '"]').find('.action-control').text('Нет согласия').css('color', 'red');
-                            $('[data-id="' + id_request + '"]').find('.status').text('Нет согласия').removeClass('aqua').addClass('red');
+                            element.find('.action-control').text('Нет согласия').css('color', 'red');
+                            element.find('.status').text('Нет согласия').removeClass('aqua').addClass('red');
+                        } else if (action == 2) {
+                            element.find('.action-control').text('Отказано').css('color', 'red');
+                            element.find('.status').text('Отказано').removeClass('yellow').addClass('red');
+                            element.find('.edit-price').remove();
                         }
                     } else {
                         alert('Ошибка! Не удалось отклонить!');

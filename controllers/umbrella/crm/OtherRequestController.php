@@ -108,11 +108,12 @@ class OtherRequestController extends AdminBase
 
             // Отказ
             if ($action == 2) {
-                $ok = OtherRequest::changeActionAndStatusToRequestById($id_request, $action, 'Отказано');
+                $comments = $_REQUEST['comment'];
+                $ok = OtherRequest::changeActionAndStatusToRequestById($id_request, $action, 'Отказано', $comments);
                 if ($ok) {
                     // send mail partner
                     $options = OtherRequest::getRequestById($id_request);
-                    OtherRequestMail::getInstance()->sendEmailPartnerAlignment($options);
+                    OtherRequestMail::getInstance()->sendEmailPartnerDenied($options);
                     print_r(200);
                 }
             }

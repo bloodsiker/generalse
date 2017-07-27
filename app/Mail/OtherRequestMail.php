@@ -77,6 +77,33 @@ class OtherRequestMail
 
 
     /**
+     * Уведомляем партнера об отказе заявки
+     * @param $options
+     */
+    public function sendEmailPartnerDenied($options) {
+
+        $headers = "From: Umbrella\n";
+        $headers .= "Content-Type: text/html; charset=utf-8\n";
+        $headers .= "Content-Transfer-Encoding: 8bit";
+
+        $mailToManager = "<b>Request #:</b> {$options['id']} перешел в статус {$options['status_name']}<br><hr>";
+        $mailToManager .= "<b>Comment:</b> " . $options['comment_disagree'] . "<br>";
+        $mailToManager .= "<b>Part Number:</b> " . $options['part_number'] . "<br>";
+        $mailToManager .= "<b>Part description:</b> " . $options['part_description'] . "<br>";
+        $mailToManager .= "<b>SO Number:</b> " . $options['so_number'] . "<br>";
+        $mailToManager .= "<b>Price:</b> " . $options['price'] . "<br>";
+
+        $emails = explode(',', $options['email']);
+
+        if(is_array($emails)){
+            foreach ($emails as $email){
+                mail($email, 'Lenovo Request. Ваша заявка отклонена', $mailToManager, $headers);
+            }
+        }
+    }
+
+
+    /**
      * Согласия с ценой
      * @param $options
      */

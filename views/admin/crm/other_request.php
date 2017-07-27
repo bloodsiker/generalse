@@ -75,7 +75,7 @@
                                 <td><?= $request['part_number']?></td>
                                 <td><?= $request['part_description']?></td>
                                 <td><?= $request['so_number']?></td>
-                                <td><?= $request['price']?></td>
+                                <td><?= str_replace('.',',', $request['price'])?></td>
                                 <td><?= $request['address']?></td>
                                 <td><?= $request['order_type']?></td>
                                 <td class="text-center">
@@ -97,6 +97,11 @@
                                         <a href="" data-action="4" class="dismiss request-action">Disagree</a>
                                     <?php elseif($request['action'] == 2):?>
                                         <span style="color: red">Отказано</span>
+                                        <i class="fi-info has-tip [tip-top]" style="font-size: 16px;"
+                                           data-tooltip aria-haspopup="true"
+                                           data-show-on="small"
+                                           data-click-open="true"
+                                           title="<?= !empty($request['comment_disagree']) ? $request['comment_disagree'] : 'Нету комментариев'?>"></i>
                                     <?php elseif($request['action'] == 3):?>
                                         <span style="color: orange">Ожидается отправка</span>
                                     <?php elseif($request['action'] == 4):?>
@@ -105,7 +110,7 @@
                                            data-tooltip aria-haspopup="true"
                                            data-show-on="small"
                                            data-click-open="true"
-                                           title="<?= $request['comment_disagree']?>"></i>
+                                           title="<?= !empty($request['comment_disagree']) ? $request['comment_disagree'] : 'Нету комментариев'?>"></i>
                                     <?php elseif($request['action'] == 5):?>
                                         <span style="color: green">Выполненный запрос</span>
                                     <?php endif;?>
@@ -152,7 +157,7 @@
                                     <td><?= $request['part_description']?></td>
                                     <td><?= $request['so_number']?></td>
                                     <td class="request-price">
-                                        <span class="request_price"><?= $request['price']?></span>
+                                        <span class="request_price"><?= str_replace('.',',', $request['price'])?></span>
                                         <?php if($request['action'] == 0):?>
                                             <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
                                                 <a href="" class="button edit-price delete"><i class="fi-pencil"></i></a>
@@ -180,6 +185,11 @@
                                             <span style="color: green">Ожидаем действия партнера</span>
                                         <?php elseif($request['action'] == 2):?>
                                             <span style="color: red">Отказано</span>
+                                            <i class="fi-info has-tip [tip-top]" style="font-size: 16px;"
+                                               data-tooltip aria-haspopup="true"
+                                               data-show-on="small"
+                                               data-click-open="true"
+                                               title="<?= !empty($request['comment_disagree']) ? $request['comment_disagree'] : 'Нету комментариев'?>"></i>
                                         <?php elseif($request['action'] == 3):?>
                                             <a href="" data-action="5" class="accept request-action">Выполнить запрос</a>
                                         <?php elseif($request['action'] == 4):?>
@@ -188,7 +198,7 @@
                                                data-tooltip aria-haspopup="true"
                                                data-show-on="small"
                                                data-click-open="true"
-                                               title="<?= $request['comment_disagree']?>"></i>
+                                               title="<?= !empty($request['comment_disagree']) ? $request['comment_disagree'] : 'Нету комментариев'?>"></i>
                                         <?php elseif($request['action'] == 5):?>
                                             <span style="color: green">Выполненный запрос</span>
                                         <?php endif;?>
