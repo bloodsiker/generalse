@@ -463,10 +463,15 @@ class OrderController extends AdminBase
         $userId = Admin::CheckLogged();
         $user = new User($userId);
 
+        $filter = '';
         $start =  isset($_POST['start']) ? $_POST['start'] .' 00:00' : '';
         $end =  isset($_POST['end']) ? $_POST['end'] .' 23:59' : '';
+        if(!empty($_POST['status_name'])){
+            $status = iconv('UTF-8', 'WINDOWS-1251', trim($_POST['status_name']));
+            $filter .= " AND sgo.status_name = '$status'";
+        }
         $id_partners = isset($_POST['id_partner']) ? $_POST['id_partner'] : [];
-        $listExport = Orders::getExportOrdersByPartner($id_partners, $start, $end);
+        $listExport = Orders::getExportOrdersByPartner($id_partners, $start, $end, $filter);
 
         require_once (ROOT . '/views/admin/crm/export/orders.php');
         return true;

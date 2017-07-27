@@ -449,6 +449,17 @@
                             </div>
                         </div>
                     </div>
+                    <div class="medium-4 small-4 columns">
+                        <label>Status</label>
+                        <select name="status_name" id="status_name">
+                            <option value="">none</option>
+                            <option value="В обработке">В обработке</option>
+                            <option value="Предварительный">Предварительный</option>
+                            <option value="Отказано">Отказано</option>
+                            <option value="Выдан">Выдан</option>
+                            <option value="В резерве">В резерве</option>
+                        </select>
+                    </div>
                 </div>
 
                 <h4 style="color: #fff">Partners</h4>

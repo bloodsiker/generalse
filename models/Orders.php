@@ -353,15 +353,15 @@ class Orders
      * @param $array_id
      * @param $start
      * @param $end
+     * @param string $filter
      * @return array
      */
-    public static function getExportOrdersByPartner($array_id, $start, $end)
+    public static function getExportOrdersByPartner($array_id, $start, $end, $filter = null)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
         $idS = implode(',', $array_id);
-        // Получение и возврат результатов
+
         $sql = "SELECT 
                     sgo.order_id,
                     sgo.order_number,
@@ -387,18 +387,13 @@ class Orders
                     LEFT JOIN site_gm_orders_types sgot
                         ON sgot.id = sgo.order_type_id
                     WHERE sgo.site_account_id IN({$idS})
-                    AND sgo.created_on BETWEEN :start AND :end
+                    AND sgo.created_on BETWEEN :start AND :end {$filter}
                     ORDER BY sgo.id DESC";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
-        //$result->bindParam(':id_user', $id_partner, PDO::PARAM_INT);
         $result->bindParam(':start', $start, PDO::PARAM_STR);
         $result->bindParam(':end', $end, PDO::PARAM_STR);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
     }
@@ -411,10 +406,8 @@ class Orders
      */
     public static function getExportOrdersAllPartner($start, $end)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT 
                     sgo.order_id,
                     sgo.order_number,
@@ -440,15 +433,11 @@ class Orders
                     ON sgot.id = sgo.order_type_id
                 WHERE sgo.created_on BETWEEN :start AND :end
                 ORDER BY sgo.id DESC";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':start', $start, PDO::PARAM_STR);
         $result->bindParam(':end', $end, PDO::PARAM_STR);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
     }
