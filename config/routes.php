@@ -2,20 +2,30 @@
 
 return array(
 
+
+    /*********** LOG  ***********/
     'adm/user/ajax_logs' => 'log/ajaxLoad',
     'adm/user/logs' => 'log/logs',
 
+
+    /*********** USER DENIED  ***********/
     'adm/user/denied/([0-9]+)/([0-9]+)/([0-9]+)' => 'user/userDenied/$1/$2/$3',
     'adm/user/denied/([0-9]+)/([0-9]+)' => 'user/userDenied/$1/$2',
     'adm/user/denied/([0-9]+)' => 'user/userDenied/$1',
 
+
+    /*********** CONTROL USER  ***********/
     'adm/user/control/delete/([0-9]+)/([0-9]+)' => 'user/userControlDelete/$1/$2',
     'adm/user/control/([0-9]+)' => 'user/userControl/$1',
 
+
+    /*********** WEEKEND  ***********/
     'adm/user/weekend/update/([0-9]+)' => 'user/userWeekendUpdate/$1',
     'adm/user/weekend/delete/([0-9]+)' => 'user/userWeekendDelete/$1',
     'adm/user/weekend/([0-9]+)' => 'user/userWeekend/$1',
 
+
+    /*********** USERS  ***********/
     'adm/user/delete/([0-9]+)' => 'user/delete/$1',
     'adm/user/update/([0-9]+)' => 'user/update/$1',
     'adm/user/check_login' => 'user/checkUserLogin',
@@ -23,6 +33,7 @@ return array(
     'adm/users' => 'user/index',
 
 
+    /*********** GROUP  ***********/
     'adm/group/denied/([0-9]+)/([0-9]+)/([0-9]+)' => 'group/groupDenied/$1/$2/$3',
     'adm/group/denied/([0-9]+)/([0-9]+)' => 'group/groupDenied/$1/$2',
     'adm/group/denied/([0-9]+)' => 'group/groupDenied/$1',
@@ -33,14 +44,19 @@ return array(
     'adm/group/add' => 'group/addGroup',
 
 
+    /*********** COUNTRY  ***********/
     'adm/country/delete/([0-9]+)' => 'country/delete/$1',
     'adm/country/update/([0-9]+)' => 'country/update/$1',
     'adm/country/add' => 'country/addCountry',
 
+
+    /*********** BRANCH  ***********/
     'adm/branch/delete/([0-9]+)/([0-9]+)' => 'branch/delete/$1/$2',
     'adm/branch/view/([0-9]+)' => 'branch/view/$1',
     'adm/branch/add' => 'branch/addBranch',
 
+
+    /*********** DASHBOARD  ***********/
     'adm/dashboard/balance-u/([0-9]+)/([a-z0-9-_?&]+)' => 'dashboard/userBalance/$1/$2',
     'adm/dashboard/balance-u/([0-9]+)' => 'dashboard/userBalance/$1',
     'adm/dashboard/request-payment' => 'dashboard/requestPayment',
@@ -52,9 +68,21 @@ return array(
     'adm/dashboard/([a-z0-9-_?&]+)' => 'dashboard/index/$1',
     'adm/dashboard' => 'dashboard/index',
 
+
+    /*********** CCC  ***********/
+    'adm/ccc/tree_knowledge/category/cat-([0-9]+)' => 'treeKnowledge/articlesByCategory/$1',
+    'adm/ccc/tree_knowledge/popular/category' => 'treeKnowledge/popularCategory',
+    'adm/ccc/tree_knowledge' => 'treeKnowledge/index',
+    'adm/ccc' => 'customerCareCenter/index',
+
+
+    /*********** OTHER REQUEST  ***********/
     'adm/crm/other-request/request_ajax' => 'otherRequest/requestAjax',
+    'adm/crm/other-request/import' => 'otherRequest/requestImport',
     'adm/crm/other-request' => 'otherRequest/index',
 
+
+    /*********** REQUEST  ***********/
     'adm/crm/request/request_ajax' => 'request/requestAjax',
     'adm/crm/request/price_part_ajax' => 'request/pricePartNumAjax',
     'adm/crm/request/delete/([0-9]+)' => 'request/requestDelete/$1',
@@ -63,15 +91,25 @@ return array(
     'adm/crm/request/([a-z0-9-_?&]+)' => 'request/index/$1',
     'adm/crm/request' => 'request/index',
 
+
+    /*********** BATCH  ***********/
     'adm/crm/export/batch' => 'batch/exportBatch',
 
+
+    /*********** BACKLOG  ***********/
     'adm/crm/export/backlog' => 'backlogAnalysis/exportBacklog',
     'adm/crm/backlog' => 'backlogAnalysis/index',
 
+
+    /*********** SUPPLY  ***********/
+    'adm/crm/import_add_parts' => 'supply/importAddParts',
     'adm/crm/show_supply' => 'supply/showDetailSupply',
+    'adm/crm/supply_action_ajax' => 'supply/actionSupplyAjax',
     'adm/crm/supply_ajax' => 'supply/supplyAjax',
     'adm/crm/supply' => 'supply/supply',
 
+
+    /*********** PURCHASE  ***********/
     'adm/crm/export/purchase/([a-z0-9-_?&]+)' => 'purchase/exportPurchase/$1',
     'adm/crm/purchase/([a-z0-9-_?&]+)' => 'purchase/purchase/$1',
     'adm/crm/purchase_part_num_ajax' => 'purchase/purchasePartNumAjax',
@@ -81,15 +119,20 @@ return array(
     'adm/crm/purchase' => 'purchase/purchase',
 
 
+    /*********** STOCKS  ***********/
     'adm/crm/stocks/([a-z0-9-_?&]+)' => 'stock/stocks/$1',
     'adm/crm/stocks' => 'stock/stocks',
 
+
+    /*********** RETURNS  ***********/
     'adm/crm/export/returns/([a-z0-9-_?&]+)' => 'return/exportReturns/$1',
     'adm/crm/returns/filter/([a-z0-9-_?&]+)' => 'return/filterReturns/$1',
     'adm/crm/import_returns' => 'return/importReturns',
     'adm/crm/returns_ajax' => 'return/returnsAjax',
     'adm/crm/returns' => 'return/returns',
 
+
+    /*********** ORDER  ***********/
     'adm/crm/export/orders' => 'order/exportOrders',
     'adm/crm/orders/([a-z0-9-_?&]+)' => 'order/orders/$1',
     'adm/crm/orders_part_num_ajax' => 'order/ordersPartNumAjax',
@@ -99,6 +142,8 @@ return array(
     'adm/crm/orders_success' => 'order/ordersSuccess',
     'adm/crm/orders' => 'order/orders',
 
+
+    /*********** DISASSEMBLY  ***********/
     'adm/crm/export/disassembly/([a-z0-9-_?&]+)' => 'disassembly/exportDisassembly/$1',
     'adm/crm/disassembly_all' => 'disassembly/allDisassembl',
     'adm/crm/show_disassembly' => 'disassembly/showDetailDisassembl',
@@ -109,14 +154,20 @@ return array(
     'adm/crm/disassembly/test' => 'disassembly/test1',
     'adm/crm/disassembly' => 'disassembly/disassembly',
 
+
+    /*********** MOTO  ***********/
     'adm/crm/moto_serial_num_ajax' => 'moto/motoSerialNumAjax',
     'adm/crm/show_moto' => 'moto/showMoto',
     'adm/crm/moto_part_num_ajax' => 'moto/motoPartNumAjax',
     'adm/crm/moto/([a-z0-9-_?&]+)' => 'moto/moto/$1',
     'adm/crm/moto' => 'moto/moto',
 
+
+    /*********** PSR  ***********/
     'adm/crm/psr' => 'psr/psr',
 
+
+    /*********** LITHOGRAPHER  ***********/
     'adm/lithographer/s/([a-z0-9-_?&]+)' => 'lithographer/search/$1',
     'adm/lithographer/delete/([0-9]+)' => 'lithographer/delete/$1',
     'adm/lithographer/edit/([0-9]+)' => 'lithographer/edit/$1',
@@ -129,6 +180,7 @@ return array(
     'adm/lithographer/rules' => 'lithographer/rules',
 
 
+    /*********** REFUND REQUEST  ***********/
     'adm/refund_request/filter/([a-z0-9-_?&]+)' => 'refundRequest/filterRequest/$1',
     'adm/refund_request/registration' => 'refundRequest/index',
     'adm/refund_request/view' => 'refundRequest/viewRequest',
@@ -138,6 +190,7 @@ return array(
     'adm/refund_request/test' => 'refundRequest/test',
 
 
+    /*********** KPI  ***********/
     'adm/result/([a-z0-9-_?&\.]+)' => 'kpi/result/$1',
     'adm/kpi/usage/([a-z0-9-_?&\.]+)' => 'kpi/usage/$1',
     'adm/kpi/show-problem' => 'kpi/showProblem',
@@ -148,7 +201,7 @@ return array(
     'adm/logout' => 'admin/logout',
     'auth' => 'admin/auth',
 
-    /** Site **/
+    /*********** SITE  ***********/
     'contact_form' => 'site/contactForm',
     'contact' => 'site/contact',
     'career' => 'site/career',

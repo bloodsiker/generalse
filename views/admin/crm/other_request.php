@@ -23,7 +23,7 @@
                                 <?php endif;?>
 
                                 <?php if (AdminBase::checkDenied('crm.other.request.import', 'view')): ?>
-                                    <button data-open="add-request-import-modal" class="button primary tool hide"><i class="fi-plus"></i> Import request</button>
+                                    <button data-open="add-request-import-modal" class="button primary tool"><i class="fi-plus"></i> Import request</button>
                                 <?php endif;?>
 
                                 <?php if (AdminBase::checkDenied('crm.other.request.export', 'view')): ?>
@@ -271,7 +271,7 @@
 
 
 <div class="reveal" id="add-request-import-modal" data-reveal>
-    <form action="/adm/crm/request/import" id="add-request-import-form" method="post" class="form" enctype="multipart/form-data" data-abide
+    <form action="/adm/crm/other-request/import" id="add-request-import-form" method="post" class="form" enctype="multipart/form-data" data-abide
           novalidate>
         <div class="row align-bottom">
             <div class="medium-12 small-12 columns">
@@ -293,7 +293,7 @@
 
                     <div class="medium-12 small-12 columns">
                         <label>Type</label>
-                        <select name="order_type_id" class="required" required>
+                        <select name="order_type" class="required" required>
                             <option value="" selected disabled>none</option>
                             <option value="Гарантия">Гарантия</option>
                             <option value="Не гарантия">Не гарантия</option>
@@ -302,7 +302,7 @@
 
                     <div class="medium-12 small-12 columns">
                         <label>Note</label>
-                        <textarea rows="3" name="note1"></textarea>
+                        <textarea rows="3" name="note"></textarea>
                     </div>
 
                     <div class="medium-12 small-12 columns">
@@ -319,7 +319,7 @@
                         <div class="row">
                             <div class="medium-6 small-12 columns">
                                 <div style="padding-bottom: 37px; color: #fff"><a
-                                            href="/upload/attach_request/request_import.xlsx" style="color: #2ba6cb"
+                                            href="/upload/attach_other_request/request_import.xlsx" style="color: #2ba6cb"
                                             download="">download</a> a template file to import
                                 </div>
                             </div>

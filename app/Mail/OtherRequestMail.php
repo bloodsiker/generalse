@@ -46,7 +46,29 @@ class OtherRequestMail
         $mailToManager .= "<b>Note:</b> " . $options['note'] . "<br>";
 
         mail('vv@generalse.com', 'Lenovo Request. Новый запрос', $mailToManager, $headers);
-        mail('maldini2@ukr.net', 'Lenovo Request. Новый запрос', $mailToManager, $headers);
+        //mail('maldini2@ukr.net', 'Lenovo Request. Новый запрос', $mailToManager, $headers);
+    }
+
+
+    /**
+     * Новый запрос импортом
+     * @param $options
+     * @param $user_name
+     * @param $count
+     */
+    public function sendImportEmailGS($options, $user_name, $count) {
+
+        $headers = "From: Umbrella\n";
+        $headers .= "Content-Type: text/html; charset=utf-8\n";
+        $headers .= "Content-Transfer-Encoding: 8bit";
+
+        $mailToManager = "<b>Партнер:</b> {$user_name} создал запрос импортом на {$count} позиций<br><hr>";
+        $mailToManager .= "<b>Type:</b> " . $options['order_type'] . "<br>";
+        $mailToManager .= "<b>Address:</b> " . $options['address'] . "<br>";
+        $mailToManager .= "<b>Note:</b> " . $options['note'] . "<br>";
+
+        mail('vv@generalse.com', 'Lenovo Request. Новый запрос', $mailToManager, $headers);
+        //mail('maldini2@ukr.net', 'Lenovo Request. Новый запрос', $mailToManager, $headers);
     }
 
 

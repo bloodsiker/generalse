@@ -61,6 +61,73 @@ class OtherRequestController extends AdminBase
     /**
      * @return bool
      */
+    public function actionRequestImport()
+    {
+        // Проверка доступа
+        self::checkAdmin();
+
+        // Получаем идентификатор пользователя из сессии
+        $userId = Admin::CheckLogged();
+
+        // Обьект юзера
+        $user = new User($userId);
+
+        if(isset($_POST['import_request']) && $_POST['import_request'] == 'true'){
+            if(!empty($_FILES['excel_file']['name'])) {
+
+                $options['name_real'] = $_FILES['excel_file']['name'];
+                // Все загруженные файлы помещаются в эту папку
+                $options['file_path'] = "/upload/attach_other_request/";
+                $randomName = substr_replace(sha1(microtime(true)), '', 5);
+
+                $randomName = $user->name_partner . '-' . $randomName . "-" . $options['name_real'];
+                $options['file_name'] = $randomName;
+
+                if (is_uploaded_file($_FILES["excel_file"]["tmp_name"])) {
+                    if (move_uploaded_file($_FILES['excel_file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . $options['file_path'] . $options['file_name'])) {
+                        $excel_file = $options['file_path'] . $options['file_name'];
+                        // Получаем массив данных из файла
+                        $excelArray = ImportExcel::importRequest($excel_file);
+
+                        $note = null;
+                        if(isset($_REQUEST['note'])){
+                            $note = iconv('UTF-8', 'WINDOWS-1251', $_REQUEST['note']);
+                        }
+
+                        $options['id_user'] = $user->id_user;
+                        $options['note'] = $note;
+                        $options['status_name'] = 'В обработке';
+                        $options['order_type'] = $_REQUEST['order_type'];
+                        $options['address'] = isset($_POST['address']) ? $_REQUEST['address'] : null;
+
+                        foreach ($excelArray as $import){
+                            $options['part_number'] = trim($import['part_number']);
+                            $options['so_number'] = trim($import['so_number']);
+
+                            $mName = Products::checkPurchasesPartNumber($options['part_number']);
+                            $options['part_description'] = iconv('WINDOWS-1251', 'UTF-8', $mName['mName']);
+
+                            if(!empty($options['part_number'])){
+                                OtherRequest::addRequestOrders($options);
+                            }
+                        }
+
+                        OtherRequestMail::getInstance()->sendImportEmailGS($options, $user->name_partner, count($excelArray));
+
+                        Logger::getInstance()->log($user->id_user, ' загрузил массив с excel в Lenovo Request');
+                        header("Location: /adm/crm/other-request");
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+
+    /**
+     * @return bool
+     */
     public function actionRequestAjax()
     {
         self::checkAdmin();

@@ -10,8 +10,8 @@ class ImportExcel
      * @param $file
      * @return array
      */
-    public static function importPurchase($file){
-
+    public static function importPurchase($file)
+    {
         /** PHPExcel_IOFactory */
         include_once 'PHPExcel/Classes/PHPExcel/IOFactory.php';
 
@@ -56,12 +56,10 @@ class ImportExcel
      * @param $file
      * @return array
      */
-    public static function importOrder($file){
-
-        /** PHPExcel_IOFactory */
+    public static function importOrder($file)
+    {
         include_once 'PHPExcel/Classes/PHPExcel/IOFactory.php';
 
-        //$inputFileName = $_SERVER['DOCUMENT_ROOT'] . '/upload/attach_purchase/goods-31c52.xls';
         $inputFileName = $_SERVER['DOCUMENT_ROOT'] . $file;
         $objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
 
@@ -96,12 +94,10 @@ class ImportExcel
      * @param $file
      * @return array
      */
-    public static function importSupply($file){
-
-        /** PHPExcel_IOFactory */
+    public static function importSupply($file)
+    {
         include_once 'PHPExcel/Classes/PHPExcel/IOFactory.php';
 
-        //$inputFileName = $_SERVER['DOCUMENT_ROOT'] . '/upload/attach_purchase/goods-31c52.xls';
         $inputFileName = $_SERVER['DOCUMENT_ROOT'] . $file;
         $objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
 
@@ -137,12 +133,10 @@ class ImportExcel
      * @param $file
      * @return array
      */
-    public static function importReturn($file){
-
-        /** PHPExcel_IOFactory */
+    public static function importReturn($file)
+    {
         include_once 'PHPExcel/Classes/PHPExcel/IOFactory.php';
 
-        //$inputFileName = $_SERVER['DOCUMENT_ROOT'] . '/upload/attach_purchase/goods-31c52.xls';
         $inputFileName = $_SERVER['DOCUMENT_ROOT'] . $file;
         $objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
 
@@ -168,12 +162,10 @@ class ImportExcel
      * @param $file
      * @return array
      */
-    public static function importRequest($file){
-
-        /** PHPExcel_IOFactory */
+    public static function importRequest($file)
+    {
         include_once 'PHPExcel/Classes/PHPExcel/IOFactory.php';
 
-        //$inputFileName = $_SERVER['DOCUMENT_ROOT'] . '/upload/attach_purchase/goods-31c52.xls';
         $inputFileName = $_SERVER['DOCUMENT_ROOT'] . $file;
         $objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
 
@@ -198,13 +190,10 @@ class ImportExcel
      * @param $file
      * @return array
      */
-    public static function importBatch($file){
-
-        /** PHPExcel_IOFactory */
+    public static function importBatch($file)
+    {
         include_once 'PHPExcel/Classes/PHPExcel/IOFactory.php';
 
-
-        //$inputFileName = $_SERVER['DOCUMENT_ROOT'] . '/upload/attach_purchase/goods-31c52.xls';
         $inputFileName = $_SERVER['DOCUMENT_ROOT'] . $file;
         $objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
 
@@ -217,13 +206,10 @@ class ImportExcel
     }
 
 
-    public static function importBacklog($file){
-
-        /** PHPExcel_IOFactory */
+    public static function importBacklog($file)
+    {
         include_once 'PHPExcel/Classes/PHPExcel/IOFactory.php';
 
-
-        //$inputFileName = $_SERVER['DOCUMENT_ROOT'] . '/upload/attach_purchase/goods-31c52.xls';
         $inputFileName = $_SERVER['DOCUMENT_ROOT'] . $file;
         $objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
 
@@ -242,19 +228,15 @@ class ImportExcel
             $pushArray[$i]['comments'] = $data['E'];
             $i++;
         }
-
         return $pushArray;
     }
 
 
 
-    public static function importKpi($file){
-
-        /** PHPExcel_IOFactory */
+    public static function importKpi($file)
+    {
         include_once 'PHPExcel/Classes/PHPExcel/IOFactory.php';
 
-
-        //$inputFileName = $_SERVER['DOCUMENT_ROOT'] . '/upload/attach_purchase/goods-31c52.xls';
         $inputFileName = $_SERVER['DOCUMENT_ROOT'] . $file;
         $objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
 
@@ -288,13 +270,10 @@ class ImportExcel
     }
 
 
-    public static function importCallCSAT($file){
-
-        /** PHPExcel_IOFactory */
+    public static function importCallCSAT($file)
+    {
         include_once 'PHPExcel/Classes/PHPExcel/IOFactory.php';
 
-
-        //$inputFileName = $_SERVER['DOCUMENT_ROOT'] . '/upload/attach_purchase/goods-31c52.xls';
         $inputFileName = $_SERVER['DOCUMENT_ROOT'] . $file;
         $objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
 
@@ -316,13 +295,10 @@ class ImportExcel
         return $pushArray;
     }
 
-    public static function importEmailCallCSAT($file){
-
-        /** PHPExcel_IOFactory */
+    public static function importEmailCallCSAT($file)
+    {
         include_once 'PHPExcel/Classes/PHPExcel/IOFactory.php';
 
-
-        //$inputFileName = $_SERVER['DOCUMENT_ROOT'] . '/upload/attach_purchase/goods-31c52.xls';
         $inputFileName = $_SERVER['DOCUMENT_ROOT'] . $file;
         $objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
 
