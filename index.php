@@ -1,6 +1,5 @@
 <?php
 //print_r(PDO::getAvailableDrivers());
-//print_r(Repair::getAdminRepairList());
 // FRONT CONTROLLER
 
 // 1. Общие настройки
