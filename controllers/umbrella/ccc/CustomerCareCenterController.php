@@ -3,7 +3,7 @@
 /**
  * Class CustomerCarCenterController
  */
-class CustomerCarCenterController extends AdminBase
+class CustomerCareCenterController extends AdminBase
 {
 
     public function __construct()

@@ -10,11 +10,13 @@ function autoloadClass($class_name)
         '/app/Services/',
         '/app/Mail/',
         '/models/',
+        '/models/ccc/',
         '/components/',
         '/components/Db/',
         '/components/cron/',
         '/components/cron/task/',
         '/controllers/umbrella/',
+        '/controllers/umbrella/ccc/',
         '/controllers/umbrella/crm/',
     );
 

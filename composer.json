@@ -1,0 +1,19 @@
+{
+    "name": "generalse/umbrella",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tap0k",
+            "email": "maldini2@ukr.net",
+            "role": "Developer"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Umbrella\\" : ""
+        }
+    }
+}

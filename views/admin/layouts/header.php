@@ -13,6 +13,9 @@
     <link rel="stylesheet" href="/template/admin/fonts/foundation-icons/foundation-icons.css">
     <link rel="stylesheet" href="/template/admin/css/style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/5.0.0/video-js.min.css" rel="stylesheet">
+    <?php
+        if (Url::Is_url($_SERVER['REQUEST_URI'], '/ccc')) echo "<link rel='stylesheet' href='/template/admin/css/ccc_style.css'>";
+    ?>
     <style>
         .yellow {
             background: #FFFF6D;
@@ -62,6 +65,10 @@
 
                 <?php if (AdminBase::checkDenied('adm.lithographer', 'view')): ?>
                     <li><a href="/adm/lithographer/video" class="<?= Url::IsActive('/lithographer', 'active')?>">Lithographer</a></li>
+                <?php endif; ?>
+
+                <?php if (AdminBase::checkDenied('adm.ccc', 'view')): ?>
+                    <li><a href="/adm/ccc" class="<?= Url::IsActive('/ccc', 'active')?>">CCC</a></li>
                 <?php endif; ?>
             </ul>
         </div>

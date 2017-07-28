@@ -3,7 +3,7 @@
     <div class="medium-12 small-12 columns">
         <div class="row header-content">
             <div class="medium-12 small-12 top-gray columns">
-                <h1>Customer Care Center (CCC)</h1>
+                <h1>Древо знаний</h1>
             </div>
             <div class="medium-12 small-12 bottom-gray colmns">
                 <div class="row align-bottom">
@@ -15,9 +15,8 @@
                     <div class="medium-12 small-12 columns">
                         <div class="row align-bottom">
                             <div class="medium-3 small-12 columns">
-                                <button class="button primary tool" id="add-create-button"><i class="fi-plus"></i>
-                                    Create
-                                </button>
+                                <a href="" class="button primary tool">Разделы</a>
+                                <a href="" class="button primary tool">Статьи</a>
                             </div>
 
                         </div>
@@ -25,7 +24,24 @@
                 </div>
             </div>
         </div>
+
+        <div class="body-content checkout">
+            <div class="row">
+                <div class="medium-3 small-3 ccc-sidebar columns">
+                    <h2>Разделы</h2>
+
+                    <?php $tree = KnowledgeCatalog::form_tree(KnowledgeCatalog::getAllCategories())?>
+                    <?= KnowledgeCatalog::build_tree($tree, 0)?>
+                </div>
+                <div class="medium-9 small-9 top-gray columns">
+                    <h2>Древо знаний</h2>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
+
+
 
 <?php require_once ROOT . '/views/admin/layouts/footer.php'; ?>

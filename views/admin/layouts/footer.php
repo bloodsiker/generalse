@@ -31,6 +31,7 @@ if (Url::Is_url($_SERVER['REQUEST_URI'], '/crm/psr')) echo "<script src='/templa
 if (Url::Is_url($_SERVER['REQUEST_URI'], '/crm/supply')) echo "<script src='/template/admin/js/supply.js'></script>";
 if (Url::Is_url($_SERVER['REQUEST_URI'], '/crm/request')) echo "<script src='/template/admin/js/request.js'></script>";
 if (Url::Is_url($_SERVER['REQUEST_URI'], '/crm/other-request')) echo "<script src='/template/admin/js/other_request.js'></script>";
+if (Url::Is_url($_SERVER['REQUEST_URI'], '/ccc')) echo "<script src='/template/admin/js/ccc/knowledge.js'></script>";
 if (Url::Is_url($_SERVER['REQUEST_URI'], '/adm/lithographer')) echo "
   <script src='https://cdnjs.cloudflare.com/ajax/libs/video.js/5.0.0/video.min.js'></script>
   <script src='/template/admin/js/lithographer.js'></script>

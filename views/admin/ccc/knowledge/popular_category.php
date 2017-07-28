@@ -31,10 +31,10 @@
                     <h2>Разделы</h2>
 
                     <?php $tree = KnowledgeCatalog::form_tree(KnowledgeCatalog::getAllCategories())?>
-                    <?= KnowledgeCatalog::build_tree($tree, 0, $id_category)?>
+                    <?= KnowledgeCatalog::build_tree($tree, 0)?>
                 </div>
                 <div class="medium-9 small-9 top-gray columns">
-                    <h2>Холодильники</h2>
+                    <h2>Популярные</h2>
                     <div class="callout">
                         <h4><strong>FOUNDATION FOR EMAILS</strong></h4>
                         <p>We know building HTML emails is hard, especially responsive emails. That's why we created Foundation for Emails. Get away from complex table markup and inconsistent results. Use Foundation for Emails to spend less time coding emails, and more time
