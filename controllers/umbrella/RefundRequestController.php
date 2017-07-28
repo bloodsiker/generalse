@@ -1,5 +1,16 @@
 <?php
 
+namespace Umbrella\controllers\umbrella;
+
+use Umbrella\app\AdminBase;
+use Umbrella\app\User;
+use Umbrella\models\Admin;
+use Umbrella\models\Country;
+use Umbrella\models\File;
+use Umbrella\models\Log;
+use Umbrella\models\Products;
+use Umbrella\models\Warranty;
+
 /**
  * Class RefundRequestController
  */
@@ -19,13 +30,8 @@ class RefundRequestController extends AdminBase
      */
     public function actionIndex()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-
-        // Обьект юзера
         $user = new User($userId);
 
         $countryList = Country::getAllCountry();

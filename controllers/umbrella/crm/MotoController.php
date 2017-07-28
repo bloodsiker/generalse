@@ -1,4 +1,12 @@
 <?php
+namespace Umbrella\controllers\umbrella\crm;
+
+use Umbrella\app\AdminBase;
+use Umbrella\app\User;
+use Umbrella\components\Logger;
+use Umbrella\models\Admin;
+use Umbrella\models\Moto;
+use Umbrella\models\Products;
 
 /**
  * Class MotoController
@@ -188,14 +196,8 @@ class MotoController extends AdminBase
      */
     public function actionMotoPartNumAjax()
     {
-
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-
-        // Обьект юзера
         $user = new User($userId);
 
         $mtm = $_REQUEST['mtm'];
@@ -211,20 +213,15 @@ class MotoController extends AdminBase
         return true;
     }
 
+
     /**
      * Проверка на наличие записи по серийнику
      * @return bool
      */
     public function actionMotoSerialNumAjax()
     {
-
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-
-        // Обьект юзера
         $user = new User($userId);
 
         $serial_num = $_REQUEST['serial_number'];
@@ -242,14 +239,8 @@ class MotoController extends AdminBase
      */
     public function actionShowMoto()
     {
-
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-
-        // Обьект юзера
         $user = new User($userId);
 
         $site_id = $_REQUEST['site_id'];

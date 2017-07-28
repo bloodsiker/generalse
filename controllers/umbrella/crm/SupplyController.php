@@ -1,4 +1,15 @@
 <?php
+namespace Umbrella\controllers\umbrella\crm;
+
+use Umbrella\app\AdminBase;
+use Umbrella\app\Group;
+use Umbrella\app\User;
+use Umbrella\components\Functions;
+use Umbrella\components\ImportExcel;
+use Umbrella\components\Logger;
+use Umbrella\models\Admin;
+use Umbrella\models\Products;
+use Umbrella\models\Supply;
 
 /**
  * Class SupplyController

@@ -78,8 +78,8 @@
                                     <td><?=$moto['part_number']?></td>
                                     <td><?=iconv('WINDOWS-1251', 'UTF-8', $moto['goods_name'])?></td>
                                     <td><?=iconv('WINDOWS-1251', 'UTF-8', $moto['problem_description'])?></td>
-                                    <td><?=Functions::formatDate($moto['purchase_date'])?></td>
-                                    <td><?=Functions::formatDate($moto['carry_in_date'])?></td>
+                                    <td><?= Umbrella\components\Functions::formatDate($moto['purchase_date'])?></td>
+                                    <td><?= Umbrella\components\Functions::formatDate($moto['carry_in_date'])?></td>
                                     <td><?=iconv('WINDOWS-1251', 'UTF-8', $moto['status_name'])?></td>
                                 </tr>
                             <?php endforeach; ?>
@@ -111,8 +111,8 @@
                             <td><?=$moto['part_number']?></td>
                             <td><?=iconv('WINDOWS-1251', 'UTF-8', $moto['goods_name'])?></td>
                             <td><?=iconv('WINDOWS-1251', 'UTF-8', $moto['problem_description'])?></td>
-                            <td><?=Functions::formatDate($moto['purchase_date'])?></td>
-                            <td><?=Functions::formatDate($moto['carry_in_date'])?></td>
+                            <td><?= Umbrella\components\Functions::formatDate($moto['purchase_date'])?></td>
+                            <td><?= Umbrella\components\Functions::formatDate($moto['carry_in_date'])?></td>
                             <td><?=iconv('WINDOWS-1251', 'UTF-8', $moto['status_name'])?></td>
                         </tr>
                         <?php endforeach; ?>

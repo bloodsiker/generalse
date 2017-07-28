@@ -1,4 +1,7 @@
 <?php
+namespace Umbrella\controllers;
+
+use Umbrella\app\AdminBase;
 
 class SiteController extends AdminBase
 {

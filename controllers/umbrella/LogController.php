@@ -1,4 +1,10 @@
 <?php
+namespace Umbrella\controllers\umbrella;
+
+use Umbrella\app\AdminBase;
+use Umbrella\app\User;
+use Umbrella\models\Admin;
+use Umbrella\models\Log;
 
 /**
  * Class LogController
@@ -12,15 +18,9 @@ class LogController extends AdminBase
 
     public function actionLogs()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-
-        // Обьект юзера
         $user = new User($userId);
-
 
         $allLogs = Log::getAllLog(0);
 

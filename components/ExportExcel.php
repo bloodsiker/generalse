@@ -1,5 +1,9 @@
 <?php
 
+namespace Umbrella\components;
+
+use PHPExcel;
+
 /**
  * Class ExportExcel
  */

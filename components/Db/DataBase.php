@@ -1,4 +1,5 @@
 <?php
+namespace Umbrella\components\Db;
 
 /**
  * Interface DataBase

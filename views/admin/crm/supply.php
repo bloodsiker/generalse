@@ -16,20 +16,20 @@
                         <div class="row align-bottom">
                             <div class="medium-12 small-12 columns">
 
-                                <?php if (AdminBase::checkDenied('crm.supply.create', 'view')): ?>
+                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.supply.create', 'view')): ?>
                                     <button data-open="add-supply-modal" class="button primary tool"><i class="fi-plus"></i>
                                         Create
                                     </button>
                                 <?php endif;?>
 
-                                <?php if (AdminBase::checkDenied('crm.supply.add-parts', 'view')): ?>
+                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.supply.add-parts', 'view')): ?>
                                     <button data-open="add-parts-supply-modal" class="button primary tool"><i class="fi-plus"></i>
                                         Add parts in supply
                                     </button>
                                 <?php endif;?>
 
 
-                                <?php if (AdminBase::checkDenied('crm.supply.accept', 'view')): ?>
+                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.supply.accept', 'view')): ?>
                                     <button class="button primary tool" disabled id="send_button" onclick="send()"><i class="fi-check"></i> Accept</button>
                                 <?php endif;?>
                             </div>
@@ -65,13 +65,13 @@
                             <th class="sort">Name</th>
                             <th class="sort">Arriving Date</th>
                             <th class="sort">Status</th>
-                            <?php if (AdminBase::checkDenied('crm.supply.accept', 'view')): ?>
+                            <?php if (Umbrella\app\AdminBase::checkDenied('crm.supply.accept', 'view')): ?>
                                 <th class="sort">Checked</th>
                             <?php endif; ?>
-                            <?php if (AdminBase::checkDenied('crm.supply.bind-gm', 'view')): ?>
+                            <?php if (Umbrella\app\AdminBase::checkDenied('crm.supply.bind-gm', 'view')): ?>
                                 <th class="sort">Checked</th>
                             <?php endif; ?>
-                            <?php if (AdminBase::checkDenied('crm.supply.delete', 'view')): ?>
+                            <?php if (Umbrella\app\AdminBase::checkDenied('crm.supply.delete', 'view')): ?>
                                 <th class="sort">Checked</th>
                             <?php endif; ?>
                         </tr>
@@ -84,9 +84,9 @@
                                     <td><?=$supply['site_id']?></td>
                                     <td><?=$supply['supply_id']?></td>
                                     <td><?=$supply['name']?></td>
-                                    <td><?=Functions::formatDate($supply['expected_arriving_date'])?></td>
-                                    <td class="status-supply <?=Supply::getStatusSupply($status)?>"><?=$status?></td>
-                                    <?php if (AdminBase::checkDenied('crm.supply.accept', 'view')): ?>
+                                    <td><?= Umbrella\components\Functions::formatDate($supply['expected_arriving_date'])?></td>
+                                    <td class="status-supply <?= Umbrella\models\Supply::getStatusSupply($status)?>"><?=$status?></td>
+                                    <?php if (Umbrella\app\AdminBase::checkDenied('crm.supply.accept', 'view')): ?>
                                         <td>
                                             <?php if($status != 'Подтверждена'):?>
                                             <input type="checkbox"
@@ -99,14 +99,14 @@
                                         </td>
                                     <?php endif; ?>
 
-                                    <?php if (AdminBase::checkDenied('crm.supply.bind-gm', 'view')): ?>
+                                    <?php if (Umbrella\app\AdminBase::checkDenied('crm.supply.bind-gm', 'view')): ?>
                                         <td class="text-center td-bind-gm">
                                             <?php if($status == 'предварительная'):?>
                                                 <a href="" class="accept supply-bind-gm">Bind</a>
                                             <?php endif;?>
                                         </td>
                                     <?php endif; ?>
-                                    <?php if (AdminBase::checkDenied('crm.supply.delete', 'view')): ?>
+                                    <?php if (Umbrella\app\AdminBase::checkDenied('crm.supply.delete', 'view')): ?>
                                         <td class="text-center td-supply-delete">
                                             <?php if($status == 'предварительная'):?>
                                                 <a href="" class="delete supply-delete">Delete</a>
@@ -144,8 +144,8 @@
                                     <td><?=$supply['site_client_name']?></td>
                                     <td><?=$supply['supply_id']?></td>
                                     <td><?=$supply['name']?></td>
-                                    <td><?=Functions::formatDate($supply['expected_arriving_date'])?></td>
-                                    <td class="status-supply <?=Supply::getStatusSupply($status)?>"><?=$status?></td>
+                                    <td><?= Umbrella\components\Functions::formatDate($supply['expected_arriving_date'])?></td>
+                                    <td class="status-supply <?= Umbrella\models\Supply::getStatusSupply($status)?>"><?=$status?></td>
                                     <td>
                                         <?php if($status != 'Подтверждена'):?>
                                             <input type="checkbox"

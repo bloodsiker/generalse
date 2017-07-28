@@ -1,5 +1,7 @@
 <?php
 
+namespace Umbrella\components;
+
 /**
  * рассчитываем коэффициент на основе показателей KPI
  * Class CoefficientKPI

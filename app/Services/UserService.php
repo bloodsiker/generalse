@@ -1,5 +1,9 @@
 <?php
 
+namespace Umbrella\app\Service;
+
+use Umbrella\models\Lithographer;
+
 /**
  * Class UserService
  */

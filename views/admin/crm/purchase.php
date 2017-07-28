@@ -18,15 +18,15 @@
                     <div class="medium-12 small-12 columns">
                         <div class="row align-bottom">
                             <div class="medium-4 small-12 columns">
-                                <?php if (AdminBase::checkDenied('crm.purchase.add', 'view')): ?>
+                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.purchase.add', 'view')): ?>
                                     <button class="button primary tool" id="add-checkout-button"><i class="fi-plus"></i> Add</button>
                                 <?php endif;?>
 
-                                <?php if (AdminBase::checkDenied('crm.purchase.attach', 'view')): ?>
+                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.purchase.attach', 'view')): ?>
                                     <button class="button primary tool" id="add-checkout-file"><i class="fi-plus"></i> Attach File</button>
                                 <?php endif;?>
 
-                                <?php if (AdminBase::checkDenied('crm.purchase.export', 'view')): ?>
+                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.purchase.export', 'view')): ?>
                                     <a class="button primary tool" id="export-button"><i class="fi-page-export"></i> Export to Excel</a>
                                 <?php endif;?>
                             </div>
@@ -147,7 +147,7 @@
                 <?php if($user->role == 'partner'):?>
                 <table id="goods_data">
                     <caption>Last recordings on
-                        <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Functions::addDays(date('Y-m-d'), '-7 days') ?> &mdash;
+                        <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-7 days') ?> &mdash;
                         <?= (isset($_GET['end']) && !empty($_GET['end'])) ? $_GET['end'] : date('Y-m-d') ?>
                         <span id="count_refund" class="text-green">(<?php if (isset($listPurchases)) echo count($listPurchases) ?>)</span>
                     </caption>
@@ -163,13 +163,14 @@
                     <tbody>
                     <?php if(is_array($listPurchases)):?>
                         <?php foreach($listPurchases as $purchase):?>
-                            <tr data-siteid="<?=$purchase['purchase_id']?>" data-purchase="" class="<?php echo(Functions::calcDiffSec($purchase['created_on']) < 120) ? 'check_lenovo_ok' : ''?>">
+                            <tr data-siteid="<?=$purchase['purchase_id']?>" data-purchase=""
+                                class="<?php echo(Umbrella\components\Functions::calcDiffSec($purchase['created_on']) < 120) ? 'check_lenovo_ok' : ''?>">
                                 <td><?=$purchase['purchase_id'] ?></td>
                                 <td><?=$purchase['site_client_name'] ?></td>
                                 <td><?=iconv('WINDOWS-1251', 'UTF-8', $purchase['stock_name'])?></td>
 								<?php $status = iconv('WINDOWS-1251', 'UTF-8', $purchase['status_name'])?>
-								<td class="<?= Purchases::getStatusRequest($status)?>"><?= ($status == NULL) ? 'Expect' : $status?></td>
-                                <td><?=Functions::formatDate($purchase['created_on'])?></td>
+								<td class="<?= Umbrella\models\Purchases::getStatusRequest($status)?>"><?= ($status == NULL) ? 'Expect' : $status?></td>
+                                <td><?=Umbrella\components\Functions::formatDate($purchase['created_on'])?></td>
                             </tr>
                         <?php endforeach;?>
                     <?php endif;?>
@@ -178,7 +179,7 @@
                 <?php elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
                     <table id="goods_data">
                         <caption>Last recordings on
-                            <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Functions::addDays(date('Y-m-d'), '-7 days') ?> &mdash;
+                            <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-7 days') ?> &mdash;
                             <?= (isset($_GET['end']) && !empty($_GET['end'])) ? $_GET['end'] : date('Y-m-d') ?>
                             <span id="count_refund" class="text-green">(<?php if (isset($listPurchases)) echo count($listPurchases) ?>)</span>
                         </caption>
@@ -194,13 +195,14 @@
                         <tbody>
                         <?php if(is_array($listPurchases)):?>
                             <?php foreach($listPurchases as $purchase):?>
-                                <tr data-siteid="<?=$purchase['purchase_id']?>" data-purchase="" class="<?php echo(Functions::calcDiffSec($purchase['created_on']) < 120) ? 'check_lenovo_ok' : ''?>">
+                                <tr data-siteid="<?=$purchase['purchase_id']?>" data-purchase=""
+                                    class="<?php echo(Umbrella\components\Functions::calcDiffSec($purchase['created_on']) < 120) ? 'check_lenovo_ok' : ''?>">
                                     <td><?=$purchase['purchase_id'] ?></td>
                                     <td><?=$purchase['site_client_name']?></td>
                                     <td><?=iconv('WINDOWS-1251', 'UTF-8', $purchase['stock_name'])?></td>
                                     <?php $status = iconv('WINDOWS-1251', 'UTF-8', $purchase['status_name'])?>
-                                    <td class="<?= Purchases::getStatusRequest($status)?>"><?= ($status == NULL) ? 'Expect' : $status?></td>
-                                    <td><?=Functions::formatDate($purchase['created_on'])?></td>
+                                    <td class="<?= Umbrella\models\Purchases::getStatusRequest($status)?>"><?= ($status == NULL) ? 'Expect' : $status?></td>
+                                    <td><?=Umbrella\components\Functions::formatDate($purchase['created_on'])?></td>
                                 </tr>
                             <?php endforeach;?>
                         <?php endif;?>

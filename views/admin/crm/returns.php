@@ -37,11 +37,11 @@
                                 </form>
                             </div>
                             <div class="medium-3 small-12 columns form">
-                                <?php if (AdminBase::checkDenied('crm.return.export', 'view')): ?>
+                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.return.export', 'view')): ?>
                                     <a class="button primary tool" id="export-button"><i class="fi-page-export"></i> Export to Excel</a>
                                 <?php endif;?>
 
-                                <?php if (AdminBase::checkDenied('crm.return.attach', 'view')): ?>
+                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.return.attach', 'view')): ?>
                                     <button class="button primary tool" id="add-return-file"><i class="fi-plus"></i> Attach File</button>
                                 <?php endif;?>
                             </div>
@@ -135,11 +135,11 @@
                                             <?=iconv('WINDOWS-1251' , 'UTF-8', $return['stock_name']);?>
                                         </td>
                                     <?php endif;?>
-                                    <td><?=Functions::formatDate($return['created_on'])?></td>
+                                    <td><?=Umbrella\components\Functions::formatDate($return['created_on'])?></td>
                                     <td><?=$return['part_number']?></td>
                                     <td><?=iconv('WINDOWS-1251', 'UTF-8', $return['goods_name'])?></td>
                                     <?php $status_name = iconv('WINDOWS-1251', 'UTF-8', $return['status_name'])?>
-                                    <td class="status_return <?= Returns::getStatusRequest($status_name)?>"><?= $status_name?></td>
+                                    <td class="status_return <?= Umbrella\models\Returns::getStatusRequest($status_name)?>"><?= $status_name?></td>
                                     <td class="text-center">
                                         <?php if($return['update_status_from_site'] != 2):?>
                                             <button class="apply-cout"><i class="fi-check"></i></button>
@@ -154,7 +154,7 @@
                     <table id="goods_data">
 
                             <caption>Last recordings on
-                                <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Functions::addDays(date('Y-m-d'), '-30 days') ?> &mdash;
+                                <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-30 days') ?> &mdash;
                                 <?= (isset($_GET['end']) && !empty($_GET['end'])) ? $_GET['end'] : date('Y-m-d') ?>
                                 <span id="count_refund" class="text-green">(<?php if (isset($allReturnsByPartner)) echo count($allReturnsByPartner) ?>)</span>
                             </caption>
@@ -196,11 +196,11 @@
                                             <?=iconv('WINDOWS-1251' , 'UTF-8', $return['stock_name']);?>
                                         </td>
                                     <?php endif;?>
-                                    <td><?=Functions::formatDate($return['created_on'])?></td>
+                                    <td><?= Umbrella\components\Functions::formatDate($return['created_on'])?></td>
                                     <td><?=$return['part_number']?></td>
                                     <td><?=iconv('WINDOWS-1251', 'UTF-8', $return['goods_name'])?></td>
                                     <?php $status_name = iconv('WINDOWS-1251', 'UTF-8', $return['status_name'])?>
-                                    <td class="status_return <?= Returns::getStatusRequest($status_name)?>"><?= $status_name?></td>
+                                    <td class="status_return <?= Umbrella\models\Returns::getStatusRequest($status_name)?>"><?= $status_name?></td>
                                     <td class="text-center">
                                         <?php if($return['update_status_from_site'] != 2):?>
                                             <button class="apply-cout"><i class="fi-check"></i></button>

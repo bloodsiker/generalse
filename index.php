@@ -11,8 +11,9 @@ session_start();
 
 // 2. Подключение файлов системы
 define('ROOT', dirname(__FILE__));
-require_once(ROOT . '/components/Autoload.php');
+require_once(ROOT . '/vendor/autoload.php');
 
 // 4. Вызов Router
-$router = new Router();
+require_once(ROOT . '/components/Router.php');
+$router = new Umbrella\components\Router();
 $router->run();

@@ -1,5 +1,12 @@
 <?php
 
+namespace Umbrella\controllers\umbrella\crm;
+
+use Umbrella\app\AdminBase;
+use Umbrella\app\User;
+use Umbrella\models\Admin;
+use Umbrella\models\Stocks;
+
 /**
  * Class StockController
  */

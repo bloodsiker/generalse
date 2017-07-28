@@ -4,56 +4,56 @@ return array(
 
 
     /*********** LOG  ***********/
-    'adm/user/ajax_logs' => 'log/ajaxLoad',
-    'adm/user/logs' => 'log/logs',
+    'adm/user/ajax_logs' => 'umbrella/Log@ajaxLoad',
+    'adm/user/logs' => 'umbrella/Log@logs',
 
 
     /*********** USER DENIED  ***********/
-    'adm/user/denied/([0-9]+)/([0-9]+)/([0-9]+)' => 'user/userDenied/$1/$2/$3',
-    'adm/user/denied/([0-9]+)/([0-9]+)' => 'user/userDenied/$1/$2',
-    'adm/user/denied/([0-9]+)' => 'user/userDenied/$1',
+    'adm/user/denied/([0-9]+)/([0-9]+)/([0-9]+)' => 'umbrella/User@userDenied/$1/$2/$3',
+    'adm/user/denied/([0-9]+)/([0-9]+)' => 'umbrella/User@userDenied/$1/$2',
+    'adm/user/denied/([0-9]+)' => 'umbrella/User@userDenied/$1',
 
 
     /*********** CONTROL USER  ***********/
-    'adm/user/control/delete/([0-9]+)/([0-9]+)' => 'user/userControlDelete/$1/$2',
-    'adm/user/control/([0-9]+)' => 'user/userControl/$1',
+    'adm/user/control/delete/([0-9]+)/([0-9]+)' => 'umbrella/User@userControlDelete/$1/$2',
+    'adm/user/control/([0-9]+)' => 'umbrella/User@userControl/$1',
 
 
     /*********** WEEKEND  ***********/
-    'adm/user/weekend/update/([0-9]+)' => 'user/userWeekendUpdate/$1',
-    'adm/user/weekend/delete/([0-9]+)' => 'user/userWeekendDelete/$1',
-    'adm/user/weekend/([0-9]+)' => 'user/userWeekend/$1',
+    'adm/user/weekend/update/([0-9]+)' => 'umbrella/User@userWeekendUpdate/$1',
+    'adm/user/weekend/delete/([0-9]+)' => 'umbrella/User@userWeekendDelete/$1',
+    'adm/user/weekend/([0-9]+)' => 'umbrella/User@userWeekend/$1',
 
 
     /*********** USERS  ***********/
-    'adm/user/delete/([0-9]+)' => 'user/delete/$1',
-    'adm/user/update/([0-9]+)' => 'user/update/$1',
-    'adm/user/check_login' => 'user/checkUserLogin',
-    'adm/user/add' => 'user/addUser',
-    'adm/users' => 'user/index',
+    'adm/user/delete/([0-9]+)' => 'umbrella/User@delete/$1',
+    'adm/user/update/([0-9]+)' => 'umbrella/User@update/$1',
+    'adm/user/check_login' => 'umbrella/User@checkUserLogin',
+    'adm/user/add' => 'umbrella/User@addUser',
+    'adm/users' => 'umbrella/User@index',
 
 
     /*********** GROUP  ***********/
-    'adm/group/denied/([0-9]+)/([0-9]+)/([0-9]+)' => 'group/groupDenied/$1/$2/$3',
-    'adm/group/denied/([0-9]+)/([0-9]+)' => 'group/groupDenied/$1/$2',
-    'adm/group/denied/([0-9]+)' => 'group/groupDenied/$1',
-    'adm/group/delete/user/([0-9]+)/([0-9]+)' => 'group/deleteUser/$1/$2',
-    'adm/group/delete/stock/([0-9]+)' => 'group/deleteStock/$1',
-    'adm/group/([0-9]+)/stock/([a-z0-9-_?&]+)' => 'group/stock/$1/$2',
-    'adm/group/([0-9]+)' => 'group/view/$1',
-    'adm/group/add' => 'group/addGroup',
+    'adm/group/denied/([0-9]+)/([0-9]+)/([0-9]+)' => 'umbrella/Group@groupDenied/$1/$2/$3',
+    'adm/group/denied/([0-9]+)/([0-9]+)' => 'umbrella/Group@groupDenied/$1/$2',
+    'adm/group/denied/([0-9]+)' => 'umbrella/Group@groupDenied/$1',
+    'adm/group/delete/user/([0-9]+)/([0-9]+)' => 'umbrella/Group@deleteUser/$1/$2',
+    'adm/group/delete/stock/([0-9]+)' => 'umbrella/Group@deleteStock/$1',
+    'adm/group/([0-9]+)/stock/([a-z0-9-_?&]+)' => 'umbrella/Group@stock/$1/$2',
+    'adm/group/([0-9]+)' => 'umbrella/Group@view/$1',
+    'adm/group/add' => 'umbrella/Group@addGroup',
 
 
     /*********** COUNTRY  ***********/
-    'adm/country/delete/([0-9]+)' => 'country/delete/$1',
-    'adm/country/update/([0-9]+)' => 'country/update/$1',
-    'adm/country/add' => 'country/addCountry',
+    'adm/country/delete/([0-9]+)' => 'umbrella/Country@delete/$1',
+    'adm/country/update/([0-9]+)' => 'umbrella/Country@update/$1',
+    'adm/country/add' => 'umbrella/Country@addCountry',
 
 
     /*********** BRANCH  ***********/
-    'adm/branch/delete/([0-9]+)/([0-9]+)' => 'branch/delete/$1/$2',
-    'adm/branch/view/([0-9]+)' => 'branch/view/$1',
-    'adm/branch/add' => 'branch/addBranch',
+    'adm/branch/delete/([0-9]+)/([0-9]+)' => 'umbrella/Branch@delete/$1/$2',
+    'adm/branch/view/([0-9]+)' => 'umbrella/Branch@view/$1',
+    'adm/branch/add' => 'umbrella/Branch@addBranch',
 
 
     /*********** DASHBOARD  ***********/
@@ -77,117 +77,117 @@ return array(
 
 
     /*********** OTHER REQUEST  ***********/
-    'adm/crm/other-request/request_ajax' => 'otherRequest/requestAjax',
-    'adm/crm/other-request/import' => 'otherRequest/requestImport',
-    'adm/crm/other-request' => 'otherRequest/index',
+    'adm/crm/other-request/request_ajax' => 'umbrella/crm/OtherRequest@requestAjax',
+    'adm/crm/other-request/import' => 'umbrella/crm/OtherRequest@requestImport',
+    'adm/crm/other-request' => 'umbrella/crm/OtherRequest@index',
 
 
     /*********** REQUEST  ***********/
-    'adm/crm/request/request_ajax' => 'request/requestAjax',
-    'adm/crm/request/price_part_ajax' => 'request/pricePartNumAjax',
-    'adm/crm/request/delete/([0-9]+)' => 'request/requestDelete/$1',
-    'adm/crm/request/import' => 'request/requestImport',
-    'adm/crm/request/completed' => 'request/completedRequest',
-    'adm/crm/request/([a-z0-9-_?&]+)' => 'request/index/$1',
-    'adm/crm/request' => 'request/index',
+    'adm/crm/request/request_ajax' => 'umbrella/crm/Request@requestAjax',
+    'adm/crm/request/price_part_ajax' => 'umbrella/crm/Request@pricePartNumAjax',
+    'adm/crm/request/delete/([0-9]+)' => 'umbrella/crm/Request@requestDelete/$1',
+    'adm/crm/request/import' => 'umbrella/crm/Request@requestImport',
+    'adm/crm/request/completed' => 'umbrella/crm/Request@completedRequest',
+    'adm/crm/request/([a-z0-9-_?&]+)' => 'umbrella/crm/Request@index/$1',
+    'adm/crm/request' => 'umbrella/crm/Request@index',
 
 
     /*********** BATCH  ***********/
-    'adm/crm/export/batch' => 'batch/exportBatch',
+    'adm/crm/export/batch' => 'umbrella/crm/Batch@exportBatch',
 
 
     /*********** BACKLOG  ***********/
-    'adm/crm/export/backlog' => 'backlogAnalysis/exportBacklog',
-    'adm/crm/backlog' => 'backlogAnalysis/index',
+    'adm/crm/export/backlog' => 'umbrella/crm/BacklogAnalysis@exportBacklog',
+    'adm/crm/backlog' => 'umbrella/crm/BacklogAnalysis@index',
 
 
     /*********** SUPPLY  ***********/
-    'adm/crm/import_add_parts' => 'supply/importAddParts',
-    'adm/crm/show_supply' => 'supply/showDetailSupply',
-    'adm/crm/supply_action_ajax' => 'supply/actionSupplyAjax',
-    'adm/crm/supply_ajax' => 'supply/supplyAjax',
-    'adm/crm/supply' => 'supply/supply',
+    'adm/crm/import_add_parts' => 'umbrella/crm/Supply@importAddParts',
+    'adm/crm/show_supply' => 'umbrella/crm/Supply@showDetailSupply',
+    'adm/crm/supply_action_ajax' => 'umbrella/crm/Supply@actionSupplyAjax',
+    'adm/crm/supply_ajax' => 'umbrella/crm/Supply@supplyAjax',
+    'adm/crm/supply' => 'umbrella/crm/Supply@supply',
 
 
     /*********** PURCHASE  ***********/
-    'adm/crm/export/purchase/([a-z0-9-_?&]+)' => 'purchase/exportPurchase/$1',
-    'adm/crm/purchase/([a-z0-9-_?&]+)' => 'purchase/purchase/$1',
-    'adm/crm/purchase_part_num_ajax' => 'purchase/purchasePartNumAjax',
-    'adm/crm/show_purchses' => 'purchase/showDetailPurchases',
-    'adm/crm/purchase_ajax' => 'purchase/purchaseAjax',
-    'adm/crm/purchase_success' => 'purchase/purchaseSuccess',
-    'adm/crm/purchase' => 'purchase/purchase',
+    'adm/crm/export/purchase/([a-z0-9-_?&]+)' => 'umbrella/crm/Purchase@exportPurchase/$1',
+    'adm/crm/purchase/([a-z0-9-_?&]+)' => 'umbrella/crm/Purchase@purchase/$1',
+    'adm/crm/purchase_part_num_ajax' => 'umbrella/crm/Purchase@purchasePartNumAjax',
+    'adm/crm/show_purchses' => 'umbrella/crm/Purchase@showDetailPurchases',
+    'adm/crm/purchase_ajax' => 'umbrella/crm/Purchase@purchaseAjax',
+    'adm/crm/purchase_success' => 'umbrella/crm/Purchase@purchaseSuccess',
+    'adm/crm/purchase' => 'umbrella/crm/Purchase@purchase',
 
 
     /*********** STOCKS  ***********/
-    'adm/crm/stocks/([a-z0-9-_?&]+)' => 'stock/stocks/$1',
-    'adm/crm/stocks' => 'stock/stocks',
+    'adm/crm/stocks/([a-z0-9-_?&]+)' => 'umbrella/crm/Stock@stocks/$1',
+    'adm/crm/stocks' => 'umbrella/crm/Stock@stocks',
 
 
     /*********** RETURNS  ***********/
-    'adm/crm/export/returns/([a-z0-9-_?&]+)' => 'return/exportReturns/$1',
-    'adm/crm/returns/filter/([a-z0-9-_?&]+)' => 'return/filterReturns/$1',
-    'adm/crm/import_returns' => 'return/importReturns',
-    'adm/crm/returns_ajax' => 'return/returnsAjax',
-    'adm/crm/returns' => 'return/returns',
+    'adm/crm/export/returns/([a-z0-9-_?&]+)' => 'umbrella/crm/Return@exportReturns/$1',
+    'adm/crm/returns/filter/([a-z0-9-_?&]+)' => 'umbrella/crm/Return@filterReturns/$1',
+    'adm/crm/import_returns' => 'umbrella/crm/Return@importReturns',
+    'adm/crm/returns_ajax' => 'umbrella/crm/Return@returnsAjax',
+    'adm/crm/returns' => 'umbrella/crm/Return@returns',
 
 
     /*********** ORDER  ***********/
-    'adm/crm/export/orders' => 'order/exportOrders',
-    'adm/crm/orders/([a-z0-9-_?&]+)' => 'order/orders/$1',
-    'adm/crm/orders_part_num_ajax' => 'order/ordersPartNumAjax',
-    'adm/crm/show_orders' => 'order/showDetailOrders',
-    'adm/crm/orders_action' => 'order/ordersAction',
-    'adm/crm/orders_ajax' => 'order/ordersAjax',
-    'adm/crm/orders_success' => 'order/ordersSuccess',
-    'adm/crm/orders' => 'order/orders',
+    'adm/crm/export/orders' => 'umbrella/crm/Order@exportOrders',
+    'adm/crm/orders/([a-z0-9-_?&]+)' => 'umbrella/crm/Order@orders/$1',
+    'adm/crm/orders_part_num_ajax' => 'umbrella/crm/Order@ordersPartNumAjax',
+    'adm/crm/show_orders' => 'umbrella/crm/Order@showDetailOrders',
+    'adm/crm/orders_action' => 'umbrella/crm/Order@ordersAction',
+    'adm/crm/orders_ajax' => 'umbrella/crm/Order@ordersAjax',
+    'adm/crm/orders_success' => 'umbrella/crm/Order@ordersSuccess',
+    'adm/crm/orders' => 'umbrella/crm/Order@orders',
 
 
     /*********** DISASSEMBLY  ***********/
-    'adm/crm/export/disassembly/([a-z0-9-_?&]+)' => 'disassembly/exportDisassembly/$1',
-    'adm/crm/disassembly_all' => 'disassembly/allDisassembl',
-    'adm/crm/show_disassembly' => 'disassembly/showDetailDisassembl',
-    'adm/crm/disassembly_action_ajax' => 'disassembly/disassemblyActionAjax',
-    'adm/crm/disassembly_ajax' => 'disassembly/disassemblyAjax',
-    'adm/crm/disassembly_list/([a-z0-9-_?&]+)' => 'disassembly/disassemblyResult/$1',
-    'adm/crm/disassembly_list' => 'disassembly/disassemblyResult',
-    'adm/crm/disassembly/test' => 'disassembly/test1',
-    'adm/crm/disassembly' => 'disassembly/disassembly',
+    'adm/crm/export/disassembly/([a-z0-9-_?&]+)' => 'umbrella/crm/Disassembly@exportDisassembly/$1',
+    'adm/crm/disassembly_all' => 'umbrella/crm/Disassembly@allDisassembl',
+    'adm/crm/show_disassembly' => 'umbrella/crm/Disassembly@showDetailDisassembl',
+    'adm/crm/disassembly_action_ajax' => 'umbrella/crm/Disassembly@disassemblyActionAjax',
+    'adm/crm/disassembly_ajax' => 'umbrella/crm/Disassembly@disassemblyAjax',
+    'adm/crm/disassembly_list/([a-z0-9-_?&]+)' => 'umbrella/crm/Disassembly@disassemblyResult/$1',
+    'adm/crm/disassembly_list' => 'umbrella/crm/Disassembly@disassemblyResult',
+    'adm/crm/disassembly/test' => 'umbrella/crm/Disassembly@test1',
+    'adm/crm/disassembly' => 'umbrella/crm/Disassembly@disassembly',
 
 
     /*********** MOTO  ***********/
-    'adm/crm/moto_serial_num_ajax' => 'moto/motoSerialNumAjax',
-    'adm/crm/show_moto' => 'moto/showMoto',
-    'adm/crm/moto_part_num_ajax' => 'moto/motoPartNumAjax',
-    'adm/crm/moto/([a-z0-9-_?&]+)' => 'moto/moto/$1',
-    'adm/crm/moto' => 'moto/moto',
+    'adm/crm/moto_serial_num_ajax' => 'umbrella/crm/Moto@motoSerialNumAjax',
+    'adm/crm/show_moto' => 'umbrella/crm/Moto@showMoto',
+    'adm/crm/moto_part_num_ajax' => 'umbrella/crm/Moto@motoPartNumAjax',
+    'adm/crm/moto/([a-z0-9-_?&]+)' => 'umbrella/crm/Moto@moto/$1',
+    'adm/crm/moto' => 'umbrella/crm/Moto@moto',
 
 
     /*********** PSR  ***********/
-    'adm/crm/psr' => 'psr/psr',
+    'adm/crm/psr' => 'umbrella/crm/Psr@psr',
 
 
     /*********** LITHOGRAPHER  ***********/
-    'adm/lithographer/s/([a-z0-9-_?&]+)' => 'lithographer/search/$1',
-    'adm/lithographer/delete/([0-9]+)' => 'lithographer/delete/$1',
-    'adm/lithographer/edit/([0-9]+)' => 'lithographer/edit/$1',
-    'adm/lithographer/list' => 'lithographer/list',
-    'adm/lithographer/tips/([0-9]+)' => 'lithographer/view/$1',
-    'adm/lithographer/rules/([0-9]+)' => 'lithographer/view/$1',
-    'adm/lithographer/forms' => 'lithographer/forms',
-    'adm/lithographer/video' => 'lithographer/video',
-    'adm/lithographer/tips' => 'lithographer/tips',
-    'adm/lithographer/rules' => 'lithographer/rules',
+    'adm/lithographer/s/([a-z0-9-_?&]+)' => 'umbrella/Lithographer@search/$1',
+    'adm/lithographer/delete/([0-9]+)' => 'umbrella/Lithographer@delete/$1',
+    'adm/lithographer/edit/([0-9]+)' => 'umbrella/Lithographer@edit/$1',
+    'adm/lithographer/list' => 'umbrella/Lithographer@list',
+    'adm/lithographer/tips/([0-9]+)' => 'umbrella/Lithographer@view/$1',
+    'adm/lithographer/rules/([0-9]+)' => 'umbrella/Lithographer@view/$1',
+    'adm/lithographer/forms' => 'umbrella/Lithographer@forms',
+    'adm/lithographer/video' => 'umbrella/Lithographer@video',
+    'adm/lithographer/tips' => 'umbrella/Lithographer@tips',
+    'adm/lithographer/rules' => 'umbrella/Lithographer@rules',
 
 
     /*********** REFUND REQUEST  ***********/
-    'adm/refund_request/filter/([a-z0-9-_?&]+)' => 'refundRequest/filterRequest/$1',
-    'adm/refund_request/registration' => 'refundRequest/index',
-    'adm/refund_request/view' => 'refundRequest/viewRequest',
-    'adm/refund_request/thank_you_page' => 'refundRequest/thankYouPage',
-    'adm/part_num_ajax' => 'refundRequest/partNumAjax',
-    'adm/request_ajax' => 'refundRequest/requestAjax',
-    'adm/refund_request/test' => 'refundRequest/test',
+    'adm/refund_request/filter/([a-z0-9-_?&]+)' => 'umbrella/RefundRequest@filterRequest/$1',
+    'adm/refund_request/registration' => 'umbrella/RefundRequest@index',
+    'adm/refund_request/view' => 'umbrella/RefundRequest@viewRequest',
+    'adm/refund_request/thank_you_page' => 'umbrella/RefundRequest@thankYouPage',
+    'adm/part_num_ajax' => 'umbrella/RefundRequest@partNumAjax',
+    'adm/request_ajax' => 'umbrella/RefundRequest@requestAjax',
+    'adm/refund_request/test' => 'umbrella/RefundRequest@test',
 
 
     /*********** KPI  ***********/
@@ -202,10 +202,10 @@ return array(
     'auth' => 'admin/auth',
 
     /*********** SITE  ***********/
-    'contact_form' => 'site/contactForm',
-    'contact' => 'site/contact',
-    'career' => 'site/career',
-    'directions' => 'site/directions',
-    'for_business' => 'site/forBusiness',
-    'main' => 'site/index', // actionIndex в SiteController
+    'contact_form' => 'Site@contactForm',
+    'contact' => 'Site@contact',
+    'career' => 'Site@career',
+    'directions' => 'Site@directions',
+    'for_business' => 'Site@forBusiness',
+    'main' => 'Site@index', // actionIndex в SiteController
 );

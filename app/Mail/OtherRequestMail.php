@@ -1,5 +1,7 @@
 <?php
 
+namespace Umbrella\app\Mail;
+
 /**
  * Class OtherRequestMail
  */
@@ -29,6 +31,7 @@ class OtherRequestMail
      * @param $options
      * @param $user_name
      * @param $id
+     * @return bool
      */
     public function sendEmailGS($options, $user_name, $id) {
 
@@ -47,6 +50,7 @@ class OtherRequestMail
 
         mail('vv@generalse.com', 'Lenovo Request. Новый запрос', $mailToManager, $headers);
         //mail('maldini2@ukr.net', 'Lenovo Request. Новый запрос', $mailToManager, $headers);
+        return true;
     }
 
 
@@ -55,6 +59,7 @@ class OtherRequestMail
      * @param $options
      * @param $user_name
      * @param $count
+     * @return bool
      */
     public function sendImportEmailGS($options, $user_name, $count) {
 
@@ -69,12 +74,14 @@ class OtherRequestMail
 
         mail('vv@generalse.com', 'Lenovo Request. Новый запрос', $mailToManager, $headers);
         //mail('maldini2@ukr.net', 'Lenovo Request. Новый запрос', $mailToManager, $headers);
+        return true;
     }
 
 
     /**
      * Согласование цены
      * @param $options
+     * @return bool
      */
     public function sendEmailPartnerAlignment($options) {
 
@@ -95,12 +102,14 @@ class OtherRequestMail
                 mail($email, 'Lenovo Request. Согласование цены на вашу заявку', $mailToManager, $headers);
             }
         }
+        return true;
     }
 
 
     /**
      * Уведомляем партнера об отказе заявки
      * @param $options
+     * @return bool
      */
     public function sendEmailPartnerDenied($options) {
 
@@ -122,12 +131,14 @@ class OtherRequestMail
                 mail($email, 'Lenovo Request. Ваша заявка отклонена', $mailToManager, $headers);
             }
         }
+        return true;
     }
 
 
     /**
      * Согласия с ценой
      * @param $options
+     * @return bool
      */
     public function sendEmailGSRequestAgree($options) {
 
@@ -142,12 +153,14 @@ class OtherRequestMail
         $mailToManager .= "<b>Price:</b> " . $options['price'] . "<br>";
 
         mail('vv@generalse.com', 'Lenovo Request. Партнер согласился с ценой ', $mailToManager, $headers);
+        return true;
     }
 
 
     /**
      * Нет согласия на цену
      * @param $options
+     * @return bool
      */
     public function sendEmailGSRequestDisagree($options) {
 
@@ -163,6 +176,7 @@ class OtherRequestMail
         $mailToManager .= "<b>Comment:</b> " . $options['comment_disagree'] . "<br>";
 
         mail('vv@generalse.com', 'Lenovo Request. Партнер не согласился с ценой', $mailToManager, $headers);
+        return true;
     }
 
 }

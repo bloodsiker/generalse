@@ -1,5 +1,10 @@
 <?php
 
+namespace Umbrella\models;
+
+use PDO;
+use Umbrella\components\Db\MySQL;
+
 class OtherRequest
 {
 

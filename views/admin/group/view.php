@@ -31,12 +31,12 @@
                                     <td><?=$userI['id_user']?></td>
                                     <td><?=$userI['name_partner']?></td>
                                     <td>
-                                    <?php if (AdminBase::checkDenied('user.denied', 'view')): ?>
+                                    <?php if (Umbrella\app\AdminBase::checkDenied('user.denied', 'view')): ?>
                                         <a href="/adm/user/denied/<?=$userI['id_user']?>" class="button no-margin small"><i class="fi-wrench"></i></a>
                                     <?php endif; ?>
                                     </td>
                                     <td>
-                                        <?php if (AdminBase::checkDenied('group.user.delete', 'view')): ?>
+                                        <?php if (Umbrella\app\AdminBase::checkDenied('group.user.delete', 'view')): ?>
                                             <a href="/adm/group/delete/user/<?=$id_group?>/<?= $userI['id_user'] ?>" class="button no-margin small"
                                                onclick="return confirm('Вы уверены?') ? true : false;"><i
                                                     class="fi-x"></i></a>
@@ -58,7 +58,7 @@
                                 <option <?= ($group->checkUserInGroups($userG['id_user']) ? 'disabled' : '')?> value="<?=$userG['id_user']?>"><?=$userG['name_partner']?></option>
                             <?php endforeach;?>
                         </select>
-                        <?php if (AdminBase::checkDenied('group.user.add', 'view')): ?>
+                        <?php if (Umbrella\app\AdminBase::checkDenied('group.user.add', 'view')): ?>
                             <input type="hidden" name="add_user_group" value="true">
                             <button type="submit" style="margin-top: 15px" class="button small float-right">Добавить</button>
                         <?php endif; ?>
@@ -66,7 +66,7 @@
                 </div>
 
                 <div class="medium-2 small-12 columns">
-                    <?php if (AdminBase::checkDenied('group.stock.view', 'view')): ?>
+                    <?php if (Umbrella\app\AdminBase::checkDenied('group.stock.view', 'view')): ?>
                         <h2>Разделы</h2>
                         <ul class="menu-section">
                             <li><a href="/adm/group/<?=$id_group?>/stock/purchase">Purchase</a></li>

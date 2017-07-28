@@ -28,7 +28,7 @@
                                 <tr>
                                     <td><?=$stock['stock_name']?></td>
                                     <td>
-                                        <?php if (AdminBase::checkDenied('group.stock.delete', 'view')): ?>
+                                        <?php if (Umbrella\app\AdminBase::checkDenied('group.stock.delete', 'view')): ?>
                                             <a href="/adm/group/delete/stock/<?= $stock['id_row'] ?>" class="button no-margin small"
                                                onclick="return confirm('Вы уверены?') ? true : false;"><i
                                                         class="fi-x"></i></a>
@@ -51,7 +51,7 @@
                             <?php endforeach;?>
                         </select>
 
-                        <?php if (AdminBase::checkDenied('group.stock.add', 'view')): ?>
+                        <?php if (Umbrella\app\AdminBase::checkDenied('group.stock.add', 'view')): ?>
                             <input type="hidden" name="add_stock_group" value="true">
                             <button type="submit" style="margin-top: 15px" class="button small float-right">Добавить</button>
                         <?php endif; ?>
@@ -59,15 +59,15 @@
                 </div>
 
                 <div class="medium-2 small-12 columns">
-                    <?php if (AdminBase::checkDenied('group.stock.view', 'view')): ?>
+                    <?php if (Umbrella\app\AdminBase::checkDenied('group.stock.view', 'view')): ?>
                         <h2>Разделы</h2>
                         <ul class="menu-section">
-                            <li><a href="/adm/group/<?=$id_group?>/stock/purchase" class="<?= Url::IsActive('/stock/purchase', 'active-section') ?>">Purchase</a></li>
-                            <li><a href="/adm/group/<?=$id_group?>/stock/order" class="<?= Url::IsActive('/stock/order', 'active-section') ?>">Order</a></li>
-                            <li><a href="/adm/group/<?=$id_group?>/stock/returns" class="<?= Url::IsActive('/stock/returns', 'active-section') ?>">Returns</a></li>
-                            <li><a href="/adm/group/<?=$id_group?>/stock/stocks" class="<?= Url::IsActive('/stock/stocks', 'active-section') ?>">Stocks</a></li>
-                            <li><a href="/adm/group/<?=$id_group?>/stock/disassembly" class="<?= Url::IsActive('/stock/disassembly', 'active-section') ?>">Disassembly</a></li>
-                            <li><a href="/adm/group/<?=$id_group?>/stock/supply" class="<?= Url::IsActive('/stock/supply', 'active-section') ?>">Supply</a></li>
+                            <li><a href="/adm/group/<?=$id_group?>/stock/purchase" class="<?= Umbrella\components\Url::IsActive('/stock/purchase', 'active-section') ?>">Purchase</a></li>
+                            <li><a href="/adm/group/<?=$id_group?>/stock/order" class="<?= Umbrella\components\Url::IsActive('/stock/order', 'active-section') ?>">Order</a></li>
+                            <li><a href="/adm/group/<?=$id_group?>/stock/returns" class="<?= Umbrella\components\Url::IsActive('/stock/returns', 'active-section') ?>">Returns</a></li>
+                            <li><a href="/adm/group/<?=$id_group?>/stock/stocks" class="<?= Umbrella\components\Url::IsActive('/stock/stocks', 'active-section') ?>">Stocks</a></li>
+                            <li><a href="/adm/group/<?=$id_group?>/stock/disassembly" class="<?= Umbrella\components\Url::IsActive('/stock/disassembly', 'active-section') ?>">Disassembly</a></li>
+                            <li><a href="/adm/group/<?=$id_group?>/stock/supply" class="<?= Umbrella\components\Url::IsActive('/stock/supply', 'active-section') ?>">Supply</a></li>
                         </ul>
                     <?php endif; ?>
                 </div>

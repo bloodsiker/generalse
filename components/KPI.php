@@ -1,5 +1,7 @@
 <?php
 
+namespace Umbrella\components;
+
 /**
  * Calculate KPI the result service centers
  * Class KPI

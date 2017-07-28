@@ -1,5 +1,12 @@
 <?php
 
+namespace Umbrella\controllers\umbrella;
+
+use Umbrella\app\AdminBase;
+use Umbrella\app\User;
+use Umbrella\models\Admin;
+use Umbrella\models\Country;
+
 /**
  * Class CountryController
  */

@@ -1,5 +1,7 @@
 <?php
 
+namespace Umbrella\components;
+
 /**
  * Class Router
  */
@@ -44,26 +46,33 @@ class Router
                                 
                 // Определить контроллер, action, параметры
 
-                $segments = explode('/', $internalRoute);
+                $segments = explode('@', $internalRoute);
 
-                $controllerName = array_shift($segments) . 'Controller';
-                $controllerName = ucfirst($controllerName);
+                $arrayControllerName = explode('/', array_shift($segments));
 
-                $actionName = 'action' . ucfirst(array_shift($segments));
+                $controllerName = implode('/', $arrayControllerName) . 'Controller';
 
-                $parameters = $segments;
 
-                
+                $stringSegments = implode($segments);
+
+                $actionSegments = explode('/', $stringSegments);
+                $actionName = 'action' . ucfirst(array_shift($actionSegments));
+
+                $parameters = $actionSegments;
+
+
                 // Подключить файл класса-контроллера
-                $controllerFile = ROOT . '/controllers/' .
-                        $controllerName . '.php';
+                $controllerFile = ROOT . '/controllers/' . $controllerName . '.php';
 
                 if (file_exists($controllerFile)) {
                     include_once($controllerFile);
                 }
 
+                $controllerName = str_replace('/', '\\', $controllerName);
+                $newControllerName = 'Umbrella\\controllers\\' . $controllerName;
+
                 // Создать объект, вызвать метод (т.е. action)
-                $controllerObject = new $controllerName;
+                $controllerObject = new $newControllerName();
 
                 $result = call_user_func_array(array($controllerObject, $actionName), $parameters);
                 

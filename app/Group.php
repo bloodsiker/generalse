@@ -1,5 +1,10 @@
 <?php
 
+namespace Umbrella\app;
+
+use Umbrella\models\Denied;
+use Umbrella\models\GroupModel;
+
 /**
  * Class Group
  */

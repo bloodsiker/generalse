@@ -62,7 +62,7 @@
                             <?php if (is_array($requestByPartner)): ?>
                                 <?php foreach ($requestByPartner as $request): ?>
                                     <tr class="goods">
-										<?php $status = Warranty::checkStatusRequest($request['SN'], $request['PN_MTM'], $request['site_id']);
+										<?php $status = Umbrella\models\Warranty::checkStatusRequest($request['SN'], $request['PN_MTM'], $request['site_id']);
                                         $id_gs = iconv('WINDOWS-1251', 'UTF-8', $status['purchase_id'])?>
 
                                         <td><?=$id_gs?></td>
@@ -76,12 +76,12 @@
                                         <td><?=$request['Estimated_cost']?></td>
                                         <td><?=$request['Refund_Reason']?></td>
                                         <td>
-                                            <a data-open="<?= count(File::fileByWarranty($request['id_warrantry'])) ? 'show-file' : ''?>" class="file_request" data-file="<?=$request['id_warrantry']?>">
-                                                <?= count(File::fileByWarranty($request['id_warrantry']))?> <i class="fi-download"></i>
+                                            <a data-open="<?= count(Umbrella\models\File::fileByWarranty($request['id_warrantry'])) ? 'show-file' : ''?>" class="file_request" data-file="<?=$request['id_warrantry']?>">
+                                                <?= count(Umbrella\models\File::fileByWarranty($request['id_warrantry']))?> <i class="fi-download"></i>
                                             </a>
                                         </td>
                                         <?php $status = iconv('WINDOWS-1251', 'UTF-8', $status['status_name'])?>
-                                        <td class="<?=Warranty::getStatusRequest($status)?>">
+                                        <td class="<?= Umbrella\models\Warranty::getStatusRequest($status)?>">
                                             <?php echo ($status == NULL) ? 'Expect' : $status ?>
                                         </td>
                                         <td><?=$request['date_create_request']?></td>

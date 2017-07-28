@@ -1,5 +1,11 @@
 <?php
 
+namespace Umbrella\app;
+
+use Umbrella\models\Admin;
+use Umbrella\app\UserDenied;
+use Umbrella\app\User;
+
 /**
  * Абстрактный класс AdminBase содержит общую логику для контроллеров, которые
  * используются в панели администратора

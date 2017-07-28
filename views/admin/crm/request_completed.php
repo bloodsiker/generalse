@@ -21,7 +21,7 @@
 
                                 <a href="/adm/crm/request" class="button primary tool"><i class="fi-arrow-left"></i> Back to request</a>
 
-                                <?php if (AdminBase::checkDenied('crm.request.export', 'view')): ?>
+                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.export', 'view')): ?>
                                     <button class="button primary tool" onclick="tableToExcel('goods_data', 'Request Table')" style="width: inherit;"><i class="fi-page-export"></i> Export to Excel</button>
                                 <?php endif;?>
                             </div>
@@ -59,7 +59,7 @@
                 <?php if($user->role == 'partner'):?>
                 <table id="goods_data">
                     <caption>Last requests on
-                        <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Functions::addDays(date('Y-m-d'), '-30 days') ?> &mdash;
+                        <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-30 days') ?> &mdash;
                         <?= (isset($_GET['end']) && !empty($_GET['end'])) ? $_GET['end'] : date('Y-m-d') ?>
                         <span id="count_refund" class="text-green">(<?php if (isset($listCheckOrders)) echo count($listCheckOrders) ?>)</span>
                     </caption>
@@ -85,7 +85,7 @@
                     <tbody>
                     <?php if(is_array($listCheckOrders)):?>
                         <?php foreach($listCheckOrders as $order):?>
-                            <tr class="goods <?= (Functions::calcDiffSec($order['created_on']) < 120) ? 'check_lenovo_ok' : ''?>">
+                            <tr class="goods <?= (Umbrella\components\Functions::calcDiffSec($order['created_on']) < 120) ? 'check_lenovo_ok' : ''?>">
                                 <td><?= $order['id']?></td>
                                 <td><?= $order['order_number']?></td>
                                 <td><?= $order['site_client_name']?></td>
@@ -108,7 +108,7 @@
                                     <?php endif;?>
                                 </td>
                                 <?php $status_name = iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?>
-                                <td class="<?=Orders::getStatusRequest($status_name);?>">
+                                <td class="<?= Umbrella\models\Orders::getStatusRequest($status_name);?>">
                                     <?= $status_name?>
                                     <?php if($status_name == 'Отказано'):?>
                                         <i class="fi-info has-tip [tip-top]" style="font-size: 16px;"
@@ -118,7 +118,7 @@
                                            title="<?= iconv('WINDOWS-1251', 'UTF-8', $order['command_text'])?>"></i>
                                     <?php endif;?>
                                 </td>
-                                <td><?= Functions::formatDate($order['created_on'])?></td>
+                                <td><?= Umbrella\components\Functions::formatDate($order['created_on'])?></td>
                             </tr>
                         <?php endforeach;?>
                     <?php endif;?>
@@ -129,7 +129,7 @@
                     || $user->role == 'manager'):?>
                     <table id="goods_data">
                         <caption>Last requests on
-                            <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Functions::addDays(date('Y-m-d'), '-30 days') ?> &mdash;
+                            <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-30 days') ?> &mdash;
                             <?= (isset($_GET['end']) && !empty($_GET['end'])) ? $_GET['end'] : date('Y-m-d') ?>
                             <span id="count_refund" class="text-green">(<?php if (isset($listCheckOrders)) echo count($listCheckOrders) ?>)</span>
                         </caption>
@@ -153,7 +153,7 @@
                         <tbody>
                         <?php if(is_array($listCheckOrders)):?>
                             <?php foreach($listCheckOrders as $order):?>
-                                <tr class="goods <?= (Functions::calcDiffSec($order['created_on']) < 120) ? 'check_lenovo_ok' : ''?>"
+                                <tr class="goods <?= (Umbrella\components\Functions::calcDiffSec($order['created_on']) < 120) ? 'check_lenovo_ok' : ''?>"
                                     data-id="<?= $order['id']?>">
                                     <td><?= $order['id']?></td>
                                     <td><?= $order['order_number']?></td>
@@ -175,7 +175,7 @@
                                         <?php endif;?>
                                     </td>
                                     <?php $status_name = iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?>
-                                    <td class="order-tr-status <?=Orders::getStatusRequest($status_name);?>">
+                                    <td class="order-tr-status <?= Umbrella\models\Orders::getStatusRequest($status_name);?>">
                                         <span class="order_status"><?= $status_name?></span>
                                         <?php if($status_name == 'Отказано'):?>
                                             <i class="fi-info has-tip [tip-top]" style="font-size: 16px;"
@@ -185,7 +185,7 @@
                                                title="<?= iconv('WINDOWS-1251', 'UTF-8', $order['command_text'])?>"></i>
                                         <?php endif;?>
                                     </td>
-                                    <td><?= Functions::formatDate($order['created_on'])?></td>
+                                    <td><?= Umbrella\components\Functions::formatDate($order['created_on'])?></td>
                                 </tr>
                             <?php endforeach;?>
                         <?php endif;?>

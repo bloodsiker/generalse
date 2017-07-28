@@ -13,7 +13,7 @@
             <div class="row body-content">
                 <div class="medium-9 small-12 columns">
                     <h2 class="float-left">Список пользователей</h2>
-                    <?php if (AdminBase::checkDenied('user.add', 'view')): ?>
+                    <?php if (Umbrella\app\AdminBase::checkDenied('user.add', 'view')): ?>
                         <a href="/adm/user/add" class="button small float-right"><i class="fi-plus"></i> Добавить</a>
                     <?php endif;?>
                     <div class="clearfix"></div>
@@ -44,22 +44,22 @@
                                     <td><?=$userI['group_name']?></td>
                                     <td><?=$userI['date_active']?></td>
                                     <td>
-                                        <?php if (AdminBase::checkDenied('user.denied', 'view')): ?>
+                                        <?php if (Umbrella\app\AdminBase::checkDenied('user.denied', 'view')): ?>
                                             <a href="/adm/user/denied/<?=$userI['id_user']?>" class="button no-margin small"><i class="fi-wrench"></i></a>
                                         <?php endif; ?>
                                     </td>
                                     <td>
-                                        <?php if (AdminBase::checkDenied('user.control', 'view')): ?>
+                                        <?php if (Umbrella\app\AdminBase::checkDenied('user.control', 'view')): ?>
                                             <a href="/adm/user/control/<?=$userI['id_user']?>" class="button no-margin small"><i class="fi-eye"></i></a>
                                         <?php endif; ?>
                                     </td>
                                     <td>
                                         <?php if ($user->role == 'administrator' || $user->role == 'administrator-fin'): ?>
-                                            <?php if (AdminBase::checkDenied('user.delete', 'view')): ?>
+                                            <?php if (Umbrella\app\AdminBase::checkDenied('user.delete', 'view')): ?>
                                                 <a href="/adm/user/delete/<?=$userI['id_user']?>" class="button no-margin small" onclick="return confirm('Вы уверены что хотите удалить пользователя?') ? true : false;"><i class="fi-x"></i></a>
                                             <?php endif; ?>
 
-                                            <?php if (AdminBase::checkDenied('user.edit', 'view')): ?>
+                                            <?php if (Umbrella\app\AdminBase::checkDenied('user.edit', 'view')): ?>
                                                 <a href="/adm/user/update/<?=$userI['id_user']?>" class="button no-margin small"><i class="fi-pencil"></i></a>
                                             <?php endif; ?>
                                         <?php endif; ?>
@@ -73,7 +73,7 @@
 
                 <div class="medium-3 small-12 columns">
                     <h2 class="float-left">Group</h2>
-                    <?php if (AdminBase::checkDenied('group.add', 'view')): ?>
+                    <?php if (Umbrella\app\AdminBase::checkDenied('group.add', 'view')): ?>
                         <a href="/adm/group/add" class="button small float-right"><i class="fi-plus"></i> Добавить</a>
                     <?php endif;?>
                     <div class="clearfix"></div>
@@ -90,7 +90,7 @@
                                 <tr>
                                     <td><?= $group['group_name']?></td>
                                     <td>
-                                    <?php if (AdminBase::checkDenied('group.view', 'view')): ?>
+                                    <?php if (Umbrella\app\AdminBase::checkDenied('group.view', 'view')): ?>
                                         <a href="/adm/group/<?= $group['id'] ?>" class="button no-margin small"><i
                                                     class="fi-eye"></i></a>
                                     <?php endif; ?>
@@ -103,7 +103,7 @@
 
                     <div style="margin-bottom: 50px"></div>
                     <h2 class="float-left">Branch</h2>
-                    <?php if (AdminBase::checkDenied('branch.add', 'view')): ?>
+                    <?php if (Umbrella\app\AdminBase::checkDenied('branch.add', 'view')): ?>
                         <a href="/adm/branch/add" class="button small float-right"><i class="fi-plus"></i> Добавить</a>
                     <?php endif;?>
                     <div class="clearfix"></div>
@@ -131,7 +131,7 @@
 
                     <div style="margin-bottom: 50px"></div>
                     <h2 class="float-left">Страны</h2>
-                    <?php if (AdminBase::checkDenied('country.add', 'view')): ?>
+                    <?php if (Umbrella\app\AdminBase::checkDenied('country.add', 'view')): ?>
                         <a href="/adm/country/add" class="button small float-right"><i class="fi-plus"></i> Добавить</a>
                     <?php endif;?>
                     <div class="clearfix"></div>
@@ -150,13 +150,13 @@
                                     <?php if ($user->role == 'administrator' || $user->role == 'administrator-fin'): ?>
                                         <td>
                                             <?php if ($user->role == 'administrator' || $user->role == 'administrator-fin'): ?>
-                                                <?php if (AdminBase::checkDenied('country.delete', 'view')): ?>
+                                                <?php if (Umbrella\app\AdminBase::checkDenied('country.delete', 'view')): ?>
                                                     <a href="/adm/country/delete/<?= $country['id_country'] ?>" class="button no-margin small"
                                                    onclick="return confirm('Вы уверены что хотите удалить страну?') ? true : false;"><i
                                                             class="fi-x"></i></a>
                                                 <?php endif; ?>
 
-                                                <?php if (AdminBase::checkDenied('country.edit', 'view')): ?>
+                                                <?php if (Umbrella\app\AdminBase::checkDenied('country.edit', 'view')): ?>
                                                     <a href="/adm/country/update/<?= $country['id_country'] ?>" class="button no-margin small"><i
                                                             class="fi-pencil"></i></a>
                                                 <?php endif; ?>

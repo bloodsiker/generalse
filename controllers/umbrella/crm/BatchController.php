@@ -1,4 +1,14 @@
 <?php
+namespace Umbrella\controllers\umbrella\crm;
+
+use Umbrella\app\AdminBase;
+use Umbrella\app\User;
+use Umbrella\components\ImportExcel;
+use Umbrella\components\Logger;
+use Umbrella\models\Admin;
+use Umbrella\models\Orders;
+use Umbrella\models\Products;
+
 
 /**
  * Class BatchController
@@ -15,13 +25,8 @@ class BatchController extends  AdminBase
      */
     public function actionExportBatch()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-
-        // Обьект юзера
         $user = new User($userId);
 
         if(isset($_POST['check_butch']) && $_POST['check_butch'] == 'true'){

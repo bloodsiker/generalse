@@ -1,4 +1,7 @@
 <?php
+namespace Umbrella\components\Db;
+
+use PDO;
 
 /**
  * Class MySQL

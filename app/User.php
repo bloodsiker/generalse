@@ -1,5 +1,13 @@
 <?php
 
+namespace Umbrella\app;
+
+use Umbrella\app\Group;
+use Umbrella\models\Admin;
+use Umbrella\models\DeliveryAddress;
+use Umbrella\models\Denied;
+use Umbrella\models\GroupModel;
+
 /**
  * Class User
  */

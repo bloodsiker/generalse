@@ -1,4 +1,14 @@
 <?php
+namespace Umbrella\controllers\umbrella\crm;
+
+use Umbrella\app\AdminBase;
+use Umbrella\app\Mail\OtherRequestMail;
+use Umbrella\app\User;
+use Umbrella\components\ImportExcel;
+use Umbrella\components\Logger;
+use Umbrella\models\Admin;
+use Umbrella\models\OtherRequest;
+use Umbrella\models\Products;
 
 /**
  * Class OtherRequestController

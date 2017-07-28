@@ -20,19 +20,19 @@
 
 <!-- switch  -->
 <?php
-if (Url::Is_url($_SERVER['REQUEST_URI'], '/dashboard')) echo "<script src='/template/admin/js/dashboard.js'></script>";
-if (Url::Is_url($_SERVER['REQUEST_URI'], '/crm/stocks')) echo "<script src='/template/admin/js/stocks.js'></script>";
-if (Url::Is_url($_SERVER['REQUEST_URI'], '/crm/returns')) echo "<script src='/template/admin/js/returns.js'></script>";
-if (Url::Is_url($_SERVER['REQUEST_URI'], '/crm/orders')) echo "<script src='/template/admin/js/orders.js'></script>";
-if (Url::Is_url($_SERVER['REQUEST_URI'], '/crm/purchase')) echo "<script src='/template/admin/js/purchase.js'></script>";
-if (Url::Is_url($_SERVER['REQUEST_URI'], '/crm/disassembly')) echo "<script src='/template/admin/js/disassembly.js'></script>";
-if (Url::Is_url($_SERVER['REQUEST_URI'], '/crm/moto')) echo "<script src='/template/admin/js/moto.js'></script>";
-if (Url::Is_url($_SERVER['REQUEST_URI'], '/crm/psr')) echo "<script src='/template/admin/js/psr.js'></script>";
-if (Url::Is_url($_SERVER['REQUEST_URI'], '/crm/supply')) echo "<script src='/template/admin/js/supply.js'></script>";
-if (Url::Is_url($_SERVER['REQUEST_URI'], '/crm/request')) echo "<script src='/template/admin/js/request.js'></script>";
-if (Url::Is_url($_SERVER['REQUEST_URI'], '/crm/other-request')) echo "<script src='/template/admin/js/other_request.js'></script>";
-if (Url::Is_url($_SERVER['REQUEST_URI'], '/ccc')) echo "<script src='/template/admin/js/ccc/knowledge.js'></script>";
-if (Url::Is_url($_SERVER['REQUEST_URI'], '/adm/lithographer')) echo "
+if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/dashboard')) echo "<script src='/template/admin/js/dashboard.js'></script>";
+if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/stocks')) echo "<script src='/template/admin/js/stocks.js'></script>";
+if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/returns')) echo "<script src='/template/admin/js/returns.js'></script>";
+if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/orders')) echo "<script src='/template/admin/js/orders.js'></script>";
+if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/purchase')) echo "<script src='/template/admin/js/purchase.js'></script>";
+if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/disassembly')) echo "<script src='/template/admin/js/disassembly.js'></script>";
+if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/moto')) echo "<script src='/template/admin/js/moto.js'></script>";
+if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/psr')) echo "<script src='/template/admin/js/psr.js'></script>";
+if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/supply')) echo "<script src='/template/admin/js/supply.js'></script>";
+if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/request')) echo "<script src='/template/admin/js/request.js'></script>";
+if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/other-request')) echo "<script src='/template/admin/js/other_request.js'></script>";
+if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/ccc')) echo "<script src='/template/admin/js/ccc/knowledge.js'></script>";
+if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/adm/lithographer')) echo "
   <script src='https://cdnjs.cloudflare.com/ajax/libs/video.js/5.0.0/video.min.js'></script>
   <script src='/template/admin/js/lithographer.js'></script>
   ";
@@ -63,12 +63,12 @@ if (Url::Is_url($_SERVER['REQUEST_URI'], '/adm/lithographer')) echo "
     CKEDITOR.replace('edit');
 //    CKEDITOR.replace( 'ck_rules',
 //        {
-//            filebrowserBrowseUrl : '/ckfinder/ckfinder.html',
-//            filebrowserImageBrowseUrl : '/ckfinder/ckfinder.html?type=Images',
-//            filebrowserFlashBrowseUrl : '/ckfinder/ckfinder.html?type=Flash',
-//            filebrowserUploadUrl : '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
-//            filebrowserImageUploadUrl : '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
-//            filebrowserFlashUploadUrl : '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
+//            filebrowserBrowseUmbrella\components\Url : '/ckfinder/ckfinder.html',
+//            filebrowserImageBrowseUmbrella\components\Url : '/ckfinder/ckfinder.html?type=Images',
+//            filebrowserFlashBrowseUmbrella\components\Url : '/ckfinder/ckfinder.html?type=Flash',
+//            filebrowserUploadUmbrella\components\Url : '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+//            filebrowserImageUploadUmbrella\components\Url : '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+//            filebrowserFlashUploadUmbrella\components\Url : '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
 //        });
 </script>
 

@@ -18,23 +18,23 @@
                     <div class="medium-12 small-12 columns">
                         <div class="row align-bottom">
                             <div class="medium-9 small-12 columns">
-                                <?php if (AdminBase::checkDenied('crm.request.send', 'view')): ?>
+                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.send', 'view')): ?>
                                     <button class="button primary tool" id="add-request-button"><i class="fi-plus"></i> Request</button>
                                 <?php endif;?>
 
-                                <?php if (AdminBase::checkDenied('crm.request.import', 'view')): ?>
+                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.import', 'view')): ?>
                                     <button data-open="add-request-import-modal" class="button primary tool"><i class="fi-plus"></i> Import request</button>
                                 <?php endif;?>
 
-                                <?php if (AdminBase::checkDenied('crm.request.export', 'view')): ?>
+                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.export', 'view')): ?>
                                     <button class="button primary tool" onclick="tableToExcel('goods_data', 'Request Table')" style="width: inherit;"><i class="fi-page-export"></i> Export to Excel</button>
                                 <?php endif;?>
 
-                                <?php if (AdminBase::checkDenied('crm.request.price', 'view')): ?>
+                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.price', 'view')): ?>
                                     <button class="button primary tool" id="price-button"><i class="fi-plus"></i> Price</button>
                                 <?php endif;?>
 
-                                <?php if (AdminBase::checkDenied('crm.request.allprice', 'view')): ?>
+                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.allprice', 'view')): ?>
                                     <a href="/upload/attach_request/<?= $user->linkDownloadAllPrice()?>" class="button primary tool" download><i class="fi-download"></i> ALL PRICES</a>
                                 <?php endif;?>
 
@@ -80,7 +80,7 @@
                     <tbody>
                     <?php if(is_array($listCheckOrders)):?>
                         <?php foreach($listCheckOrders as $order):?>
-                            <tr class="goods <?= (Functions::calcDiffSec($order['created_on']) < 120) ? 'check_lenovo_ok' : ''?>">
+                            <tr class="goods <?= (Umbrella\components\Functions::calcDiffSec($order['created_on']) < 120) ? 'check_lenovo_ok' : ''?>">
                                 <td><?= $order['id']?></td>
                                 <td><?= $order['site_client_name']?></td>
                                 <td><?= $order['part_number']?></td>
@@ -102,7 +102,7 @@
                                     <?php endif;?>
                                 </td>
                                 <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?></td>
-                                <td><?= Functions::formatDate($order['created_on'])?></td>
+                                <td><?= Umbrella\components\Functions::formatDate($order['created_on'])?></td>
                             </tr>
                         <?php endforeach;?>
                     <?php endif;?>
@@ -129,7 +129,7 @@
                             <th>Note</th>
                             <th>Status</th>
                             <th>Date create</th>
-                            <?php if (AdminBase::checkDenied('crm.request.delete', 'view')): ?>
+                            <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.delete', 'view')): ?>
                                 <th>Delete</th>
                             <?php endif;?>
                         </tr>
@@ -137,7 +137,7 @@
                         <tbody>
                         <?php if(is_array($listCheckOrders)):?>
                             <?php foreach($listCheckOrders as $order):?>
-                                <tr class="goods <?= (Functions::calcDiffSec($order['created_on']) < 120) ? 'check_lenovo_ok' : ''?>"
+                                <tr class="goods <?= (Umbrella\components\Functions::calcDiffSec($order['created_on']) < 120) ? 'check_lenovo_ok' : ''?>"
                                     data-id="<?= $order['id']?>">
                                     <td><?= $order['id']?></td>
                                     <td><?= $order['site_client_name']?></td>
@@ -180,8 +180,8 @@
                                             <a href="" class="button edit-status delete"><i class="fi-pencil"></i></a>
                                         <?php endif;?>
                                     </td>
-                                    <td><?= Functions::formatDate($order['created_on'])?></td>
-                                    <?php if (AdminBase::checkDenied('crm.request.delete', 'view')): ?>
+                                    <td><?= Umbrella\components\Functions::formatDate($order['created_on'])?></td>
+                                    <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.delete', 'view')): ?>
                                         <td class="text-center">
                                             <a href="/adm/crm/request/delete/<?=$order['id']?>" onclick="return confirm('Вы уверены что хотите удалить?') ? true : false;" class="delete disassemble-delete"><i class="fi-x-circle"></i></a>
                                         </td>

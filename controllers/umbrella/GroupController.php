@@ -1,5 +1,15 @@
 <?php
 
+namespace Umbrella\controllers\umbrella;
+
+use Umbrella\app\AdminBase;
+use Umbrella\app\Group;
+use Umbrella\app\User;
+use Umbrella\models\Admin;
+use Umbrella\models\Denied;
+use Umbrella\models\GroupModel;
+use Umbrella\models\Stocks;
+
 class GroupController extends AdminBase
 {
     public function __construct()

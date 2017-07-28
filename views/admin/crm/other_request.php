@@ -18,15 +18,15 @@
                     <div class="medium-12 small-12 columns">
                         <div class="row align-bottom">
                             <div class="medium-9 small-12 columns">
-                                <?php if (AdminBase::checkDenied('crm.other.request.send', 'view')): ?>
+                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.other.request.send', 'view')): ?>
                                     <button data-open="add-request-modal" class="button primary tool" id="add-request-button"><i class="fi-plus"></i> Request</button>
                                 <?php endif;?>
 
-                                <?php if (AdminBase::checkDenied('crm.other.request.import', 'view')): ?>
+                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.other.request.import', 'view')): ?>
                                     <button data-open="add-request-import-modal" class="button primary tool"><i class="fi-plus"></i> Import request</button>
                                 <?php endif;?>
 
-                                <?php if (AdminBase::checkDenied('crm.other.request.export', 'view')): ?>
+                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.other.request.export', 'view')): ?>
                                     <button class="button primary tool" onclick="tableToExcel('goods_data', 'Request Table')" style="width: inherit;"><i class="fi-page-export"></i> Export to Excel</button>
                                 <?php endif;?>
                             </div>
@@ -68,7 +68,7 @@
                     <tbody>
                     <?php if(is_array($listRequests)):?>
                         <?php foreach ($listRequests as $request):?>
-                            <tr class="goods <?= (Functions::calcDiffSec($request['date_create']) < 120) ? 'check_lenovo_ok' : ''?>"
+                            <tr class="goods <?= (Umbrella\components\Functions::calcDiffSec($request['date_create']) < 120) ? 'check_lenovo_ok' : ''?>"
                                 data-id="<?= $request['id']?>">
                                 <td><?= $request['id']?></td>
                                 <td><?= $request['name_partner']?></td>
@@ -87,8 +87,8 @@
                                            title="<?= $request['note']?>"></i>
                                     <?php endif;?>
                                 </td>
-                                <td class="status <?= OtherRequest::getStatusRequest($request['status_name'])?>"><?= $request['status_name']?></td>
-                                <td><?= Functions::formatDate($request['date_create'])?></td>
+                                <td class="status <?= Umbrella\models\OtherRequest::getStatusRequest($request['status_name'])?>"><?= $request['status_name']?></td>
+                                <td><?= Umbrella\components\Functions::formatDate($request['date_create'])?></td>
                                 <td class="action-control">
                                     <?php if($request['action'] == 0):?>
 
@@ -141,7 +141,7 @@
                             <th>Status</th>
                             <th>Date create</th>
                             <th class="text-center">Actions</th>
-                            <?php if (AdminBase::checkDenied('crm.request.delete', 'view')): ?>
+                            <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.delete', 'view')): ?>
                                 <th class="text-center">Delete</th>
                             <?php endif;?>
                         </tr>
@@ -149,7 +149,7 @@
                         <tbody>
                         <?php if(is_array($listRequests)):?>
                             <?php foreach ($listRequests as $request):?>
-                                <tr class="goods <?= (Functions::calcDiffSec($request['date_create']) < 120) ? 'check_lenovo_ok' : ''?>"
+                                <tr class="goods <?= (Umbrella\components\Functions::calcDiffSec($request['date_create']) < 120) ? 'check_lenovo_ok' : ''?>"
                                     data-id="<?= $request['id']?>">
                                     <td><?= $request['id']?></td>
                                     <td><?= $request['name_partner']?></td>
@@ -175,8 +175,8 @@
                                                title="<?= $request['note']?>"></i>
                                         <?php endif;?>
                                     </td>
-                                    <td class="status <?= OtherRequest::getStatusRequest($request['status_name'])?>"><?= $request['status_name']?></td>
-                                    <td><?= Functions::formatDate($request['date_create'])?></td>
+                                    <td class="status <?= Umbrella\models\OtherRequest::getStatusRequest($request['status_name'])?>"><?= $request['status_name']?></td>
+                                    <td><?= Umbrella\components\Functions::formatDate($request['date_create'])?></td>
                                     <td class="action-control">
                                         <?php if($request['action'] == 0):?>
                                             <a href="" data-action="1" class="return request-action">Согласование</a>
@@ -203,7 +203,7 @@
                                             <span style="color: green">Выполненный запрос</span>
                                         <?php endif;?>
                                     </td>
-                                    <?php if (AdminBase::checkDenied('crm.request.delete', 'view')): ?>
+                                    <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.delete', 'view')): ?>
                                         <td class="text-center">
                                             <a href="" class="delete request-delete"><i class="fi-x-circle"></i></a>
                                         </td>

@@ -1,5 +1,7 @@
 <?php
 
+namespace Umbrella\components;
+
 /**
  * Class Logger
  */

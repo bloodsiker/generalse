@@ -62,7 +62,7 @@
             <div class="row">
                 <table id="goods_data">
                     <caption>Last recording on
-                        <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Functions::addDays(date('Y-m-d'), '-1 days') ?> &mdash;
+                        <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-1 days') ?> &mdash;
                         <?= (isset($_GET['end']) && !empty($_GET['end'])) ? $_GET['end'] : date('Y-m-d') ?>
                         <span id="count_refund" class="text-green">(<?php if (isset($listDisassembly)) echo count($listDisassembly) ?>)</span>
                     </caption>
@@ -84,7 +84,7 @@
 
                     <?php if (isset($listDisassembly) && is_array($listDisassembly)): ?>
                         <?php foreach ($listDisassembly as $dis): ?>
-                            <?php $info = Disassembly::checkStatusRequestMSSQL($dis['site_id']);
+                            <?php $info = Umbrella\models\Disassembly::checkStatusRequestMSSQL($dis['site_id']);
                             $id_gs = iconv('WINDOWS-1251', 'UTF-8', $info['decompile_id'])?>
 
                             <tr class="goods" data-siteid="<?=$dis['site_id']?>" data-decompile="<?=$id_gs?>">
@@ -95,10 +95,10 @@
                                 <td><?=$dis['serial_number']?></td>
                                 <td><?=$dis['stockName']?></td>
 								<?php $status = iconv('WINDOWS-1251', 'UTF-8', $info['status_name'])?>
-                                <td class="<?=Disassembly::getStatusRequest($status)?>">
+                                <td class="<?= Umbrella\models\Disassembly::getStatusRequest($status)?>">
                                     <?php echo ($status == NULL) ? 'Expect' : $status ?>
                                 </td>
-                                <td><?=Functions::formatDate($dis['date_create'])?></td>
+                                <td><?= Umbrella\components\Functions::formatDate($dis['date_create'])?></td>
                                 <td class="action-control">
                                     <?php if($status == 'Предварительная'):?>
                                         <a href="" class="accept disassemble-accept"><i class="fi-check"></i></a>

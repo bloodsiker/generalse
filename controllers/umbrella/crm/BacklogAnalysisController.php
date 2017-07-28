@@ -1,4 +1,13 @@
 <?php
+namespace Umbrella\controllers\umbrella\crm;
+
+use Umbrella\app\AdminBase;
+use Umbrella\app\User;
+use Umbrella\components\ImportExcel;
+use Umbrella\components\Logger;
+use Umbrella\models\Admin;
+use Umbrella\models\Backlog;
+use Umbrella\models\Products;
 
 class BacklogAnalysisController extends AdminBase
 {
@@ -18,13 +27,8 @@ class BacklogAnalysisController extends AdminBase
      */
     public function actionIndex()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-
-        // Обьект юзера
         $user = new User($userId);
         $partnerList = Admin::getAllPartner();
 
@@ -103,8 +107,6 @@ class BacklogAnalysisController extends AdminBase
                             $i++;
                         }
                         Logger::getInstance()->log($user->id_user, 'воспользовался функцией BacklogAnalysis');
-//                        echo "<pre>";
-//                        print_r($new_array);
                     }
                 }
                 //header("Location: /adm/crm/supply");

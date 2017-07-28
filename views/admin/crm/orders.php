@@ -18,19 +18,19 @@
                     <div class="medium-12 small-12 columns">
                         <div class="row align-bottom">
                             <div class="medium-5 small-12 columns">
-                                <?php if (AdminBase::checkDenied('crm.orders.add', 'view')): ?>
+                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.add', 'view')): ?>
                                     <button class="button primary tool" id="add-checkout-button"><i class="fi-plus"></i> Add</button>
                                 <?php endif;?>
 
-                                <?php if (AdminBase::checkDenied('crm.orders.attach', 'view')): ?>
+                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.attach', 'view')): ?>
                                     <button class="button primary tool" id="add-order-file"><i class="fi-plus"></i> Attach File</button>
                                 <?php endif;?>
 
-                                <?php if (AdminBase::checkDenied('crm.orders.export', 'view')): ?>
+                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.export', 'view')): ?>
                                     <button data-open="export-modal" class="button primary tool"><i class="fi-page-export"></i> Export to Excel</button>
                                 <?php endif;?>
 
-                                <?php if (AdminBase::checkDenied('crm.orders.batch', 'view')): ?>
+                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.batch', 'view')): ?>
                                     <button data-open="add-supply-modal" class="button primary tool"><i class="fi-plus"></i>
                                         Check Batch
                                     </button>
@@ -165,19 +165,19 @@
                 <?php if($user->role == 'partner'):?>
                 <table id="goods_data">
                     <caption>Last recordings on
-                        <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Functions::addDays(date('Y-m-d'), '-14 days') ?> &mdash;
+                        <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-14 days') ?> &mdash;
                         <?= (isset($_GET['end']) && !empty($_GET['end'])) ? $_GET['end'] : date('Y-m-d') ?>
                         <span id="count_refund" class="text-green">(<?php if (isset($allOrders)) echo count($allOrders) ?>)</span>
                     </caption>
                     <thead>
                     <tr>
-                        <?php if (AdminBase::checkDenied('crm.orders.request_id', 'view')): ?>
+                        <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.request_id', 'view')): ?>
                             <th class="sort">Request id</th>
                         <?php endif; ?>
                         <th class="sort">Partner</th>
                         <th class="sort">Order Number</th>
                         <th class="sort">Service Order</th>
-                        <?php if (AdminBase::checkDenied('crm.orders.type_repair', 'view')): ?>
+                        <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.type_repair', 'view')): ?>
                             <th class="sort">Type</th>
                         <?php endif; ?>
                         <th>Note</th>
@@ -190,13 +190,13 @@
                     <?php if(is_array($allOrders)):?>
                         <?php foreach($allOrders as $order):?>
                             <tr data-order-id="<?=$order['order_id']?>" class="goods">
-                                <?php if (AdminBase::checkDenied('crm.orders.request_id', 'view')): ?>
+                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.request_id', 'view')): ?>
                                     <td><?= $order['request_id']?></td>
                                 <?php endif;?>
                                 <td><?= $order['site_client_name']?></td>
                                 <td><?= $order['order_number']?></td>
                                 <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></td>
-                                <?php if (AdminBase::checkDenied('crm.orders.type_repair', 'view')): ?>
+                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.type_repair', 'view')): ?>
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['type_name'])?></td>
                                 <?php endif; ?>
 
@@ -232,9 +232,9 @@
                                 </td>
                                 <td>
                                     <?php if($user->name_partner == 'GS Electrolux' && $status_name == 'Выдан'):?>
-                                        <?= Functions::formatDate($order['shipped_on'])?>
+                                        <?= Umbrella\components\Functions::formatDate($order['shipped_on'])?>
                                     <?php else:?>
-                                        <?= Functions::formatDate($order['created_on'])?>
+                                        <?= Umbrella\components\Functions::formatDate($order['created_on'])?>
                                     <?php endif;?>
                                 </td>
                             </tr>
@@ -246,20 +246,20 @@
                     <table id="goods_data">
                         <?php if(isset($_GET['start']) && !empty($_GET['start'])):?>
                             <caption>Last recordings on
-                                <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Functions::addDays(date('Y-m-d'), '-7 days') ?> &mdash;
+                                <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-7 days') ?> &mdash;
                                 <?= (isset($_GET['end']) && !empty($_GET['end'])) ? $_GET['end'] : date('Y-m-d') ?>
                                 <span id="count_refund" class="text-green">(<?php if (isset($allOrders)) echo count($allOrders) ?>)</span>
                             </caption>
                         <?php endif;?>
                         <thead>
                         <tr>
-                            <?php if (AdminBase::checkDenied('crm.orders.request_id', 'view')): ?>
+                            <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.request_id', 'view')): ?>
                                 <th class="sort">Request id</th>
                             <?php endif;?>
                             <th class="sort">Partner</th>
                             <th class="sort">Order Number</th>
                             <th class="sort">Service Order</th>
-                            <?php if (AdminBase::checkDenied('crm.orders.type_repair', 'view')): ?>
+                            <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.type_repair', 'view')): ?>
                                 <th class="sort">Type</th>
                             <?php endif;?>
                             <th>Note</th>
@@ -273,13 +273,13 @@
                         <?php if(is_array($allOrders)):?>
                             <?php foreach($allOrders as $order):?>
                                 <tr data-order-id="<?=$order['order_id']?>" class="goods">
-                                    <?php if (AdminBase::checkDenied('crm.orders.request_id', 'view')): ?>
+                                    <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.request_id', 'view')): ?>
                                         <td><?= $order['request_id']?></td>
                                     <?php endif;?>
                                     <td><?= $order['site_client_name']?></td>
                                     <td><?= $order['order_number']?></td>
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></td>
-                                    <?php if (AdminBase::checkDenied('crm.orders.type_repair', 'view')): ?>
+                                    <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.type_repair', 'view')): ?>
                                         <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['type_name'])?></td>
                                     <?php endif;?>
 
@@ -294,7 +294,7 @@
                                     </td>
 
                                     <?php $status_name = iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?>
-                                    <td class="<?=Orders::getStatusRequest($status_name);?>">
+                                    <td class="<?=Umbrella\models\Orders::getStatusRequest($status_name);?>">
                                         <?= $status_name?>
                                         <?php if($status_name == 'Отказано'):?>
                                             <i class="fi-info has-tip [tip-top]" style="font-size: 16px;"
@@ -314,7 +314,7 @@
                                         <?php endif;?>
                                     </td>
                                     <td>
-                                        <?= Functions::formatDate($order['created_on'])?>
+                                        <?= Umbrella\components\Functions::formatDate($order['created_on'])?>
                                     </td>
                                     <td class="action-control">
                                     <?php if($status_name == 'Предварительный' || $status_name == 'В обработке' || $status_name == 'Резерв'):?>

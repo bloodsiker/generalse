@@ -1,4 +1,15 @@
 <?php
+namespace Umbrella\controllers\umbrella\crm;
+
+use Umbrella\app\AdminBase;
+use Umbrella\app\Group;
+use Umbrella\app\User;
+use Umbrella\components\Functions;
+use Umbrella\components\ImportExcel;
+use Umbrella\components\Logger;
+use Umbrella\models\Admin;
+use Umbrella\models\Orders;
+use Umbrella\models\Products;
 
 /**
  * Class RequestController
@@ -24,13 +35,8 @@ class RequestController extends AdminBase
      */
     public function actionIndex($filter = '')
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-
-        // Обьект юзера
         $user = new User($userId);
         $group = new Group();
 

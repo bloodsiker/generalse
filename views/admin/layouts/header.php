@@ -14,7 +14,8 @@
     <link rel="stylesheet" href="/template/admin/css/style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/5.0.0/video-js.min.css" rel="stylesheet">
     <?php
-        if (Url::Is_url($_SERVER['REQUEST_URI'], '/ccc')) echo "<link rel='stylesheet' href='/template/admin/css/ccc_style.css'>";
+
+    if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/ccc')) echo "<link rel='stylesheet' href='/template/admin/css/ccc_style.css'>";
     ?>
     <style>
         .yellow {
@@ -43,32 +44,32 @@
         </div>
         <div class="medium-7 small-12 columns">
             <ul class="menu align-right">
-                <?php if (AdminBase::checkDenied('adm.dashboard', 'view')): ?>
-                    <li><a href="/adm/dashboard" class="<?= Url::IsActive('/dashboard', 'active') ?>">Dashboard</a></li>
+                <?php if (Umbrella\app\AdminBase::checkDenied('adm.dashboard', 'view')): ?>
+                    <li><a href="/adm/dashboard" class="<?= Umbrella\components\Url::IsActive('/dashboard', 'active') ?>">Dashboard</a></li>
                 <?php endif; ?>
 
-                <?php if (AdminBase::checkDenied('adm.users', 'view')): ?>
-                    <li><a href="/adm/users" class="<?= Url::IsActive('/user', 'active') ?>">Users</a></li>
+                <?php if (Umbrella\app\AdminBase::checkDenied('adm.users', 'view')): ?>
+                    <li><a href="/adm/users" class="<?= Umbrella\components\Url::IsActive('/user', 'active') ?>">Users</a></li>
                 <?php endif; ?>
 
-                <?php if (AdminBase::checkDenied('adm.kpi', 'view')): ?>
-                    <li><a href="/adm/kpi" class="<?= Url::IsActive(['/kpi', '/result'], 'active') ?>">KPI</a></li>
+                <?php if (Umbrella\app\AdminBase::checkDenied('adm.kpi', 'view')): ?>
+                    <li><a href="/adm/kpi" class="<?= Umbrella\components\Url::IsActive(['/kpi', '/result'], 'active') ?>">KPI</a></li>
                 <?php endif; ?>
 
-                <?php if (AdminBase::checkDenied('adm.refund_request', 'view')): ?>
-                    <li><a href="/adm/refund_request/registration" class="<?=Url::IsActive('/refund_request', 'active') ?>">Refund Request</a></li>
+                <?php if (Umbrella\app\AdminBase::checkDenied('adm.refund_request', 'view')): ?>
+                    <li><a href="/adm/refund_request/registration" class="<?=Umbrella\components\Url::IsActive('/refund_request', 'active') ?>">Refund Request</a></li>
                 <?php endif; ?>
 
-                <?php if (AdminBase::checkDenied('adm.crm', 'view')): ?>
-                    <li><a href="/adm/crm/orders" class="<?= Url::IsActive('/crm/', 'active') ?>">CRM</a></li>
+                <?php if (Umbrella\app\AdminBase::checkDenied('adm.crm', 'view')): ?>
+                    <li><a href="/adm/crm/orders" class="<?= Umbrella\components\Url::IsActive('/crm/', 'active') ?>">CRM</a></li>
                 <?php endif; ?>
 
-                <?php if (AdminBase::checkDenied('adm.lithographer', 'view')): ?>
-                    <li><a href="/adm/lithographer/video" class="<?= Url::IsActive('/lithographer', 'active')?>">Lithographer</a></li>
+                <?php if (Umbrella\app\AdminBase::checkDenied('adm.lithographer', 'view')): ?>
+                    <li><a href="/adm/lithographer/video" class="<?= Umbrella\components\Url::IsActive('/lithographer', 'active')?>">Lithographer</a></li>
                 <?php endif; ?>
 
-                <?php if (AdminBase::checkDenied('adm.ccc', 'view')): ?>
-                    <li><a href="/adm/ccc" class="<?= Url::IsActive('/ccc', 'active')?>">CCC</a></li>
+                <?php if (Umbrella\app\AdminBase::checkDenied('adm.ccc', 'view')): ?>
+                    <li><a href="/adm/ccc" class="<?= Umbrella\components\Url::IsActive('/ccc', 'active')?>">CCC</a></li>
                 <?php endif; ?>
             </ul>
         </div>

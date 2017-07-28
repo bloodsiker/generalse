@@ -1,5 +1,9 @@
 <?php
 
+namespace Umbrella\app;
+
+use Umbrella\models\Denied;
+
 /**
  * Запрет пользователю просматривать раздел
  * Class UserAccess

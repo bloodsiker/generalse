@@ -1,4 +1,7 @@
 <?php
+namespace Umbrella\components\Db;
+
+use PDO;
 
 /**
  * Class MsSQL
@@ -23,7 +26,7 @@ class MsSQL implements DataBase
             try {
                 self::$instance = new PDO ("dblib:host={$params['host']}:{$params['port']};dbname={$params['dbname']}","{$params['user']}","{$params['password']}");
                 //$dbh->exec("set names utf8");
-            } catch (PDOException $e) {
+            } catch (\PDOException $e) {
                 echo "Failed to get DB handle: " . $e->getMessage() . "\n";
                 exit;
             }

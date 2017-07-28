@@ -62,7 +62,7 @@
                                     <td><?= $userM['branch_name']?></td>
                                     <?php if ($user->role == 'administrator' || $user->role == 'administrator-fin'): ?>
                                         <td>
-                                            <input type="checkbox" <?=(Branch::checkUserInBranch($allUserBranch, $userM['id_user']) ? 'checked disabled' : '')?> name="id_user[]" value="<?=$userM['id_user']?>">
+                                            <input type="checkbox" <?=(Umbrella\models\Branch::checkUserInBranch($allUserBranch, $userM['id_user']) ? 'checked disabled' : '')?> name="id_user[]" value="<?=$userM['id_user']?>">
                                         </td>
                                     <?php endif; ?>
                                 </tr>

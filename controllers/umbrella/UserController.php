@@ -1,4 +1,17 @@
 <?php
+namespace Umbrella\controllers\umbrella;
+
+use Umbrella\app\AdminBase;
+use Umbrella\app\Service\UserService;
+use Umbrella\app\User;
+use Umbrella\components\Functions;
+use Umbrella\models\Admin;
+use Umbrella\models\Branch;
+use Umbrella\models\Country;
+use Umbrella\models\Denied;
+use Umbrella\models\GroupModel;
+use Umbrella\models\Log;
+use Umbrella\models\Weekend;
 
 /**
  * Class UserController

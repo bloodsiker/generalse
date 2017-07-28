@@ -1,4 +1,9 @@
 <?php
+namespace Umbrella\controllers\umbrella\crm;
+
+use Umbrella\app\AdminBase;
+use Umbrella\app\User;
+use Umbrella\models\Admin;
 
 /**
  * Class PsrController
@@ -23,15 +28,9 @@ class PsrController extends AdminBase
      */
     public function actionPsr()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-
-        // Обьект юзера
         $user = new User($userId);
-
 
         require_once(ROOT . '/views/admin/crm/psr.php');
         return true;

@@ -54,7 +54,7 @@
                                     <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
                                         <td><?=$article['name_partner']?></td>
                                     <?php endif;?>
-                                    <td style="text-align: center" class="<?=Lithographer::getClassPublished($article['published'])?>"><?=Lithographer::getPublished($article['published'])?></td>
+                                    <td style="text-align: center" class="<?= Umbrella\models\Lithographer::getClassPublished($article['published'])?>"><?= Umbrella\models\Lithographer::getPublished($article['published'])?></td>
                                     <td style="text-align: center">
                                         <?php if($article['type_row'] != 'video'):?>
                                         <a href="/adm/lithographer/<?=$article['type_row']?>/<?=$article['id']?>"><i class="fi-eye"></i></a>
