@@ -51,7 +51,7 @@
             <th style="text-align: center;">Status</th>
             <th style="text-align: center;">Date</th>
             <th style="text-align: center;">Date request</th>
-            <?php if (AdminBase::checkDenied('crm.orders.request_id', 'view')): ?>
+            <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.request_id', 'view')): ?>
                 <th style="text-align: center;">Request id</th>
             <?php endif?>
         </tr>
@@ -74,13 +74,13 @@
                     <td style="text-align: center;"><?= $status_name?></td>
                     <td style="text-align: center;">
                         <?php if($user->name_partner == 'GS Electrolux' && $status_name == 'Выдан'):?>
-                            <?= Functions::formatDate($export['shipped_on'])?>
+                            <?= Umbrella\components\Functions::formatDate($export['shipped_on'])?>
                         <?php else:?>
-                            <?= Functions::formatDate($export['created_on'])?>
+                            <?= Umbrella\components\Functions::formatDate($export['created_on'])?>
                         <?php endif;?>
                     </td>
-                    <td style="text-align: center;"><?= isset($export['request_date']) ? Functions::formatDate($export['request_date']) : null?></td>
-                    <?php if (AdminBase::checkDenied('crm.orders.request_id', 'view')): ?>
+                    <td style="text-align: center;"><?= isset($export['request_date']) ? Umbrella\components\Functions::formatDate($export['request_date']) : null?></td>
+                    <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.request_id', 'view')): ?>
                         <td style="text-align: center;"><?= $export['request_id']?></td>
                     <?php endif?>
                 </tr>
