@@ -1,4 +1,6 @@
 <?php
+namespace Umbrella\components\cron\request;
+
 include_once ('RequestFunction.php');
 
 

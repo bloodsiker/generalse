@@ -68,7 +68,7 @@
                             <td><?=$KPI::email_CSAT ?>%</td>
                             <?php if (is_array($listPartner)): ?>
                                 <?php foreach ($listPartner as $partner): ?>
-                                    <?php $KPI = new KPI($partner['name_partner'], $start, $end);?>
+                                    <?php $KPI = new Umbrella\components\KPI($partner['name_partner'], $start, $end);?>
                                     <?php $email_CSAT = $KPI->email_CSAT()?>
                                     <td class="<?=$KPI->controlTargetUp($email_CSAT, $KPI::email_CSAT)?>"><?=$email_CSAT ?></td>
                                 <?php endforeach; ?>
@@ -80,7 +80,7 @@
                             <td><?=$KPI::call_CSAT ?>%</td>
                             <?php if (is_array($listPartner)): ?>
                                 <?php foreach ($listPartner as $partner): ?>
-                                    <?php $KPI = new KPI($partner['name_partner'], $start, $end);?>
+                                    <?php $KPI = new Umbrella\components\KPI($partner['name_partner'], $start, $end);?>
                                     <?php $call_CSAT = $KPI->call_CSAT()?>
                                     <td class="<?=$KPI->controlTargetUp($call_CSAT, $KPI::call_CSAT)?>"><?= $call_CSAT ?></td>
                                 <?php endforeach; ?>
@@ -92,7 +92,7 @@
                             <td><?=$KPI::ECR ?>%</td>
                             <?php if (is_array($listPartner)): ?>
                                 <?php foreach ($listPartner as $partner): ?>
-                                    <?php $KPI = new KPI($partner['name_partner'], $start, $end);?>
+                                    <?php $KPI = new Umbrella\components\KPI($partner['name_partner'], $start, $end);?>
                                     <?php $ECR = $KPI->ECR()?>
                                     <td class="<?= $KPI->controlTargetUp($ECR, $KPI::ECR) ?>"><?= $ECR ?></td>
                                 <?php endforeach; ?>
@@ -104,7 +104,7 @@
                             <td><?=$KPI::Order_TAT ?>%</td>
                             <?php if (is_array($listPartner)): ?>
                                 <?php foreach ($listPartner as $partner): ?>
-                                    <?php $KPI = new KPI($partner['name_partner'], $start, $end);?>
+                                    <?php $KPI = new Umbrella\components\KPI($partner['name_partner'], $start, $end);?>
                                     <?php $Order_TAT = $KPI->Order_TAT()?>
                                     <td class="<?= $KPI->controlTargetUp($Order_TAT, $KPI::Order_TAT) ?>"><?= $Order_TAT ?></td>
                                 <?php endforeach; ?>
@@ -116,7 +116,7 @@
                             <td><?=$KPI::Repair_TAT ?>%</td>
                             <?php if (is_array($listPartner)): ?>
                                 <?php foreach ($listPartner as $partner): ?>
-                                    <?php $KPI = new KPI($partner['name_partner'], $start, $end);?>
+                                    <?php $KPI = new Umbrella\components\KPI($partner['name_partner'], $start, $end);?>
                                     <?php $Repair_TAT = $KPI->Repair_TAT()?>
                                     <td class="<?= $KPI->controlTargetUp($Repair_TAT, $KPI::Repair_TAT) ?>"><?= $Repair_TAT ?></td>
                                 <?php endforeach; ?>
@@ -128,7 +128,7 @@
                             <td><?=$KPI::SW_repair_TAT ?>%</td>
                             <?php if (is_array($listPartner)): ?>
                                 <?php foreach ($listPartner as $partner): ?>
-                                    <?php $KPI = new KPI($partner['name_partner'], $start, $end);?>
+                                    <?php $KPI = new Umbrella\components\KPI($partner['name_partner'], $start, $end);?>
                                     <?php $SW_Repair_TAT = $KPI->SW_Repair_TAT()?>
                                     <td class="<?= $KPI->controlTargetUp($SW_Repair_TAT, $KPI::SW_repair_TAT) ?>"><?= $SW_Repair_TAT ?></td>
                                 <?php endforeach; ?>
@@ -140,7 +140,7 @@
                             <td><?=$KPI::SO_creation_TAT ?>%</td>
                             <?php if (is_array($listPartner)): ?>
                                 <?php foreach ($listPartner as $partner): ?>
-                                    <?php $KPI = new KPI($partner['name_partner'], $start, $end);?>
+                                    <?php $KPI = new Umbrella\components\KPI($partner['name_partner'], $start, $end);?>
                                     <?php $SO_Creation_TAT = $KPI->SO_Creation_TAT()?>
                                     <td class="<?= $KPI->controlTargetUp($SO_Creation_TAT, $KPI::SO_creation_TAT) ?>"><?= $SO_Creation_TAT ?></td>
                                 <?php endforeach; ?>
@@ -152,7 +152,7 @@
                             <td><?=$KPI::L0_Rate ?>%</td>
                             <?php if (is_array($listPartner)): ?>
                                 <?php foreach ($listPartner as $partner): ?>
-                                    <?php $KPI = new KPI($partner['name_partner'], $start, $end);?>
+                                    <?php $KPI = new Umbrella\components\KPI($partner['name_partner'], $start, $end);?>
                                     <?php $L0_Rate = $KPI->L0_Rate()?>
                                     <td class="<?= $KPI->controlTargetUp($L0_Rate, $KPI::L0_Rate) ?>"><?= $L0_Rate ?></td>
                                 <?php endforeach; ?>
@@ -164,7 +164,7 @@
                             <td><?=$KPI::PPl ?>%</td>
                             <?php if (is_array($listPartner)): ?>
                                 <?php foreach ($listPartner as $partner): ?>
-                                    <?php $KPI = new KPI($partner['name_partner'], $start, $end);?>
+                                    <?php $KPI = new Umbrella\components\KPI($partner['name_partner'], $start, $end);?>
                                     <?php $PPl = $KPI->PPl()?>
                                     <td class="<?= $KPI->controlTargetPPl($PPl, $KPI::PPl) ?>"><?= $PPl ?></td>
                                 <?php endforeach; ?>
@@ -176,7 +176,7 @@
                             <td><?=$KPI::LongTail_14_days ?>%</td>
                             <?php if (is_array($listPartner)): ?>
                                 <?php foreach ($listPartner as $partner): ?>
-                                    <?php $KPI = new KPI($partner['name_partner'], $start, $end);?>
+                                    <?php $KPI = new Umbrella\components\KPI($partner['name_partner'], $start, $end);?>
                                     <?php $LongTail_14_Days = $KPI->LongTail_14_Days()?>
                                     <td class="<?= $KPI->controlTargetUp($LongTail_14_Days, $KPI::LongTail_14_days) ?>"><?= $LongTail_14_Days ?></td>
                                 <?php endforeach; ?>
@@ -188,7 +188,7 @@
                             <td><?=$KPI::LongTail_21_days ?>%</td>
                             <?php if (is_array($listPartner)): ?>
                                 <?php foreach ($listPartner as $partner): ?>
-                                    <?php $KPI = new KPI($partner['name_partner'], $start, $end);?>
+                                    <?php $KPI = new Umbrella\components\KPI($partner['name_partner'], $start, $end);?>
                                     <?php $LongTail_21_Days = $KPI->LongTail_21_Days()?>
                                     <td class="<?= $KPI->controlTargetDown($LongTail_21_Days, $KPI::LongTail_21_days) ?>"><?= $LongTail_21_Days ?></td>
                                 <?php endforeach; ?>
@@ -200,7 +200,7 @@
                             <td><?=$KPI::FTP_30_days ?>%</td>
                             <?php if (is_array($listPartner)): ?>
                                 <?php foreach ($listPartner as $partner): ?>
-                                    <?php $KPI = new KPI($partner['name_partner'], $start, $end);?>
+                                    <?php $KPI = new Umbrella\components\KPI($partner['name_partner'], $start, $end);?>
                                     <?php $FTP_30_DAYS = $KPI->FTP_30_DAYS()?>
                                     <td class="<?=$KPI->controlTargetDown($FTP_30_DAYS, $KPI::FTP_30_days)?>"><?= $FTP_30_DAYS?></td>
                                 <?php endforeach; ?>
@@ -212,7 +212,7 @@
                             <td><?=$KPI::FTP_90_days ?>%</td>
                             <?php if (is_array($listPartner)): ?>
                                 <?php foreach ($listPartner as $partner): ?>
-                                    <?php $KPI = new KPI($partner['name_partner'], $start, $end);?>
+                                    <?php $KPI = new Umbrella\components\KPI($partner['name_partner'], $start, $end);?>
                                     <?php $FTP_90_DAYS = $KPI->FTP_90_DAYS()?>
                                     <td class="<?=$KPI->controlTargetDown($FTP_90_DAYS, $KPI::FTP_90_days)?>"><?=$FTP_90_DAYS?></td>
                                 <?php endforeach; ?>
@@ -224,7 +224,7 @@
                             <td><?=$KPI::L2_Rate ?>%</td>
                             <?php if (is_array($listPartner)): ?>
                                 <?php foreach ($listPartner as $partner): ?>
-                                    <?php $KPI = new KPI($partner['name_partner'], $start, $end);?>
+                                    <?php $KPI = new Umbrella\components\KPI($partner['name_partner'], $start, $end);?>
                                     <?php $L2_Rate = $KPI->L2_Rate()?>
                                     <td class="<?= $KPI->controlTargetUp($L2_Rate, $KPI::L2_Rate) ?>"><?= $L2_Rate ?></td>
                                 <?php endforeach; ?>
@@ -236,7 +236,7 @@
                             <td><?=$KPI::Refund_Rate ?>%</td>
                             <?php if (is_array($listPartner)): ?>
                                 <?php foreach ($listPartner as $partner): ?>
-                                    <?php $KPI = new KPI($partner['name_partner'], $start, $end);?>
+                                    <?php $KPI = new Umbrella\components\KPI($partner['name_partner'], $start, $end);?>
                                     <?php $Refund_Rate = $KPI->Refund_Rate()?>
                                     <td class="<?= $KPI->controlTargetDown($Refund_Rate, $KPI::Refund_Rate) ?>"><?= $Refund_Rate ?></td>
                                 <?php endforeach; ?>
@@ -248,7 +248,7 @@
                             <td><?=$KPI::LS_Rate ?>%</td>
                             <?php if (is_array($listPartner)): ?>
                                 <?php foreach ($listPartner as $partner): ?>
-                                    <?php $KPI = new KPI($partner['name_partner'], $start, $end);?>
+                                    <?php $KPI = new Umbrella\components\KPI($partner['name_partner'], $start, $end);?>
                                     <?php $LS_Rate = $KPI->LS_Rate()?>
                                     <td class="<?= $KPI->controlTargetUp($LS_Rate, $KPI::LS_Rate) ?>"><?= $LS_Rate ?></td>
                                 <?php endforeach; ?>

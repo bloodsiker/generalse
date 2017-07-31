@@ -1,4 +1,9 @@
 <?php
+namespace Umbrella\components\cron\request;
+
+use PDO;
+use Umbrella\components\cron\CronDb;
+
 require_once dirname(__FILE__) . "/../CronDb.php";
 
 class RequestFunction

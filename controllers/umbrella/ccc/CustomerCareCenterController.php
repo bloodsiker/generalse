@@ -1,5 +1,11 @@
 <?php
 
+namespace Umbrella\controllers\umbrella\ccc;
+
+use Umbrella\app\AdminBase;
+use Umbrella\app\User;
+use Umbrella\models\Admin;
+
 /**
  * Class CustomerCarCenterController
  */

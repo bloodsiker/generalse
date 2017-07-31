@@ -557,3 +557,22 @@ footer {
             transform: rotate(360deg); } }
 
 /*# sourceMappingURL=style.css.map */
+
+/********  31.07.2017  **********/
+
+#umbrella-down {
+  position: fixed;
+  top: 20%;
+  left: 33%;
+  background: #d64747;
+  color: #fff;
+  padding: 70px 20px 20px;
+  border: 2px solid #fff;
+  z-index: 9999;
+}
+#umbrella-down .btn-down{
+  background: #fff;
+  color: red;
+  padding: 5px 10px;
+  margin: 20px auto;
+}

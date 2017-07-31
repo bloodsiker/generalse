@@ -5,6 +5,7 @@ namespace Umbrella\models;
 use PDO;
 use Umbrella\components\Db\MySQL;
 use Umbrella\components\Db\MsSQL;
+use Umbrella\components\Functions;
 
 class Admin
 {

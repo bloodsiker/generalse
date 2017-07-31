@@ -137,7 +137,15 @@ if (w <= 769) {
 }
 
 
+
+// Закрываем окно umbrella_down
+$('body').on('click', '.btn-down', function (e) {
+    $('#umbrella-down').remove();
+});
+
 $(document).ready(function () {
+    var html_down = '';
+
     $('body').on('click', '#login_umbrella', function (e) {
 
         var error_login = false;
@@ -160,6 +168,15 @@ $(document).ready(function () {
 
         if (error_login == false) {
 
+            // html_down = "<div id='umbrella-down'>"
+            //                 + "<h3>В данный момент Umbrella не доступна!</h3>"
+            //                 + "<p>Сервис на техническом облуживании! <br> В ближайшее время вы сможете продолжить работу ^_^)</p>"
+            //                 + "<button class='btn-down'>Закрыть</button>"
+            //                 + "</div>";
+            //
+            // $('body').append(html_down);
+
+
             var data = "action=login&login=" + login + "&password=" + password;
 
             $.ajax({
@@ -180,7 +197,7 @@ $(document).ready(function () {
                         $(".password_umbrella").val("");
 
                     } else {
-                        window.location = obj.log;
+                        window.location = obj.url;
                     }
                 }
             });

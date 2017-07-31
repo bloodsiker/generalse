@@ -13,11 +13,11 @@
                     </div>
 
                     <div class="medium-4 medium-offset-5 text-right small-12 columns">
-                        <?php if (AdminBase::checkDenied('kpi.usage', 'view')): ?>
+                        <?php if (Umbrella\app\AdminBase::checkDenied('kpi.usage', 'view')): ?>
                             <a class="button primary tool" data-open="usage-modal">USAGE</a>
                         <?php endif;?>
 
-                        <?php if (AdminBase::checkDenied('adm.kpi', 'view')): ?>
+                        <?php if (Umbrella\app\AdminBase::checkDenied('adm.kpi', 'view')): ?>
                             <a href="/adm/kpi" class="button primary tool"> KPI</a>
                         <?php endif;?>
                     </div>

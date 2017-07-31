@@ -34,6 +34,7 @@ $(document).on('click', '#send-request-price', function(e) {
         data: data,
         cache: false,
         success: function (response) {
+            console.log(response);
             if(response == 200){
                 $('[data-id="' + id_request + '"]').find('.request_price').text(request_price).css('color', 'green');
                 $('#edit-price form')[0].reset();

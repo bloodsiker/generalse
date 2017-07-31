@@ -1,5 +1,7 @@
 <?php
 
+namespace Umbrella\components\cron;
+
 class CronDb
 {
 
@@ -20,7 +22,7 @@ class CronDb
         );
 
         $dsn = "mysql:host={$params['host']};dbname={$params['dbname']}";
-        $db = new PDO($dsn, $params['user'], $params['password']);
+        $db = new \PDO($dsn, $params['user'], $params['password']);
         $db->exec("set names utf8");
 
         return $db;
@@ -39,9 +41,9 @@ class CronDb
         );
 
         try {
-            $dbh = new PDO ("dblib:host={$params['host']}:{$params['port']};dbname={$params['dbname']}","{$params['user']}","{$params['password']}");
+            $dbh = new \PDO ("dblib:host={$params['host']}:{$params['port']};dbname={$params['dbname']}","{$params['user']}","{$params['password']}");
             //$dbh->exec("set names utf8");
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             echo "Failed to get DB handle: " . $e->getMessage() . "\n";
             exit;
         }

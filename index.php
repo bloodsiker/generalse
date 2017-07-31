@@ -9,6 +9,7 @@ date_default_timezone_set('Europe/Kiev');
 ini_set('max_file_uploads', "10");
 session_start();
 
+
 // 2. Подключение файлов системы
 define('ROOT', dirname(__FILE__));
 require_once(ROOT . '/vendor/autoload.php');

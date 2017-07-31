@@ -1,4 +1,7 @@
 <?php
+
+namespace Umbrella\components\cron\task;
+
 require_once dirname(__FILE__) . "/TaskListFunction.php";
 
 class Task

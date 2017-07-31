@@ -149,7 +149,7 @@ class OtherRequestController extends AdminBase
             $id_request = $_REQUEST['id_request'];
             $price = $_REQUEST['request_price'];
 
-            $ok = OtherRequest::editPriceToRequestById($id_request, $price);
+            $ok = OtherRequest::editPriceToRequestById($id_request, str_replace(',', '.', $price));
             if ($ok) {
                 Logger::getInstance()->log($user->id_user, ' изменил price в lenovo request #' . $id_request . ' на ' . $price);
                 print_r(200);

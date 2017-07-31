@@ -1,46 +1,22 @@
 <?php
 
+namespace Umbrella\controllers\umbrella;
+
+use Umbrella\app\AdminBase;
+use Umbrella\app\User;
+use Umbrella\components\Functions;
+use Umbrella\components\Logger;
+use Umbrella\models\Admin;
+
 /**
  * Class AdminController
  */
 class AdminController extends AdminBase
 {
 
-    public function actionAuth2(){
-
-        $login = '';
-        $password = '';
-
-        if(isset($_POST['submit'])) {
-            $login = $_POST['login'];
-            $password = $_POST['password'];
-
-            $errors = false;
-
-            if (!Admin::checkLogin($login)) {
-                $errors[] = 'Не верный логин';
-            }
-
-            //Проверяем существует ли пользователь
-            $adminId = Admin::checkAdminData($login, $password);
-
-            if ($adminId == false){
-                $errors[] = 'Не верные данные для входа в кабинет';
-            } else {
-                //Если данные правильные, запоминаем пользователя в сессию
-                Admin::auth($adminId);
-
-                //Перенаправляем пользователя в закрытую часть – кабинет
-                header("Location: /adm/kpi");
-            }
-        }
-
-        require_once(ROOT . '/views/site/auth.php');
-        return true;
-    }
-
-
-
+    /**
+     * @return bool
+     */
     public function actionAuth(){
 
         if($_REQUEST['action'] == 'login'){
@@ -62,7 +38,7 @@ class AdminController extends AdminBase
 
                 //Перенаправляем пользователя в закрытую часть – кабинет
                 //header("Location: /adm/kpi");
-                $succusse['log'] = "/adm/crm/orders";
+                $succusse['url'] = "/adm/crm/orders";
                 $succusse['code'] = 2;
                 echo json_encode($succusse);
             }

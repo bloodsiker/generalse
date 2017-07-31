@@ -1,5 +1,12 @@
 <?php
 
+namespace Umbrella\controllers\umbrella\ccc;
+
+use Umbrella\app\AdminBase;
+use Umbrella\app\User;
+use Umbrella\models\Admin;
+use Umbrella\models\ccc\KnowledgeCatalog;
+
 /**
  * Древо знаний для Customer Care Center
  * Class TreeKnowledgeController

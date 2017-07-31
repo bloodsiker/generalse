@@ -27,7 +27,7 @@
                 <i class="fi-info"></i> Важно! Даты в excel файле должны быть в формате YYYY-mm-dd (2017-01-31)
             </div>
         </div>
-        <?php if (AdminBase::checkDenied('kpi.import.b', 'view')): ?>
+        <?php if (Umbrella\app\AdminBase::checkDenied('kpi.import.b', 'view')): ?>
             <div class="medium-12 small-12 columns">
                 <form action="" method="post" enctype="multipart/form-data">
                     <div class="row">
@@ -55,7 +55,7 @@
         <?php endif;?>
     </div>
 
-    <?php if (AdminBase::checkDenied('callcsat.import.b', 'view')): ?>
+    <?php if (Umbrella\app\AdminBase::checkDenied('callcsat.import.b', 'view')): ?>
         <div class="row">
             <div class="medium-12 small-12 columns">
                 <form action="" method="post" enctype="multipart/form-data">
@@ -84,7 +84,7 @@
         </div>
     <?php endif;?>
 
-    <?php if (AdminBase::checkDenied('emailcsat.import.b', 'view')): ?>
+    <?php if (Umbrella\app\AdminBase::checkDenied('emailcsat.import.b', 'view')): ?>
         <div class="row">
             <div class="medium-12 small-12 columns">
                 <form action="" method="post" enctype="multipart/form-data">

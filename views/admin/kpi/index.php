@@ -44,11 +44,11 @@
                         <?php endif;?>
 
                         <div class="medium-4 text-right small-12 columns">
-                            <?php if (AdminBase::checkDenied('kpi.usage', 'view')): ?>
+                            <?php if (Umbrella\app\AdminBase::checkDenied('kpi.usage', 'view')): ?>
                                 <a class="button primary tool" data-open="usage-modal">USAGE</a>
                             <?php endif;?>
 
-                            <?php if (AdminBase::checkDenied('kpi.import', 'view')): ?>
+                            <?php if (Umbrella\app\AdminBase::checkDenied('kpi.import', 'view')): ?>
                                 <?php if($user->role == 'administrator' || $user->role == 'administrator-fin'):?>
                                     <a href="/adm/kpi/import" class="button primary tool"><i class="fi-page-export"></i> Import</a>
                                 <?php endif;?>

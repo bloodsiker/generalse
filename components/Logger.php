@@ -2,6 +2,8 @@
 
 namespace Umbrella\components;
 
+use Umbrella\models\Log;
+
 /**
  * Class Logger
  */

@@ -1,4 +1,8 @@
 <?php
+namespace Umbrella\models\ccc;
+
+use PDO;
+use Umbrella\components\Db\MySQL;
 
 class KnowledgeCatalog
 {

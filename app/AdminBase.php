@@ -24,6 +24,11 @@ abstract class AdminBase
         // Получаем информацию о текущем пользователе
         $admin = Admin::getAdminById($adminId);
 
+//        if($admin['name_partner'] != 'Dima Ovsijchuk'){
+//            unset($_SESSION['user']);
+//            header('Location: /');
+//        }
+
         // Если роль текущего пользователя "admin", пускаем его в админпанель
 //        if ($admin['role'] == 'admin' || $admin['role'] == 'moderator') {
 //            return true;

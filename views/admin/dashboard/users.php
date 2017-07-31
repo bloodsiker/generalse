@@ -35,7 +35,7 @@
                             <td><?=$userPartner['short_name'] . '-' . $userPartner['full_name']?></td>
                             <td><?=$userPartner['date_active']?></td>
                             <td><?=$userPartner['date_create']?></td>
-                            <td><?=Balance::getBalanceByPartner($userPartner['id_user'])?>$</td>
+                            <td><?= Umbrella\models\Balance::getBalanceByPartner($userPartner['id_user'])?>$</td>
                             <td><a href="/adm/dashboard/balance-u/<?=$userPartner['id_user']?>" class="button no-margin small"><i class="fi-eye"></i></a></td>
                         </tr>
                     <?php endforeach; ?>

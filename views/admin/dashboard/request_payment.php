@@ -42,7 +42,7 @@
                             <td><?=$requestPaid['customer_name']?></td>
                             <td><?=$requestPaid['action_balance']?></td>
                             <td><?=$requestPaid['comment']?></td>
-                            <td class="<?=Balance::getStatusPaid($requestPaid['status'])?>"><?=$requestPaid['status']?></td>
+                            <td class="<?= Umbrella\models\Balance::getStatusPaid($requestPaid['status'])?>"><?=$requestPaid['status']?></td>
                             <td><?=$requestPaid['date_create']?></td>
                             <td style="text-align: center;">
                                 <?php if($requestPaid['paid'] == 0):?>

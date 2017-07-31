@@ -57,23 +57,23 @@ return array(
 
 
     /*********** DASHBOARD  ***********/
-    'adm/dashboard/balance-u/([0-9]+)/([a-z0-9-_?&]+)' => 'dashboard/userBalance/$1/$2',
-    'adm/dashboard/balance-u/([0-9]+)' => 'dashboard/userBalance/$1',
-    'adm/dashboard/request-payment' => 'dashboard/requestPayment',
-    'adm/dashboard/task' => 'dashboard/task',
-    'adm/dashboard/b-users' => 'dashboard/users',
-    'adm/dashboard/ajax_balance' => 'dashboard/ajaxBalance',
-    'adm/dashboard/ajax_show_info' => 'dashboard/ajaxShowInfo',
-    'adm/dashboard/pay' => 'dashboard/postPay',
-    'adm/dashboard/([a-z0-9-_?&]+)' => 'dashboard/index/$1',
-    'adm/dashboard' => 'dashboard/index',
+    'adm/dashboard/balance-u/([0-9]+)/([a-z0-9-_?&]+)' => 'umbrella/Dashboard@userBalance/$1/$2',
+    'adm/dashboard/balance-u/([0-9]+)' => 'umbrella/Dashboard@userBalance/$1',
+    'adm/dashboard/request-payment' => 'umbrella/Dashboard@requestPayment',
+    'adm/dashboard/task' => 'umbrella/Dashboard@task',
+    'adm/dashboard/b-users' => 'umbrella/Dashboard@users',
+    'adm/dashboard/ajax_balance' => 'umbrella/Dashboard@ajaxBalance',
+    'adm/dashboard/ajax_show_info' => 'umbrella/Dashboard@ajaxShowInfo',
+    'adm/dashboard/pay' => 'umbrella/Dashboard@postPay',
+    'adm/dashboard/([a-z0-9-_?&]+)' => 'umbrella/Dashboard@index/$1',
+    'adm/dashboard' => 'umbrella/Dashboard@index',
 
 
     /*********** CCC  ***********/
-    'adm/ccc/tree_knowledge/category/cat-([0-9]+)' => 'treeKnowledge/articlesByCategory/$1',
-    'adm/ccc/tree_knowledge/popular/category' => 'treeKnowledge/popularCategory',
-    'adm/ccc/tree_knowledge' => 'treeKnowledge/index',
-    'adm/ccc' => 'customerCareCenter/index',
+    'adm/ccc/tree_knowledge/category/cat-([0-9]+)' => 'umbrella/ccc/TreeKnowledge@articlesByCategory/$1',
+    'adm/ccc/tree_knowledge/popular/category' => 'umbrella/ccc/TreeKnowledge@popularCategory',
+    'adm/ccc/tree_knowledge' => 'umbrella/ccc/TreeKnowledge@index',
+    'adm/ccc' => 'umbrella/ccc/CustomerCareCenter@index',
 
 
     /*********** OTHER REQUEST  ***********/
@@ -191,15 +191,15 @@ return array(
 
 
     /*********** KPI  ***********/
-    'adm/result/([a-z0-9-_?&\.]+)' => 'kpi/result/$1',
-    'adm/kpi/usage/([a-z0-9-_?&\.]+)' => 'kpi/usage/$1',
-    'adm/kpi/show-problem' => 'kpi/showProblem',
-    'adm/kpi/import' => 'kpi/import',
-    'adm/kpi' => 'kpi/index',
+    'adm/result/([a-z0-9-_?&\.]+)' => 'umbrella/Kpi@result/$1',
+    'adm/kpi/usage/([a-z0-9-_?&\.]+)' => 'umbrella/Kpi@usage/$1',
+    'adm/kpi/show-problem' => 'umbrella/Kpi@showProblem',
+    'adm/kpi/import' => 'umbrella/Kpi@import',
+    'adm/kpi' => 'umbrella/Kpi@index',
 
-    'adm/access_denied' => 'admin/access',
-    'adm/logout' => 'admin/logout',
-    'auth' => 'admin/auth',
+    'adm/access_denied' => 'umbrella/Admin@access',
+    'adm/logout' => 'umbrella/Admin@logout',
+    'auth' => 'umbrella/Admin@auth',
 
     /*********** SITE  ***********/
     'contact_form' => 'Site@contactForm',

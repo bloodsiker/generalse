@@ -91,12 +91,12 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td class="price" colspan="2"><?=Balance::getBalanceByPartner($user->id_user)?>$</td>
+                    <td class="price" colspan="2"><?= Umbrella\models\Balance::getBalanceByPartner($user->id_user)?>$</td>
                 </tr>
                 <tr>
                     <td>
                         <?php $changeDate = $currentMonthYear['year'] . ' ' . $currentMonthYear['month']?>
-                        <?=(isset($_GET['interval'])) ? Balance::getNameMonth($_GET['interval']) : $changeDate?>
+                        <?=(isset($_GET['interval'])) ? Umbrella\models\Balance::getNameMonth($_GET['interval']) : $changeDate?>
                     </td>
                     <td style="text-align: center;"><span id="month-balance"><?=$balanceMonth?></span>$</td>
                     <!--                    <td id="expand-balance"><i class="fi-plus"></i></td>-->
@@ -108,9 +108,9 @@
                                 <select class="input-group-field" name="interval" onchange="this.form.submit()">
                                     <?php if(is_array($listInterval)):?>
                                         <?php foreach ($listInterval as $interval):?>
-                                            <?php $year_month = $interval['year'] . '-' . Balance::formatMonth($interval['month'])?>
+                                            <?php $year_month = $interval['year'] . '-' . Umbrella\models\Balance::formatMonth($interval['month'])?>
                                             <option <?=(isset($_GET['interval']) && $_GET['interval'] == $year_month) ? 'selected' : ''?> value="<?=$year_month?>">
-                                                <?=$interval['year'] . ' ' . $interval['month_name']?> || <?=Balance::getBalanceMonthByPartner($user->id_user, $year_month)?>$
+                                                <?=$interval['year'] . ' ' . $interval['month_name']?> || <?= Umbrella\models\Balance::getBalanceMonthByPartner($user->id_user, $year_month)?>$
                                             </option>
                                         <?php endforeach;?>
                                     <?php endif;?>
@@ -128,7 +128,7 @@
     <div class="row" id="show-details" style="margin-top: 20px;">
         <div class="column medium-12">
             <table class="dashboard-section" border="1" cellspacing="0" cellpadding="5">
-                <caption>Operations for <?=(isset($_GET['interval'])) ? Balance::getNameMonth($_GET['interval']) : $changeDate?></caption>
+                <caption>Operations for <?=(isset($_GET['interval'])) ? Umbrella\models\Balance::getNameMonth($_GET['interval']) : $changeDate?></caption>
                 <thead>
                 <tr>
                     <th width="50px">ID</th>
@@ -150,13 +150,13 @@
                             data-row-id="<?=$details['id_row_section']?>"
                             data-task-id="<?=$details['id_task']?>">
                             <td><?=$details['id']?></td>
-                            <td class="<?= Balance::getStatusRequest($details['balance'])?>"><?=$details['balance']?>$</td>
+                            <td class="<?= Umbrella\models\Balance::getStatusRequest($details['balance'])?>"><?=$details['balance']?>$</td>
                             <td><?=$details['customer_name']?></td>
                             <td><?=$details['action_balance']?></td>
                             <td><?=$details['section']?></td>
                             <td><?=$details['id_row_section']?></td>
                             <td><?=$details['comment']?></td>
-                            <td class="<?=Balance::getStatusPaid($details['status'])?>"><?=$details['status']?></td>
+                            <td class="<?= Umbrella\models\Balance::getStatusPaid($details['status'])?>"><?=$details['status']?></td>
                             <td><?=$details['date_create']?></td>
                         </tr>
                     <?php endforeach;?>
@@ -182,28 +182,28 @@
                 <tbody>
                 <tr>
                     <td><a href="/adm/refund_request/view">Refund Request</a></td>
-                    <td style="text-align: center;"><span class="badge secondary"><?=Dashboard::countAllRefundRequest($user->id_user)?></span></td>
-                    <td style="text-align: center;"><span class="badge success"><?=Dashboard::countSuccessRefundRequest($user->id_user, iconv('UTF-8', 'WINDOWS-1251', 'подтверждено'))?></span></td>
+                    <td style="text-align: center;"><span class="badge secondary"><?= Umbrella\models\Dashboard::countAllRefundRequest($user->id_user)?></span></td>
+                    <td style="text-align: center;"><span class="badge success"><?= Umbrella\models\Dashboard::countSuccessRefundRequest($user->id_user, iconv('UTF-8', 'WINDOWS-1251', 'подтверждено'))?></span></td>
                 </tr>
                 <tr>
                     <td><a href="/adm/crm/purchase">Purchase</a></td>
-                    <td style="text-align: center;"><span class="badge secondary"><?=Dashboard::countAllPurchaseRequest($user->id_user)?></span></td>
-                    <td style="text-align: center;"><span class="badge success"><?=Dashboard::countSuccessPurchaseRequest($user->id_user, iconv('UTF-8', 'WINDOWS-1251', 'Покупка (принята)'))?></span></td>
+                    <td style="text-align: center;"><span class="badge secondary"><?= Umbrella\models\Dashboard::countAllPurchaseRequest($user->id_user)?></span></td>
+                    <td style="text-align: center;"><span class="badge success"><?= Umbrella\models\Dashboard::countSuccessPurchaseRequest($user->id_user, iconv('UTF-8', 'WINDOWS-1251', 'Покупка (принята)'))?></span></td>
                 </tr>
                 <tr>
                     <td><a href="/adm/crm/orders">Order</a></td>
-                    <td style="text-align: center;"><span class="badge secondary"><?=Dashboard::countAllOrdersRequest($user->id_user)?></span></td>
-                    <td style="text-align: center;"><span class="badge success"><?=Dashboard::countSuccessOrdersRequest($user->id_user, iconv('UTF-8', 'WINDOWS-1251', 'Выдан'))?></span></td>
+                    <td style="text-align: center;"><span class="badge secondary"><?= Umbrella\models\Dashboard::countAllOrdersRequest($user->id_user)?></span></td>
+                    <td style="text-align: center;"><span class="badge success"><?= Umbrella\models\Dashboard::countSuccessOrdersRequest($user->id_user, iconv('UTF-8', 'WINDOWS-1251', 'Выдан'))?></span></td>
                 </tr>
                 <tr>
                     <td><a href="/adm/crm/returns">Return</a></td>
-                    <td style="text-align: center;"><span class="badge secondary"><?=Dashboard::countAllOrdersRequest($user->id_user)?></span></td>
-                    <td style="text-align: center;"><span class="badge success"><?=Dashboard::countSuccessReturnsRequest($user->id_user, iconv('UTF-8', 'WINDOWS-1251', 'Принят'))?></span></td>
+                    <td style="text-align: center;"><span class="badge secondary"><?= Umbrella\models\Dashboard::countAllOrdersRequest($user->id_user)?></span></td>
+                    <td style="text-align: center;"><span class="badge success"><?= Umbrella\models\Dashboard::countSuccessReturnsRequest($user->id_user, iconv('UTF-8', 'WINDOWS-1251', 'Принят'))?></span></td>
                 </tr>
                 <tr>
                     <td><a href="/adm/crm/disassembly_list">Disassembly</a></td>
-                    <td style="text-align: center;"><span class="badge secondary"><?=Dashboard::countAllDecompilesRequest($user->id_user)?></span></td>
-                    <td style="text-align: center;"><span class="badge success"><?=Dashboard::countSuccessDecompilesRequest($user->id_user, iconv('UTF-8', 'WINDOWS-1251', 'Подтверждена'))?></span></td>
+                    <td style="text-align: center;"><span class="badge secondary"><?= Umbrella\models\Dashboard::countAllDecompilesRequest($user->id_user)?></span></td>
+                    <td style="text-align: center;"><span class="badge success"><?= Umbrella\models\Dashboard::countSuccessDecompilesRequest($user->id_user, iconv('UTF-8', 'WINDOWS-1251', 'Подтверждена'))?></span></td>
                 </tr>
                 </tbody>
             </table>
@@ -236,12 +236,12 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td class="price" colspan="2"><?=Balance::getBalanceByPartner($user->id_user)?>$</td>
+                    <td class="price" colspan="2"><?= Umbrella\models\Balance::getBalanceByPartner($user->id_user)?>$</td>
                 </tr>
                 <tr>
                     <td>
                         <?php $changeDate = $currentMonthYear['year'] . ' ' . $currentMonthYear['month']?>
-                        <?=(isset($_GET['interval'])) ? Balance::getNameMonth($_GET['interval']) : $changeDate?>
+                        <?=(isset($_GET['interval'])) ? Umbrella\models\Balance::getNameMonth($_GET['interval']) : $changeDate?>
                     </td>
                     <td style="text-align: center;"><span id="month-balance"><?=$balanceMonth?></span>$</td>
 <!--                    <td id="expand-balance"><i class="fi-plus"></i></td>-->
@@ -253,9 +253,9 @@
                                 <select class="input-group-field" name="interval" onchange="this.form.submit()">
                                     <?php if(is_array($listInterval)):?>
                                         <?php foreach ($listInterval as $interval):?>
-                                            <?php $year_month = $interval['year'] . '-' . Balance::formatMonth($interval['month'])?>
+                                            <?php $year_month = $interval['year'] . '-' . Umbrella\models\Balance::formatMonth($interval['month'])?>
                                             <option <?=(isset($_GET['interval']) && $_GET['interval'] == $year_month) ? 'selected' : ''?> value="<?=$year_month?>">
-                                                <?=$interval['year'] . ' ' . $interval['month_name']?> || <?=Balance::getBalanceMonthByPartner($user->id_user, $year_month)?>$
+                                                <?=$interval['year'] . ' ' . $interval['month_name']?> || <?= Umbrella\models\Balance::getBalanceMonthByPartner($user->id_user, $year_month)?>$
                                             </option>
                                         <?php endforeach;?>
                                     <?php endif;?>
@@ -293,7 +293,7 @@
     <div class="row" id="show-details" style="margin-top: 20px;">
         <div class="column medium-12">
             <table class="dashboard-section" border="1" cellspacing="0" cellpadding="5">
-                <caption>Operations for <?=(isset($_GET['interval'])) ? Balance::getNameMonth($_GET['interval']) : $changeDate?></caption>
+                <caption>Operations for <?=(isset($_GET['interval'])) ? Umbrella\models\Balance::getNameMonth($_GET['interval']) : $changeDate?></caption>
                 <thead>
                 <tr>
                     <th width="50px">ID</th>
@@ -315,13 +315,13 @@
                             data-row-id="<?=$details['id_row_section']?>"
                             data-task-id="<?=$details['id_task']?>">
                             <td><?=$details['id']?></td>
-                            <td class="<?= Balance::getStatusRequest($details['balance'])?>"><?=$details['balance']?>$</td>
+                            <td class="<?= Umbrella\models\Balance::getStatusRequest($details['balance'])?>"><?=$details['balance']?>$</td>
                             <td><?=$details['customer_name']?></td>
                             <td><?=$details['action_balance']?></td>
                             <td><?=$details['section']?></td>
                             <td><?=$details['id_row_section']?></td>
                             <td><?=$details['comment']?></td>
-                            <td class="<?=Balance::getStatusPaid($details['status'])?>"><?=$details['status']?></td>
+                            <td class="<?= Umbrella\models\Balance::getStatusPaid($details['status'])?>"><?=$details['status']?></td>
                             <td><?=$details['date_create']?></td>
                         </tr>
                     <?php endforeach;?>

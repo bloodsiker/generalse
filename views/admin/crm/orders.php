@@ -211,7 +211,7 @@
                                 </td>
 
                                 <?php $status_name = iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?>
-								<td class="<?=Orders::getStatusRequest($status_name);?>">
+								<td class="<?= Umbrella\models\Orders::getStatusRequest($status_name);?>">
                                     <?= $status_name?>
                                     <?php if($status_name == 'Отказано'):?>
                                         <i class="fi-info has-tip [tip-top]" style="font-size: 16px;"

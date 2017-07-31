@@ -30,8 +30,8 @@
                 <div class="medium-3 small-3 ccc-sidebar">
                     <h2>Разделы</h2>
 
-                    <?php $tree = KnowledgeCatalog::form_tree(KnowledgeCatalog::getAllCategories())?>
-                    <?= KnowledgeCatalog::build_tree($tree, 0, $id_category)?>
+                    <?php $tree = Umbrella\models\ccc\KnowledgeCatalog::form_tree(Umbrella\models\ccc\KnowledgeCatalog::getAllCategories())?>
+                    <?= Umbrella\models\ccc\KnowledgeCatalog::build_tree($tree, 0, $id_category)?>
                 </div>
                 <div class="medium-9 small-9 top-gray columns">
                     <h2>Холодильники</h2>

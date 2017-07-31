@@ -2,6 +2,8 @@
 
 namespace Umbrella\components;
 
+use Umbrella\models\Data;
+
 /**
  * Calculate KPI the result service centers
  * Class KPI

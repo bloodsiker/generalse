@@ -1,5 +1,16 @@
 <?php
 
+namespace Umbrella\controllers\umbrella;
+
+use Umbrella\app\AdminBase;
+use Umbrella\app\User;
+use Umbrella\components\ImportExcel;
+use Umbrella\components\KPI;
+use Umbrella\components\Logger;
+use Umbrella\models\Admin;
+use Umbrella\models\Data;
+use Umbrella\models\ProblemData;
+
 /**
  * Class KpiController
  */
@@ -79,8 +90,9 @@ class KpiController extends AdminBase
                 $start = $_GET['start'];
                 $end = $_GET['end'];
 
+
                 $listUsage = Data::getAllUsageByAdmin($start, $end);
-                Logger::getInstance()->log($user->id_user, "Посмотрел Usage c {$start} - {$end} для {$name}");
+                Logger::getInstance()->log($user->id_user, "Посмотрел Usage c {$start} - {$end} для {$_GET['id_partner']}");
 
             } else {
 

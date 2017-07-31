@@ -112,8 +112,8 @@ class Functions
      */
     public static function calcDateEnd($start, $end)
     {
-        $datetime1 = new DateTime($start);
-        $datetime2 = new DateTime($end);
+        $datetime1 = new \DateTime($start);
+        $datetime2 = new \DateTime($end);
         $interval = $datetime1->diff($datetime2);
         return $interval->format('%R%a');
     }
