@@ -38,7 +38,7 @@ class AdminController extends AdminBase
 
                 //Перенаправляем пользователя в закрытую часть – кабинет
                 //header("Location: /adm/kpi");
-                $succusse['url'] = "/adm/crm/orders";
+                $succusse['log'] = "/adm/crm/orders";
                 $succusse['code'] = 2;
                 echo json_encode($succusse);
             }

@@ -197,7 +197,7 @@ $(document).ready(function () {
                         $(".password_umbrella").val("");
 
                     } else {
-                        window.location = obj.url;
+                        window.location = obj.log;
                     }
                 }
             });
