@@ -185,6 +185,7 @@ class OrderController extends AdminBase
             // Параметры для формирование фильтров
             $user_ids = $user->controlUsers($user->id_user);
             $partnerList = Admin::getPartnerControlUsers($user_ids);
+            $new_partner = array();
             if(count($partnerList) > 3){
                 $new_partner = array_chunk($partnerList, (int)count($partnerList) / 3);
             } else {

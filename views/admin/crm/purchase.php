@@ -290,7 +290,81 @@
     </button>
 </div>
 
-<div class="reveal" id="export-modal" data-reveal>
+
+<!--=== EXPORT EXCEL ====-->
+<div class="reveal small" id="export-modal" data-reveal>
+    <div class="row align-bottom">
+        <div class="medium-12 small-12 columns">
+            <h3>Generate report</h3>
+        </div>
+        <div class="medium-12 small-12 columns">
+            <form action="/adm/crm/export/purchase/" method="POST" id="form-generate-excel" data-abide>
+
+                <h4 style="color: #fff">Between date</h4>
+                <div class="row align-bottom" style="background: #323e48; padding-top: 10px; margin-bottom: 10px">
+                    <div class="medium-8 small-8 columns">
+                        <div class="row">
+                            <div class="medium-6 small-12 columns">
+                                <label>From Date</label>
+                                <input type="text" class="required date" name="start" required>
+                            </div>
+                            <div class="medium-6 small-12 columns">
+                                <label>To Date</label>
+                                <input type="text" class="required date" name="end" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="medium-4 small-4 columns">
+                        <label>Status</label>
+                        <select name="status_name" id="status_name">
+                            <option value="">none</option>
+                            <option value="Покупка (принята)">Покупка (принята)</option>
+                            <option value="Покупка (не принята)">Покупка (не принята)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <h4 style="color: #fff">Partners</h4>
+                <div class="row align-bottom" style="background: #323e48; padding-top: 10px">
+                    <div class="medium-12 small-12 columns">
+                        <input type="text" id="search" placeholder="Search" autocomplete="off">
+                    </div>
+                    <div class="medium-12 small-12 columns">
+                        <span>
+                            <input type="checkbox" onclick="checkAllCheckbox(event)" id="id-all">
+                            <label class="check all" for="id-all" >Выбрать всех</label>
+                        </span>
+                    </div>
+                    <?php if(is_array($new_partner)):?>
+                        <?php foreach($new_partner as $new_arr):?>
+                            <div class="medium-4 small-4 columns">
+                                <?php foreach($new_arr as $partner):?>
+                                    <span>
+                                       <input type="checkbox" onclick="checkColor(event)" id="id-<?=$partner['id_user'] ?>" name="id_partner[]" value="<?=$partner['id_user'] ?>">
+                                        <label  class="check" for="id-<?=$partner['id_user'] ?>" ><?=$partner['name_partner'] ?></label><br>
+                                    </span>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
+
+                <div class="row align-bottom" style="padding-top: 10px; margin-top: 10px">
+                    <div class="medium-3 small-3 medium-offset-9 columns">
+                        <button type="submit" id="apply-stock-filter" class="button primary">Generate</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+
+<!-- OLD EXPORT  -->
+<div class="reveal" id="export-modal2" data-reveal>
     <form action="/adm/crm/export/purchase/" id="" method="get" class="form" data-abide novalidate>
         <div class="row align-bottom">
             <div class="medium-12 small-12 columns">

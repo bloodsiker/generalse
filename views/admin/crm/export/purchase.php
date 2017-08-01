@@ -30,12 +30,12 @@
 
 <div class="btn-group pull-left" role="group" aria-label="...">
     <button type="button" class="btn btn-primary" onclick="window.history.go(-1); return false;"><span class="glyphicon glyphicon-arrow-left"></span> В кабинет</button>
-    <button type="button" class="btn btn-danger" onclick="tableToExcel('purchase', 'W3C Example Table')"><span class="glyphicon glyphicon-export"></span> Export</button>
+    <button type="button" class="btn btn-danger" onclick="tableToExcel('purchase', 'Purchase export Table')"><span class="glyphicon glyphicon-export"></span> Export</button>
 </div>
 
 <div id="purchase">
     <table border="1" cellpadding="5" cellspacing="0" width="100%">
-        <caption>Export &laquo; Purchase &raquo; <?=(isset($_GET['start'])) ? $_GET['start'] : $_GET['start']?> &mdash; <?=(isset($_GET['end'])) ? $_GET['end'] : $_GET['end']?></caption>
+        <caption>Export &laquo; Purchase &raquo; <?=(isset($_POST['start'])) ? $_POST['start'] : $_POST['start']?> &mdash; <?=(isset($_POST['end'])) ? $_POST['end'] : $_POST['end']?></caption>
         <thead>
         <tr>
             <th>ID</th>

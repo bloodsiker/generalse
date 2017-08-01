@@ -182,8 +182,17 @@ class PurchaseController extends AdminBase
                 $interval = '';
             }
             $filter .= $interval;
-            //$listPurchases = Purchases::getPurchasesByPartner($userId, $filter);
             $listPurchases = Purchases::getPurchasesByPartnerMsSql($user->controlUsers($userId), $filter);
+
+            // Параметры для формирование фильтров
+            $user_ids = $user->controlUsers($user->id_user);
+            $partnerList = Admin::getPartnerControlUsers($user_ids);
+            $new_partner = array();
+            if(count($partnerList) > 3){
+                $new_partner = array_chunk($partnerList, (int)count($partnerList) / 3);
+            } else {
+                $new_partner[] = $partnerList;
+            }
 
         } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
 
@@ -199,6 +208,10 @@ class PurchaseController extends AdminBase
             $filter .= $interval;
             //$listPurchases = Purchases::getAllPurchases($filter);
             $listPurchases = Purchases::getAllPurchasesMsSql($filter);
+
+            // Параметры для формирование фильтров
+            $partnerList = Admin::getAllPartner();
+            $new_partner = array_chunk($partnerList, (int)count($partnerList) / 3);
         }
 
         require_once(ROOT . '/views/admin/crm/purchase.php');
@@ -237,8 +250,17 @@ class PurchaseController extends AdminBase
                 $interval = '';
             }
             $filter .= $interval;
-            //$listPurchases = Purchases::getPurchasesByPartner($userId, $filter);
             $listPurchases = Purchases::getPurchasesByPartnerMsSql($user->controlUsers($userId), $filter);
+
+            // Параметры для формирование фильтров
+            $user_ids = $user->controlUsers($user->id_user);
+            $partnerList = Admin::getPartnerControlUsers($user_ids);
+            $new_partner = array();
+            if(count($partnerList) > 3){
+                $new_partner = array_chunk($partnerList, (int)count($partnerList) / 3);
+            } else {
+                $new_partner[] = $partnerList;
+            }
 
         } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
 
@@ -254,6 +276,10 @@ class PurchaseController extends AdminBase
             $filter .= $interval;
             //$listPurchases = Purchases::getAllPurchases($filter);
             $listPurchases = Purchases::getAllPurchasesMsSql($filter);
+
+            // Параметры для формирование фильтров
+            $partnerList = Admin::getAllPartner();
+            $new_partner = array_chunk($partnerList, (int)count($partnerList) / 3);
         }
 
         require_once(ROOT . '/views/admin/crm/purchase.php');
@@ -261,6 +287,9 @@ class PurchaseController extends AdminBase
     }
 
 
+    /**
+     * @return bool
+     */
     public function actionPurchasePartNumAjax()
     {
 
@@ -328,6 +357,9 @@ class PurchaseController extends AdminBase
     }
 
 
+    /**
+     * @return bool
+     */
     public function actionPurchaseAjax()
     {
         // Проверка доступа
@@ -425,59 +457,23 @@ class PurchaseController extends AdminBase
 
     /**
      * генерация таблицы покупок для экспорта
-     * @param $data
      * @return bool
      */
-    public function actionExportPurchase($data)
+    public function actionExportPurchase()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-
-        // Обьект юзера
         $user = new User($userId);
 
-        if($user->role == 'partner' || $user->role == 'manager'){
-            $listExport = [];
-            $start = '';
-            $end = '';
-
-            if(isset($_GET['start']) && !empty($_GET['start'])){
-                $start = $_GET['start'] .' 00:00';
-            }
-
-            if(isset($_GET['end']) && !empty($_GET['end'])){
-                $end = $_GET['end'] . ' 23:59';
-            }
-
-            $listExport = Purchases::getExportPurchaseByPartner($user->id_user, $start, $end);
-
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
-
-            $listExport = [];
-            $start = '';
-            $end = '';
-
-            if(isset($_GET['start']) && !empty($_GET['start'])){
-                $start = $_GET['start'] .' 00:00';
-            }
-
-            if(isset($_GET['end']) && !empty($_GET['end'])){
-                $end = $_GET['end'] . ' 23:59';
-            }
-
-            if(isset($_GET['id_partner']) && !empty($_GET['id_partner'])){
-                if($_GET['id_partner'] == 'all'){
-                    $listExport = Purchases::getExportPurchaseAllPartners($start, $end);
-                } else {
-                    $user_id = $_GET['id_partner'];
-                    $listExport = Purchases::getExportPurchaseByPartner($user_id, $start, $end);
-                }
-
-            }
+        $filter = '';
+        $start =  isset($_POST['start']) ? $_POST['start'] .' 00:00' : '';
+        $end =  isset($_POST['end']) ? $_POST['end'] .' 23:59' : '';
+        if(!empty($_POST['status_name'])){
+            $status = iconv('UTF-8', 'WINDOWS-1251', trim($_POST['status_name']));
+            $filter .= " AND sgp.status_name = '$status'";
         }
+        $id_partners = isset($_POST['id_partner']) ? $_POST['id_partner'] : [];
+        $listExport = Purchases::getExportPurchaseByPartner($id_partners, $start, $end, $filter);
 
         require_once (ROOT . '/views/admin/crm/export/purchase.php');
         return true;
