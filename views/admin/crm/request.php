@@ -259,8 +259,12 @@
                 <input type="text" class="required" name="part_number" required>
             </div>
             <div class="medium-12 small-12 columns">
-                <label>Price </label>
+                <label>Price</label>
                 <input type="text" class="required" name="price" disabled>
+            </div>
+            <div class="medium-12 small-12 columns group-stocks hide">
+                <label>Stock <span style="color: #4CAF50;" class="name-stock"></span></label>
+                <input type="text" class="required" name="quantity" disabled>
             </div>
         </div>
     </form>

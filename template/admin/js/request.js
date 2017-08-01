@@ -24,15 +24,21 @@ $('[name="part_number"]').keyup(function(e) {
         data: {part_number : part_number},
         cache: false,
         success: function (response) {
-            var obj = JSON.parse(response);
             console.log(response);
+            var obj = JSON.parse(response);
             if(obj.result == 1){
                 $("[name='part_number']").removeClass('error_part');
                 $('.name-product').text(obj.mName).css('color', '#4CAF50');
                 $("[name='price']").val(obj.price);
+                $(".group-stocks").removeClass('hide');
+                $('.name-stock').text(obj.stock).css('color', '#4CAF50');
+                $("[name='quantity']").val(obj.quantity);
             } else {
                 $('.name-product').text('not found').css('color', 'red');
                 $("[name='price']").val('0');
+                $(".group-stocks").addClass('hide');
+                $('.name-stock').text('');
+                $("[name='quantity']").val('');
             }
         }
     });

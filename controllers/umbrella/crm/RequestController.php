@@ -10,6 +10,7 @@ use Umbrella\components\Logger;
 use Umbrella\models\Admin;
 use Umbrella\models\Orders;
 use Umbrella\models\Products;
+use Umbrella\models\Stocks;
 
 /**
  * Class RequestController
@@ -219,20 +220,27 @@ class RequestController extends AdminBase
     {
         self::checkAdmin();
         $userId = Admin::CheckLogged();
+        $user = new User($userId);
+        $group = new Group();
         $part_number = $_REQUEST['part_number'];
 
-            $result = Products::getPricePartNumber($part_number, $userId);
-            if($result == 0){
-                $data['result'] = 0;
-                $data['action'] = 'not_found';
-                print_r(json_encode($data));
-            } else {
-                $data['result'] = 1;
-                $data['action'] = 'purchase';
-                $data['price'] = round($result['price'], 2);
-                $data['mName'] = iconv('WINDOWS-1251', 'UTF-8', $result['mName']);
-                print_r(json_encode($data));
-            }
+        $stocks_group = $group->stocksFromGroup($user->idGroupUser($user->id_user), 'name', 'request');
+
+        $result = Products::getPricePartNumber($part_number, $user->id_user);
+        $partInStock = Stocks::checkGoodsInStocksPartners($user->id_user, $stocks_group, $part_number);
+        if($result == 0){
+            $data['result'] = 0;
+            $data['action'] = 'not_found';
+            print_r(json_encode($data));
+        } else {
+            $data['result'] = 1;
+            $data['action'] = 'purchase';
+            $data['price'] = round($result['price'], 2);
+            $data['mName'] = iconv('WINDOWS-1251', 'UTF-8', $result['mName']);
+            $data['stock'] = iconv('WINDOWS-1251', 'UTF-8', $partInStock['stock_name']);
+            $data['quantity'] = $partInStock['quantity'] . ' Units';
+            print_r(json_encode($data));
+        }
 
         return true;
     }

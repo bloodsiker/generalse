@@ -61,7 +61,7 @@ class Group
 
 
     /**
-     * Возращаем список id складов
+     * Возращаем список id(или названий) складов
      * @param $id_group
      * @param string $key
      * @param $section

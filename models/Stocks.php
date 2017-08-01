@@ -125,6 +125,48 @@ class Stocks
 
 
     /**
+     * @param $id_partner
+     * @param $stocks
+     * @param $part_number
+     * @return array
+     */
+    public static function checkGoodsInStocksPartners($id_partner, $stocks, $part_number)
+    {
+        $db = MsSQL::getConnection();
+
+        $stocks_name = implode('\' , \'', $stocks);
+        $stock_iconv = iconv('UTF-8', 'WINDOWS-1251', $stocks_name);
+
+        $sql = "SELECT
+                 sgt.stock_name,
+                 sgt.goods_name,
+                 sgt.part_number,
+                 sgt.type_name,
+                 sgt.subtype_name,
+                 sgt.quantity,
+                 sgt.serial_number,
+                 sgt.price,
+                 sgu.site_client_name
+                FROM site_gm_stocks sgt
+                INNER JOIN tbl_Users tu with (nolock)
+                    ON sgt.site_account_id = tu.site_gs_account_id
+                INNER JOIN site_gm_users sgu with (nolock)
+                    ON sgu.id = tu.site_gs_account_id
+                WHERE sgu.site_account_id = :id_partner
+                AND stock_name IN ('{$stock_iconv}')
+                AND sgt.part_number = :part_number";
+
+        $result = $db->prepare($sql);
+        //2912630403
+        $result->bindParam(':id_partner', $id_partner, PDO::PARAM_INT);
+        $result->bindParam(':part_number', $part_number, PDO::PARAM_STR);
+        $result->execute();
+        $all = $result->fetch(PDO::FETCH_ASSOC);
+        return $all;
+    }
+
+
+    /**
      *  товары со всех складов всех партнеров
      * @return array
      */
