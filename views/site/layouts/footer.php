@@ -77,10 +77,14 @@
 
 <script src="/template/site/js/vendor/jquery.js"></script>
 <script src="/template/site/js/vendor/what-input.js"></script>
-<script src="/template/site/js/vendor/foundation.js"></script>
-<script src="/template/site/js/app.js"></script>
+<script src="/template/site/js/vendor/foundation.min.js"></script>
+<script src="/template/admin/js/app.js"></script>
 <script src="/template/site/js/parallax.min.js"></script>
 <script src="/template/site/js/main.js"></script>
+<script src="http://mynameismatthieu.com/WOW/dist/wow.min.js"></script>
+<script>
+    new WOW().init();
+</script>
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

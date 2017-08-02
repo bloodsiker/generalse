@@ -9,13 +9,12 @@
 <script src="/template/admin/js/vendor/js-ui.js"></script>
 <script src="/template/admin/js/calendar-local-eng.js"></script>
 <script src="/template/admin/js/vendor/what-input.js"></script>
-<script src="/template/admin/js/vendor/foundation.js"></script>
+<script src="/template/admin/js/vendor/foundation.min.js"></script>
 <script src="/template/admin/js/app.js"></script>
 <script src="/template/admin/js/main.js"></script>
 <script src="/template/admin/js/jquery.tablesort.min.js"></script>
 <script src="/template/admin/js/object.js"></script>
 <script src="/template/admin/js/kpi.js"></script>
-<script src="/template/admin/plugins/ckeditor/ckeditor.js"></script>
 <script src="/template/admin/plugins/jquery-search/jquery.filtertable.min.js"></script>
 
 <!-- switch  -->
@@ -35,6 +34,7 @@ if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/ccc')) echo "<scr
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/adm/lithographer')) echo "
   <script src='https://cdnjs.cloudflare.com/ajax/libs/video.js/5.0.0/video.min.js'></script>
   <script src='/template/admin/js/lithographer.js'></script>
+  <script src='/template/admin/plugins/ckeditor/ckeditor.js'></script>
   ";
 
 ?>
@@ -55,22 +55,24 @@ if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/adm/lithographer'
 </script>
 
 
+<?php if(Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/adm/lithographer')):?>
+    <script>
+        CKEDITOR.replace('ck_rules');
+        CKEDITOR.replace('ck_tips');
+        CKEDITOR.replace('edit');
+        //    CKEDITOR.replace( 'ck_rules',
+        //        {
+        //            filebrowserBrowseUmbrella\components\Url : '/ckfinder/ckfinder.html',
+        //            filebrowserImageBrowseUmbrella\components\Url : '/ckfinder/ckfinder.html?type=Images',
+        //            filebrowserFlashBrowseUmbrella\components\Url : '/ckfinder/ckfinder.html?type=Flash',
+        //            filebrowserUploadUmbrella\components\Url : '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+        //            filebrowserImageUploadUmbrella\components\Url : '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+        //            filebrowserFlashUploadUmbrella\components\Url : '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
+        //        });
+    </script>
+<?php endif;?>
 
 
-<script>
-    CKEDITOR.replace('ck_rules');
-    CKEDITOR.replace('ck_tips');
-    CKEDITOR.replace('edit');
-//    CKEDITOR.replace( 'ck_rules',
-//        {
-//            filebrowserBrowseUmbrella\components\Url : '/ckfinder/ckfinder.html',
-//            filebrowserImageBrowseUmbrella\components\Url : '/ckfinder/ckfinder.html?type=Images',
-//            filebrowserFlashBrowseUmbrella\components\Url : '/ckfinder/ckfinder.html?type=Flash',
-//            filebrowserUploadUmbrella\components\Url : '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
-//            filebrowserImageUploadUmbrella\components\Url : '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
-//            filebrowserFlashUploadUmbrella\components\Url : '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
-//        });
-</script>
 
 <script>
 $("#date-start").datepicker({

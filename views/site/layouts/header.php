@@ -6,16 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Generalse</title>
   <link rel="shortcut icon" href="/template/site/img/favicon.ico" type="image/x-icon">
-  <link rel="stylesheet" href="/template/site/css/foundation.css">
+  <link rel="stylesheet" href="/template/site/css/foundation.min.css">
   <link rel="stylesheet" href="/template/site/css/app.css">
   <link rel="stylesheet" href="/template/site/css/style.css">
   <link rel="stylesheet" href="/template/site/css/fonts.css">
   <link rel="stylesheet" href="/template/site/fonts/foundation-icons/foundation-icons.css">
   <link rel="stylesheet" href="https://daneden.github.io/animate.css/animate.min.css">
-  <script src="http://mynameismatthieu.com/WOW/dist/wow.min.js"></script>
-  <script>
-    new WOW().init();
-  </script>
 
 </head>
 <body>
