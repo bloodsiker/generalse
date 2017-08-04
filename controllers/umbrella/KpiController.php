@@ -22,6 +22,7 @@ class KpiController extends AdminBase
      */
     public function __construct()
     {
+        parent::__construct();
         self::checkDenied('adm.kpi', 'controller');
     }
 
@@ -30,13 +31,9 @@ class KpiController extends AdminBase
      */
     public function actionIndex()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
 
         //$all = Data::FTF_30_Days('GS Fine Service', '2016-10-00', '2016-11-02');
@@ -53,7 +50,7 @@ class KpiController extends AdminBase
             $firstData = Data::getLastDataAdmin('ASC');
         }
 
-        require_once(ROOT . '/views/admin/kpi/index.php');
+        $this->render('admin/kpi/index', compact('user', 'lastData', 'firstData', 'listPartner'));
         return true;
     }
 
@@ -63,14 +60,10 @@ class KpiController extends AdminBase
      */
     public function actionUsage()
     {
-        // Проверка доступа
         self::checkAdmin();
         self::checkDenied('kpi.usage', 'controller');
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
 
         if($user->role == 'partner'){
@@ -107,7 +100,7 @@ class KpiController extends AdminBase
             }
         }
 
-        require_once(ROOT . '/views/admin/kpi/usage.php');
+        $this->render('admin/kpi/usage', compact('user', 'listUsage', 'listPartner'));
         return true;
     }
 
@@ -117,14 +110,11 @@ class KpiController extends AdminBase
      */
     public function actionImport()
     {
-        // Проверка доступа
         self::checkAdmin();
         self::checkDenied('kpi.import', 'controller');
 
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
 
         if($user->role == 'partner'){
@@ -133,9 +123,9 @@ class KpiController extends AdminBase
 
         } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
 
-            $cout_kpi_success = isset($_SESSION['kpi_success']) ? $_SESSION['kpi_success'] : '';
-            $cout_call_success = isset($_SESSION['call_success']) ? $_SESSION['call_success'] : '';
-            $cout_email_success = isset($_SESSION['email_success']) ? $_SESSION['email_success'] : '';
+            $count_kpi_success = isset($_SESSION['kpi_success']) ? $_SESSION['kpi_success'] : '';
+            $count_call_success = isset($_SESSION['call_success']) ? $_SESSION['call_success'] : '';
+            $count_email_success = isset($_SESSION['email_success']) ? $_SESSION['email_success'] : '';
 
             if(isset($_SESSION['kpi_success'])){
                 unset($_SESSION['kpi_success']);
@@ -278,7 +268,7 @@ class KpiController extends AdminBase
             }
         }
 
-        require_once(ROOT . '/views/admin/kpi/import.php');
+        $this->render('admin/kpi/import', compact('user', 'count_kpi_success', 'count_call_success', 'count_email_success'));
         return true;
     }
 
@@ -289,12 +279,9 @@ class KpiController extends AdminBase
      */
     public function actionResult()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-        // Обьект юзера
+
         $user = new User($userId);
         $start = $_GET['start'];
         $end = $_GET['end'];
@@ -311,7 +298,7 @@ class KpiController extends AdminBase
 
             Logger::getInstance()->log($user->id_user, "посмотрел отчет KPI с " . $start . " по " . $end);
 
-            require_once(ROOT . '/views/admin/kpi/result_one_partner.php');
+            $this->render('admin/kpi/result_one_partner', compact('user', 'KPI', 'lastData', 'firstData', 'name_partner', 'start', 'end'));
 
 
         } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
@@ -329,7 +316,7 @@ class KpiController extends AdminBase
 
                     Logger::getInstance()->log($user->id_user, "посмотрел отчет KPI с " . $start . " по " . $end . " для всех партнеров");
 
-                    require_once(ROOT . '/views/admin/kpi/result_all_partner.php');
+                    $this->render('admin/kpi/result_all_partner', compact('user', 'KPI', 'lastData', 'firstData', 'listPartner', 'start', 'end'));
 
                 } else {
 
@@ -339,7 +326,7 @@ class KpiController extends AdminBase
 
                     Logger::getInstance()->log($user->id_user, "посмотрел отчет KPI с " . $start . " по " . $end . " для " . $name_partner);
 
-                    require_once(ROOT . '/views/admin/kpi/result_one_partner.php');
+                    $this->render('admin/kpi/result_one_partner', compact('user','KPI', 'lastData', 'firstData', 'name_partner', 'listPartner', 'start', 'end'));
                 }
             }
         }
@@ -353,12 +340,9 @@ class KpiController extends AdminBase
      */
     public function actionShowProblem()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-        // Обьект юзера
+
         $user = new User($userId);
 
         $partner = $_REQUEST['partner'];
@@ -430,7 +414,7 @@ class KpiController extends AdminBase
 
         //print_r($data);
 
-        require_once(ROOT . '/views/admin/kpi/show_probem_kpi.php');
+        $this->render('admin/kpi/show_probem_kpi', compact('user','data', 'start', 'end', 'partner'));
         return true;
     }
 

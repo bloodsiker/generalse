@@ -20,6 +20,7 @@ class PsrController extends AdminBase
      */
     public function __construct()
     {
+        parent::__construct();
         self::checkDenied('crm.psr', 'controller');
     }
 
@@ -32,7 +33,7 @@ class PsrController extends AdminBase
         $userId = Admin::CheckLogged();
         $user = new User($userId);
 
-        require_once(ROOT . '/views/admin/crm/psr.php');
+        $this->render('admin/crm/psr', compact('user'));
         return true;
     }
 

@@ -39,7 +39,8 @@ class BranchController extends AdminBase
             }
             header("Location: " . $_SERVER['HTTP_REFERER']);
         }
-        require_once(ROOT . '/views/admin/branch/index.php');
+
+        $this->render('admin/branch/index', compact('user', 'allUserBranch', 'userListBranch', 'listUsers'));
         return true;
     }
 
@@ -48,12 +49,8 @@ class BranchController extends AdminBase
      */
     public function actionAddBranch()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-        // Обьект юзера
         $user = new User($userId);
 
         // Обработка формы
@@ -70,7 +67,7 @@ class BranchController extends AdminBase
             }
         }
 
-        require_once(ROOT . '/views/admin/branch/create.php');
+        $this->render('admin/branch/create', compact('user'));
         return true;
     }
 
@@ -82,13 +79,9 @@ class BranchController extends AdminBase
      */
     public function actionDelete($id_branch, $id_user)
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        //Получаем информацию о пользователе из БД
         $user = new User($userId);
 
         if($user->role == 'administrator'){
@@ -99,7 +92,6 @@ class BranchController extends AdminBase
 
         // Перенаправляем пользователя на страницу управлениями товарами
         header("Location: " . $_SERVER['HTTP_REFERER']);
-
         return true;
     }
 

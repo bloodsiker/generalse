@@ -18,12 +18,9 @@ class CountryController extends AdminBase
      */
     public function actionAddCountry()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-        // Обьект юзера
+
         $user = new User($userId);
 
         $countryList = Country::getAllCountry();
@@ -43,19 +40,21 @@ class CountryController extends AdminBase
             }
         }
 
-        require_once(ROOT . '/views/admin/country/create.php');
+        $this->render('admin/country/create', compact('user', 'countryList'));
         return true;
     }
 
 
+    /**
+     * @param $id_country
+     * @return bool
+     *
+     */
     public function actionUpdate($id_country)
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-        // Обьект юзера
+
         $user = new User($userId);
 
         $countryById = Country::getCountryId($id_country);
@@ -75,7 +74,7 @@ class CountryController extends AdminBase
             }
         }
 
-        require_once(ROOT . '/views/admin/country/update.php');
+        $this->render('admin/country/update', compact('user', 'countryById'));
         return true;
     }
 
@@ -86,13 +85,9 @@ class CountryController extends AdminBase
      */
     public function actionDelete($id)
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        //Получаем информацию о пользователе из БД
         $user = new User($userId);
 
         if($user->role == 'administrator'){
@@ -103,7 +98,6 @@ class CountryController extends AdminBase
 
         // Перенаправляем пользователя на страницу управлениями товарами
         header("Location: /adm/users");
-
         return true;
     }
 

@@ -12,11 +12,19 @@ use Umbrella\models\Stocks;
 
 class GroupController extends AdminBase
 {
+    /**
+     * GroupController constructor.
+     */
     public function __construct()
     {
+        parent::__construct();
         self::checkDenied('group.view', 'controller');
     }
 
+
+    /**
+     * @return bool
+     */
     public function actionAddGroup()
     {
         // Проверка доступа
@@ -36,7 +44,8 @@ class GroupController extends AdminBase
                 header("Location: /adm/users");
             }
         }
-        require_once(ROOT . '/views/admin/group/create.php');
+
+        $this->render('admin/group/create', compact('user'));
         return true;
     }
 
@@ -72,7 +81,7 @@ class GroupController extends AdminBase
             }
         }
 
-        require_once(ROOT . '/views/admin/group/view.php');
+        $this->render('admin/group/view', compact('user', 'group', 'listUsers', 'listUserByGroup', 'id_group'));
         return true;
     }
 
@@ -85,11 +94,9 @@ class GroupController extends AdminBase
      */
     public function actionStock($id_group, $section)
     {
-        // Проверка доступа
         self::checkAdmin();
         self::checkDenied('group.stock.view', 'controller');
 
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
         $user = new User($userId);
         $group = new Group();
@@ -107,7 +114,7 @@ class GroupController extends AdminBase
             }
         }
 
-        require_once(ROOT . '/views/admin/group/stock.php');
+        $this->render('admin/group/stock', compact('user', 'group', 'allStocks', 'listStocksGroup', 'id_group', 'section'));
         return true;
     }
 
@@ -120,14 +127,10 @@ class GroupController extends AdminBase
      */
     public function actionDeleteUser($id_group, $id_user)
     {
-        // Проверка доступа
         self::checkAdmin();
         self::checkDenied('group.user.delete', 'controller');
 
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-
-        //Получаем информацию о пользователе из БД
         $user = new User($userId);
 
         if($user->role == 'administrator'){
@@ -153,14 +156,10 @@ class GroupController extends AdminBase
      */
     public function actionDeleteStock($id)
     {
-        // Проверка доступа
         self::checkAdmin();
         self::checkDenied('group.stock.delete', 'controller');
 
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-
-        //Получаем информацию о пользователе из БД
         $user = new User($userId);
 
         if($user->role == 'administrator'){
@@ -184,12 +183,9 @@ class GroupController extends AdminBase
      */
     public function actionGroupDenied($id_group, $p_id = null, $sub_id = null)
     {
-        // Проверка доступа
         self::checkAdmin();
         //self::checkDenied('user.denied', 'controller');
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-        // Обьект юзера
         $user = new User($userId);
 
         $group = new Group();
@@ -232,7 +228,7 @@ class GroupController extends AdminBase
             }
         }
 
-        require_once(ROOT . '/views/admin/group/denied.php');
+        $this->render('admin/group/denied', compact('user', 'list_page', 'sub_menu', 'sub_menu_button', 'new_array', 'id_group', 'group', 'p_id', 'sub_id'));
         return true;
     }
 }

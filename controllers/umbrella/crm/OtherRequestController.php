@@ -25,6 +25,7 @@ class OtherRequestController extends AdminBase
      */
     public function __construct()
     {
+        parent::__construct();
         self::checkDenied('crm.other.request', 'controller');
     }
 
@@ -63,7 +64,7 @@ class OtherRequestController extends AdminBase
             $listRequests = OtherRequest::getListRequestAdmin();
         }
 
-        require_once(ROOT . '/views/admin/crm/other_request.php');
+        $this->render('admin/crm/other_request', compact('user','delivery_address', 'listRequests'));
         return true;
     }
 
@@ -73,13 +74,9 @@ class OtherRequestController extends AdminBase
      */
     public function actionRequestImport()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
 
         if(isset($_POST['import_request']) && $_POST['import_request'] == 'true'){

@@ -14,7 +14,7 @@ class CustomerCareCenterController extends AdminBase
 
     public function __construct()
     {
-        //
+        parent::__construct();
     }
 
     public function actionIndex()
@@ -23,7 +23,7 @@ class CustomerCareCenterController extends AdminBase
         $userId = Admin::CheckLogged();
         $user = new User($userId);
 
-        require_once(ROOT . '/views/admin/ccc/index.php');
+        $this->render('admin/ccc/index', compact('user'));
         return true;
     }
 }

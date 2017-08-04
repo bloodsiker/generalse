@@ -24,6 +24,7 @@ class ReturnController extends AdminBase
      */
     public function __construct()
     {
+        parent::__construct();
         self::checkDenied('crm.returns', 'controller');
     }
 
@@ -32,13 +33,9 @@ class ReturnController extends AdminBase
      */
     public function actionReturns()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
         $partnerList = Admin::getAllPartner();
 
@@ -68,49 +65,24 @@ class ReturnController extends AdminBase
             $allReturnsByPartner = Returns::getAllReturns($interval);
         }
 
-        require_once(ROOT . '/views/admin/crm/returns.php');
+        $this->render('admin/crm/returns', compact('user','partnerList', 'arr_error_return', 'allReturnsByPartner'));
         return true;
     }
 
 
     public function actionReturnsAjax()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
 
+        //
         if($_REQUEST['action'] == 'update'){
             $response = [];
             $stock = $_REQUEST['stock'];
             $id_return = $_REQUEST['id_return'];
-            //Предварительный
-            //$status = iconv('UTF-8', 'WINDOWS-1251', 'В обработке');
-//            switch($stock)
-//            {
-//                case '1':
-//                    $response['stock'] =  'BAD';
-//                    break;
-//                case '2':
-//                    $response['stock'] = 'Not Used';
-//                    break;
-//                case '3':
-//                    $response['stock'] = 'Restored';
-//                    break;
-//                case '4':
-//                    $response['stock'] = 'Restore Bad';
-//                    break;
-//                case '5':
-//                    $response['stock'] = 'Dismantling';
-//                    break;
-//                case '6':
-//                    $response['stock'] = 'OK';
-//                    break;
-//            }
+
             $response['stock'] = $stock;
             $stock_name = iconv('UTF-8', 'WINDOWS-1251', $stock);
             //$ok = Returns::updateStatusReturns($id_return, $stock);
@@ -228,13 +200,9 @@ class ReturnController extends AdminBase
      */
     public function actionFilterReturns($filter = "")
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
 
         $partnerList = Admin::getAllPartner();
@@ -267,7 +235,7 @@ class ReturnController extends AdminBase
             $allReturnsByPartner = Returns::getAllReturns($filter);
         }
 
-        require_once(ROOT . '/views/admin/crm/returns.php');
+        $this->render('admin/crm/returns', compact('user','partnerList', 'arr_error_return', 'allReturnsByPartner'));
         return true;
     }
 
@@ -278,13 +246,9 @@ class ReturnController extends AdminBase
      */
     public function actionExportReturns($data)
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
 
         if($user->role == 'partner'){
@@ -327,7 +291,7 @@ class ReturnController extends AdminBase
             }
         }
 
-        require_once (ROOT . '/views/admin/crm/export/returns.php');
+        $this->render('admin/crm/export/returns', compact('user','listExport'));
         return true;
     }
 

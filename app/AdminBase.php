@@ -5,12 +5,13 @@ namespace Umbrella\app;
 use Umbrella\models\Admin;
 use Umbrella\app\UserDenied;
 use Umbrella\app\User;
+use Umbrella\vendor\controller\Controller;
 
 /**
  * Абстрактный класс AdminBase содержит общую логику для контроллеров, которые
  * используются в панели администратора
  */
-abstract class AdminBase
+abstract class AdminBase extends Controller
 {
     /**
      * Метод, который проверяет пользователя на то, является ли он администратором

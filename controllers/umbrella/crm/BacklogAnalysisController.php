@@ -18,6 +18,7 @@ class BacklogAnalysisController extends AdminBase
 
     public function __construct()
     {
+        parent::__construct();
         self::checkDenied('crm.backlog', 'controller');
     }
 
@@ -32,7 +33,7 @@ class BacklogAnalysisController extends AdminBase
         $user = new User($userId);
         $partnerList = Admin::getAllPartner();
 
-        require_once(ROOT . '/views/admin/crm/backlog.php');
+        $this->render('admin/crm/backlog', compact('user', 'partnerList'));
         return true;
     }
 
@@ -41,13 +42,9 @@ class BacklogAnalysisController extends AdminBase
      */
     public function actionExportBacklog()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
 
         if(isset($_POST['check_backlog']) && $_POST['check_backlog'] == 'true'){
@@ -113,7 +110,7 @@ class BacklogAnalysisController extends AdminBase
             }
         }
 
-        require_once(ROOT . '/views/admin/crm/export/backlog.php');
+        $this->render('admin/crm/export/backlog', compact('user', 'partnerList', 'new_array'));
         return true;
     }
 

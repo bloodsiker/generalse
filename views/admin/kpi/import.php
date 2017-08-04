@@ -43,9 +43,9 @@
                             <button class="button primary"> Import</button>
                         </div>
                         <div class="medium-6 small-12 columns">
-                            <?php if(isset($cout_kpi_success) && !empty($cout_kpi_success)):?>
+                            <?php if(isset($count_kpi_success) && !empty($count_kpi_success)):?>
                                 <span class="alert-success">
-                                    <?=(isset($cout_kpi_success) && !empty($cout_kpi_success)) ? 'Успешно добавленно ' . $cout_kpi_success . ' строк' : '';?>
+                                    <?=(isset($count_kpi_success) && !empty($count_kpi_success)) ? 'Успешно добавленно ' . $count_kpi_success . ' строк' : '';?>
                                 </span>
                             <?php endif;?>
                         </div>
@@ -72,9 +72,9 @@
                             <button class="button primary"> Import</button>
                         </div>
                         <div class="medium-6 small-12 columns">
-                            <?php if(isset($cout_call_success) && !empty($cout_call_success)):?>
+                            <?php if(isset($count_call_success) && !empty($count_call_success)):?>
                                 <span class="alert-success">
-                                    <?=(isset($cout_call_success) && !empty($cout_call_success)) ? 'Успешно добавленно ' . $cout_call_success . ' строк' : '';?>
+                                    <?=(isset($count_call_success) && !empty($count_call_success)) ? 'Успешно добавленно ' . $count_call_success . ' строк' : '';?>
                                 </span>
                             <?php endif;?>
                         </div>
@@ -101,9 +101,9 @@
                             <button class="button primary"> Import</button>
                         </div>
                         <div class="medium-6 small-12 columns">
-                            <?php if(isset($cout_email_success) && !empty($cout_email_success)):?>
+                            <?php if(isset($count_email_success) && !empty($count_email_success)):?>
                                 <span class="alert-success">
-                                    <?=(isset($cout_email_success) && !empty($cout_email_success)) ? 'Успешно добавленно ' . $cout_email_success . ' строк' : '';?>
+                                    <?=(isset($count_email_success) && !empty($count_email_success)) ? 'Успешно добавленно ' . $count_email_success . ' строк' : '';?>
                                 </span>
                             <?php endif;?>
                         </div>

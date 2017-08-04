@@ -27,6 +27,7 @@ class RequestController extends AdminBase
      */
     public function __construct()
     {
+        parent::__construct();
         self::checkDenied('crm.request', 'controller');
     }
 
@@ -95,7 +96,7 @@ class RequestController extends AdminBase
             $listCheckOrders = Orders::getAllReserveOrdersMsSQL(0);
         }
 
-        require_once(ROOT . '/views/admin/crm/request.php');
+        $this->render('admin/crm/request', compact('user','group', 'partnerList', 'order_type', 'delivery_address', 'listCheckOrders', 'request_message'));
         return true;
     }
 
@@ -141,7 +142,7 @@ class RequestController extends AdminBase
             $listCheckOrders = Orders::getAllCompletedRequestInOrdersMsSQL($filter);
         }
 
-        require_once(ROOT . '/views/admin/crm/request_completed.php');
+        $this->render('admin/crm/request_completed', compact('user','listCheckOrders'));
         return true;
     }
 
@@ -248,13 +249,9 @@ class RequestController extends AdminBase
 
     public function actionRequestAjax()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
 
         // Редактируем парт номер
@@ -319,10 +316,7 @@ class RequestController extends AdminBase
         self::checkAdmin();
         self::checkDenied('crm.request.delete', 'controller');
 
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-
-        // Обьект юзера
         $user = new User($userId);
 
         $ok = Orders::deleteRequestMsSQLById($id);

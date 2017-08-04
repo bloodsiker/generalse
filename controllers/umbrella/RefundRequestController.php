@@ -22,6 +22,7 @@ class RefundRequestController extends AdminBase
      */
     public function __construct()
     {
+        parent::__construct();
         self::checkDenied('adm.refund_request', 'controller');
     }
 
@@ -211,7 +212,7 @@ class RefundRequestController extends AdminBase
         } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
 
         }
-        require_once(ROOT . '/views/admin/refund_request/index.php');
+        $this->render('admin/refund_request/index', compact('user','countryList', 'not_exit_file', 'arr_error_pn'));
         return true;
     }
 
@@ -222,12 +223,9 @@ class RefundRequestController extends AdminBase
      */
     public function actionPartNumAjax()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-        // Обьект юзера
+
         $user = new User($userId);
 
         $partNum = $_REQUEST['pn_number'];
@@ -235,7 +233,6 @@ class RefundRequestController extends AdminBase
         $PartNumber = Products::checkPartNumber($partNum);
 
         echo $PartNumber;
-
         return true;
     }
 
@@ -246,12 +243,9 @@ class RefundRequestController extends AdminBase
      */
     public function actionRequestAjax()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-        // Обьект юзера
+
         $user = new User($userId);
 
        if($_REQUEST['action'] == 'file'){
@@ -392,13 +386,9 @@ class RefundRequestController extends AdminBase
      */
     public function actionViewRequest()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
 
         $allPartner = Admin::getAllPartner();
@@ -408,16 +398,17 @@ class RefundRequestController extends AdminBase
 
             $requestByPartner = Warranty::getRequestByPartner($userId);
 
-            require_once(ROOT . '/views/admin/refund_request/view_request_partner.php');
+            $this->render('admin/refund_request/view_request_partner', compact('user','allPartner', 'countryList', 'requestByPartner'));
 
         } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
             $allRequest = Warranty::getAllRequest(0);
 
-            require_once(ROOT . '/views/admin/refund_request/view_request_admin.php');
+            $this->render('admin/refund_request/view_request_admin', compact('user','allPartner', 'countryList', 'allRequest'));
         }
 
         return true;
     }
+
 
     /**
      * Страница фильтрации данных
@@ -425,13 +416,9 @@ class RefundRequestController extends AdminBase
      */
     public function actionFilterRequest()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
 
         $allPartner = Admin::getAllPartner();
@@ -457,7 +444,7 @@ class RefundRequestController extends AdminBase
                 $requestByPartner = Warranty::getRequestByPartner($userId, $filter);
             }
 
-            require_once(ROOT . '/views/admin/refund_request/view_request_partner.php');
+            $this->render('admin/refund_request/view_request_partner', compact('user','allPartner', 'countryList', 'requestByPartner'));
 
         } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
             // Фильтрация
@@ -489,16 +476,12 @@ class RefundRequestController extends AdminBase
                     $start = $_GET['start']. " 00:00";
                     $end = $_GET['end']. " 23:59";
                     $filter .= " AND gw.date_create_request BETWEEN '$start' AND '$end'";
-
                 }
 
                 $allRequest = Warranty::getFilterRequest($filter);
-
             }
-
-            require_once(ROOT . '/views/admin/refund_request/view_request_admin.php');
+            $this->render('admin/refund_request/view_request_admin', compact('user','allPartner', 'countryList', 'allRequest'));
         }
-
         return true;
     }
 
@@ -509,32 +492,23 @@ class RefundRequestController extends AdminBase
      */
     public function actionThankYouPage()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-
-        // Обьект юзера
         $user = new User($userId);
 
         $log = "отправил запрос на списание (Warranty Exception Registration)";
         Log::addLog($userId, $log);
 
-        require_once(ROOT . '/views/admin/refund_request/thank_you_page.php');
+        $this->render('admin/refund_request/thank_you_page', compact('user'));
         return true;
     }
 
 
     public function actionTest()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
 
         if(isset($_POST['send_request'])){
@@ -576,7 +550,7 @@ class RefundRequestController extends AdminBase
         }
 
 
-        require_once(ROOT . '/views/admin/refund_request/test.php');
+        $this->render('admin/refund_request/test', compact('user'));
         return true;
     }
 

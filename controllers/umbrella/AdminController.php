@@ -61,7 +61,7 @@ class AdminController extends AdminBase
         // Обьект юзера
         $user = new User($userId);
 
-        require_once(ROOT . '/views/admin/access_denied.php');
+        $this->render('admin/access_denied', compact('user'));
         return true;
     }
 

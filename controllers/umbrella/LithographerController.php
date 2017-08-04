@@ -18,6 +18,7 @@ class LithographerController extends AdminBase
      */
     public function __construct()
     {
+        parent::__construct();
         self::checkDenied('adm.lithographer', 'controller');
     }
 
@@ -26,13 +27,9 @@ class LithographerController extends AdminBase
      */
     public  function actionVideo()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
         $listUsers = Admin::getAllUsers();
 
@@ -48,7 +45,7 @@ class LithographerController extends AdminBase
             $listVideo = Lithographer::getAllContent('video');
         }
 
-        require_once(ROOT . '/views/admin/lithographer/video.php');
+        $this->render('admin/lithographer/video', compact('user', 'listUsers', 'listArticlesCloseViewUser', 'listVideo'));
         return true;
     }
 
@@ -58,13 +55,9 @@ class LithographerController extends AdminBase
      */
     public  function actionTips()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
         $listUsers = Admin::getAllUsers();
 
@@ -81,7 +74,7 @@ class LithographerController extends AdminBase
 
         }
 
-        require_once(ROOT . '/views/admin/lithographer/tips.php');
+        $this->render('admin/lithographer/tips', compact('user', 'listUsers', 'listArticlesCloseViewUser', 'listTips'));
         return true;
     }
 
@@ -91,13 +84,9 @@ class LithographerController extends AdminBase
      */
     public  function actionRules()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
         $listUsers = Admin::getAllUsers();
 
@@ -113,7 +102,7 @@ class LithographerController extends AdminBase
             $listRules = Lithographer::getAllContent('rules');
         }
 
-        require_once(ROOT . '/views/admin/lithographer/rules.php');
+        $this->render('admin/lithographer/rules', compact('user', 'listUsers', 'listArticlesCloseViewUser', 'listRules'));
         return true;
     }
 
@@ -124,13 +113,9 @@ class LithographerController extends AdminBase
      */
     public  function actionView($id)
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
         // список закрытых статей для пользователя
         $listArticlesCloseViewUser = array_column(Lithographer::getArticleCloseViewByIdUser($user->id_user),'id_lithographer');
@@ -144,7 +129,7 @@ class LithographerController extends AdminBase
         // Увеличиваем кол-во просмотров
         Lithographer::updateViewArticleById($id);
 
-        require_once(ROOT . '/views/admin/lithographer/view.php');
+        $this->render('admin/lithographer/view', compact('user', 'listUsers', 'listArticlesCloseViewUser', 'view'));
         return true;
     }
 
@@ -155,13 +140,9 @@ class LithographerController extends AdminBase
      */
     public  function actionForms()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
 
 
@@ -278,19 +259,16 @@ class LithographerController extends AdminBase
         return true;
     }
 
+
     /**
      * Список публикаций
      * @return bool
      */
     public  function actionList()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
         $listUsers = Admin::getAllUsers();
 
@@ -303,7 +281,7 @@ class LithographerController extends AdminBase
             $listLithographer = Lithographer::getAllContentByAdmin();
 
         }
-        require_once(ROOT . '/views/admin/lithographer/list_article.php');
+        $this->render('admin/lithographer/list_article', compact('user', 'listUsers', 'listLithographer'));
         return true;
     }
 
@@ -364,7 +342,7 @@ class LithographerController extends AdminBase
             }
         }
 
-        require_once(ROOT . '/views/admin/lithographer/edit.php');
+        $this->render('admin/lithographer/edit', compact('user', 'listUsers', 'article', 'listUserCloseView'));
         return true;
     }
 
@@ -374,13 +352,9 @@ class LithographerController extends AdminBase
      */
     public  function actionSearch()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
         $listUsers = Admin::getAllUsers();
         // список закрытых статей для пользователя
@@ -392,7 +366,7 @@ class LithographerController extends AdminBase
             $listSearch = Lithographer::getSearchContent($search_item);
         }
 
-        require_once(ROOT . '/views/admin/lithographer/search.php');
+        $this->render('admin/lithographer/search', compact('user', 'listUsers', 'listArticlesCloseViewUser', 'listSearch'));
         return true;
     }
 
@@ -404,13 +378,9 @@ class LithographerController extends AdminBase
      */
     public function actionDelete($id)
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        //Получаем информацию о пользователе из БД
         $user = new User($userId);
 
         // Получаем данные о конкретной статье

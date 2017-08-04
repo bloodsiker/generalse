@@ -18,14 +18,13 @@ use Umbrella\models\Weekend;
  */
 class UserController extends AdminBase
 {
-    //private $user;
-
+    /**
+     * UserController constructor.
+     */
     public function __construct()
     {
-        //self::checkAdmin();
+        parent::__construct();
         self::checkDenied('adm.users', 'controller');
-//        $userId = Admin::CheckLogged();
-//        $this->user = new User($userId);
     }
 
 
@@ -34,12 +33,9 @@ class UserController extends AdminBase
      */
     public function actionIndex()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-        // Обьект юзера
+
         $user = new User($userId);
 
         $listUsers = Admin::getAllUsers();
@@ -54,7 +50,7 @@ class UserController extends AdminBase
 
         } else if($user->role == 'administrator' || $user->role == 'administrator-fin' ){
 
-            require_once(ROOT . '/views/admin/users/index.php');
+            $this->render('admin/users/index', compact('user', 'listUsers', 'groupList', 'countryList', 'branchList'));
         }
         return true;
     }
@@ -66,7 +62,6 @@ class UserController extends AdminBase
      */
     public function actionUserControl($id_user)
     {
-        // Проверка доступа
         self::checkAdmin();
         self::checkDenied('user.control', 'controller');
 
@@ -85,7 +80,7 @@ class UserController extends AdminBase
             }
         }
 
-        require_once(ROOT . '/views/admin/users/user_control.php');
+        $this->render('admin/users/user_control', compact('user', 'listUsers', 'listControlUsers'));
         return true;
     }
 
@@ -97,13 +92,9 @@ class UserController extends AdminBase
      */
     public function actionUserControlDelete($id_user, $control_user_id)
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        //Получаем информацию о пользователе из БД
         $user = new User($userId);
 
         if($user->role == 'administrator'){
@@ -124,13 +115,11 @@ class UserController extends AdminBase
      */
     public function actionAddUser()
     {
-        // Проверка доступа
         self::checkAdmin();
         self::checkDenied('user.add', 'controller');
 
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-        // Обьект юзера
+
         $user = new User($userId);
 
         $roleList = Admin::getRoleList();
@@ -170,7 +159,7 @@ class UserController extends AdminBase
                     }
                 }
             }
-            require_once(ROOT . '/views/admin/users/create.php');
+            $this->render('admin/users/create', compact('user', 'roleList', 'branchList', 'countryList'));
         }
         return true;
     }
@@ -197,14 +186,10 @@ class UserController extends AdminBase
      */
     public function actionUpdate($id)
     {
-        // Проверка доступа
         self::checkAdmin();
         self::checkDenied('user.edit', 'controller');
 
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-
-        //Получаем информацию о пользователе из БД
         $user = new User($userId);
 
         $roleList = Admin::getRoleList();
@@ -263,7 +248,7 @@ class UserController extends AdminBase
                 }
             }
             // Подключаем вид
-            require_once(ROOT . '/views/admin/users/update.php');
+            $this->render('admin/users/update', compact('user','userInfo', 'roleList', 'branchList', 'countryList'));
         }
         return true;
     }
@@ -276,12 +261,9 @@ class UserController extends AdminBase
      */
     public function actionUserWeekend($id_user)
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-        // Обьект юзера
+
         $user = new User($userId);
 
         if($user->role == 'partner' || $user->role == 'manager'){
@@ -306,7 +288,7 @@ class UserController extends AdminBase
                     }
                 }
             }
-            require_once(ROOT . '/views/admin/users/weekend.php');
+            $this->render('admin/users/weekend', compact('user','userInfo', 'listWeekend'));
         }
         return true;
     }
@@ -319,12 +301,9 @@ class UserController extends AdminBase
      */
     public function actionUserWeekendUpdate($id)
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-        // Обьект юзера
+
         $user = new User($userId);
 
         if($user->role == 'partner' || $user->role == 'manager'){
@@ -346,10 +325,8 @@ class UserController extends AdminBase
                     header("Location: /adm/user/weekend/" . $id_user);
                 }
             }
-            require_once(ROOT . '/views/admin/users/update_weekend.php');
-
+            $this->render('admin/users/update_weekend', compact('user','userInfo', 'weekendInfo'));
         }
-
         return true;
     }
 
@@ -361,13 +338,9 @@ class UserController extends AdminBase
      */
     public function actionUserWeekendDelete($id)
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        //Получаем информацию о пользователе из БД
         $user = new User($userId);
 
         // Получаем данные о конкретной пользователе
@@ -393,14 +366,11 @@ class UserController extends AdminBase
      */
     public function actionDelete($id)
     {
-        // Проверка доступа
         self::checkAdmin();
         self::checkDenied('user.delete', 'controller');
 
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        //Получаем информацию о пользователе из БД
         $user = new User($userId);
 
         // Получаем данные о конкретной пользователе
@@ -475,7 +445,7 @@ class UserController extends AdminBase
             }
         }
 
-        require_once(ROOT . '/views/admin/users/denied/index.php');
+        $this->render('admin/users/denied/index', compact('user','user_check', 'list_page', 'sub_menu', 'sub_menu_button', 'new_array', 'p_id', 'sub_id', 'id_user'));
         return true;
     }
 

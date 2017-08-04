@@ -24,6 +24,7 @@ class OrderController extends AdminBase
      */
     public function __construct()
     {
+        parent::__construct();
         self::checkDenied('crm.orders', 'controller');
     }
 
@@ -37,7 +38,6 @@ class OrderController extends AdminBase
         $userId = Admin::CheckLogged();
 
         $user = new User($userId);
-        $partnerList = Admin::getAllPartner();
         $delivery_address = $user->getDeliveryAddress($user->id_user);
 
         if(isset($_SESSION['error_orders'])){
@@ -215,7 +215,8 @@ class OrderController extends AdminBase
             $new_partner = array_chunk($partnerList, (int)count($partnerList) / 3);
         }
 
-        require_once(ROOT . '/views/admin/crm/orders.php');
+        //require_once(ROOT . '/views/admin/crm/orders.php');
+        $this->render('admin/crm/orders', compact('new_partner', 'partnerList', 'allOrders', 'delivery_address', 'user'));
         return true;
     }
 
@@ -227,7 +228,6 @@ class OrderController extends AdminBase
         self::checkAdmin();
         $userId = Admin::CheckLogged();
         $user = new User($userId);
-        $partnerList = Admin::getAllPartner();
 
         $arr_error_pn = (isset($_SESSION['error_orders'])) ? $_SESSION['error_orders'] : '';
         $arr_error_text = (isset($_SESSION['error_orders_text'])) ? $_SESSION['error_orders_text'] : '';
@@ -291,7 +291,8 @@ class OrderController extends AdminBase
             $new_partner = array_chunk($partnerList, (int)count($partnerList) / 3);
         }
 
-        require_once(ROOT . '/views/admin/crm/orders.php');
+        //require_once(ROOT . '/views/admin/crm/orders.php');
+        $this->render('admin/crm/orders', compact('new_partner', 'partnerList', 'allOrders', 'delivery_address', 'user', 'arr_error_pn', 'arr_error_text'));
         return true;
     }
 
@@ -483,7 +484,7 @@ class OrderController extends AdminBase
         $id_partners = isset($_POST['id_partner']) ? $_POST['id_partner'] : [];
         $listExport = Orders::getExportOrdersByPartner($id_partners, $start, $end, $filter);
 
-        require_once (ROOT . '/views/admin/crm/export/orders.php');
+        $this->render('admin/crm/export/orders', compact('user', 'listExport'));
         return true;
     }
 

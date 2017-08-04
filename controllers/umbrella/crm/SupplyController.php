@@ -26,6 +26,7 @@ class SupplyController extends AdminBase
      */
     public function __construct()
     {
+        parent::__construct();
         self::checkDenied('crm.supply', 'controller');
     }
 
@@ -90,9 +91,9 @@ class SupplyController extends AdminBase
                                 $insert['price'] = $excel['price'];
                                 $insert['quantity'] = $excel['quantity'];
                                 $insert['tracking_number'] = $excel['tracking_number'];
-                                $insert['manufacture_country'] = $excel['manufacture_country'];
+                                $insert['manufacture_country'] = iconv('UTF-8', 'WINDOWS-1251', $excel['manufacture_country']);
                                 $insert['partner'] = $excel['partner'];
-                                $insert['manufacturer'] = iconv('WINDOWS-1251', 'UTF-8', $excel['manufacturer']);
+                                $insert['manufacturer'] = iconv('UTF-8', 'WINDOWS-1251', $excel['manufacturer']);
 
                                 if(!empty($insert['part_number'])){
                                     $part_num = Products::checkPurchasesPartNumber($insert['part_number']);
@@ -113,7 +114,7 @@ class SupplyController extends AdminBase
             }
         }
 
-        require_once(ROOT . '/views/admin/crm/supply.php');
+        $this->render('admin/crm/supply', compact('user', 'partnerList', 'supply_error_part', 'allSupply'));
         return true;
     }
 
@@ -157,9 +158,9 @@ class SupplyController extends AdminBase
                                     $insert['price'] = $excel['price'];
                                     $insert['quantity'] = $excel['quantity'];
                                     $insert['tracking_number'] = $excel['tracking_number'];
-                                    $insert['manufacture_country'] = $excel['manufacture_country'];
+                                    $insert['manufacture_country'] = iconv('UTF-8', 'WINDOWS-1251', $excel['manufacture_country']);
                                     $insert['partner'] = $excel['partner'];
-                                    $insert['manufacturer'] = iconv('WINDOWS-1251', 'UTF-8', $excel['manufacturer']);
+                                    $insert['manufacturer'] = iconv('UTF-8', 'WINDOWS-1251', $excel['manufacturer']);
 
                                     if(!empty($insert['part_number'])){
                                         $part_num = Products::checkPurchasesPartNumber($insert['part_number']);

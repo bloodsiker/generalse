@@ -238,7 +238,8 @@ class BatchController extends  AdminBase
             }
         }
 
-        require_once(ROOT . '/views/admin/crm/export/batch.php');
+        //require_once(ROOT . '/views/admin/crm/export/batch.php');
+        $this->render('admin/crm/export/batch', compact('user', 'table_th', 'new_array'));
         return true;
     }
 

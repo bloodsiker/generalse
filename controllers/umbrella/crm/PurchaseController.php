@@ -24,6 +24,7 @@ class PurchaseController extends AdminBase
      */
     public function __construct()
     {
+        parent::__construct();
         self::checkDenied('crm.purchase', 'controller');
     }
 
@@ -214,7 +215,7 @@ class PurchaseController extends AdminBase
             $new_partner = array_chunk($partnerList, (int)count($partnerList) / 3);
         }
 
-        require_once(ROOT . '/views/admin/crm/purchase.php');
+        $this->render('admin/crm/purchase', compact('user', 'new_partner', 'partnerList', 'listPurchases'));
         return true;
 
     }
@@ -282,7 +283,7 @@ class PurchaseController extends AdminBase
             $new_partner = array_chunk($partnerList, (int)count($partnerList) / 3);
         }
 
-        require_once(ROOT . '/views/admin/crm/purchase.php');
+        $this->render('admin/crm/purchase', compact('user', 'new_partner', 'partnerList', 'listPurchases', 'arr_error_pn', 'arr_check_stock'));
         return true;
     }
 
@@ -292,14 +293,8 @@ class PurchaseController extends AdminBase
      */
     public function actionPurchasePartNumAjax()
     {
-
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-
-        // Обьект юзера
         $user = new User($userId);
 
         $part_number = $_REQUEST['part_number'];
@@ -362,13 +357,8 @@ class PurchaseController extends AdminBase
      */
     public function actionPurchaseAjax()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-
-        // Обьект юзера
         $user = new User($userId);
 
         $data = $_REQUEST['json'];
@@ -475,7 +465,8 @@ class PurchaseController extends AdminBase
         $id_partners = isset($_POST['id_partner']) ? $_POST['id_partner'] : [];
         $listExport = Purchases::getExportPurchaseByPartner($id_partners, $start, $end, $filter);
 
-        require_once (ROOT . '/views/admin/crm/export/purchase.php');
+        //require_once (ROOT . '/views/admin/crm/export/purchase.php');
+        $this->render('admin/crm/export/purchase', compact('user', 'listExport'));
         return true;
     }
 

@@ -23,6 +23,7 @@ class DisassemblyController extends AdminBase
      */
     public function __construct()
     {
+        parent::__construct();
         self::checkDenied('crm.disassembly', 'controller');
     }
 
@@ -32,13 +33,9 @@ class DisassemblyController extends AdminBase
      */
     public function actionDisassembly()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
 
         $partnerList = Admin::getAllPartner();
@@ -50,7 +47,8 @@ class DisassemblyController extends AdminBase
             //QB08242887
             $bomList = Disassembly::getRequestByPartner($id_partner, $serial_number);
         }
-        require_once(ROOT . '/views/admin/crm/disassemble.php');
+
+        $this->render('admin/crm/disassemble', compact('user', 'partnerList', 'bomList'));
         return true;
     }
 
@@ -61,13 +59,9 @@ class DisassemblyController extends AdminBase
      */
     public function actionDisassemblyResult($filter = '')
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
 
         if($user->role == 'partner'){
@@ -86,7 +80,7 @@ class DisassemblyController extends AdminBase
             $filter .= $interval;
             $listDisassembly = Disassembly::getDisassemblyByPartner($user->controlUsers($userId), $filter);
 
-            require_once(ROOT . '/views/admin/crm/disassemble_result_partner.php');
+            $this->render('admin/crm/disassemble_result_partner', compact('user', 'partnerList', 'listDisassembly'));
 
         } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
 
@@ -113,7 +107,7 @@ class DisassemblyController extends AdminBase
             $filter .= $interval;
             $listDisassembly = Disassembly::getAllDisassembly($filter);
 
-            require_once(ROOT . '/views/admin/crm/disassemble_result_admin.php');
+            $this->render('admin/crm/disassemble_result_admin', compact('user', 'partnerList', 'listDisassembly'));
         }
 
         return true;

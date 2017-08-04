@@ -23,6 +23,7 @@ class MotoController extends AdminBase
      */
     public function __construct()
     {
+        parent::__construct();
         self::checkDenied('crm.moto', 'controller');
     }
 
@@ -32,13 +33,9 @@ class MotoController extends AdminBase
      */
     public function actionMoto($filter = '')
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
 
         $partnerList = Admin::getAllPartner();
@@ -185,7 +182,7 @@ class MotoController extends AdminBase
 
         }
 
-        require_once(ROOT . '/views/admin/crm/moto.php');
+        $this->render('admin/crm/moto', compact('user', 'partnerList', 'listMoto'));
         return true;
     }
 
@@ -247,7 +244,7 @@ class MotoController extends AdminBase
         $data = Moto::getShowMoto($site_id);
         $listDocument = Moto::getShowDocumentByMoto($site_id);
 
-        require_once (ROOT . '/views/admin/crm/moto_show_detailes.php');
+        $this->render('admin/crm/moto_show_detailes', compact('user', 'data', 'listDocument'));
         return true;
     }
 }

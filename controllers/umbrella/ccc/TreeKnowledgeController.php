@@ -16,7 +16,7 @@ class TreeKnowledgeController extends AdminBase
 
     public function __construct()
     {
-        //
+        parent::__construct();
     }
 
     /**
@@ -30,8 +30,7 @@ class TreeKnowledgeController extends AdminBase
 
         $category = KnowledgeCatalog::getAllCategories();
 
-
-        require_once(ROOT . '/views/admin/ccc/knowledge/index.php');
+        $this->render('admin/ccc/knowledge/index', compact('user', 'category'));
         return true;
     }
 
@@ -46,7 +45,7 @@ class TreeKnowledgeController extends AdminBase
         $userId = Admin::CheckLogged();
         $user = new User($userId);
 
-        require_once(ROOT . '/views/admin/ccc/knowledge/articles.php');
+        $this->render('admin/ccc/knowledge/articles', compact('user'));
         return true;
     }
 
@@ -57,7 +56,7 @@ class TreeKnowledgeController extends AdminBase
         $userId = Admin::CheckLogged();
         $user = new User($userId);
 
-        require_once(ROOT . '/views/admin/ccc/knowledge/popular_category.php');
+        $this->render('admin/ccc/knowledge/popular_category', compact('user'));
         return true;
     }
 
@@ -71,7 +70,7 @@ class TreeKnowledgeController extends AdminBase
         $userId = Admin::CheckLogged();
         $user = new User($userId);
 
-        require_once(ROOT . '/views/admin/ccc/knowledge/index.php');
+        $this->render('admin/ccc/knowledge/index', compact('user'));
         return true;
     }
 }

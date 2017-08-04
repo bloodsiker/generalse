@@ -1,57 +1,47 @@
 <?php
 namespace Umbrella\controllers;
 
-use Umbrella\app\AdminBase;
+use Umbrella\vendor\controller\Controller;
 
-class SiteController extends AdminBase
+class SiteController extends Controller
 {
 
     public function actionIndex()
     {
 
-
-
-        require_once(ROOT . '/views/site/index.php');
+        $this->render('site/index');
         return true;
     }
 
     public function actionForBusiness()
     {
 
-
-
-
-        require_once(ROOT . '/views/site/for_business.php');
+        $this->render('site/for_business');
         return true;
     }
 
     public function actionDirections()
     {
 
-
-
-
-        require_once(ROOT . '/views/site/directions.php');
+        $this->render('site/directions');
         return true;
     }
 
     public function actionCareer()
     {
 
-
-
-
-        require_once(ROOT . '/views/site/career.php');
+        $this->render('site/career');
         return true;
     }
 
+
+    /**
+     * Page Contact
+     */
     public function actionContact()
     {
 
-
-
-
-        require_once(ROOT . '/views/site/contact.php');
+        $this->render('site/contact');
         return true;
     }
 
@@ -79,5 +69,4 @@ class SiteController extends AdminBase
 
         return true;
     }
-
 }

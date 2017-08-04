@@ -87,7 +87,8 @@ class DashboardController extends AdminBase
             $userDetailsBalance = Balance::getDetailsBalanceByPartner($user->id_user, $interval);
         }
 
-        require_once(ROOT . '/views/admin/dashboard/index.php');
+        $this->render('admin/dashboard/index', compact('user', 'coefficient', 'partnerList', 'listInterval', 'interval',
+            'currentMonthYear', 'month', 'year', 'userInfo', 'balanceMonth', 'userDetailsBalance', 'listUsersInBranch', 'requestUsersPaid'));
         return true;
     }
 
@@ -97,22 +98,17 @@ class DashboardController extends AdminBase
      */
     public function actionUsers()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
 
         if($user->role != 'administrator-fin') {
             header("Location: /adm/access_denied");
         }
-
         $partnerList = Admin::getAllPartner();
 
-        require_once(ROOT . '/views/admin/dashboard/users.php');
+        $this->render('admin/dashboard/users', compact('user','partnerList'));
         return true;
     }
 
@@ -122,13 +118,9 @@ class DashboardController extends AdminBase
      */
     public function actionRequestPayment()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
 
         if($user->role != 'administrator-fin') {
@@ -141,7 +133,7 @@ class DashboardController extends AdminBase
             $requestUsersPaid = Balance::getAllRequestPaid();
         }
 
-        require_once(ROOT . '/views/admin/dashboard/request_payment.php');
+        $this->render('admin/dashboard/request_payment', compact('user','requestUsersPaid'));
         return true;
     }
 
@@ -152,13 +144,9 @@ class DashboardController extends AdminBase
      */
     public function actionUserBalance($id_user)
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
 
         if($user->role != 'administrator-fin') {
@@ -220,20 +208,17 @@ class DashboardController extends AdminBase
             }
         }
 
-        require_once(ROOT . '/views/admin/dashboard/user_balance.php');
+        $this->render('admin/dashboard/user_balance', compact('user','partnerList', 'listInterval', 'currentMonthYear', 'month', 'year',
+            'userInfo', 'listCustomer', 'balanceMonth', 'userDetailsBalance'));
         return true;
     }
 
 
     public function actionTask()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
 
         if($user->role != 'administrator-fin') {
@@ -242,7 +227,7 @@ class DashboardController extends AdminBase
 
         $taskList = TaskList::getTaskList();
 
-        require_once(ROOT . '/views/admin/dashboard/task.php');
+        $this->render('admin/dashboard/task', compact('user', 'taskList'));
         return true;
     }
 
@@ -253,13 +238,9 @@ class DashboardController extends AdminBase
      */
     public  function actionPostPay()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
         if(isset($_POST['action']) && $_POST['action'] == 'pay'){
             $id_number = Balance::getNumberBalanceByUser($user->id_user);
@@ -285,19 +266,16 @@ class DashboardController extends AdminBase
         return true;
     }
 
+
     /**
      * Действие по балансу, подтверждение, отказ
      * @return bool
      */
     public  function actionAjaxBalance()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
 
         if($user->role == 'administrator-fin' || $user->role == 'administrator'){
@@ -349,13 +327,9 @@ class DashboardController extends AdminBase
      */
     public function actionAjaxShowInfo()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
 
         if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'show'){

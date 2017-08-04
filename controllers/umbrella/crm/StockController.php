@@ -22,6 +22,7 @@ class StockController extends AdminBase
      */
     public function __construct()
     {
+        parent::__construct();
         self::checkDenied('crm.stocks', 'controller');
     }
 
@@ -30,13 +31,9 @@ class StockController extends AdminBase
      */
     public function actionStocks()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
-        // Обьект юзера
         $user = new User($userId);
 
         if($user->role == 'partner' || $user->role == 'manager') {
@@ -71,7 +68,7 @@ class StockController extends AdminBase
             $allGoodsByPartner = Stocks::getGoodsInStocksPartners($id_partners, $stocks);
         }
 
-        require_once(ROOT . '/views/admin/crm/stocks.php');
+        $this->render('admin/crm/stocks', compact('user','new_partner', 'new_stock', 'allGoodsByPartner'));
         return true;
 
     }

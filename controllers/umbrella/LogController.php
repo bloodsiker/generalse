@@ -11,11 +11,19 @@ use Umbrella\models\Log;
  */
 class LogController extends AdminBase
 {
+    /**
+     * LogController constructor.
+     */
     public function __construct()
     {
+        parent::__construct();
         self::checkDenied('user.logs', 'controller');
     }
 
+
+    /**
+     * @return bool
+     */
     public function actionLogs()
     {
         self::checkAdmin();
@@ -24,7 +32,7 @@ class LogController extends AdminBase
 
         $allLogs = Log::getAllLog(0);
 
-        require_once(ROOT . '/views/admin/users/log_user/log.php');
+        $this->render('admin/users/log_user/log', compact('user', 'allLogs'));
         return true;
     }
 
