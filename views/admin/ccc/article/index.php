@@ -47,6 +47,7 @@
                             <th>Author</th>
                             <th>Published</th>
                             <th>Date create</th>
+                            <th>Date update</th>
                             <th width="50"></th>
                             <th width="50"></th>
                         </tr>
@@ -62,6 +63,7 @@
                                     <td><?= $article['name_partner']?></td>
                                     <td><?= $article['published'] == 1 ? 'Опубликована' : 'Не обуликована'?></td>
                                     <td><?= $article['created_at']?></td>
+                                    <td><?= $article['updated_at']?></td>
                                     <td>
                                         <a href="/adm/ccc/tree_knowledge/article/edit/<?= $article['id']?>" class="button no-margin small"><i class="fi-pencil"></i></a>
                                     </td>

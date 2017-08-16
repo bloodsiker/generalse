@@ -74,6 +74,7 @@ class ArticleController extends AdminBase
             $options['description'] = $_REQUEST['description'];
             $options['text'] = $_REQUEST['text'];
             $options['published'] = $_REQUEST['published'];
+            $options['updated_at'] = date('Y-m-d H:i:s');
 
             $ok = KnowledgeArticle::updateArticleById($id_article, $options);
             if($ok){

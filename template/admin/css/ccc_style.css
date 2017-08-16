@@ -244,3 +244,10 @@ Main Components
     padding: 5px 15px;
     color: #fff;
 }
+
+.article_updated_at {
+    border: 1px solid orange;
+    padding: 3px 7px;
+    border-radius: 4px;
+    font-size: 13px;
+}

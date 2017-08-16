@@ -43,6 +43,11 @@
                     <?php if(is_array($listCategory)):?>
                         <?php foreach ($listCategory as $article):?>
                             <div class="callout">
+                                <?php if(!empty($article['updated_at'])):?>
+                                    <?php if((Umbrella\components\Functions::calcDiffSec($article['updated_at']) < 86400)):?>
+                                        <h5 class="article_updated_at">Статья обновлена! <?= $article['updated_at']?></h5>
+                                    <?php endif;?>
+                                <?php endif;?>
                                 <h4><strong><?= $article['title']?></strong></h4>
                                 <?= $article['description']?>
                                 <br>

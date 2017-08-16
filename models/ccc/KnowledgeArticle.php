@@ -52,7 +52,8 @@ class KnowledgeArticle
                 title = :title,
                 description = :description,
                 text = :text,
-                published = :published
+                published = :published,
+                updated_at = :updated_at
             WHERE id = :id";
 
         // Получение и возврат результатов. Используется подготовленный запрос
@@ -63,6 +64,7 @@ class KnowledgeArticle
         $result->bindParam(':description', $options['description'], PDO::PARAM_STR);
         $result->bindParam(':text', $options['text'], PDO::PARAM_STR);
         $result->bindParam(':published', $options['published'], PDO::PARAM_INT);
+        $result->bindParam(':updated_at', $options['updated_at'], PDO::PARAM_STR);
         return $result->execute();
     }
 
@@ -85,6 +87,7 @@ class KnowledgeArticle
                     gcka.text,
                     gcka.published,
                     gcka.created_at,
+                    gcka.updated_at,
                     gckc.name,
                     gckc.slug
                     FROM gs_ccc_knowledge_articles gcka
@@ -116,6 +119,7 @@ class KnowledgeArticle
                   gcka.text,
                   gcka.published,
                   gcka.created_at,
+                  gcka.updated_at,
                   gckc.name,
                   gckc.customer,
                   gckc.slug,
@@ -152,6 +156,7 @@ class KnowledgeArticle
                     gcka.description,
                     gcka.text,
                     gcka.created_at,
+                    gcka.updated_at,
                     gckc.name,
                     gckc.customer,
                     gckc.slug
