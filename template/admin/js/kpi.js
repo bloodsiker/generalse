@@ -1,3 +1,17 @@
+
+$('#kpi').submit(function(e) {
+    e.preventDefault();
+    if ($('#kpi input').hasClass('is-invalid-input')) { // проверка на валидность
+        return false;
+    } else {
+        $('#wait').removeClass('hide');
+        setTimeout(function () {
+            e.target.submit();
+        }, 2000);
+    }
+});
+
+
 $(document).on('dblclick', '.problem', function (e) {
     var partner = $(e.target).attr('data-partner');
     var kpi = $(e.target).attr('data-kpi');

@@ -274,12 +274,6 @@ $('#form_warranty').on("submit", function(e) {
     }
 });
 
-$('#kpi').on("submit", function(e) {
-    if ($('.date-start').html().length > 0) {
-        return e.preventDefault();
-    }
-});
-
 
 
 // По клику на кнопку, подгрузка по 50 логов
