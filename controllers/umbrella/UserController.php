@@ -2,7 +2,7 @@
 namespace Umbrella\controllers\umbrella;
 
 use Umbrella\app\AdminBase;
-use Umbrella\app\Service\UserService;
+use Umbrella\app\Services\UserService;
 use Umbrella\app\User;
 use Umbrella\components\Functions;
 use Umbrella\models\Admin;

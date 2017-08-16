@@ -51,6 +51,8 @@ class SupplyController extends AdminBase
             $allSupply = Supply::getAllSupply();
         }
 
+        $listPayDesk = Supply::getListPaydesk();
+
         if (isset($_POST['add_supply']) && $_POST['add_supply'] == 'true') {
             if (!empty($_FILES['excel_file']['name'])) {
 
@@ -78,6 +80,7 @@ class SupplyController extends AdminBase
                         $options['site_id'] = $lastId;
                         $options['site_account_id'] = $user->id_user;
                         $options['supply_name'] = iconv('UTF-8', 'WINDOWS-1251', $_POST['supply_name']);
+                        $options['paydesk_id'] = $_POST['paydesk_id'];
                         $options['arriving_date'] = $_POST['arriving_date'];
                         $options['ready'] = 0;
                         Supply::addSupplyMSSQL($options);
@@ -114,7 +117,7 @@ class SupplyController extends AdminBase
             }
         }
 
-        $this->render('admin/crm/supply', compact('user', 'partnerList', 'supply_error_part', 'allSupply'));
+        $this->render('admin/crm/supply', compact('user', 'partnerList', 'supply_error_part', 'allSupply', 'listPayDesk'));
         return true;
     }
 

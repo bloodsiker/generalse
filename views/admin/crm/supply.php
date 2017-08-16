@@ -192,10 +192,24 @@
                                 <label>Supply Name</label>
                                 <input type="text" pattern=".{3,}" class="required" name="supply_name" required>
                             </div>
+
+                            <?php if(is_array($listPayDesk) && !empty($listPayDesk)):?>
+                                <div class="medium-12 small-12 columns">
+                                    <label>Paydesk</label>
+                                    <select name="paydesk_id" class="required" required>
+                                        <option value="" selected disabled>none</option>
+                                        <?php foreach ($listPayDesk as $payDesk):?>
+                                            <option value="<?= $payDesk['id']?>"><?= iconv('WINDOWS-1251', 'UTF-8', $payDesk['name_external']) ?></option>
+                                        <?php endforeach;?>
+                                    </select>
+                                </div>
+                            <?php endif; ?>
+
                             <div class="medium-12 small-12 columns">
                                 <label>Arriving Date</label>
                                 <input type="text" class="required date" name="arriving_date" required>
                             </div>
+
                             <div class="medium-12 small-12 columns">
                                 <label for="upload_file_form" class="button primary">Attach</label>
                                 <input type="file" id="upload_file_form" class="show-for-sr" name="excel_file" required>

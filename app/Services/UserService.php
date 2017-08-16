@@ -1,6 +1,6 @@
 <?php
 
-namespace Umbrella\app\Service;
+namespace Umbrella\app\Services;
 
 use Umbrella\models\Lithographer;
 

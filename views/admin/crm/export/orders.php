@@ -35,7 +35,7 @@
 
 <div id="orders">
     <table border="1" cellpadding="5" cellspacing="0" width="100%">
-        <caption>Export &laquo; Orders &raquo; <?=(isset($_POST['start'])) ? $_POST['start'] : $_POST['start']?> &mdash; <?=(isset($_POST['end'])) ? $_POST['end'] : $_POST['end']?></caption>
+        <caption>Export &laquo; Orders &raquo; <?=(isset($_POST['start'])) ? $_POST['start'] : $_POST['start']?> &mdash; <?=(isset($_POST['end'])) ? $_POST['end'] : $_POST['end']?> <span id="count_refund" class="text-green">(<?php if (isset($listExport)) echo count($listExport) ?>)</span></caption>
         <thead>
         <tr>
             <th>Partner</th>
