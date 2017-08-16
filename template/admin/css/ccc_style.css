@@ -18,7 +18,6 @@ Primary style
 }
 
 a {
-    color: #a0f6aa;
     text-decoration: none;
 }
 
@@ -230,4 +229,18 @@ Main Components
     -webkit-transition: -webkit-transform 0.3s;
     -moz-transition: -moz-transform 0.3s;
     transition: transform 0.3s;
+}
+
+.last-article {
+    border: 2px solid #fff;
+    min-height: 260px;
+    padding-top: 10px;
+    position: relative;
+    text-align: center;
+    vertical-align: bottom;
+}
+.ccc-title{
+    background-color: #495a68;
+    padding: 5px 15px;
+    color: #fff;
 }

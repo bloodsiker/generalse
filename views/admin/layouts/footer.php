@@ -31,7 +31,8 @@ if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/supply')) ech
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/request')) echo "<script src='/template/admin/js/request.js'></script>";
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/other-request')) echo "<script src='/template/admin/js/other_request.js'></script>";
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/ccc')) echo "<script src='/template/admin/js/ccc/knowledge.js'></script>";
-if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/adm/lithographer')) echo "
+if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/adm/lithographer') ||
+    Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/adm/ccc/tree_knowledge/article')) echo "
   <script src='https://cdnjs.cloudflare.com/ajax/libs/video.js/5.0.0/video.min.js'></script>
   <script src='/template/admin/js/lithographer.js'></script>
   <script src='/template/admin/plugins/ckeditor/ckeditor.js'></script>
@@ -55,8 +56,10 @@ if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/adm/lithographer'
 </script>
 
 
-<?php if(Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/adm/lithographer')):?>
+<?php if(Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/adm/lithographer') ||
+        Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/adm/ccc/tree_knowledge/article')):?>
     <script>
+        CKEDITOR.replace('article');
         CKEDITOR.replace('ck_rules');
         CKEDITOR.replace('ck_tips');
         CKEDITOR.replace('edit');

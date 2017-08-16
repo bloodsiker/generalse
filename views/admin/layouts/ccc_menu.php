@@ -1,6 +1,6 @@
 
 <?php if (Umbrella\app\AdminBase::checkDenied('ccc.tree_knowledge', 'view')): ?>
-    <li><a href="/adm/ccc/tree_knowledge" class="<?= Umbrella\components\Url::IsActive('/ccc/tree_knowledge', 'active')  ?>">Древо знаний</a></li>
+    <li><a href="/adm/ccc/tree_knowledge/customer-electrolux" class="<?= Umbrella\components\Url::IsActive('/ccc/tree_knowledge', 'active')  ?>">Древо знаний</a></li>
 <?php endif; ?>
 
 

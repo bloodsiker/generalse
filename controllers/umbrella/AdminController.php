@@ -51,14 +51,10 @@ class AdminController extends AdminBase
      * Доступ закрыт
      * @return bool
      */
-    public function actionAccess(){
-
-        // Проверка доступа
+    public function actionAccess()
+    {
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
-        // Обьект юзера
         $user = new User($userId);
 
         $this->render('admin/access_denied', compact('user'));
@@ -68,10 +64,7 @@ class AdminController extends AdminBase
 
     public function actionLogout()
     {
-        // Проверка доступа
         self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
         $userId = Admin::CheckLogged();
 
         unset($_SESSION['user']);

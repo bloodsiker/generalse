@@ -149,7 +149,7 @@ class UserController extends AdminBase
                     if($options['id_role'] == 2){
                         $denied_lithograph = new UserService($id_user);
                         $denied_lithograph->addDeniedLithograph();
-                        //Admin::addUserMsSql($id_user, $options['name_partner']);
+                        Admin::addUserMsSql($id_user, $options['name_partner']);
                     }
                     if($id_user){
                         $log = "добавил нового пользователя " . $options['name_partner'];

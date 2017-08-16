@@ -15,8 +15,14 @@
                     <div class="medium-12 small-12 columns">
                         <div class="row align-bottom">
                             <div class="medium-3 small-12 columns">
-                                <a href="" class="button primary tool">Разделы</a>
-                                <a href="" class="button primary tool">Статьи</a>
+                                <?php if (Umbrella\app\AdminBase::checkDenied('ccc.tree_knowledge.category', 'view')): ?>
+                                    <a href="/adm/ccc/tree_knowledge/category" class="button primary tool <?= Umbrella\components\Url::IsActive('/tree_knowledge/category', 'active-req') ?>">Разделы</a>
+                                <?php endif; ?>
+
+                                <?php if (Umbrella\app\AdminBase::checkDenied('ccc.tree_knowledge.article', 'view')): ?>
+                                    <a href="/adm/ccc/tree_knowledge/articles" class="button primary tool <?= Umbrella\components\Url::IsActive('/tree_knowledge/articles', 'active-req') ?>">Статьи</a>
+                                <?php endif; ?>
+
                             </div>
 
                         </div>
@@ -30,14 +36,16 @@
                 <div class="medium-3 small-3 ccc-sidebar columns">
                     <h2>Разделы</h2>
 
-                    <?php $tree = Umbrella\models\ccc\KnowledgeCatalog::form_tree(Umbrella\models\ccc\KnowledgeCatalog::getAllCategories())?>
-                    <?= Umbrella\models\ccc\KnowledgeCatalog::build_tree($tree, 0)?>
+                    <?php require_once ROOT . '/views/admin/ccc/include/sidebar.php'; ?>
+
                 </div>
                 <div class="medium-9 small-9 top-gray columns">
-                    <h2>Древо знаний</h2>
+
                 </div>
             </div>
         </div>
+
+        <?php require_once ROOT . '/views/admin/ccc/include/last_view_article.php'; ?>
 
     </div>
 </div>

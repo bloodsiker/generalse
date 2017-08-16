@@ -15,6 +15,7 @@ class CustomerCareCenterController extends AdminBase
     public function __construct()
     {
         parent::__construct();
+        self::checkDenied('adm.ccc', 'controller');
     }
 
     public function actionIndex()

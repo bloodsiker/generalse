@@ -70,9 +70,19 @@ return array(
 
 
     /*********** CCC  ***********/
-    'adm/ccc/tree_knowledge/category/cat-([0-9]+)' => 'umbrella/ccc/TreeKnowledge@articlesByCategory/$1',
-    'adm/ccc/tree_knowledge/popular/category' => 'umbrella/ccc/TreeKnowledge@popularCategory',
-    'adm/ccc/tree_knowledge' => 'umbrella/ccc/TreeKnowledge@index',
+    'adm/ccc/tree_knowledge/customer-([a-z0-9-]+)/cat-([0-9]+)/article-([a-z0-9-_?&]+)' => 'umbrella/ccc/TreeKnowledge@viewArticle/$1/$2/$3',
+    'adm/ccc/tree_knowledge/customer-([a-z0-9-]+)/cat-([0-9]+)' => 'umbrella/ccc/TreeKnowledge@articlesByCategory/$1/$2',
+    'adm/ccc/tree_knowledge/customer-([a-z0-9-]+)/cat-popular' => 'umbrella/ccc/TreeKnowledge@popularCategory/$1',
+    'adm/ccc/tree_knowledge/customer-([a-z0-9-]+)' => 'umbrella/ccc/TreeKnowledge@index/$1',
+
+    'adm/ccc/tree_knowledge/category/edit/([a-z0-9-]+)' => 'umbrella/ccc/Category@categoryEdit/$1',
+    'adm/ccc/tree_knowledge/category/([a-z0-9-]+)' => 'umbrella/ccc/Category@category/$1',
+    'adm/ccc/tree_knowledge/category' => 'umbrella/ccc/Category@category',
+
+    'adm/ccc/tree_knowledge/article/delete/([0-9-]+)' => 'umbrella/ccc/Article@deleteArticle/$1',
+    'adm/ccc/tree_knowledge/article/edit/([a-z0-9-]+)' => 'umbrella/ccc/Article@editArticle/$1',
+    'adm/ccc/tree_knowledge/articles' => 'umbrella/ccc/Article@index',
+
     'adm/ccc' => 'umbrella/ccc/CustomerCareCenter@index',
 
 

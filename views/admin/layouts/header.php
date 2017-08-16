@@ -69,7 +69,7 @@
                 <?php endif; ?>
 
                 <?php if (Umbrella\app\AdminBase::checkDenied('adm.ccc', 'view')): ?>
-                    <li><a href="/adm/ccc" class="<?= Umbrella\components\Url::IsActive('/ccc', 'active')?>">CCC</a></li>
+                    <li><a href="/adm/ccc"  class="<?= Umbrella\components\Url::IsActive('/ccc', 'active')?>">CCC</a></li>
                 <?php endif; ?>
             </ul>
         </div>
