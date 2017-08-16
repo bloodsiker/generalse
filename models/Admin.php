@@ -18,20 +18,16 @@ class Admin
     {
         $db = MySQL::getConnection();
 
-        //
         $sql = 'SELECT * FROM gs_user WHERE login = :login AND password = :password';
 
-        // Делаем пдготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':login', $login, PDO::PARAM_STR);
         $result->bindParam(':password', $password, PDO::PARAM_INT);
         $result->execute();
 
-        // Получаем ассоциативный массив
         $admin = $result->fetch();
 
         if ($admin) {
-            // Если существует массив, то возращаем id пользователя
             return $admin['id_user'];
         }
         return false;
@@ -68,16 +64,12 @@ class Admin
 
         $sql = "SELECT id_user FROM gs_user WHERE name_partner = :name_partner";
 
-        // P0RM001PUA
-        // Делаем пдготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':name_partner', $user_name, PDO::PARAM_STR);
         $result->execute();
 
-        // Получаем ассоциативный массив
         $user = $result->fetch(PDO::FETCH_ASSOC);
         $user_id = $user['id_user'];
-
         return $user_id;
     }
 
@@ -92,16 +84,12 @@ class Admin
 
         $sql = "SELECT name_partner FROM gs_user WHERE id_user = :id_user";
 
-        // P0RM001PUA
-        // Делаем пдготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $id_user, PDO::PARAM_INT);
         $result->execute();
 
-        // Получаем ассоциативный массив
         $user = $result->fetch(PDO::FETCH_ASSOC);
         $name = $user['name_partner'];
-
         return $name;
     }
 
@@ -122,12 +110,10 @@ class Admin
                  ON gucs.control_user_id = gu.id_user
                  WHERE gucs.id_user = :id_user";
 
-        // Делаем пдготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $id_user, PDO::PARAM_STR);
         $result->execute();
 
-        // Получаем ассоциативный массив
         $user = $result->fetchAll(PDO::FETCH_ASSOC);
         return $user;
     }
@@ -140,25 +126,20 @@ class Admin
      */
     public static function addUserControl($id_user, $control_user_id)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'INSERT INTO gs_user_control_accaunt '
             . '(id_user, control_user_id)'
             . 'VALUES '
             . '(:id_user, :control_user_id)';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $id_user, PDO::PARAM_INT);
         $result->bindParam(':control_user_id', $control_user_id, PDO::PARAM_INT);
 
         if ($result->execute()) {
-            // Если запрос выполенен успешно, возвращаем id добавленной записи
             return $db->lastInsertId();
         }
-        // Иначе возвращаем 0
         return 0;
     }
 
@@ -170,13 +151,10 @@ class Admin
      */
     public static function deleteUserControl($id_user, $control_user_id)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'DELETE FROM gs_user_control_accaunt WHERE id_user = :id_user AND control_user_id = :control_user_id';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $id_user, PDO::PARAM_INT);
         $result->bindParam(':control_user_id', $control_user_id, PDO::PARAM_INT);
@@ -190,10 +168,8 @@ class Admin
      */
     public static function getAllUsers()
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $data = $db->query("SELECT
                                         gu.id_user,
                                         gu.id_role,
@@ -235,10 +211,8 @@ class Admin
      */
     public static function getAllPartner()
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $data = $db->query("SELECT 
                                       * 
                                       FROM gs_user 
@@ -256,7 +230,6 @@ class Admin
      */
     public static function getPartnerControlUsers($users)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
         $ids = implode(',', $users);
@@ -279,10 +252,8 @@ class Admin
      */
     public static function getPartnerViewKpi($kpi_view = 0)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $data = $db->query("SELECT 
                                       * 
                                       FROM gs_user 
@@ -355,10 +326,8 @@ class Admin
      */
     public static function getAdminById($id_user)
     {
-        // Соединение с базой данных
         $db = MySQL::getConnection();
 
-        // Делаем запрос к базе данных
         $sql = 'SELECT
                    gu.id_user,
                    gu.id_role,
@@ -367,6 +336,7 @@ class Admin
                    gu.id_country,
                    gu.kpi_coefficient,
                    gu.kpi_view,
+                   gu.login_url,
                    gu.date_create,
                    gu.date_active,
                    gr.id_role,
@@ -388,14 +358,11 @@ class Admin
                     ON gu.id_country = gc.id_country
                  WHERE gu.id_user = :id_user';
 
-        // Делаем подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $id_user, PDO::PARAM_INT);
 
-        // Указываем, что хотим получить данные в виде массива
         $result->setFetchMode(PDO::FETCH_ASSOC);
         $result->execute();
-
         return $result->fetch();
     }
 
@@ -407,10 +374,8 @@ class Admin
      */
     public static function addUser($options)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'INSERT INTO gs_user '
             . '(id_role, name_partner, id_country, login, password, kpi_view, date_create)'
             . 'VALUES '
@@ -427,10 +392,8 @@ class Admin
         $result->bindParam(':date_create', $options['date_create'], PDO::PARAM_STR);
 
         if ($result->execute()) {
-            // Если запрос выполенен успешно, возвращаем id добавленной записи
             return $db->lastInsertId();
         }
-        // Иначе возвращаем 0
         return 0;
     }
 
@@ -441,16 +404,13 @@ class Admin
      */
     public static function addUserMsSql($id_user, $name)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'INSERT INTO dbo.site_gm_users '
             . '(site_account_id, site_client_name)'
             . 'VALUES '
             . '(:site_account_id, :site_client_name)';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':site_account_id', $id_user, PDO::PARAM_INT);
         $result->bindParam(':site_client_name', $name, PDO::PARAM_STR);
@@ -465,13 +425,10 @@ class Admin
      */
     public static function deleteUserById($id)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'DELETE FROM gs_user WHERE id_user = :id_user';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $id, PDO::PARAM_INT);
         return $result->execute();
@@ -485,10 +442,8 @@ class Admin
      */
     public static function updateUserById($id, $options)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
         $sql = "UPDATE gs_user
             SET
                 id_role = :id_role,
@@ -498,7 +453,6 @@ class Admin
                 kpi_view = :kpi_view
             WHERE id_user = :id_user";
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id_role', $options['role'], PDO::PARAM_INT);
         $result->bindParam(':id_user', $id, PDO::PARAM_INT);
@@ -518,16 +472,13 @@ class Admin
      */
     public static function updateUserPassword($id, $options)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
         $sql = "UPDATE gs_user
             SET
                 password = :password
             WHERE id_user = :id_user";
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $id, PDO::PARAM_INT);
         $result->bindParam(':password', $options['password'], PDO::PARAM_STR);
@@ -541,16 +492,13 @@ class Admin
      */
     public static function userLasTimeOnline($id_user, $date_active)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
         $sql = "UPDATE gs_user
             SET
                 date_active = :date_active
             WHERE id_user = :id_user";
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $id_user, PDO::PARAM_INT);
         $result->bindParam(':date_active', $date_active, PDO::PARAM_STR);
@@ -565,16 +513,13 @@ class Admin
      */
     public static function updateUserCoefficient($id, $kpi_coefficient)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
         $sql = "UPDATE gs_user
             SET
                 kpi_coefficient = :kpi_coefficient
             WHERE id_user = :id_user";
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $id, PDO::PARAM_INT);
         $result->bindParam(':kpi_coefficient', $kpi_coefficient, PDO::PARAM_STR);
@@ -587,12 +532,9 @@ class Admin
      */
     public static function getRoleList()
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $result = $db->query("SELECT * FROM gs_role")->fetchAll(PDO::FETCH_ASSOC);
-
         return $result;
     }
 

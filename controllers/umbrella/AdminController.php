@@ -33,12 +33,13 @@ class AdminController extends AdminBase
             } else {
                 //Если данные правильные, запоминаем пользователя в сессию
                 Admin::auth($userId);
+                $user = new User($userId);
 
                 Logger::getInstance()->log($userId, 'вошел(а) в кабинет');
 
                 //Перенаправляем пользователя в закрытую часть – кабинет
                 //header("Location: /adm/kpi");
-                $succusse['log'] = "/adm/crm/orders";
+                $succusse['log'] = $user->login_url;
                 $succusse['code'] = 2;
                 echo json_encode($succusse);
             }

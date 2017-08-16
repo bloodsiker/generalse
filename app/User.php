@@ -14,6 +14,8 @@ use Umbrella\models\GroupModel;
 class User
 {
     public $id_user;
+    public $name_partner;
+    public $login_url;
 
     public function __construct($id_user){
         $infoUser = $this->getInfoUser($id_user);
@@ -25,6 +27,7 @@ class User
         $this->country = $infoUser['full_name'];
         $this->group_name = $infoUser['group_name'];
         $this->coefficient = $infoUser['kpi_coefficient'];
+        $this->login_url = $infoUser['login_url'];
 
         $this->activeUser($this->id_user,date('Y-m-d H:i:s'));
     }
