@@ -47,12 +47,28 @@ $('[name="part_number"]').keyup(function(e) {
 });
 
 
+//
 $('#add-request-import-form').submit(function(e) {
     e.preventDefault();
     if ($('#add-request-import-form input').hasClass('is-invalid-input')) { // проверка на валидность
         return false;
     } else {
         $('#add-request-import-form').find('button').prop('disabled', true);
+        $('#wait').removeClass('hide');
+        setTimeout(function () {
+            e.target.submit()
+        }, 2000);
+    }
+});
+
+
+// Импорт с модального окна
+$('#import-edit-status-form').submit(function(e) {
+    e.preventDefault();
+    if ($('#import-edit-status input').hasClass('is-invalid-input')) { // проверка на валидность
+        return false;
+    } else {
+        $('#import-edit-status-form').find('button').prop('disabled', true);
         $('#wait').removeClass('hide');
         setTimeout(function () {
             e.target.submit()

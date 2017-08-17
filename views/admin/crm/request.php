@@ -38,6 +38,10 @@
                                     <a href="/upload/attach_request/<?= $user->linkDownloadAllPrice()?>" class="button primary tool" download><i class="fi-download"></i> ALL PRICES</a>
                                 <?php endif;?>
 
+                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.import.status', 'view')): ?>
+                                    <button data-open="import-edit-status-modal" class="button primary tool"><i class="fi-plus"></i> Import status</button>
+                                <?php endif;?>
+
                                 <a href="/adm/crm/request/completed" class="button primary tool"><i class="fi-check"></i> Completed request</a>
                             </div>
                             <div class="medium-3 small-12 columns form">
@@ -141,7 +145,7 @@
                                     data-id="<?= $order['id']?>">
                                     <td><?= $order['id']?></td>
                                     <td><?= $order['site_client_name']?></td>
-                                    <td data-pn="<?= $order['part_number']?>" class="order-tr-pn">
+                                    <td data-pn="<?= $order['part_number']?>" class="order-tr-pn" style="background: <?= in_array($order['part_number'], $arrayPartNumber) ? '#f79898' : 'inherit'?>">
                                         <span class="order_part_num"><?= $order['part_number']?></span>
                                         <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
                                             <a href="" class="button edit-pn delete"><i class="fi-pencil"></i></a>
@@ -329,6 +333,50 @@
                                 </div>
                             </div>
                             <input type="hidden" name="import_request" value="true">
+                            <div class="medium-6 small-12 columns">
+                                <button type="submit" class="button primary">Send</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+
+<div class="reveal" id="import-edit-status-modal" data-reveal>
+    <form action="/adm/crm/request/edit_status" id="import-edit-status-form" method="post" class="form" enctype="multipart/form-data" data-abide
+          novalidate>
+        <div class="row align-bottom">
+            <div class="medium-12 small-12 columns">
+                <h3>Edit status from excel</h3>
+            </div>
+            <div class="medium-12 small-12 columns">
+                <div class="row">
+
+                    <div class="medium-12 small-12 columns">
+                        <div class="row align-bottom ">
+                            <div class="medium-12 small-12 columns">
+                                <label for="upload_file_form_2" class="button primary">Attach</label>
+                                <input type="file" id="upload_file_form_2" class="show-for-sr" name="excel_file" required>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="medium-12 small-12 columns">
+                        <div class="row">
+                            <div class="medium-6 small-12 columns">
+                                <div style="padding-bottom: 37px; color: #fff"><a
+                                            href="/upload/attach_request/edit_status_request.xlsx" style="color: #2ba6cb"
+                                            download="">download</a> a template file to import
+                                </div>
+                            </div>
+                            <input type="hidden" name="edit_status_from_excel" value="true">
                             <div class="medium-6 small-12 columns">
                                 <button type="submit" class="button primary">Send</button>
                             </div>

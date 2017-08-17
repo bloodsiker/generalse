@@ -936,6 +936,29 @@ class Orders
         return $result->execute();
     }
 
+
+    /**
+     * Информация о реквесте
+     * @param $id_order
+     * @return mixed
+     */
+    public static function getOrderRequestInfo($id_order)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "SELECT
+                *
+                FROM site_gm_ordering_goods
+                WHERE id = :id";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $id_order, PDO::PARAM_INT);
+        $result->execute();
+        $res = $result->fetch(PDO::FETCH_ASSOC);
+        return $res;
+    }
+
+
     /**
      * Delete request by id
      * @param $id

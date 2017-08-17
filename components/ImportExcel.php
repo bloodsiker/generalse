@@ -162,7 +162,7 @@ class ImportExcel
 
 
     /**
-     * Импорт с раздела Rquest
+     * Импорт с раздела Request
      * @param $file
      * @return array
      */
@@ -190,6 +190,33 @@ class ImportExcel
 
 
     /**
+     * @param $file
+     * @return array
+     */
+    public static function importStatusInRequest($file)
+    {
+        include_once 'PHPExcel/Classes/PHPExcel/IOFactory.php';
+
+        $inputFileName = $_SERVER['DOCUMENT_ROOT'] . $file;
+        $objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
+
+        $sheetData = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);
+
+        // Убираем нулевой елемент массива - заголовки
+        $newArray = array_splice($sheetData, 1);
+        // Формируем новый массив с ассоциативныи ключами
+        $pushArray = [];
+        $i = 0;
+        foreach($newArray as $data){
+            $pushArray[$i]['id'] = $data['A'];
+            $pushArray[$i]['status_name'] = $data['B'];
+            $i++;
+        }
+        return $pushArray;
+    }
+
+
+    /**
      * Импорт с раздела Batch
      * @param $file
      * @return array
@@ -210,6 +237,10 @@ class ImportExcel
     }
 
 
+    /**
+     * @param $file
+     * @return array
+     */
     public static function importBacklog($file)
     {
         include_once 'PHPExcel/Classes/PHPExcel/IOFactory.php';

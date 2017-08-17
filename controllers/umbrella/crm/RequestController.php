@@ -3,6 +3,7 @@ namespace Umbrella\controllers\umbrella\crm;
 
 use Umbrella\app\AdminBase;
 use Umbrella\app\Group;
+use Umbrella\app\Mail\RequestMail;
 use Umbrella\app\User;
 use Umbrella\components\Functions;
 use Umbrella\components\ImportExcel;
@@ -52,6 +53,7 @@ class RequestController extends AdminBase
         $partnerList = Admin::getAllPartner();
         $order_type = Orders::getAllOrderTypes();
         $delivery_address = $user->getDeliveryAddress($user->id_user);
+        $arrayPartNumber = $this->partArray();
 
         if(isset($_POST['add_request']) && $_POST['add_request'] == 'true'){
 
@@ -89,14 +91,15 @@ class RequestController extends AdminBase
         }
 
         if($user->role == 'partner'){
-            //$listCheckOrders = Orders::getReserveOrdersByPartner($user->id_user);
+
             $listCheckOrders = Orders::getReserveOrdersByPartnerMsSQL($user->controlUsers($user->id_user), 0);
         } elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
-            //$listCheckOrders = Orders::getAllReserveOrders();
+
             $listCheckOrders = Orders::getAllReserveOrdersMsSQL(0);
         }
 
-        $this->render('admin/crm/request', compact('user','group', 'partnerList', 'order_type', 'delivery_address', 'listCheckOrders', 'request_message'));
+        $this->render('admin/crm/request', compact('user','group', 'partnerList', 'order_type',
+            'delivery_address', 'listCheckOrders', 'request_message', 'arrayPartNumber'));
         return true;
     }
 
@@ -209,6 +212,40 @@ class RequestController extends AdminBase
             }
         }
 
+        if(isset($_POST['edit_status_from_excel']) && $_POST['edit_status_from_excel'] == 'true'){
+            if(!empty($_FILES['excel_file']['name'])) {
+
+                $options['name_real'] = $_FILES['excel_file']['name'];
+                // Все загруженные файлы помещаются в эту папку
+                $options['file_path'] = "/upload/attach_request/";
+                $randomName = substr_replace(sha1(microtime(true)), '', 5);
+
+                $randomName = $user->name_partner . '-' . $randomName . "-" . $options['name_real'];
+                $options['file_name'] = $randomName;
+
+                if (is_uploaded_file($_FILES["excel_file"]["tmp_name"])) {
+                    if (move_uploaded_file($_FILES['excel_file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . $options['file_path'] . $options['file_name'])) {
+                        $excel_file = $options['file_path'] . $options['file_name'];
+                        // Получаем массив данных из файла
+                        $excelArray = ImportExcel::importStatusInRequest($excel_file);
+
+                        foreach ($excelArray as $import){
+
+                            $options['id'] = $import['id'];
+                            $options['status_name'] = iconv('UTF-8', 'WINDOWS-1251', $import['status_name']);
+
+                            //Orders::addReserveOrdersMsSQL($options);
+                        }
+
+                        echo "<pre>";
+                        print_r($excelArray);
+
+                        Logger::getInstance()->log($user->id_user, ' изменил(а) статусы в Request с excel');
+                        header("Location: /adm/crm/request");
+                    }
+                }
+            }
+        }
         return true;
     }
 
@@ -247,6 +284,9 @@ class RequestController extends AdminBase
     }
 
 
+    /**
+     * @return bool
+     */
     public function actionRequestAjax()
     {
         self::checkAdmin();
@@ -259,8 +299,17 @@ class RequestController extends AdminBase
             $id_order = $_REQUEST['id_order'];
             $order_pn = trim($_REQUEST['order_pn']);
 
+            $requestInfo = Orders::getOrderRequestInfo($id_order);
+
             $ok = Orders::editPartNumberFromCheckOrdersById($id_order, $order_pn);
             if($ok){
+                $analogPrice = Products::getPricePartNumber($order_pn, $requestInfo['site_account_id']);
+                $originPrice = Products::getPricePartNumber($requestInfo['part_number'], $requestInfo['site_account_id']);
+
+                $userRequest = new User($requestInfo['site_account_id']);
+
+                RequestMail::getInstance()->sendEmailAnalogPartNumber($id_order, $analogPrice, $originPrice, $userRequest->email);
+
                 Logger::getInstance()->log($user->id_user, ' изменил part number в request #' . $id_order . ' на ' . $order_pn);
                 print_r(200);
             }
@@ -294,13 +343,68 @@ class RequestController extends AdminBase
             $id_order = $_REQUEST['id_order'];
             $order_status = trim(iconv('UTF-8', 'WINDOWS-1251', $_REQUEST['order_status']));
 
+            $requestInfo = Orders::getOrderRequestInfo($id_order);
+
             $ok = Orders::editStatusFromCheckOrdersById($id_order, $order_status);
             if($ok){
+                $userRequest = new User($requestInfo['site_account_id']);
+
+                RequestMail::getInstance()->sendEmailEditStatus($id_order, $requestInfo['status_name'], $order_status, $userRequest->email);
+
                 Logger::getInstance()->log($user->id_user, ' изменил Status в request #' . $id_order);
                 print_r(200);
             }
         }
 
+        return true;
+    }
+
+
+    /**
+     * Edit status from import excel
+     * @return bool
+     */
+    public function actionEditStatusFromExcel()
+    {
+        self::checkAdmin();
+        $userId = Admin::CheckLogged();
+
+        $user = new User($userId);
+
+        if(isset($_POST['edit_status_from_excel']) && $_POST['edit_status_from_excel'] == 'true'){
+            if(!empty($_FILES['excel_file']['name'])) {
+
+                $options['name_real'] = $_FILES['excel_file']['name'];
+                // Все загруженные файлы помещаются в эту папку
+                $options['file_path'] = "/upload/attach_request/edit_status/";
+                $randomName = substr_replace(sha1(microtime(true)), '', 5);
+
+                $randomName = $user->name_partner . '-' . $randomName . "-" . $options['name_real'];
+                $options['file_name'] = $randomName;
+
+                if (is_uploaded_file($_FILES["excel_file"]["tmp_name"])) {
+                    if (move_uploaded_file($_FILES['excel_file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . $options['file_path'] . $options['file_name'])) {
+                        $excel_file = $options['file_path'] . $options['file_name'];
+                        // Получаем массив данных из файла
+                        $excelArray = ImportExcel::importStatusInRequest($excel_file);
+
+                        foreach ($excelArray as $import){
+
+                            $id = $import['id'];
+                            $status_name = iconv('UTF-8', 'WINDOWS-1251', $import['status_name']);
+                            $requestInfo = Orders::getOrderRequestInfo($id);
+                            $ok = Orders::editStatusFromCheckOrdersById($id, $status_name);
+                            if($ok){
+                                $userRequest = new User($requestInfo['site_account_id']);
+                                RequestMail::getInstance()->sendEmailEditStatus($id, $requestInfo['status_name'], $status_name, $userRequest->email);
+                            }
+                        }
+                        Logger::getInstance()->log($user->id_user, ' изменил(а) статусы в Request с excel');
+                        header("Location: /adm/crm/request");
+                    }
+                }
+            }
+        }
         return true;
     }
 
@@ -326,5 +430,225 @@ class RequestController extends AdminBase
             header("Location: " . $_SERVER['HTTP_REFERER']);
         }
         return true;
+    }
+
+
+    public function partArray(){
+        return [
+            2273112041,
+            1321419408,
+            4055185542,
+            4071377388,
+            140025891015,
+            50250773004,
+            1366253217,
+            2192212013,
+            1099025098,
+            1325064234,
+            8078222075,
+            8078222083,
+            8078222174,
+            8078222091,
+            2415775028,
+            3570563019,
+            3570563068,
+            1526492200,
+            3570448153,
+            2425751274,
+            1325560009,
+            1097170003,
+            140002162018,
+            111332180,
+            8087979038,
+            8087979053,
+            140013306034,
+            807010408,
+            1082474816,
+            1099025049,
+            2247620244,
+            26750016105,
+            1097153504,
+            1325064218,
+            2426355141,
+            3152666016,
+            140002039042,
+            2426448151,
+            1360166001,
+            4071424230,
+            3792260709,
+            3879680027,
+            2062390154,
+            3305623047,
+            2425191026,
+            4055264826,
+            3315058002,
+            140011633157,
+            140011633405,
+            3570358063,
+            1360064065,
+            1260458201,
+            140002162042,
+            2426484016,
+            8996619277792,
+            113140062,
+            1131402628,
+            2426448037,
+            2426448110,
+            1469077018,
+            2198217172,
+            2426357121,
+            1462229202,
+            4055010179,
+            1325277026,
+            2149562023,
+            2426294167,
+            50280071007,
+            140002388068,
+            140011633215,
+            2271033454,
+            2247086024,
+            3256240304,
+            3305630844,
+            2426354060,
+            1297479055,
+            140011633132,
+            2142142088,
+            140000570014,
+            3570291025,
+            1327615306,
+            5611824706,
+            4055166070,
+            4055183422,
+            2193704018,
+            4071388005,
+            140000549067,
+            1240162105,
+            3874318029,
+            2673007015,
+            3423981061,
+            2647030010,
+            3540177064,
+            3540160037,
+            3540160052,
+            8087939016,
+            3302697002,
+            3878684004,
+            8996619265052,
+            2230088847,
+            50115330008,
+            2230088144,
+            2231019478,
+            2231024353,
+            1322001304,
+            2425876014,
+            50228062001,
+            2062991001,
+            140033817010,
+            2063890038,
+            5611824698,
+            2649010010,
+            4055328233,
+            2651123032,
+            2060798044,
+            3546433024,
+            3546433016,
+            3423984016,
+            3879671000,
+            3879671018,
+            50212178003,
+            2211208018,
+            2212188045,
+            2367192412,
+            2915025007,
+            2230099141,
+            2248007748,
+            3565189119,
+            3570794010,
+            3541677021,
+            3556039026,
+            2425738115,
+            2128268014,
+            1327372007,
+            50201504003,
+            9029791614,
+            2426270001,
+            140013306034,
+            3570698013,
+            140013306067,
+            3577348125,
+            3570698021,
+            3195183003,
+            2062986175,
+            2262380104,
+            50082124004,
+            2425775059,
+            2234308019,
+            2234346019,
+            8118628034,
+            4055179321,
+            3581991217,
+            1328195019,
+            1509566103,
+            140013820018,
+            3792709507,
+            2198841203,
+            2198841161,
+            2198841211,
+            1328469018,
+            8079148030,
+            2426445066,
+            1366510509,
+            2367130297,
+            2211202029,
+            140000406243,
+            1327614242,
+            2199185022,
+            140002039174,
+            140002039398,
+            140002039372,
+            140028579013,
+            118197007,
+            1181970110,
+            8074592018,
+            1184056016,
+            3300362930,
+            1360077372,
+            1360077554,
+            1360077380,
+            8070104180,
+            140000549091,
+            2425827066,
+            2425827090,
+            4055125936,
+            3540160052,
+            8088493112,
+            1560107979,
+            140043274095,
+            2061606295,
+            2063763185,
+            3890793221,
+            4055050456,
+            2211201021,
+            140004857011,
+            140000733067,
+            3792417101,
+            1119226114,
+            8082280010,
+            50278101006,
+            3792785028,
+            1560631044,
+            3561501010,
+            5611824656,
+            5611824680,
+            140002162042,
+            3570140016,
+            3570461016,
+            4055179354,
+            8078226019,
+            1099903302,
+            1171265232,
+            807547217,
+            140039004712
+        ];
     }
 }

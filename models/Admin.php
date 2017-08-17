@@ -332,6 +332,7 @@ class Admin
                    gu.id_user,
                    gu.id_role,
                    gu.name_partner,
+                   gu.email,
                    gu.login,
                    gu.id_country,
                    gu.kpi_coefficient,

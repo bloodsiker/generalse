@@ -96,6 +96,7 @@ return array(
     'adm/crm/request/request_ajax' => 'umbrella/crm/Request@requestAjax',
     'adm/crm/request/price_part_ajax' => 'umbrella/crm/Request@pricePartNumAjax',
     'adm/crm/request/delete/([0-9]+)' => 'umbrella/crm/Request@requestDelete/$1',
+    'adm/crm/request/edit_status' => 'umbrella/crm/Request@editStatusFromExcel',
     'adm/crm/request/import' => 'umbrella/crm/Request@requestImport',
     'adm/crm/request/completed' => 'umbrella/crm/Request@completedRequest',
     'adm/crm/request/([a-z0-9-_?&]+)' => 'umbrella/crm/Request@index/$1',

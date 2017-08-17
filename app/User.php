@@ -21,6 +21,7 @@ class User
         $infoUser = $this->getInfoUser($id_user);
         $this->id_user = $infoUser['id_user'];
         $this->name_partner = $infoUser['name_partner'];
+        $this->email = $infoUser['email'];
         $this->login = $infoUser['login'];
         $this->role = $infoUser['role'];
         $this->name_role = $infoUser['name_role'];

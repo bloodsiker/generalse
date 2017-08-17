@@ -115,17 +115,13 @@ class Products
                     tbl_GoodsNames.partNumber = :partNumber
                        and site_gm_users.site_account_id = :user_id";
 
-        // Делаем пдготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':partNumber', $partNumber, PDO::PARAM_STR);
         $result->bindParam(':user_id', $user_id, PDO::PARAM_STR);
         $result->execute();
-
-        // Получаем ассоциативный массив
         $price = $result->fetch(PDO::FETCH_ASSOC);
 
         if ($price) {
-            // Если существует массив, то возращаем 1
             return $price;
         }
         return 0;

@@ -59,10 +59,10 @@ if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/adm/lithographer'
 <?php if(Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/adm/lithographer') ||
         Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/adm/ccc/tree_knowledge/article')):?>
     <script>
-        CKEDITOR.replace('article');
         CKEDITOR.replace('ck_rules');
         CKEDITOR.replace('ck_tips');
         CKEDITOR.replace('edit');
+
         //    CKEDITOR.replace( 'ck_rules',
         //        {
         //            filebrowserBrowseUmbrella\components\Url : '/ckfinder/ckfinder.html',

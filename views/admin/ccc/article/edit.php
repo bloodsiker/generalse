@@ -77,7 +77,7 @@
                         <div class="row">
                             <div class="large-12 columns">
                                 <label>Content</label>
-                                <textarea style="min-height: 200px; background-color: #fff; color: #000;" id="article"
+                                <textarea style="min-height: 200px; background-color: #fff; color: #000;" id="ck_rules"
                                           name="text"><?= $article['text']?></textarea>
                             </div>
                         </div>

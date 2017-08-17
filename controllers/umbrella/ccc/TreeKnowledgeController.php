@@ -73,7 +73,7 @@ class TreeKnowledgeController extends AdminBase
 
         $lastViewArticle = KnowledgeCatalog::getLastVisitArticle($user->id_user, 1);
 
-        if (count($lastViewArticle) > 0){
+        if (is_array($lastViewArticle)){
             if($lastViewArticle[0]['id_article'] != $id){
                 KnowledgeCatalog::userViewArticle($user->id_user, $id);
             }
