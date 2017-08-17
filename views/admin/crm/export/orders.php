@@ -6,8 +6,12 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Export</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/buttons/1.4.0/css/buttons.dataTables.min.css" rel="stylesheet">
+
+    <link href="https://cdn.datatables.net/buttons/1.4.0/css/buttons.bootstrap.min.css" rel="stylesheet">
+
     <style>
         table td, th{
             padding: 3px;
@@ -24,18 +28,21 @@
             font-size:16px;
             color: #000
         }
+        .text-green{
+            color: green;
+        }
     </style>
 </head>
 <body>
 
-<div class="btn-group pull-left" role="group" aria-label="...">
+<div class="btn-group pull-left hidden" role="group" aria-label="...">
     <button type="button" class="btn btn-primary" onclick="window.history.go(-1); return false;"><span class="glyphicon glyphicon-arrow-left"></span> В кабинет</button>
     <button type="button" class="btn btn-danger" onclick="tableToExcel('orders', 'Orders export')"><span class="glyphicon glyphicon-export"></span> Export</button>
 </div>
 
 <div id="orders">
-    <table border="1" cellpadding="5" cellspacing="0" width="100%">
-        <caption>Export &laquo; Orders &raquo; <?=(isset($_POST['start'])) ? $_POST['start'] : $_POST['start']?> &mdash; <?=(isset($_POST['end'])) ? $_POST['end'] : $_POST['end']?> <span id="count_refund" class="text-green">(<?php if (isset($listExport)) echo count($listExport) ?>)</span></caption>
+    <table border="1" id="export-orders" cellpadding="5" cellspacing="0" width="100%">
+        <caption>Export &laquo; Orders &raquo; <?=(isset($_POST['start'])) ? $_POST['start'] : $_POST['start']?> &mdash; <?=(isset($_POST['end'])) ? $_POST['end'] : $_POST['end']?> <span class="text-green">(<?php if (isset($listExport)) echo count($listExport) ?>)</span></caption>
         <thead>
         <tr>
             <th>Partner</th>
@@ -90,18 +97,39 @@
     </table>
 </div>
 
-<script type="text/javascript">
-    var tableToExcel = (function() {
-        var uri = 'data:application/vnd.ms-excel;base64,'
-            , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
-            , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
-            , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) };
-        return function(table, name) {
-            if (!table.nodeType) table = document.getElementById(table);
-            var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML};
-            window.location.href = uri + base64(format(template, ctx))
-        }
-    })()
+
+<script src='//code.jquery.com/jquery-1.12.4.js'></script>
+<script src='https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js'></script>
+<script src='https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js'></script>
+<script src='https://cdn.datatables.net/buttons/1.4.0/js/dataTables.buttons.min.js'></script>
+<script src='https://cdn.datatables.net/buttons/1.4.0/js/buttons.bootstrap.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js'></script>
+<script src='//cdn.datatables.net/buttons/1.4.0/js/buttons.html5.min.js'></script>
+<script src='//cdn.datatables.net/buttons/1.4.0/js/buttons.colVis.min.js'></script>
+
+<script>
+
+    $(document).ready(function() {
+        var table = $('#export-orders').DataTable( {
+            lengthChange: false,
+            ordering: false,
+            paging: false,
+            searching: false,
+            buttons: [
+                {
+                    text: 'В кабинет',
+                    action: function ( e, dt, node, config ) {
+                        window.history.go(-1);
+                    }
+                },
+                'copy', 'excel', 'colvis'
+            ]
+        } );
+
+        table.buttons().container()
+            .appendTo( '#export-orders_wrapper .col-sm-6:eq(0)' );
+    } );
 </script>
+
 </body>
 </html>
