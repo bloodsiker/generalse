@@ -140,6 +140,7 @@ class UserController extends AdminBase
                     $options['name_partner'] = $_POST['name_partner'];
                     $options['id_country'] = $_POST['id_country'];
                     $options['login'] = $_POST['login'];
+                    $options['email'] = $_POST['email'];
                     $options['password'] = Functions::hashPass($_POST['password']);
                     $options['kpi_view'] = $_POST['kpi_view'];
                     $options['date_create'] = date("Y-m-d H:i");
@@ -165,6 +166,9 @@ class UserController extends AdminBase
     }
 
 
+    /**
+     * @return bool
+     */
     public function actionCheckUserLogin()
     {
         $login = $_REQUEST['login'];
@@ -216,6 +220,7 @@ class UserController extends AdminBase
                     }
                     $options['id_country'] = $_POST['id_country'];
                     $options['login'] = $_POST['login'];
+                    $options['email'] = $_POST['email'];
                     $options['kpi_view'] = $_POST['kpi_view'];
 
                     // Сохраняем изменения

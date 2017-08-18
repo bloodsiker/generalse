@@ -45,7 +45,15 @@
                         <div class="row">
                             <div class="large-12 columns">
                                 <label>Логин
-                                    <input type="text" name="login" value="<?=$userInfo['login']?>" placeholder="Логин" />
+                                    <input type="text" name="login" value="<?=$userInfo['login']?>" />
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <label>Email
+                                    <input type="text" name="email" value="<?=$userInfo['email']?>" />
                                 </label>
                             </div>
                         </div>

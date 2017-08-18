@@ -378,9 +378,9 @@ class Admin
         $db = MySQL::getConnection();
 
         $sql = 'INSERT INTO gs_user '
-            . '(id_role, name_partner, id_country, login, password, kpi_view, date_create)'
+            . '(id_role, name_partner, id_country, login, email, password, kpi_view, date_create)'
             . 'VALUES '
-            . '(:id_role, :name_partner, :id_country, :login, :password, :kpi_view, :date_create)';
+            . '(:id_role, :name_partner, :id_country, :login, :email, :password, :kpi_view, :date_create)';
 
         // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
@@ -388,6 +388,7 @@ class Admin
         $result->bindParam(':name_partner', $options['name_partner'], PDO::PARAM_STR);
         $result->bindParam(':id_country', $options['id_country'], PDO::PARAM_INT);
         $result->bindParam(':login', $options['login'], PDO::PARAM_STR);
+        $result->bindParam(':email', $options['email'], PDO::PARAM_STR);
         $result->bindParam(':password', $options['password'], PDO::PARAM_STR);
         $result->bindParam(':kpi_view', $options['kpi_view'], PDO::PARAM_INT);
         $result->bindParam(':date_create', $options['date_create'], PDO::PARAM_STR);
@@ -451,6 +452,7 @@ class Admin
                 name_partner = :name_partner,
                 id_country = :id_country,
                 login = :login,
+                email = :email,
                 kpi_view = :kpi_view
             WHERE id_user = :id_user";
 
@@ -458,6 +460,7 @@ class Admin
         $result->bindParam(':id_role', $options['role'], PDO::PARAM_INT);
         $result->bindParam(':id_user', $id, PDO::PARAM_INT);
         $result->bindParam(':login', $options['login'], PDO::PARAM_STR);
+        $result->bindParam(':email', $options['email'], PDO::PARAM_STR);
         $result->bindParam(':name_partner', $options['name_partner'], PDO::PARAM_STR);
         $result->bindParam(':id_country', $options['id_country'], PDO::PARAM_INT);
         $result->bindParam(':kpi_view', $options['kpi_view'], PDO::PARAM_INT);
