@@ -16,11 +16,23 @@ class KnowledgeCatalog
         $db = MySQL::getConnection();
 
         $sql = "SELECT 
-                *
-                FROM gs_ccc_knowledge_category
-                WHERE enabled = 0
-                AND customer = :customer
-                ORDER BY sort";
+                 gckc.id,
+                 gckc.p_id,
+                 gckc.customer,
+                 gckc.name,
+                 gckc.slug,
+                 gckc.enabled,
+                 gckc.child,
+                 (SELECT 
+                    count(gcka.id) 
+                    FROM gs_ccc_knowledge_articles gcka
+                    WHERE gckc.id = gcka.id_category
+                    AND gcka.published = 1
+                    AND gcka.delete_article = 0) as count
+                 FROM gs_ccc_knowledge_category gckc
+                 WHERE gckc.enabled = 0
+                 AND gckc.customer = :customer
+                 ORDER BY gckc.sort";
 
         $result = $db->prepare($sql);
         $result->bindParam(':customer', $customer, PDO::PARAM_STR);
@@ -74,7 +86,7 @@ class KnowledgeCatalog
                     $tree .= '<input type="checkbox" checked name="group-' . $cat['id'] . '" id="group-' . $cat['id'] . '" >';
                     $tree .= '<label for="group-' . $cat['id'] . '">' . $cat['name'] . '</label>';
                 } else {
-                    $tree .= '<li><a class="' . $active . '" href="/adm/ccc/tree_knowledge/customer-' . $cat['customer'] . '/' . $cat['slug'] . '">' . $cat['name'] . '</a>';
+                    $tree .= '<li><a class="' . $active . '" href="/adm/ccc/tree_knowledge/customer-' . $cat['customer'] . '/' . $cat['slug'] . '">' . $cat['name'] . ' (' . $cat['count'] .')</a>';
                 }
 
                 $tree .= self::build_tree($cats, $cat['id'], $category_id);

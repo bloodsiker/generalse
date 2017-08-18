@@ -78,13 +78,15 @@
                     <td style="text-align: center;"><?=iconv('WINDOWS-1251', 'UTF-8',$export['type_name'])?></td>
                     <td style="text-align: center;"><?=iconv('WINDOWS-1251', 'UTF-8',$export['note1'])?></td>
                     <?php $status_name = iconv('WINDOWS-1251', 'UTF-8', $export['status_name'])?>
-                    <td style="text-align: center;"><?= $status_name?></td>
                     <td style="text-align: center;">
-                        <?php if($user->name_partner == 'GS Electrolux' && $status_name == 'Выдан'):?>
+                        <?= $status_name?>
+                        <?php if($user->group_name == 'Electrolux' && $status_name == 'Выдан'):?>
+                            <br>
                             <?= Umbrella\components\Functions::formatDate($export['shipped_on'])?>
-                        <?php else:?>
-                            <?= Umbrella\components\Functions::formatDate($export['created_on'])?>
                         <?php endif;?>
+                    </td>
+                    <td style="text-align: center;">
+                        <?= Umbrella\components\Functions::formatDate($export['created_on'])?>
                     </td>
                     <td style="text-align: center;"><?= isset($export['request_date']) ? Umbrella\components\Functions::formatDate($export['request_date']) : null?></td>
                     <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.request_id', 'view')): ?>
