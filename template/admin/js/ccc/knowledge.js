@@ -1,10 +1,15 @@
 jQuery(document).ready(function(){
     var accordionsMenu = $('.cd-accordion-menu');
 
-    if( accordionsMenu.length > 0 ) {
+    if($(".cd-accordion-menu li").last().children('a').text() == 'Популярные (0)'){
+        $( ".cd-accordion-menu li" ).last().children('a').text("Популярные");
+    }
 
+    if( accordionsMenu.length > 0 ) {
+        //console.log(accordionsMenu);
         accordionsMenu.each(function(){
             var accordion = $(this);
+
             //detect change in the input[type="checkbox"] value
             accordion.on('change', 'input[type="checkbox"]', function(){
                 var checkbox = $(this);
@@ -14,3 +19,4 @@ jQuery(document).ready(function(){
         });
     }
 });
+

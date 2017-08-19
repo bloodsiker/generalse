@@ -105,6 +105,44 @@ class KnowledgeArticle
 
 
     /**
+     * Список популярный статей
+     * @return array
+     */
+    public static function getPopularArticles()
+    {
+        $db = MySQL::getConnection();
+
+        $sql = "SELECT
+                 gcva.id_article as id,
+                 count(gcva.id_article) AS count,
+                 gcka.title,
+                 gcka.description,
+                 gcka.text,
+                 gcka.created_at,
+                 gcka.updated_at,
+                 gckc.customer,
+                 gckc.slug,
+                 gckc.name
+                FROM gs_ccc_view_articles gcva
+                    INNER JOIN gs_ccc_knowledge_articles gcka
+                        ON gcka.id = gcva.id_article
+                    INNER JOIN gs_ccc_knowledge_category gckc
+                        ON gckc.id = gcka.id_category
+                WHERE gcka.delete_article = 0
+                AND gcka.published = 1
+                AND gckc.customer != 'lenovo'
+                GROUP BY gcva.id_article
+                ORDER BY count DESC
+                LIMIT 10";
+
+        $result = $db->prepare($sql);
+        $result->execute();
+        $all = $result->fetchaLL(PDO::FETCH_ASSOC);
+        return $all;
+    }
+
+
+    /**
      * Список всех статей
      * @return array
      */

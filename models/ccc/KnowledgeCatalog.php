@@ -3,6 +3,7 @@ namespace Umbrella\models\ccc;
 
 use PDO;
 use Umbrella\components\Db\MySQL;
+use Umbrella\components\Functions;
 
 class KnowledgeCatalog
 {
@@ -16,23 +17,30 @@ class KnowledgeCatalog
         $db = MySQL::getConnection();
 
         $sql = "SELECT 
-                 gckc.id,
-                 gckc.p_id,
-                 gckc.customer,
-                 gckc.name,
-                 gckc.slug,
-                 gckc.enabled,
-                 gckc.child,
-                 (SELECT 
-                    count(gcka.id) 
-                    FROM gs_ccc_knowledge_articles gcka
-                    WHERE gckc.id = gcka.id_category
-                    AND gcka.published = 1
-                    AND gcka.delete_article = 0) as count
-                 FROM gs_ccc_knowledge_category gckc
-                 WHERE gckc.enabled = 0
-                 AND gckc.customer = :customer
-                 ORDER BY gckc.sort";
+                gckc.id,
+                gckc.p_id,
+                gckc.customer,
+                gckc.name,
+                gckc.slug,
+                gckc.enabled,
+                gckc.child,
+                (SELECT 
+                  count(gcka.id) 
+                  FROM gs_ccc_knowledge_articles gcka
+                  WHERE gckc.id = gcka.id_category
+                  AND gcka.published = 1
+                  AND gcka.delete_article = 0) as count,
+                (SELECT 
+                    GROUP_CONCAT(gcka.updated_at) 
+                  FROM gs_ccc_knowledge_articles gcka
+                  WHERE gckc.id = gcka.id_category
+                  AND gcka.published = 1
+                  AND gcka.delete_article = 0
+                  GROUP BY gckc.id) as updated_at
+                FROM gs_ccc_knowledge_category gckc
+                WHERE gckc.customer = :customer
+                AND gckc.enabled = 0
+                ORDER BY gckc.sort";
 
         $result = $db->prepare($sql);
         $result->bindParam(':customer', $customer, PDO::PARAM_STR);
@@ -86,7 +94,16 @@ class KnowledgeCatalog
                     $tree .= '<input type="checkbox" checked name="group-' . $cat['id'] . '" id="group-' . $cat['id'] . '" >';
                     $tree .= '<label for="group-' . $cat['id'] . '">' . $cat['name'] . '</label>';
                 } else {
-                    $tree .= '<li><a class="' . $active . '" href="/adm/ccc/tree_knowledge/customer-' . $cat['customer'] . '/' . $cat['slug'] . '">' . $cat['name'] . ' (' . $cat['count'] .')</a>';
+                    // Проверяем, если в этом разделе статьи обновленный не более двух дней назад
+                    $listUpdateArticle = explode(',', $cat['updated_at']);
+                    $update = null;
+                    foreach ($listUpdateArticle as $updateArticle) {
+                        if(Functions::calcDiffSec($updateArticle) < 172800){
+                            $update = " <span style='color: orange; font-size: 14px'><b>!</b></span>";
+                        }
+                    }
+
+                    $tree .= '<li><a class="' . $active . '" href="/adm/ccc/tree_knowledge/customer-' . $cat['customer'] . '/' . $cat['slug'] . '">' . $cat['name'] . ' (' . $cat['count'] .')' . $update . '</a>';
                 }
 
                 $tree .= self::build_tree($cats, $cat['id'], $category_id);

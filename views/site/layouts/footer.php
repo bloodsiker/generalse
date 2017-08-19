@@ -1,4 +1,4 @@
-<footer>
+<footer id="footer">
     <div class="row align-justify">
         <div class="medium-3 small-12 columns">
             <p>
@@ -82,6 +82,23 @@
 <script src="/template/site/js/parallax.min.js"></script>
 <script src="/template/site/js/main.js"></script>
 <script src="http://mynameismatthieu.com/WOW/dist/wow.min.js"></script>
+
+<script src="/template/site/js/html2canvas.js"></script>
+
+
+<script type="text/javascript">
+    window.takeScreenShot = function() {
+        html2canvas(document.getElementById("footer"), {
+            onrendered: function (canvas) {
+                document.body.appendChild(canvas);
+            }
+        });
+    }
+</script>
+
+
+<button onclick="takeScreenShot()">to image</button>
+
 <script>
     new WOW().init();
 </script>

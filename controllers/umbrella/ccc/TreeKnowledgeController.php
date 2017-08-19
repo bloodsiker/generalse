@@ -95,7 +95,9 @@ class TreeKnowledgeController extends AdminBase
         $userId = Admin::CheckLogged();
         $user = new User($userId);
 
-        $this->render('admin/ccc/knowledge/popular_category', compact('user', 'customer'));
+        $popularArticles = KnowledgeArticle::getPopularArticles();
+
+        $this->render('admin/ccc/knowledge/popular_category', compact('user', 'customer', 'popularArticles'));
         return true;
     }
 }

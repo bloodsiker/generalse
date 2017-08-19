@@ -40,32 +40,26 @@
                 </div>
                 <div class="medium-9 small-9 top-gray columns">
                     <h2 class="ccc-title">Популярные</h2>
-                    <div class="callout">
-                        <h4><strong>FOUNDATION FOR EMAILS</strong></h4>
-                        <p>We know building HTML emails is hard, especially responsive emails. That's why we created Foundation for Emails. Get away from complex table markup and inconsistent results. Use Foundation for Emails to spend less time coding emails, and more time
-                            on other things, like building amazing products.</p>
-
-                        <button data-toggle="read-more-content" href="#">SHOW MORE <i class="fa fa-plus"></i></button>
-                        <div class="read-more-content" id="read-more-content" data-toggler data-animate="hinge-in-from-top slide-out-right">
-                            <h5>Spend Less Time Coding, Testing, and Preparing:</h5>
-                            <ul>
-                                <li>Responsive Grid for Any Layout</li>
-                                <li>Common UI Patterns to Build Faster</li>
-                                <li>Make stylish emails fast with Sass</li>
-                                <li>Inky: A New Templating Language</li>
-                                <li>The ZURB Email Stack will make you an email pro</li>
-                                <li>Emails that work in all of the major clients, even Outlook</li>
-                                <li>Inlining CSS <strike>is</strike> was a pain</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="callout">
-                        <h4><strong>FOUNDATION FOR EMAILS</strong></h4>
-                        <p>We know building HTML emails is hard, especially responsive emails. That's why we created Foundation for Emails. Get away from complex table markup and inconsistent results. Use Foundation for Emails to spend less time coding emails, and more time
-                            on other things, like building amazing products.</p>
-
-                    </div>
+                    <?php if(is_array($popularArticles)):?>
+                        <?php foreach ($popularArticles as $article):?>
+                            <div class="callout">
+                                <?php if(!empty($article['updated_at'])):?>
+                                    <?php if((Umbrella\components\Functions::calcDiffSec($article['updated_at']) < 172800)):?>
+                                        <h5 class="article_updated_at">Статья обновлена! <?= $article['updated_at']?></h5>
+                                    <?php endif;?>
+                                <?php endif;?>
+                                <h4><strong><?= $article['title']?></strong></h4>
+                                <a href="/adm/ccc/tree_knowledge/customer-<?= $article['customer']?>/<?= $article['slug']?>"><?= $article['name']?></a> &nbsp;
+                                <i class="fi-calendar"></i><small class="time"> <i><?= $article['created_at']?></i></small>&nbsp;
+                                <i class="fi-eye"></i><small class="count_view"> <i><?= $article['count']?></i></small>
+                                <br>
+                                <?= $article['description']?>
+                                <br>
+                                <br>
+                                <a href="/adm/ccc/tree_knowledge/customer-<?= $article['customer']?>/<?= $article['slug']?>/article-<?= $article['id']?>">Читать дальше...</a>
+                            </div>
+                        <?php endforeach;?>
+                    <?php endif;?>
                 </div>
             </div>
         </div>
