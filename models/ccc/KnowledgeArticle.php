@@ -235,4 +235,42 @@ class KnowledgeArticle
         $result->bindParam(':id', $id, PDO::PARAM_INT);
         return $result->execute();
     }
+
+
+    /**
+     * Поиск статей
+     * @param $search
+     * @param $customer
+     * @return array
+     */
+    public static function getSearchContent($customer, $search)
+    {
+        $db = MySQL::getConnection();
+
+        $sql = "SELECT 
+                    gcka.id,
+                    gcka.id_category,
+                    gcka.title,
+                    gcka.description,
+                    gcka.text,
+                    gcka.updated_at,
+                    gckc.name,
+                    gckc.customer,
+                    gckc.slug
+                FROM gs_ccc_knowledge_articles gcka
+                    INNER JOIN gs_ccc_knowledge_category gckc
+                        ON gckc.id = gcka.id_category
+                WHERE gcka.published = 1
+                AND gcka.delete_article = 0
+                AND gckc.customer = ?
+                AND (gcka.description LIKE ?
+                OR gcka.title LIKE ? 
+                OR gcka.text LIKE ?)
+                ORDER BY gcka.id DESC";
+
+        $result = $db->prepare($sql);
+        $result->execute(array($customer, "%$search%", "%$search%", "%$search%"));
+        $all = $result->fetchAll(PDO::FETCH_ASSOC);
+        return $all;
+    }
 }

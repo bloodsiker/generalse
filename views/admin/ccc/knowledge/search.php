@@ -46,22 +46,28 @@
 
                 </div>
                 <div class="medium-9 small-9 top-gray columns">
-                    <h2 class="ccc-title"><?= $article['name']?></h2>
-
-                    <div class="callout">
-                        <?php if(!empty($article['updated_at'])):?>
-                            <?php if((Umbrella\components\Functions::calcDiffSec($article['updated_at']) < 86400)):?>
-                                <h5 class="article_updated_at">Статья обновлена! <?= $article['updated_at']?></h5>
-                            <?php endif;?>
-                        <?php endif;?>
-                        <h4><strong><?= $article['title']?></strong></h4>
-                        <?= $article['text']?>
-                    </div>
-
+                    <h2 class="ccc-title">Результат поиска по запросу: <?= (isset($_GET['search'])) ? $_GET['search'] : null?></h2>
+                    <?php if(is_array($listSearch)):?>
+                        <?php foreach ($listSearch as $article):?>
+                            <div class="callout">
+                                <?php if(!empty($article['updated_at'])):?>
+                                    <?php if((Umbrella\components\Functions::calcDiffSec($article['updated_at']) < 172800)):?>
+                                        <h5 class="article_updated_at">Статья обновлена! <?= $article['updated_at']?></h5>
+                                    <?php endif;?>
+                                <?php endif;?>
+                                <h4><strong><?= $article['title']?></strong></h4>
+                                <a href="/adm/ccc/tree_knowledge/customer-<?= $article['customer']?>/<?= $article['slug']?>"><?= $article['name']?></a>
+                                <br>
+                                <?= $article['description']?>
+                                <br>
+                                <br>
+                                <a href="/adm/ccc/tree_knowledge/customer-<?= $article['customer']?>/<?= $article['slug']?>/article-<?= $article['id']?>">Читать дальше...</a>
+                            </div>
+                        <?php endforeach;?>
+                    <?php endif;?>
                 </div>
             </div>
         </div>
-
 
         <?php require_once ROOT . '/views/admin/ccc/include/last_view_article.php'; ?>
 

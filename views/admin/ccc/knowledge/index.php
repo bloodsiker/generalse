@@ -14,7 +14,7 @@
                     </div>
                     <div class="medium-12 small-12 columns">
                         <div class="row align-bottom">
-                            <div class="medium-3 small-12 columns">
+                            <div class="medium-9 small-12 columns">
                                 <?php if (Umbrella\app\AdminBase::checkDenied('ccc.tree_knowledge.category', 'view')): ?>
                                     <a href="/adm/ccc/tree_knowledge/category" class="button primary tool <?= Umbrella\components\Url::IsActive('/tree_knowledge/category', 'active-req') ?>">Разделы</a>
                                 <?php endif; ?>
@@ -23,6 +23,13 @@
                                     <a href="/adm/ccc/tree_knowledge/articles" class="button primary tool <?= Umbrella\components\Url::IsActive('/tree_knowledge/articles', 'active-req') ?>">Статьи</a>
                                 <?php endif; ?>
 
+                            </div>
+
+                            <div class="medium-3 small-12 columns">
+                                <form action="/adm/ccc/tree_knowledge/customer-<?= $customer?>/s/" method="get" class="form">
+                                    <input type="text" class="search-input" placeholder="Search..." name="search">
+                                    <button class="search-button button primary"><i class="fi-magnifying-glass"></i></button>
+                                </form>
                             </div>
 
                         </div>

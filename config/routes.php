@@ -71,6 +71,7 @@ return array(
 
     /*********** CCC  ***********/
     'adm/ccc/tree_knowledge/customer-([a-z0-9-]+)/cat-([0-9]+)/article-([a-z0-9-_?&]+)' => 'umbrella/ccc/TreeKnowledge@viewArticle/$1/$2/$3',
+    'adm/ccc/tree_knowledge/customer-([a-z0-9-]+)/s/([a-z0-9-_?&]+)' => 'umbrella/ccc/TreeKnowledge@search/$1/$2',
     'adm/ccc/tree_knowledge/customer-([a-z0-9-]+)/cat-([0-9]+)' => 'umbrella/ccc/TreeKnowledge@articlesByCategory/$1/$2',
     'adm/ccc/tree_knowledge/customer-([a-z0-9-]+)/cat-popular' => 'umbrella/ccc/TreeKnowledge@popularCategory/$1',
     'adm/ccc/tree_knowledge/customer-([a-z0-9-]+)' => 'umbrella/ccc/TreeKnowledge@index/$1',

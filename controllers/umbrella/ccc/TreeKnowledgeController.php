@@ -84,6 +84,20 @@ class TreeKnowledgeController extends AdminBase
     }
 
 
+    public function actionSearch($customer, $search)
+    {
+        self::checkAdmin();
+        $userId = Admin::CheckLogged();
+        $user = new User($userId);
+
+        $search = $_GET['search'];
+        $listSearch = KnowledgeArticle::getSearchContent($customer, $search);
+
+        $this->render('admin/ccc/knowledge/search', compact('user', 'customer', 'listSearch'));
+        return true;
+    }
+
+
     /**
      * Популярные статьи
      * @param $customer
