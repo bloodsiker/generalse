@@ -72,7 +72,14 @@ class RequestController extends AdminBase
             $price = Products::getPricePartNumber($options['part_number'], $user->id_user);
             $options['goods_name'] = $mName['mName'];
             $options['price'] = ($price['price'] != 0) ? $price['price'] : 0;
-            $options['status_name'] = iconv('UTF-8', 'WINDOWS-1251', 'Нет в наличии, формируется поставка, ориентировочная дата поставки на наш склад ' . Functions::whatDayOfTheWeekAndAdd(date('Y-m-d')));
+            if($user->name_partner == 'Servisexpress'
+                || $user->name_partner == 'Technoservice'
+                || $user->name_partner == 'Techpoint'){
+                $options['status_name'] = iconv('UTF-8', 'WINDOWS-1251', 'Нет в наличии, формируется поставка.');
+            } else {
+                $options['status_name'] = iconv('UTF-8', 'WINDOWS-1251', 'Нет в наличии, формируется поставка, ориентировочная дата поставки на наш склад ' . Functions::whatDayOfTheWeekAndAdd(date('Y-m-d')));
+            }
+
             $options['status_name_mysql'] = 'Нет в наличии, формируется поставка, ориентировочная дата поставки на наш склад ' . Functions::whatDayOfTheWeekAndAdd(date('Y-m-d'));
             $options['created_on'] = date('Y-m-d H:i:s');
             $options['order_type_id'] = $_POST['order_type_id'];
@@ -194,7 +201,15 @@ class RequestController extends AdminBase
                             $price = Products::getPricePartNumber($options['part_number'], $user->id_user);
                             $options['goods_name'] = $mName['mName'];
                             $options['price'] = ($price['price'] != 0) ? $price['price'] : 0;
-                            $options['status_name'] = iconv('UTF-8', 'WINDOWS-1251', 'Нет в наличии, формируется поставка, ориентировочная дата поставки на наш склад ' . Functions::whatDayOfTheWeekAndAdd(date('Y-m-d')));
+
+                            if($user->name_partner == 'Servisexpress'
+                                || $user->name_partner == 'Technoservice'
+                                || $user->name_partner == 'Techpoint'){
+                                $options['status_name'] = iconv('UTF-8', 'WINDOWS-1251', 'Нет в наличии, формируется поставка.');
+                            } else {
+                                $options['status_name'] = iconv('UTF-8', 'WINDOWS-1251', 'Нет в наличии, формируется поставка, ориентировочная дата поставки на наш склад ' . Functions::whatDayOfTheWeekAndAdd(date('Y-m-d')));
+                            }
+
                             $options['created_on'] = date('Y-m-d H:i:s');
                             $options['order_type_id'] = $_REQUEST['order_type_id'];
                             $options['note1'] = isset($_POST['note1']) ? iconv('UTF-8', 'WINDOWS-1251', $_POST['note1']): null;
@@ -435,6 +450,12 @@ class RequestController extends AdminBase
 
     public function partArray(){
         return [
+            531018438733,
+            5616751219,
+            3300361551,
+            2081165058,
+            3578772042,
+            1366060000,
             2273112041,
             1321419408,
             4055185542,

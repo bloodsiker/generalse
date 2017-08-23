@@ -46,6 +46,7 @@
         <thead>
         <tr>
             <th>Partner</th>
+            <th>Partner status</th>
             <th style="text-align: center;">Order Number</th>
             <th>Service Order</th>
             <th>Part Number</th>
@@ -68,6 +69,7 @@
             <?php foreach ($listExport as $export):?>
                 <tr>
                     <td><?=$export['site_client_name']?></td>
+                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $export['site_client_status'])?></td>
                     <td style="text-align: center;"><?=$export['order_number']?></td>
                     <td><?=iconv('WINDOWS-1251', 'UTF-8',$export['so_number'])?></td>
                     <td><?=$export['part_number']?></td>

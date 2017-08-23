@@ -175,6 +175,9 @@
                             <th class="sort">Request id</th>
                         <?php endif; ?>
                         <th class="sort">Partner</th>
+                        <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
+                            <th>Partner status</th>
+                        <?php endif?>
                         <th class="sort">Order Number</th>
                         <th class="sort">Service Order</th>
                         <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.type_repair', 'view')): ?>
@@ -194,6 +197,9 @@
                                     <td><?= $order['request_id']?></td>
                                 <?php endif;?>
                                 <td><?= $order['site_client_name']?></td>
+                                <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
+                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['site_client_status'])?></td>
+                                <?php endif?>
                                 <td><?= $order['order_number']?></td>
                                 <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></td>
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.type_repair', 'view')): ?>
@@ -242,7 +248,9 @@
                     <?php endif;?>
                     </tbody>
                 </table>
+
                 <?php elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+
                     <table id="goods_data">
                         <?php if(isset($_GET['start']) && !empty($_GET['start'])):?>
                             <caption>Last recordings on
@@ -257,6 +265,7 @@
                                 <th class="sort">Request id</th>
                             <?php endif;?>
                             <th class="sort">Partner</th>
+                            <th class="sort">Partner status</th>
                             <th class="sort">Order Number</th>
                             <th class="sort">Service Order</th>
                             <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.type_repair', 'view')): ?>
@@ -277,6 +286,7 @@
                                         <td><?= $order['request_id']?></td>
                                     <?php endif;?>
                                     <td><?= $order['site_client_name']?></td>
+                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['site_client_status'])?></td>
                                     <td><?= $order['order_number']?></td>
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></td>
                                     <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.type_repair', 'view')): ?>

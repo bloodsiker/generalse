@@ -67,6 +67,9 @@
                     <tr>
                         <th>Request id</th>
                         <th>Partner</th>
+                        <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
+                            <th>Partner status</th>
+                        <?php endif?>
                         <th>Part Number</th>
                         <th>Part Description</th>
                         <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
@@ -87,6 +90,9 @@
                             <tr class="goods <?= (Umbrella\components\Functions::calcDiffSec($order['created_on']) < 120) ? 'check_lenovo_ok' : ''?>">
                                 <td><?= $order['id']?></td>
                                 <td><?= $order['site_client_name']?></td>
+                                <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
+                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['site_client_status'])?></td>
+                                <?php endif?>
                                 <td><?= $order['part_number']?></td>
                                 <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['goods_name'])?></td>
                                 <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
@@ -123,6 +129,7 @@
                         <tr>
                             <th>Request id</th>
                             <th>Partner</th>
+                            <th>Partner status</th>
                             <th>Part Number</th>
                             <th>Part Description</th>
                             <th>Subtype</th>
@@ -145,6 +152,7 @@
                                     data-id="<?= $order['id']?>">
                                     <td><?= $order['id']?></td>
                                     <td><?= $order['site_client_name']?></td>
+                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['site_client_status'])?></td>
                                     <td data-pn="<?= $order['part_number']?>" class="order-tr-pn" style="background: <?= in_array($order['part_number'], $arrayPartNumber) ? '#f79898' : 'inherit'?>">
                                         <span class="order_part_num"><?= $order['part_number']?></span>
                                         <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>

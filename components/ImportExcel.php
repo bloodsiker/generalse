@@ -119,11 +119,12 @@ class ImportExcel
             $pushArray[$i]['tracking_number'] = $data['D'];
             $pushArray[$i]['partner'] = $data['E'];
 
-            if($data['E'] == ''){
-                $pushArray[$i]['price'] = 0;
-            } else {
-                $pushArray[$i]['price'] = $data['F'];
-            }
+//            if($data['E'] == ''){
+//                $pushArray[$i]['price'] = 0;
+//            } else {
+//                $pushArray[$i]['price'] = $data['F'];
+//            }
+            $pushArray[$i]['price'] = $data['F'];
             $pushArray[$i]['manufacture_country'] = $data['G'];
             $pushArray[$i]['manufacturer'] = $data['H'];
 

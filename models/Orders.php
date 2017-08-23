@@ -16,16 +16,13 @@ class Orders
      */
     public static function addOrders($options)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'INSERT INTO gm_orders '
             . '(site_id, id_user, so_number, ready, note)'
             . 'VALUES '
             . '(:site_id, :id_user, :so_number, :ready, :note)';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $options['site_id'], PDO::PARAM_INT);
         $result->bindParam(':id_user', $options['id_user'], PDO::PARAM_INT);
@@ -43,16 +40,13 @@ class Orders
      */
     public static function addOrdersElements($options)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'INSERT INTO gm_orders_elements '
             . '(site_id, part_number, goods_name, so_number, stock_name, quantity)'
             . 'VALUES '
             . '(:site_id, :part_number, :goods_name, :so_number, :stock_name, :quantity)';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $options['site_id'], PDO::PARAM_INT);
         $result->bindParam(':part_number', $options['part_number'], PDO::PARAM_STR);
@@ -71,16 +65,13 @@ class Orders
      */
     public static function addOrdersMsSQL($options)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'INSERT INTO site_gm_orders '
             . '(site_id, site_account_id, so_number, ready, note)'
             . 'VALUES '
             . '(:site_id, :site_account_id, :so_number, :ready, :note)';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $options['site_id'], PDO::PARAM_INT);
         $result->bindParam(':site_account_id', $options['id_user'], PDO::PARAM_INT);
@@ -100,16 +91,13 @@ class Orders
      */
     public static function addOrdersElementsMsSql($options, $is_supply = 0)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'INSERT INTO site_gm_orders_elements '
             . '(site_id, part_number, goods_name, so_number, stock_name, quantity, is_supply)'
             . 'VALUES '
             . '(:site_id, :part_number, :goods_name, :so_number, :stock_name, :quantity, :is_supply)';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $options['site_id'], PDO::PARAM_INT);
         $result->bindParam(':part_number', $options['part_number'], PDO::PARAM_STR);
@@ -144,10 +132,8 @@ class Orders
      */
     public static function getAllOrders($filter = '')
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $data = $db->query("SELECT
                               go.id,
                               go.site_id,
@@ -170,10 +156,8 @@ class Orders
      */
     public static function getAllOrdersMsSql($filter = '')
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // Получение и возврат результатов
         $data = $db->query("SELECT
                               sgo.site_id,
                               sgo.order_id,
@@ -189,6 +173,7 @@ class Orders
                               sgo.command_text,
                               sgo.request_id,
                               sgu.site_client_name,
+                              sgu.status_name as site_client_status,
                               sgot.name as type_name
                             FROM site_gm_orders sgo
                               INNER JOIN site_gm_users sgu
@@ -208,10 +193,8 @@ class Orders
      */
     public static function getOrdersByPartner($id_partner, $filter = '')
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT
                   go.id,
                   go.site_id,
@@ -220,14 +203,10 @@ class Orders
                 FROM gm_orders go
                   WHERE go.id_user = :id_user {$filter}
                   ORDER BY go.id DESC";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $id_partner, PDO::PARAM_INT);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
     }
@@ -256,6 +235,7 @@ class Orders
                    sgo.command_text,
                    sgo.request_id,
                    sgu.site_client_name,
+                   sgu.status_name as site_client_status,
                    sgot.name as type_name
                  FROM site_gm_orders sgo
                    INNER JOIN site_gm_users sgu
@@ -264,7 +244,7 @@ class Orders
                       ON sgot.id = sgo.order_type_id
                    WHERE sgo.site_account_id IN({$idS}) {$filter}
                    ORDER BY sgo.id DESC";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         //$result->bindParam(':id_user', $id_partner, PDO::PARAM_INT);
         $result->execute();
@@ -280,21 +260,13 @@ class Orders
      */
     public static function getLastOrdersId()
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
-        //$db = Db::getConnection();
 
-        // Текст запроса к БД
-        //$sql = "SELECT site_id FROM site_gm_orders ORDER BY id DESC LIMIT 1";
-        $sql = "SELECT site_id FROM site_gm_orders WHERE site_id = (SELECT MAX(site_id) FROM site_gm_orders)";
+        //$sql = "SELECT site_id FROM site_gm_orders WHERE site_id = (SELECT MAX(site_id) FROM site_gm_orders)";
+        $sql = "SELECT MAX(site_id) as site_id FROM site_gm_orders";
 
-        // Используется подготовленный запрос
         $result = $db->prepare($sql);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
         $row = $result->fetch();
         return $row['site_id'];
     }
@@ -307,22 +279,15 @@ class Orders
      */
     public static function getShowDetailsOrders($site_id)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
-
-        // Получение и возврат результатов
         $sql = "SELECT
                 *
                 FROM gm_orders_elements
                 WHERE site_id = :site_id";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $site_id, PDO::PARAM_INT);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
     }
@@ -334,22 +299,16 @@ class Orders
      */
     public static function getShowDetailsOrdersMsSql($order_id)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT
                  *
                  FROM site_gm_orders_elements
                  WHERE order_id = :order_id";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':order_id', $order_id, PDO::PARAM_INT);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
     }
@@ -384,6 +343,7 @@ class Orders
                     sgoe.quantity,
                     sgoe.price,
                     sgu.site_client_name,
+                    sgu.status_name as site_client_status,
                     sgot.name as type_name
                     FROM site_gm_orders sgo
                     INNER JOIN site_gm_orders_elements sgoe
@@ -458,17 +418,14 @@ class Orders
      */
     public static function updateStatusOrders($id_order, $command, $comment)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // Текст запроса к БД
         $sql = "UPDATE site_gm_orders
             SET
                 command = :command,
                 command_text = :comment
             WHERE order_id = :id_order";
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id_order', $id_order, PDO::PARAM_INT);
         $result->bindParam(':command', $command, PDO::PARAM_INT);
@@ -574,17 +531,15 @@ class Orders
      */
     public static function getReserveOrdersByPartner($id_user)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT
                 *
                 FROM gm_orders_check
                 WHERE check_status = 0
                 AND id_user = :id_user
                 ORDER BY id DESC";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $id_user, PDO::PARAM_INT);
         $result->execute();
@@ -601,12 +556,10 @@ class Orders
      */
     public static function getReserveOrdersByPartnerMsSQL($array_id, $completed = 0)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
         $idS = implode(',', $array_id);
 
-        // Получение и возврат результатов
         $sql = "SELECT
                  sgog.id,
                  sgog.site_account_id,
@@ -620,6 +573,7 @@ class Orders
                  sgog.note1,
                  sgog.subtype_name,
                  sgu.site_client_name,
+                 sgu.status_name as site_client_status,
                  sgot.name as type_name
              FROM site_gm_ordering_goods sgog
                  INNER JOIN site_gm_users sgu
@@ -629,7 +583,7 @@ class Orders
              WHERE sgog.processed = :processed
              AND sgog.site_account_id IN({$idS})
              ORDER BY sgog.id DESC";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':processed', $completed, PDO::PARAM_INT);
         $result->execute();
@@ -692,6 +646,7 @@ class Orders
                     sgog.note1,
                     sgog.subtype_name,
                     sgu.site_client_name,
+                    sgu.status_name as site_client_status,
                     sgot.name as type_name
                 FROM site_gm_ordering_goods sgog
                     INNER JOIN site_gm_users sgu
@@ -716,12 +671,10 @@ class Orders
      */
     public static function getCompletedRequestInOrdersByPartnerMsSQL($array_id, $filter)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
         $idS = implode(',', $array_id);
 
-        // Получение и возврат результатов
         $sql = "SELECT
                  sgog.id,
                  sgog.site_account_id,
@@ -748,7 +701,7 @@ class Orders
              WHERE sgog.processed = 1
              AND sgog.site_account_id IN({$idS}) {$filter}
              ORDER BY sgog.id DESC";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->execute();
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
@@ -807,16 +760,13 @@ class Orders
      */
     public static function editPartNumberFromCheckOrdersById($id, $part_number)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // Текст запроса к БД
         $sql = "UPDATE site_gm_ordering_goods
             SET
                 part_number = :part_number
             WHERE id = :id";
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id', $id, PDO::PARAM_INT);
         $result->bindParam(':part_number', $part_number, PDO::PARAM_STR);
@@ -831,16 +781,13 @@ class Orders
      */
     public static function editSoNumberFromCheckOrdersById($id, $so_number)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // Текст запроса к БД
         $sql = "UPDATE site_gm_ordering_goods
             SET
                 so_number = :so_number
             WHERE id = :id";
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id', $id, PDO::PARAM_INT);
         $result->bindParam(':so_number', $so_number, PDO::PARAM_STR);
@@ -920,16 +867,13 @@ class Orders
      */
     public static function updateCheckReserveOrders($id, $check_status)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
         $sql = "UPDATE gm_orders_check
             SET
                 check_status = :check_status
             WHERE id = :id";
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id', $id, PDO::PARAM_INT);
         $result->bindParam(':check_status', $check_status, PDO::PARAM_INT);
@@ -966,13 +910,10 @@ class Orders
      */
     public static function deleteRequestById($id)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'DELETE FROM gm_orders_check WHERE id = :id';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id', $id, PDO::PARAM_INT);
         return $result->execute();
@@ -986,13 +927,10 @@ class Orders
      */
     public static function deleteRequestMsSQLById($id)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'DELETE FROM site_gm_ordering_goods WHERE id = :id';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id', $id, PDO::PARAM_INT);
         return $result->execute();
