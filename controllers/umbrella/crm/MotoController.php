@@ -13,10 +13,10 @@ use Umbrella\models\Products;
  */
 class MotoController extends AdminBase
 {
-
-    ##############################################################################
-    ##############################      MOTO         #############################
-    ##############################################################################
+    /**
+     * @var User
+     */
+    private $user;
 
     /**
      * MotoController constructor.
@@ -25,6 +25,7 @@ class MotoController extends AdminBase
     {
         parent::__construct();
         self::checkDenied('crm.moto', 'controller');
+        $this->user = new User(Admin::CheckLogged());
     }
 
     /**
@@ -33,10 +34,7 @@ class MotoController extends AdminBase
      */
     public function actionMoto($filter = '')
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         $partnerList = Admin::getAllPartner();
 
@@ -193,10 +191,6 @@ class MotoController extends AdminBase
      */
     public function actionMotoPartNumAjax()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
-
         $mtm = $_REQUEST['mtm'];
 
         $result = 0;
@@ -217,9 +211,7 @@ class MotoController extends AdminBase
      */
     public function actionMotoSerialNumAjax()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         $serial_num = $_REQUEST['serial_number'];
         $result = 0;
@@ -236,9 +228,7 @@ class MotoController extends AdminBase
      */
     public function actionShowMoto()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         $site_id = $_REQUEST['site_id'];
         $data = Moto::getShowMoto($site_id);

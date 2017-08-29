@@ -12,12 +12,18 @@ use Umbrella\models\Log;
 class LogController extends AdminBase
 {
     /**
+     * @var User
+     */
+    private $user;
+
+    /**
      * LogController constructor.
      */
     public function __construct()
     {
         parent::__construct();
         self::checkDenied('user.logs', 'controller');
+        $this->user = new User(Admin::CheckLogged());
     }
 
 
@@ -26,9 +32,7 @@ class LogController extends AdminBase
      */
     public function actionLogs()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         $allLogs = Log::getAllLog(0);
 
@@ -42,14 +46,6 @@ class LogController extends AdminBase
      */
     public function actionAjaxLoad()
     {
-        // Проверка доступа
-        self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
-        $userId = Admin::CheckLogged();
-        // Обьект юзера
-        $user = new User($userId);
-
         if($_REQUEST['action'] == 'load_log'){
             $num = $_REQUEST['num'];
 

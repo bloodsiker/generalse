@@ -14,10 +14,10 @@ use Umbrella\models\Purchases;
  */
 class PurchaseController extends AdminBase
 {
-
-    ##############################################################################
-    #############################      PURCHASES       ###########################
-    ##############################################################################
+    /**
+     * @var User
+     */
+    private $user;
 
     /**
      * PurchaseController constructor.
@@ -26,6 +26,7 @@ class PurchaseController extends AdminBase
     {
         parent::__construct();
         self::checkDenied('crm.purchase', 'controller');
+        $this->user = new User(Admin::CheckLogged());
     }
 
     /**
@@ -34,14 +35,8 @@ class PurchaseController extends AdminBase
      */
     public function actionPurchase()
     {
-        // Проверка доступа
-        self::checkAdmin();
+        $user = $this->user;
 
-        // Получаем идентификатор пользователя из сессии
-        $userId = Admin::CheckLogged();
-
-        // Обьект юзера
-        $user = new User($userId);
         $partnerList = Admin::getAllPartner();
 
         if(isset($_SESSION['error_purchase'])){
@@ -183,7 +178,7 @@ class PurchaseController extends AdminBase
                 $interval = '';
             }
             $filter .= $interval;
-            $listPurchases = Purchases::getPurchasesByPartnerMsSql($user->controlUsers($userId), $filter);
+            $listPurchases = Purchases::getPurchasesByPartnerMsSql($user->controlUsers($user->id_user), $filter);
 
             // Параметры для формирование фильтров
             $user_ids = $user->controlUsers($user->id_user);
@@ -226,14 +221,8 @@ class PurchaseController extends AdminBase
      */
     public function actionPurchaseSuccess()
     {
-        // Проверка доступа
-        self::checkAdmin();
+        $user = $this->user;
 
-        // Получаем идентификатор пользователя из сессии
-        $userId = Admin::CheckLogged();
-
-        // Обьект юзера
-        $user = new User($userId);
         $partnerList = Admin::getAllPartner();
 
         $arr_error_pn = $_SESSION['error_purchase'];
@@ -251,7 +240,7 @@ class PurchaseController extends AdminBase
                 $interval = '';
             }
             $filter .= $interval;
-            $listPurchases = Purchases::getPurchasesByPartnerMsSql($user->controlUsers($userId), $filter);
+            $listPurchases = Purchases::getPurchasesByPartnerMsSql($user->controlUsers($user->id_user), $filter);
 
             // Параметры для формирование фильтров
             $user_ids = $user->controlUsers($user->id_user);
@@ -293,10 +282,6 @@ class PurchaseController extends AdminBase
      */
     public function actionPurchasePartNumAjax()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
-
         $part_number = $_REQUEST['part_number'];
         $stock = iconv('UTF-8', 'WINDOWS-1251', $_REQUEST['stock']);
         // если выбран сток Local Source, ищем на других складах, естли такие продукты
@@ -357,9 +342,7 @@ class PurchaseController extends AdminBase
      */
     public function actionPurchaseAjax()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         $data = $_REQUEST['json'];
         $data_json = json_decode($data, true);
@@ -417,15 +400,6 @@ class PurchaseController extends AdminBase
      */
     public function actionShowDetailPurchases()
     {
-        // Проверка доступа
-        self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
-        $userId = Admin::CheckLogged();
-
-        // Обьект юзера
-        $user = new User($userId);
-
         $site_id = $_REQUEST['site_id'];
         $data = Purchases::getShowDetailsPurchases($site_id);
         //print_r($data);
@@ -451,9 +425,7 @@ class PurchaseController extends AdminBase
      */
     public function actionExportPurchase()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         $filter = '';
         $start =  isset($_POST['start']) ? $_POST['start'] .' 00:00' : '';
@@ -465,7 +437,6 @@ class PurchaseController extends AdminBase
         $id_partners = isset($_POST['id_partner']) ? $_POST['id_partner'] : [];
         $listExport = Purchases::getExportPurchaseByPartner($id_partners, $start, $end, $filter);
 
-        //require_once (ROOT . '/views/admin/crm/export/purchase.php');
         $this->render('admin/crm/export/purchase', compact('user', 'listExport'));
         return true;
     }

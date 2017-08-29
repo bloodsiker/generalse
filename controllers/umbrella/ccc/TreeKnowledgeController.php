@@ -15,10 +15,19 @@ use Umbrella\models\ccc\KnowledgeCatalog;
 class TreeKnowledgeController extends AdminBase
 {
 
+    /**
+     * @var User
+     */
+    private $user;
+
+    /**
+     * TreeKnowledgeController constructor.
+     */
     public function __construct()
     {
         parent::__construct();
         self::checkDenied('ccc.tree_knowledge', 'controller');
+        $this->user = new User(Admin::CheckLogged());
     }
 
     /**
@@ -27,9 +36,7 @@ class TreeKnowledgeController extends AdminBase
      */
     public function actionIndex($customer)
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         $this->render('admin/ccc/knowledge/index', compact('user', 'customer'));
         return true;
@@ -44,9 +51,7 @@ class TreeKnowledgeController extends AdminBase
      */
     public function actionArticlesByCategory($customer, $id_category)
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         $categoryName = KnowledgeCatalog::getInfoCategoryById($id_category);
         $listCategory = KnowledgeArticle::getArticlesByCategory($id_category);
@@ -65,9 +70,7 @@ class TreeKnowledgeController extends AdminBase
      */
     public function actionViewArticle($customer, $id_category, $id)
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         $article = KnowledgeArticle::getArticlesById($id);
 
@@ -86,9 +89,7 @@ class TreeKnowledgeController extends AdminBase
 
     public function actionSearch($customer, $search)
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         $search = $_GET['search'];
         $listSearch = KnowledgeArticle::getSearchContent($customer, $search);
@@ -105,9 +106,7 @@ class TreeKnowledgeController extends AdminBase
      */
     public function actionPopularCategory($customer)
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         $popularArticles = KnowledgeArticle::getPopularArticles();
 

@@ -15,19 +15,26 @@ use Umbrella\models\Products;
  */
 class BatchController extends  AdminBase
 {
+    /**
+     * @var User
+     */
+    private $user;
 
-    ##############################################################################
-    ##############################      BUTCH        #############################
-    ##############################################################################
+    /**
+     * BatchController constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->user = new User(Admin::CheckLogged());
+    }
 
     /**
      * @return bool
      */
     public function actionExportBatch()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         if(isset($_POST['check_butch']) && $_POST['check_butch'] == 'true'){
 
@@ -238,7 +245,6 @@ class BatchController extends  AdminBase
             }
         }
 
-        //require_once(ROOT . '/views/admin/crm/export/batch.php');
         $this->render('admin/crm/export/batch', compact('user', 'table_th', 'new_array'));
         return true;
     }

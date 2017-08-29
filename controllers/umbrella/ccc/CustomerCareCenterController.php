@@ -12,17 +12,27 @@ use Umbrella\models\Admin;
 class CustomerCareCenterController extends AdminBase
 {
 
+    /**
+     * @var User
+     */
+    private $user;
+
+    /**
+     * CustomerCareCenterController constructor.
+     */
     public function __construct()
     {
         parent::__construct();
         self::checkDenied('adm.ccc', 'controller');
+        $this->user = new User(Admin::CheckLogged());
     }
 
+    /**
+     * @return bool
+     */
     public function actionIndex()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         $this->render('admin/ccc/index', compact('user'));
         return true;

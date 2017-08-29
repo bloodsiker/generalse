@@ -12,16 +12,26 @@ use Umbrella\models\Country;
  */
 class CountryController extends AdminBase
 {
+    /**
+     * @var User
+     */
+    private $user;
+
+    /**
+     * CountryController constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->user = new User(Admin::CheckLogged());
+    }
 
     /**
      * @return bool
      */
     public function actionAddCountry()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         $countryList = Country::getAllCountry();
 
@@ -52,10 +62,7 @@ class CountryController extends AdminBase
      */
     public function actionUpdate($id_country)
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         $countryById = Country::getCountryId($id_country);
 
@@ -85,10 +92,7 @@ class CountryController extends AdminBase
      */
     public function actionDelete($id)
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         if($user->role == 'administrator'){
             Country::deleteCountryById($id);

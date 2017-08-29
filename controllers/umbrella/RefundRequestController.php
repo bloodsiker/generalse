@@ -16,6 +16,10 @@ use Umbrella\models\Warranty;
  */
 class RefundRequestController extends AdminBase
 {
+    /**
+     * @var User
+     */
+    private $user;
 
     /**
      * RefundRequestController constructor.
@@ -24,6 +28,7 @@ class RefundRequestController extends AdminBase
     {
         parent::__construct();
         self::checkDenied('adm.refund_request', 'controller');
+        $this->user = new User(Admin::CheckLogged());
     }
 
     /**
@@ -31,9 +36,7 @@ class RefundRequestController extends AdminBase
      */
     public function actionIndex()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         $countryList = Country::getAllCountry();
 
@@ -61,7 +64,7 @@ class RefundRequestController extends AdminBase
                         $i = 0;
                         while ($row = fgetcsv($input, 1024, ',')) {
 
-                            $options[$i]['id_user'] = $userId;
+                            $options[$i]['id_user'] = $user->id_user;
                             $options[$i]['Request_Country'] = $_POST['Request_Country'];
                             $options[$i]['Request_Type'] = $_POST['Request_Type'];
                             $options[$i]['Requestor_First_Name'] = $_POST['Requestor_First_Name'];
@@ -137,7 +140,7 @@ class RefundRequestController extends AdminBase
                 // Если чекбокс не поставлен - пише данные с формы
 				$arr_error_pn = [];
 				
-                $options['id_user'] = $userId;
+                $options['id_user'] = $user->id_user;
                 $options['Request_Country'] = $_POST['Request_Country'];
                 $options['Request_Type'] = $_POST['Request_Type'];
                 $options['Requestor_First_Name'] = $_POST['Requestor_First_Name'];
@@ -223,11 +226,6 @@ class RefundRequestController extends AdminBase
      */
     public function actionPartNumAjax()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
-
         $partNum = $_REQUEST['pn_number'];
 
         $PartNumber = Products::checkPartNumber($partNum);
@@ -243,11 +241,6 @@ class RefundRequestController extends AdminBase
      */
     public function actionRequestAjax()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
-
        if($_REQUEST['action'] == 'file'){
            $id_request = $_REQUEST['id_request'];
 
@@ -386,17 +379,14 @@ class RefundRequestController extends AdminBase
      */
     public function actionViewRequest()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         $allPartner = Admin::getAllPartner();
         $countryList = Country::getAllCountry();
 
         if($user->role == 'partner'){
 
-            $requestByPartner = Warranty::getRequestByPartner($userId);
+            $requestByPartner = Warranty::getRequestByPartner($user->id_user);
 
             $this->render('admin/refund_request/view_request_partner', compact('user','allPartner', 'countryList', 'requestByPartner'));
 
@@ -405,7 +395,6 @@ class RefundRequestController extends AdminBase
 
             $this->render('admin/refund_request/view_request_admin', compact('user','allPartner', 'countryList', 'allRequest'));
         }
-
         return true;
     }
 
@@ -416,10 +405,7 @@ class RefundRequestController extends AdminBase
      */
     public function actionFilterRequest()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         $allPartner = Admin::getAllPartner();
         $countryList = Country::getAllCountry();
@@ -431,7 +417,7 @@ class RefundRequestController extends AdminBase
 
                 //$allRequest = null;
                 $filter = "";
-                $requestByPartner = Warranty::getRequestByPartner($userId, $filter);
+                $requestByPartner = Warranty::getRequestByPartner($user->id_user, $filter);
             } else {
 
                 $filter = "";
@@ -441,7 +427,7 @@ class RefundRequestController extends AdminBase
                     $end = $_GET['end']. " 23:59";
                     $filter .= " AND gw.date_create_request BETWEEN '$start' AND '$end'";
                 }
-                $requestByPartner = Warranty::getRequestByPartner($userId, $filter);
+                $requestByPartner = Warranty::getRequestByPartner($user->id_user, $filter);
             }
 
             $this->render('admin/refund_request/view_request_partner', compact('user','allPartner', 'countryList', 'requestByPartner'));
@@ -492,12 +478,10 @@ class RefundRequestController extends AdminBase
      */
     public function actionThankYouPage()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         $log = "отправил запрос на списание (Warranty Exception Registration)";
-        Log::addLog($userId, $log);
+        Log::addLog($user->id_user, $log);
 
         $this->render('admin/refund_request/thank_you_page', compact('user'));
         return true;
@@ -506,10 +490,7 @@ class RefundRequestController extends AdminBase
 
     public function actionTest()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         if(isset($_POST['send_request'])){
             //print_r($_FILES);

@@ -12,10 +12,10 @@ use Umbrella\models\Stocks;
  */
 class StockController extends AdminBase
 {
-
-    ##############################################################################
-    ##############################      STOCKS       #############################
-    ##############################################################################
+    /**
+     * @var User
+     */
+    private $user;
 
     /**
      * StockController constructor.
@@ -24,6 +24,7 @@ class StockController extends AdminBase
     {
         parent::__construct();
         self::checkDenied('crm.stocks', 'controller');
+        $this->user = new User(Admin::CheckLogged());
     }
 
     /**
@@ -31,10 +32,7 @@ class StockController extends AdminBase
      */
     public function actionStocks()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         if($user->role == 'partner' || $user->role == 'manager') {
 

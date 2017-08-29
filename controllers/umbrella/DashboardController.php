@@ -22,18 +22,25 @@ class DashboardController extends AdminBase
 {
 
     /**
+     * @var User
+     */
+    private $user;
+
+    /**
+     * DashboardController constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->user = new User(Admin::CheckLogged());
+    }
+
+    /**
      * @return bool
      */
     public function actionIndex()
     {
-        // Проверка доступа
-        self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
-        $userId = Admin::CheckLogged();
-
-        // Обьект юзера
-        $user = new User($userId);
+        $user = $this->user;
 
         $coefficient = new CoefficientKPI(new KPI($user->name_partner, date('Y-m') . '-01', date('Y-m-d')));
 
@@ -98,10 +105,7 @@ class DashboardController extends AdminBase
      */
     public function actionUsers()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         if($user->role != 'administrator-fin') {
             header("Location: /adm/access_denied");
@@ -112,16 +116,14 @@ class DashboardController extends AdminBase
         return true;
     }
 
+
     /**
      * Заявки на выплату
      * @return bool
      */
     public function actionRequestPayment()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         if($user->role != 'administrator-fin') {
             header("Location: /adm/access_denied");
@@ -144,10 +146,7 @@ class DashboardController extends AdminBase
      */
     public function actionUserBalance($id_user)
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         if($user->role != 'administrator-fin') {
             header("Location: /adm/access_denied");
@@ -216,10 +215,7 @@ class DashboardController extends AdminBase
 
     public function actionTask()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         if($user->role != 'administrator-fin') {
             header("Location: /adm/access_denied");
@@ -238,10 +234,8 @@ class DashboardController extends AdminBase
      */
     public  function actionPostPay()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
+        $user = $this->user;
 
-        $user = new User($userId);
         if(isset($_POST['action']) && $_POST['action'] == 'pay'){
             $id_number = Balance::getNumberBalanceByUser($user->id_user);
 
@@ -273,10 +267,7 @@ class DashboardController extends AdminBase
      */
     public  function actionAjaxBalance()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         if($user->role == 'administrator-fin' || $user->role == 'administrator'){
             if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'accept'){
@@ -327,10 +318,7 @@ class DashboardController extends AdminBase
      */
     public function actionAjaxShowInfo()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'show'){
             $section = $_REQUEST['section'];

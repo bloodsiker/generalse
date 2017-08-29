@@ -14,10 +14,10 @@ use Umbrella\models\Products;
  */
 class OrderController extends AdminBase
 {
-
-    ##############################################################################
-    ##############################     ORDERS      ###############################
-    ##############################################################################
+    /**
+     * @var User
+     */
+    private $user;
 
     /**
      * OrderController constructor.
@@ -26,6 +26,7 @@ class OrderController extends AdminBase
     {
         parent::__construct();
         self::checkDenied('crm.orders', 'controller');
+        $this->user = new User(Admin::CheckLogged());
     }
 
     /**
@@ -34,10 +35,8 @@ class OrderController extends AdminBase
      */
     public function actionOrders($filter = "")
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
+        $user = $this->user;
 
-        $user = new User($userId);
         $delivery_address = $user->getDeliveryAddress($user->id_user);
 
         if(isset($_SESSION['error_orders'])){
@@ -180,7 +179,7 @@ class OrderController extends AdminBase
             $filter .= $interval;
             $filter .= $status;
 
-            $allOrders = Orders::getOrdersByPartnerMsSql($user->controlUsers($userId), $filter);
+            $allOrders = Orders::getOrdersByPartnerMsSql($user->controlUsers($user->id_user), $filter);
 
             // Параметры для формирование фильтров
             $user_ids = $user->controlUsers($user->id_user);
@@ -220,14 +219,13 @@ class OrderController extends AdminBase
         return true;
     }
 
+
     /**
      * @return bool
      */
     public function actionOrdersSuccess()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         $arr_error_pn = (isset($_SESSION['error_orders'])) ? $_SESSION['error_orders'] : '';
         $arr_error_text = (isset($_SESSION['error_orders_text'])) ? $_SESSION['error_orders_text'] : '';
@@ -259,7 +257,7 @@ class OrderController extends AdminBase
             $filter .= $interval;
             $filter .= $status;
 
-            $allOrders = Orders::getOrdersByPartnerMsSql($user->controlUsers($userId), $filter);
+            $allOrders = Orders::getOrdersByPartnerMsSql($user->controlUsers($user->id_user), $filter);
 
             // Параметры для формирование фильтров
             $user_ids = $user->controlUsers($user->id_user);
@@ -303,10 +301,6 @@ class OrderController extends AdminBase
      */
     public function actionOrdersPartNumAjax()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
-
         $part_number = $_REQUEST['part_number'];
         $stock = iconv('UTF-8', 'WINDOWS-1251', $_REQUEST['stock']);
         $id_partner = $_REQUEST['id_partner'];
@@ -321,11 +315,12 @@ class OrderController extends AdminBase
     }
 
 
+    /**
+     * @return bool
+     */
     public function actionOrdersAjax()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         $data = $_REQUEST['json'];
         $data_json = json_decode($data, true);
@@ -346,7 +341,6 @@ class OrderController extends AdminBase
         }
 
         $options['site_id'] = $lastId;
-        $options['id_user'] = $userId;
         $options['id_user'] = $data_json['id_partner'];
         $options['so_number'] = iconv('UTF-8', 'WINDOWS-1251', $data_json['service_order']);
         $options['note'] = $note;
@@ -385,10 +379,6 @@ class OrderController extends AdminBase
      */
     public function actionOrdersAction()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
-
         if($_REQUEST['action'] == 'accept'){
             $order_id = $_REQUEST['order_id'];
             $ok = Orders::updateStatusOrders($order_id, 1, NULL);
@@ -442,10 +432,6 @@ class OrderController extends AdminBase
      */
     public function actionShowDetailOrders()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
-
         $order_id = $_REQUEST['order_id'];
         $data = Orders::getShowDetailsOrdersMsSql($order_id);
         $html = "";
@@ -470,9 +456,7 @@ class OrderController extends AdminBase
      */
     public function actionExportOrders()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         $filter = '';
         $start =  isset($_POST['start']) ? $_POST['start'] .' 00:00' : '';

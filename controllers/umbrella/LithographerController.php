@@ -12,6 +12,10 @@ use Umbrella\models\Lithographer;
  */
 class LithographerController extends AdminBase
 {
+    /**
+     * @var User
+     */
+    private $user;
 
     /**
      * LithographerController constructor.
@@ -20,6 +24,7 @@ class LithographerController extends AdminBase
     {
         parent::__construct();
         self::checkDenied('adm.lithographer', 'controller');
+        $this->user = new User(Admin::CheckLogged());
     }
 
     /**
@@ -27,10 +32,8 @@ class LithographerController extends AdminBase
      */
     public  function actionVideo()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
+        $user = $this->user;
 
-        $user = new User($userId);
         $listUsers = Admin::getAllUsers();
 
         // список закрытых статей для пользователя
@@ -55,10 +58,8 @@ class LithographerController extends AdminBase
      */
     public  function actionTips()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
+        $user = $this->user;
 
-        $user = new User($userId);
         $listUsers = Admin::getAllUsers();
 
         // список закрытых статей для пользователя
@@ -84,10 +85,8 @@ class LithographerController extends AdminBase
      */
     public  function actionRules()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
+        $user = $this->user;
 
-        $user = new User($userId);
         $listUsers = Admin::getAllUsers();
 
         // список закрытых статей для пользователя
@@ -113,10 +112,8 @@ class LithographerController extends AdminBase
      */
     public  function actionView($id)
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
+        $user = $this->user;
 
-        $user = new User($userId);
         // список закрытых статей для пользователя
         $listArticlesCloseViewUser = array_column(Lithographer::getArticleCloseViewByIdUser($user->id_user),'id_lithographer');
         if(in_array($id, $listArticlesCloseViewUser)){
@@ -140,11 +137,7 @@ class LithographerController extends AdminBase
      */
     public  function actionForms()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
-
+        $user = $this->user;
 
         if(isset($_POST['add_video'])){
             $options['privilege'] = 'partner';
@@ -255,7 +248,6 @@ class LithographerController extends AdminBase
                 }
             }
         }
-
         return true;
     }
 
@@ -266,10 +258,8 @@ class LithographerController extends AdminBase
      */
     public  function actionList()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
+        $user = $this->user;
 
-        $user = new User($userId);
         $listUsers = Admin::getAllUsers();
 
         if($user->role == 'partner'){
@@ -292,14 +282,8 @@ class LithographerController extends AdminBase
      */
     public function actionEdit($id)
     {
-        // Проверка доступа
-        self::checkAdmin();
+        $user = $this->user;
 
-        // Получаем идентификатор пользователя из сессии
-        $userId = Admin::CheckLogged();
-
-        //Получаем информацию о пользователе из БД
-        $user = new User($userId);
         $listUsers = Admin::getAllUsers();
 
         // Получаем данные о конкретной статье
@@ -308,8 +292,8 @@ class LithographerController extends AdminBase
         $listUserCloseView = array_column(Lithographer::getUsersCloseViewById($id),'id_user');
 
         //Если партнер откроет для редактирование не свою статью, закрываем доступ
-        if($user->role == 'partner'){
-            if($article['id_author'] == $userId && $article['published'] == 0){
+        if($user->role == 'partner') {
+            if($article['id_author'] == $user->id_user && $article['published'] == 0) {
 
             } else {
                header("Location: /adm/access_denied");
@@ -321,7 +305,7 @@ class LithographerController extends AdminBase
 
                 $options['published'] = $article['published'];
 
-            } elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
+            } elseif ($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager') {
 
                 $options['published'] = $_POST['published'];
                 $usersCloseView = $_POST['privilege'];
@@ -352,10 +336,8 @@ class LithographerController extends AdminBase
      */
     public  function actionSearch()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
+        $user = $this->user;
 
-        $user = new User($userId);
         $listUsers = Admin::getAllUsers();
         // список закрытых статей для пользователя
         $listArticlesCloseViewUser = array_column(Lithographer::getArticleCloseViewByIdUser($user->id_user),'id_lithographer');
@@ -378,10 +360,7 @@ class LithographerController extends AdminBase
      */
     public function actionDelete($id)
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         // Получаем данные о конкретной статье
         $article = Lithographer::getContentById($id);
@@ -392,14 +371,13 @@ class LithographerController extends AdminBase
 
         } elseif ($user->role == 'partner') {
 
-            if ($article['id_author'] == $userId && $article['published'] == 0) {
+            if ($article['id_author'] == $user->id_user && $article['published'] == 0) {
                 Lithographer::deleteArticleById($id);
                 header("Location: /adm/lithographer/list");
             } else {
                 header("Location: /adm/access_denied");
             }
         }
-
         return true;
     }
 

@@ -14,14 +14,26 @@ class BranchController extends AdminBase
 {
 
     /**
+     * @var User
+     */
+    private $user;
+
+    /**
+     * BranchController constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->user = new User(Admin::CheckLogged());
+    }
+
+    /**
      * @param $id_branch
      * @return bool
      */
     public function actionView($id_branch)
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         $userListBranch = Branch::getPartnerByBranch($id_branch);
         //Все пользователи которые входят в бранчи
@@ -49,9 +61,7 @@ class BranchController extends AdminBase
      */
     public function actionAddBranch()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         // Обработка формы
         if (isset($_POST['add_branch']) && $_POST['add_branch'] == 'true') {
@@ -79,10 +89,7 @@ class BranchController extends AdminBase
      */
     public function actionDelete($id_branch, $id_user)
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         if($user->role == 'administrator'){
             Branch::deleteUserInBranch($id_user, $id_branch);

@@ -13,10 +13,10 @@ use Umbrella\models\Disassembly;
  */
 class DisassemblyController extends AdminBase
 {
-
-    ##############################################################################
-    ###########################     DISASSEMBLY      #############################
-    ##############################################################################
+    /**
+     * @var User
+     */
+    private $user;
 
     /**
      * DisassemblyController constructor.
@@ -25,6 +25,7 @@ class DisassemblyController extends AdminBase
     {
         parent::__construct();
         self::checkDenied('crm.disassembly', 'controller');
+        $this->user = new User(Admin::CheckLogged());
     }
 
     /**
@@ -33,10 +34,7 @@ class DisassemblyController extends AdminBase
      */
     public function actionDisassembly()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         $partnerList = Admin::getAllPartner();
 
@@ -59,14 +57,11 @@ class DisassemblyController extends AdminBase
      */
     public function actionDisassemblyResult($filter = '')
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         if($user->role == 'partner'){
             $filter = "";
-            $interval = " AND gd.date_create >= DATE(NOW()) - INTERVAL 1 DAY";
+            $interval = " AND gd.date_create >= DATE(NOW()) - INTERVAL 30 DAY";
             if(!empty($_GET['start'])){
                 if(empty($_GET['end'])){
                     $end = date('Y-m-d') . " 23:59";
@@ -78,14 +73,14 @@ class DisassemblyController extends AdminBase
                 $interval = "";
             }
             $filter .= $interval;
-            $listDisassembly = Disassembly::getDisassemblyByPartner($user->controlUsers($userId), $filter);
+            $listDisassembly = Disassembly::getDisassemblyByPartner($user->controlUsers($user->id_user), $filter);
 
             $this->render('admin/crm/disassemble_result_partner', compact('user', 'partnerList', 'listDisassembly'));
 
         } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
 
             $filter = "";
-            $interval = " AND gd.date_create >= DATE(NOW()) - INTERVAL 1 DAY";
+            $interval = " AND gd.date_create >= DATE(NOW()) - INTERVAL 30 DAY";
             $partnerList = Admin::getAllPartner();
 
             if(!empty($_GET['start'])){
@@ -118,19 +113,11 @@ class DisassemblyController extends AdminBase
      */
     public function actionAllDisassembl()
     {
-        // Проверка доступа
-        self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
-        $userId = Admin::CheckLogged();
-
-        // Обьект юзера
-        $user = new User($userId);
+        $user = $this->user;
 
         $listDisassembly = Disassembly::getAllRequest();
 
-
-        require_once(ROOT . '/views/admin/crm/all.php');
+        $this->render('admin/crm/all', compact('user','listDisassembly'));
         return true;
     }
 
@@ -139,13 +126,7 @@ class DisassemblyController extends AdminBase
      */
     public function actionDisassemblyAjax()
     {
-        // Проверка доступа
-        self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
-        $userId = Admin::CheckLogged();
-        // Обьект юзера
-        $user = new User($userId);
+        $user = $this->user;
 
         $data = $_REQUEST['json'];
         $data_json = json_decode($data, true);
@@ -207,14 +188,6 @@ class DisassemblyController extends AdminBase
      */
     public function actionDisassemblyActionAjax()
     {
-        // Проверка доступа
-        self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
-        $userId = Admin::CheckLogged();
-        // Обьект юзера
-        $user = new User($userId);
-
         if($_REQUEST['action'] == 'accept'){
             $decompile_id = $_REQUEST['decompile_id'];
             $ok = Disassembly::updateStatusDisassemblyGM($decompile_id, 1, NULL);
@@ -268,19 +241,10 @@ class DisassemblyController extends AdminBase
      */
     public function actionShowDetailDisassembl()
     {
-        // Проверка доступа
-        self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
-        $userId = Admin::CheckLogged();
-
-        // Обьект юзера
-        $user = new User($userId);
-
         $site_id = $_REQUEST['site_id'];
         $data = Disassembly::getShowDetailsDisassembly($site_id);
         $comment = Disassembly::getShowCommentDisassembly($site_id);
-        require_once (ROOT . '/views/admin/crm/disassemble_show_detailes.php');
+        $this->render('admin/crm/disassemble_show_detailes', compact('user', 'data', 'comment'));
         return true;
     }
 
@@ -291,18 +255,11 @@ class DisassemblyController extends AdminBase
      */
     public function actionExportDisassembly($data)
     {
-        // Проверка доступа
-        self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
-        $userId = Admin::CheckLogged();
-
-        // Обьект юзера
-        $user = new User($userId);
+        $user = $this->user;
 
         if($user->role == 'partner'){
 
-            $listExport =[];
+            $listExport = [];
             $start = '';
             $end = '';
 
@@ -318,7 +275,7 @@ class DisassemblyController extends AdminBase
 
         } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager' ){
 
-            $listExport =[];
+            $listExport = [];
             $start = '';
             $end = '';
 
@@ -340,7 +297,7 @@ class DisassemblyController extends AdminBase
             }
         }
 
-        require_once (ROOT . '/views/admin/crm/export/disassemble.php');
+        $this->render('admin/crm/export/disassemble', compact('user', 'listExport', 'comment'));
         return true;
     }
 

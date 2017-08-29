@@ -11,12 +11,18 @@ use Umbrella\models\ccc\KnowledgeCatalog;
 class ArticleController extends AdminBase
 {
     /**
+     * @var User
+     */
+    private $user;
+
+    /**
      * ArticleController constructor.
      */
     public function __construct()
     {
         parent::__construct();
         self::checkDenied('ccc.tree_knowledge.article', 'controller');
+        $this->user = new User(Admin::CheckLogged());
     }
 
 
@@ -26,9 +32,7 @@ class ArticleController extends AdminBase
      */
     public function actionIndex()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         $listArticles = KnowledgeArticle::getAllArticlesAdmin();
         $listCustomer = KnowledgeCatalog::getCustomerInCategory();
@@ -61,9 +65,7 @@ class ArticleController extends AdminBase
      */
     public function actionEditArticle($id_article)
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         $article = KnowledgeArticle::getArticlesById($id_article);
         $renderOptions = KnowledgeCatalog::subCategoryList(0, $article['id_category']);
@@ -92,10 +94,6 @@ class ArticleController extends AdminBase
      */
     public function actionDeleteArticle($id_article)
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
-
         $ok = KnowledgeArticle::deleteArticleById($id_article);
         if($ok){
             header("Location: " . $_SERVER['HTTP_REFERER']);

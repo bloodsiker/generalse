@@ -18,10 +18,10 @@ use Umbrella\models\Stocks;
  */
 class RequestController extends AdminBase
 {
-
-    ##############################################################################
-    ##############################      Request         #############################
-    ##############################################################################
+    /**
+     * @var User
+     */
+    private $user;
 
     /**
      * RequestController constructor.
@@ -30,6 +30,7 @@ class RequestController extends AdminBase
     {
         parent::__construct();
         self::checkDenied('crm.request', 'controller');
+        $this->user = new User(Admin::CheckLogged());
     }
 
     /**
@@ -38,9 +39,7 @@ class RequestController extends AdminBase
      */
     public function actionIndex($filter = '')
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
         $group = new Group();
 
         if(isset($_SESSION['add_request'])){
@@ -118,9 +117,7 @@ class RequestController extends AdminBase
      */
     public function actionCompletedRequest()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         if($user->role == 'partner'){
 
@@ -161,14 +158,7 @@ class RequestController extends AdminBase
      */
     public function actionRequestImport()
     {
-        // Проверка доступа
-        self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
-        $userId = Admin::CheckLogged();
-
-        // Обьект юзера
-        $user = new User($userId);
+        $user = $this->user;
         $group = new Group();
 
         if(isset($_POST['import_request']) && $_POST['import_request'] == 'true'){
@@ -249,12 +239,8 @@ class RequestController extends AdminBase
                             $options['id'] = $import['id'];
                             $options['status_name'] = iconv('UTF-8', 'WINDOWS-1251', $import['status_name']);
 
-                            //Orders::addReserveOrdersMsSQL($options);
+                            Orders::addReserveOrdersMsSQL($options);
                         }
-
-                        echo "<pre>";
-                        print_r($excelArray);
-
                         Logger::getInstance()->log($user->id_user, ' изменил(а) статусы в Request с excel');
                         header("Location: /adm/crm/request");
                     }
@@ -271,9 +257,7 @@ class RequestController extends AdminBase
      */
     public function actionPricePartNumAjax()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
         $group = new Group();
         $part_number = $_REQUEST['part_number'];
 
@@ -304,10 +288,7 @@ class RequestController extends AdminBase
      */
     public function actionRequestAjax()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         // Редактируем парт номер
         if($_REQUEST['action'] == 'edit_pn'){
@@ -381,10 +362,7 @@ class RequestController extends AdminBase
      */
     public function actionEditStatusFromExcel()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         if(isset($_POST['edit_status_from_excel']) && $_POST['edit_status_from_excel'] == 'true'){
             if(!empty($_FILES['excel_file']['name'])) {
@@ -431,12 +409,8 @@ class RequestController extends AdminBase
      */
     public function actionRequestDelete($id)
     {
-        // Проверка доступа
-        self::checkAdmin();
+        $user = $this->user;
         self::checkDenied('crm.request.delete', 'controller');
-
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
 
         $ok = Orders::deleteRequestMsSQLById($id);
 

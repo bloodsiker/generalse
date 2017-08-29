@@ -10,10 +10,10 @@ use Umbrella\models\Admin;
  */
 class PsrController extends AdminBase
 {
-
-    ##############################################################################
-    ##############################      PSR          #############################
-    ##############################################################################
+    /**
+     * @var User
+     */
+    private $user;
 
     /**
      * PsrController constructor.
@@ -22,6 +22,7 @@ class PsrController extends AdminBase
     {
         parent::__construct();
         self::checkDenied('crm.psr', 'controller');
+        $this->user = new User(Admin::CheckLogged());
     }
 
     /**
@@ -29,9 +30,7 @@ class PsrController extends AdminBase
      */
     public function actionPsr()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         $this->render('admin/crm/psr', compact('user'));
         return true;

@@ -62,7 +62,7 @@
             <div class="row">
                 <table id="goods_data">
                     <caption>Last recording on
-                        <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-1 days') ?> &mdash;
+                        <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-30 days') ?> &mdash;
                         <?= (isset($_GET['end']) && !empty($_GET['end'])) ? $_GET['end'] : date('Y-m-d') ?>
                         <span id="count_refund" class="text-green">(<?php if (isset($listDisassembly)) echo count($listDisassembly) ?>)</span>
                     </caption>
@@ -96,7 +96,7 @@
                                 <td><?=$dis['stockName']?></td>
 								<?php $status = iconv('WINDOWS-1251', 'UTF-8', $info['status_name'])?>
                                 <td class="<?= Umbrella\models\Disassembly::getStatusRequest($status)?>">
-                                    <?php echo ($status == NULL) ? 'Expect' : $status ?>
+                                    <?= ($status == NULL) ? 'Expect' : $status ?>
                                 </td>
                                 <td><?= Umbrella\components\Functions::formatDate($dis['date_create'])?></td>
                                 <td class="action-control">

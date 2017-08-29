@@ -11,15 +11,19 @@ use Umbrella\models\Products;
 
 class BacklogAnalysisController extends AdminBase
 {
+    /**
+     * @var User
+     */
+    private $user;
 
-    ##############################################################################
-    #########################      BacklogAnalysis          ######################
-    ##############################################################################
-
+    /**
+     * BacklogAnalysisController constructor.
+     */
     public function __construct()
     {
         parent::__construct();
         self::checkDenied('crm.backlog', 'controller');
+        $this->user = new User(Admin::CheckLogged());
     }
 
     /**
@@ -28,9 +32,8 @@ class BacklogAnalysisController extends AdminBase
      */
     public function actionIndex()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
+
         $partnerList = Admin::getAllPartner();
 
         $this->render('admin/crm/backlog', compact('user', 'partnerList'));
@@ -42,10 +45,7 @@ class BacklogAnalysisController extends AdminBase
      */
     public function actionExportBacklog()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         if(isset($_POST['check_backlog']) && $_POST['check_backlog'] == 'true'){
 

@@ -11,10 +11,19 @@ use Umbrella\models\ccc\KnowledgeCatalog;
 class CategoryController extends AdminBase
 {
 
+    /**
+     * @var User
+     */
+    private $user;
+
+    /**
+     * CategoryController constructor.
+     */
     public function __construct()
     {
         parent::__construct();
         self::checkDenied('ccc.tree_knowledge.category', 'controller');
+        $this->user = new User(Admin::CheckLogged());
     }
 
     /**
@@ -24,9 +33,7 @@ class CategoryController extends AdminBase
      */
     public function actionCategory($id_category = false)
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         $listCategory = KnowledgeCatalog::getAllCategoriesAdmin(0);
         if(isset($id_category) && $id_category !== false){
@@ -78,9 +85,7 @@ class CategoryController extends AdminBase
      */
     public function actionCategoryEdit($id_category)
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         $categoryInfo = KnowledgeCatalog::getInfoCategoryById($id_category);
 

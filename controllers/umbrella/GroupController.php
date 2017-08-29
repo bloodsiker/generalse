@@ -13,12 +13,18 @@ use Umbrella\models\Stocks;
 class GroupController extends AdminBase
 {
     /**
+     * @var User
+     */
+    private $user;
+
+    /**
      * GroupController constructor.
      */
     public function __construct()
     {
         parent::__construct();
         self::checkDenied('group.view', 'controller');
+        $this->user = new User(Admin::CheckLogged());
     }
 
 
@@ -28,12 +34,9 @@ class GroupController extends AdminBase
     public function actionAddGroup()
     {
         // Проверка доступа
-        self::checkAdmin();
         self::checkDenied('group.add', 'controller');
 
-        // Получаем идентификатор пользователя из сессии
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         if (isset($_POST['add_group']) && $_POST['add_group'] == 'true') {
 
@@ -58,12 +61,9 @@ class GroupController extends AdminBase
     public function actionView($id_group)
     {
         // Проверка доступа
-        self::checkAdmin();
         self::checkDenied('group.view', 'controller');
 
-        // Получаем идентификатор пользователя из сессии
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
         $group = new Group();
 
         $listUsers = Admin::getAllUsers();
@@ -94,11 +94,9 @@ class GroupController extends AdminBase
      */
     public function actionStock($id_group, $section)
     {
-        self::checkAdmin();
         self::checkDenied('group.stock.view', 'controller');
 
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
         $group = new Group();
 
         $allStocks = Stocks::getAllStocks();
@@ -127,11 +125,9 @@ class GroupController extends AdminBase
      */
     public function actionDeleteUser($id_group, $id_user)
     {
-        self::checkAdmin();
         self::checkDenied('group.user.delete', 'controller');
 
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         if($user->role == 'administrator'){
             $ok = GroupModel::deleteUserFromGroup($id_group, $id_user);
@@ -156,11 +152,9 @@ class GroupController extends AdminBase
      */
     public function actionDeleteStock($id)
     {
-        self::checkAdmin();
         self::checkDenied('group.stock.delete', 'controller');
 
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         if($user->role == 'administrator'){
             GroupModel::deleteStockFromGroup($id);
@@ -183,10 +177,8 @@ class GroupController extends AdminBase
      */
     public function actionGroupDenied($id_group, $p_id = null, $sub_id = null)
     {
-        self::checkAdmin();
         //self::checkDenied('user.denied', 'controller');
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         $group = new Group();
         // Список страниц

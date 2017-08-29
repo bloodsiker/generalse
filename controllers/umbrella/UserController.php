@@ -19,12 +19,18 @@ use Umbrella\models\Weekend;
 class UserController extends AdminBase
 {
     /**
+     * @var User
+     */
+    private $user;
+
+    /**
      * UserController constructor.
      */
     public function __construct()
     {
         parent::__construct();
         self::checkDenied('adm.users', 'controller');
+        $this->user = new User(Admin::CheckLogged());
     }
 
 
@@ -33,10 +39,7 @@ class UserController extends AdminBase
      */
     public function actionIndex()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         $listUsers = Admin::getAllUsers();
 
@@ -62,13 +65,10 @@ class UserController extends AdminBase
      */
     public function actionUserControl($id_user)
     {
-        self::checkAdmin();
         self::checkDenied('user.control', 'controller');
 
-        // Получаем идентификатор пользователя из сессии
-        $userId = Admin::CheckLogged();
-        // Обьект юзера
-        $user = new User($userId);
+        $user = $this->user;
+
         $listUsers = Admin::getAllUsers();
         $listControlUsers = Admin::getControlUsersId($id_user);
 
@@ -80,7 +80,7 @@ class UserController extends AdminBase
             }
         }
 
-        $this->render('admin/users/user_control', compact('user', 'listUsers', 'listControlUsers'));
+        $this->render('admin/users/user_control', compact('user', 'id_user', 'listUsers', 'listControlUsers'));
         return true;
     }
 
@@ -92,10 +92,7 @@ class UserController extends AdminBase
      */
     public function actionUserControlDelete($id_user, $control_user_id)
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         if($user->role == 'administrator'){
             Admin::deleteUserControl($id_user, $control_user_id);
@@ -115,12 +112,9 @@ class UserController extends AdminBase
      */
     public function actionAddUser()
     {
-        self::checkAdmin();
         self::checkDenied('user.add', 'controller');
 
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         $roleList = Admin::getRoleList();
         $branchList = Branch::getBranchList();
@@ -154,7 +148,7 @@ class UserController extends AdminBase
                     }
                     if($id_user){
                         $log = "добавил нового пользователя " . $options['name_partner'];
-                        Log::addLog($userId, $log);
+                        Log::addLog($user->id_user, $log);
                         // Перенаправляем пользователя на страницу юзеров
                         header("Location: /adm/users");
                     }
@@ -190,11 +184,9 @@ class UserController extends AdminBase
      */
     public function actionUpdate($id)
     {
-        self::checkAdmin();
         self::checkDenied('user.edit', 'controller');
 
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         $roleList = Admin::getRoleList();
         $countryList = Country::getAllCountry();
@@ -228,7 +220,7 @@ class UserController extends AdminBase
 
                     if($ok){
                         $log = "редактировал учетку пользователя " . $userInfo['name_partner'];
-                        Log::addLog($userId, $log);
+                        Log::addLog($user->id_user, $log);
                         // Перенаправляем пользователя на страницу юзеров
                         header("Location: /adm/users");
                     }
@@ -246,7 +238,7 @@ class UserController extends AdminBase
 
                     if($ok){
                         $log = "изменил пароль от учетки пользователя " . $userInfo['name_partner'];
-                        Log::addLog($userId, $log);
+                        Log::addLog($user->id_user, $log);
 
                         header("Location: /adm/users");
                     }
@@ -266,10 +258,7 @@ class UserController extends AdminBase
      */
     public function actionUserWeekend($id_user)
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         if($user->role == 'partner' || $user->role == 'manager'){
 
@@ -306,10 +295,7 @@ class UserController extends AdminBase
      */
     public function actionUserWeekendUpdate($id)
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         if($user->role == 'partner' || $user->role == 'manager'){
 
@@ -343,10 +329,7 @@ class UserController extends AdminBase
      */
     public function actionUserWeekendDelete($id)
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         // Получаем данные о конкретной пользователе
         $userInfo = Admin::getAdminById($id);
@@ -371,12 +354,9 @@ class UserController extends AdminBase
      */
     public function actionDelete($id)
     {
-        self::checkAdmin();
         self::checkDenied('user.delete', 'controller');
 
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         // Получаем данные о конкретной пользователе
         $userInfo = Admin::getAdminById($id);
@@ -384,7 +364,7 @@ class UserController extends AdminBase
         if($user->role == 'administrator' || $user->role == 'administrator-fin'){
             Admin::deleteUserById($id);
             $log = "удалил учетку пользователя " . $userInfo['name_partner'];
-            Log::addLog($userId, $log);
+            Log::addLog($user->id_user, $log);
         } else {
             echo "<script>alert('У вас нету прав на удаление пользователя')</script>";
         }
@@ -408,12 +388,9 @@ class UserController extends AdminBase
     public function actionUserDenied($id_user, $p_id = null, $sub_id = null)
     {
         // Проверка доступа
-        self::checkAdmin();
         self::checkDenied('user.denied', 'controller');
         // Получаем идентификатор пользователя из сессии
-        $userId = Admin::CheckLogged();
-        // Обьект юзера
-        $user = new User($userId);
+        $user = $this->user;
 
         $user_check = new User($id_user);
         // Список страниц

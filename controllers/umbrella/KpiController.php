@@ -16,6 +16,10 @@ use Umbrella\models\ProblemData;
  */
 class KpiController extends AdminBase
 {
+    /**
+     * @var User
+     */
+    private $user;
 
     /**
      * KpiController constructor.
@@ -24,6 +28,7 @@ class KpiController extends AdminBase
     {
         parent::__construct();
         self::checkDenied('adm.kpi', 'controller');
+        $this->user = new User(Admin::CheckLogged());
     }
 
     /**
@@ -31,12 +36,7 @@ class KpiController extends AdminBase
      */
     public function actionIndex()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
-
-        //$all = Data::FTF_30_Days('GS Fine Service', '2016-10-00', '2016-11-02');
+        $user = $this->user;
 
         if($user->role == 'partner'){
 
@@ -60,11 +60,8 @@ class KpiController extends AdminBase
      */
     public function actionUsage()
     {
-        self::checkAdmin();
         self::checkDenied('kpi.usage', 'controller');
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         if($user->role == 'partner'){
 
@@ -110,12 +107,9 @@ class KpiController extends AdminBase
      */
     public function actionImport()
     {
-        self::checkAdmin();
         self::checkDenied('kpi.import', 'controller');
 
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         if($user->role == 'partner'){
 
@@ -279,10 +273,8 @@ class KpiController extends AdminBase
      */
     public function actionResult()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
+        $user = $this->user;
 
-        $user = new User($userId);
         $start = $_GET['start'];
         $end = $_GET['end'];
         if($end == ''){
@@ -340,10 +332,7 @@ class KpiController extends AdminBase
      */
     public function actionShowProblem()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         $partner = $_REQUEST['partner'];
         $kpi = $_REQUEST['kpi'];

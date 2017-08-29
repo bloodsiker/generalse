@@ -14,10 +14,10 @@ use Umbrella\models\Returns;
  */
 class ReturnController extends AdminBase
 {
-
-    ##############################################################################
-    ##############################      RETURNS       ############################
-    ##############################################################################
+    /**
+     * @var User
+     */
+    private $user;
 
     /**
      * ReturnController constructor.
@@ -26,6 +26,7 @@ class ReturnController extends AdminBase
     {
         parent::__construct();
         self::checkDenied('crm.returns', 'controller');
+        $this->user = new User(Admin::CheckLogged());
     }
 
     /**
@@ -33,10 +34,8 @@ class ReturnController extends AdminBase
      */
     public function actionReturns()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
+        $user = $this->user;
 
-        $user = new User($userId);
         $partnerList = Admin::getAllPartner();
 
         $arr_error_return = (isset($_SESSION['error_return'])) ? $_SESSION['error_return'] : '';
@@ -72,10 +71,7 @@ class ReturnController extends AdminBase
 
     public function actionReturnsAjax()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         //
         if($_REQUEST['action'] == 'update'){
@@ -135,14 +131,7 @@ class ReturnController extends AdminBase
      */
     public function actionImportReturns()
     {
-        // Проверка доступа
-        self::checkAdmin();
-
-        // Получаем идентификатор пользователя из сессии
-        $userId = Admin::CheckLogged();
-
-        // Обьект юзера
-        $user = new User($userId);
+        $user = $this->user;
 
         if(isset($_POST['send_excel_file']) && $_REQUEST['send_excel_file'] == 'true'){
             if(!empty($_FILES['excel_file']['name'])) {
@@ -200,10 +189,7 @@ class ReturnController extends AdminBase
      */
     public function actionFilterReturns($filter = "")
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         $partnerList = Admin::getAllPartner();
 
@@ -246,10 +232,7 @@ class ReturnController extends AdminBase
      */
     public function actionExportReturns($data)
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         if($user->role == 'partner'){
 

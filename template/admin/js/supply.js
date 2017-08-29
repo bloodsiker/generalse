@@ -166,7 +166,7 @@ $(document).on('click', '.supply-bind-gm', function(e) {
             if(response == 200){
 
                 $('[data-siteid="' + site_id + '"]').find('.td-bind-gm').text('success').css('color', 'green');
-                $('[data-siteid="' + site_id + '"]').find('.status-supply').text('Подтверждена').addClass('green');
+                //$('[data-siteid="' + site_id + '"]').find('.status-supply').text('Подтверждена').addClass('green');
 
             } else {
                 alert('Ошибка! Не удалось привязать к GM!');

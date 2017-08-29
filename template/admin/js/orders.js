@@ -316,7 +316,7 @@ $(document).on('click', '.order-accept', function(e) {
             var obj = JSON.parse(response);
             if(obj.ok == 1){
                 self.parents('td').parents('tr').addClass("blue");
-                self.parents('td').parents('tr').find('td').eq(6).removeClass().addClass(obj.class).text(obj.text);
+                self.parents('td').parents('tr').find('td').eq(7).removeClass().addClass(obj.class).text(obj.text);
                 self.parents('td').find('a').remove();
             } else {
                 alert(obj.error);
@@ -360,7 +360,7 @@ $(document).on('click', '.order-dismiss', function(e) {
                 console.log((response));
                 var obj = JSON.parse(response);
                 if(obj.ok == 1){
-                    self.parents('td').parents('tr').find('td').eq(6).removeClass().addClass(obj.class).text(obj.text);
+                    self.parents('td').parents('tr').find('td').eq(7).removeClass().addClass(obj.class).text(obj.text);
                     self.parents('td').find('a').remove();
                     $('.dismiss-container').remove();
                 } else {
@@ -391,7 +391,7 @@ $(document).on('click', '.order-return', function(e) {
             var obj = JSON.parse(response);
             if(obj.ok == 1){
                 self.parents('td').parents('tr').addClass("blue");
-                self.parents('td').parents('tr').find('td').eq(6).removeClass().addClass(obj.class).text(obj.text);
+                self.parents('td').parents('tr').find('td').eq(7).removeClass().addClass(obj.class).text(obj.text);
                 self.parents('td').find('a').remove();
             } else {
                 alert(obj.error);

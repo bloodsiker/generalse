@@ -15,10 +15,10 @@ use Umbrella\models\Products;
  */
 class OtherRequestController extends AdminBase
 {
-
-    ##############################################################################
-    #########################      Other Request         #########################
-    ##############################################################################
+    /**
+     * @var User
+     */
+    private $user;
 
     /**
      * OtherRequestController constructor.
@@ -27,6 +27,7 @@ class OtherRequestController extends AdminBase
     {
         parent::__construct();
         self::checkDenied('crm.other.request', 'controller');
+        $this->user = new User(Admin::CheckLogged());
     }
 
     /**
@@ -34,9 +35,7 @@ class OtherRequestController extends AdminBase
      */
     public function actionIndex()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         $delivery_address = $user->getDeliveryAddress($user->id_user);
 
@@ -74,10 +73,7 @@ class OtherRequestController extends AdminBase
      */
     public function actionRequestImport()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-
-        $user = new User($userId);
+        $user = $this->user;
 
         if(isset($_POST['import_request']) && $_POST['import_request'] == 'true'){
             if(!empty($_FILES['excel_file']['name'])) {
@@ -137,9 +133,7 @@ class OtherRequestController extends AdminBase
      */
     public function actionRequestAjax()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         // Редактируем price
         if ($_REQUEST['action'] == 'edit_price') {

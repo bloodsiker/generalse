@@ -16,10 +16,10 @@ use Umbrella\models\Supply;
  */
 class SupplyController extends AdminBase
 {
-
-    ##############################################################################
-    ##############################      Supply       #############################
-    ##############################################################################
+    /**
+     * @var User
+     */
+    private $user;
 
     /**
      * SupplyController constructor.
@@ -28,6 +28,7 @@ class SupplyController extends AdminBase
     {
         parent::__construct();
         self::checkDenied('crm.supply', 'controller');
+        $this->user = new User(Admin::CheckLogged());
     }
 
     /**
@@ -36,9 +37,7 @@ class SupplyController extends AdminBase
      */
     public function actionSupply()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         if(isset($_SESSION['error_supply'])){
             $supply_error_part = $_SESSION['error_supply'];
@@ -128,9 +127,7 @@ class SupplyController extends AdminBase
      */
     public function actionImportAddParts()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
+        $user = $this->user;
 
         if (isset($_POST['add_parts_supply']) && $_POST['add_parts_supply'] == 'true') {
             if (!empty($_FILES['excel_file']['name'])) {
@@ -195,12 +192,8 @@ class SupplyController extends AdminBase
      */
     public function actionSupplyAjax()
     {
-        // Проверка доступа
-        self::checkAdmin();
+        $user = $this->user;
 
-        // Получаем идентификатор пользователя из сессии
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
         $group = new Group();
         // Получаем массив с site_id
         $json = json_decode($_REQUEST['json'], true);
@@ -238,7 +231,7 @@ class SupplyController extends AdminBase
             Supply::updateStock($item['id'], $stock);
         }
         Supply::updateCommand($site_idS, 1);
-        Logger::getInstance()->log($userId, 'в поставках нажал Accept');
+        Logger::getInstance()->log($user->id_user, 'в поставках нажал Accept');
         return true;
     }
 
@@ -248,10 +241,6 @@ class SupplyController extends AdminBase
      */
     public function actionShowDetailSupply()
     {
-        self::checkAdmin();
-        $userId = Admin::CheckLogged();
-        $user = new User($userId);
-
         $site_id = $_REQUEST['site_id'];
         $data = Supply::getShowDetailsSupply($site_id);
         //print_r($data);
