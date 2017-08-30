@@ -37,7 +37,7 @@ class OtherRequestController extends AdminBase
     {
         $user = $this->user;
 
-        $delivery_address = $user->getDeliveryAddress($user->id_user);
+        $delivery_address = $user->getDeliveryAddress();
 
         if(isset($_POST['add_request']) && $_POST['add_request'] == 'true'){
             $options['id_user'] = $user->id_user;

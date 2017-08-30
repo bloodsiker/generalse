@@ -185,9 +185,9 @@ class User
      * @param $id_user
      * @return array
      */
-    public function getDeliveryAddress($id_user)
+    public function getDeliveryAddress()
     {
-        $delivery_address = DeliveryAddress::getAddressByPartner($id_user);
+        $delivery_address = DeliveryAddress::getAddressByPartner($this->id_user);
         return array_column($delivery_address, 'address');
     }
 

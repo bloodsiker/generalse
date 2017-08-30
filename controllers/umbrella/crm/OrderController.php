@@ -37,7 +37,7 @@ class OrderController extends AdminBase
     {
         $user = $this->user;
 
-        $delivery_address = $user->getDeliveryAddress($user->id_user);
+        $delivery_address = $user->getDeliveryAddress();
 
         if(isset($_SESSION['error_orders'])){
             unset($_SESSION['error_orders']);

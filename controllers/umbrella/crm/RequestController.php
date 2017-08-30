@@ -51,7 +51,7 @@ class RequestController extends AdminBase
 
         $partnerList = Admin::getAllPartner();
         $order_type = Orders::getAllOrderTypes();
-        $delivery_address = $user->getDeliveryAddress($user->id_user);
+        $delivery_address = $user->getDeliveryAddress();
         $arrayPartNumber = $this->partArray();
 
         if(isset($_POST['add_request']) && $_POST['add_request'] == 'true'){
