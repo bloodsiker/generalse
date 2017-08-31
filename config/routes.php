@@ -94,6 +94,7 @@ return array(
 
 
     /*********** REQUEST  ***********/
+    'adm/crm/request/list_analog' => 'umbrella/crm/Request@listAnalog',
     'adm/crm/request/request_ajax' => 'umbrella/crm/Request@requestAjax',
     'adm/crm/request/price_part_ajax' => 'umbrella/crm/Request@pricePartNumAjax',
     'adm/crm/request/delete/([0-9]+)' => 'umbrella/crm/Request@requestDelete/$1',

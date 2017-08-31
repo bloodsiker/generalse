@@ -1,6 +1,8 @@
 // открыть окно добавления корзины
 $('body').on('click', '#add-request-button', function() {
     $('.name-product').text('');
+    $('.pn-analog').text('');
+    $(".group-stocks").addClass('hide');
     $('#add-request-modal form')[0].reset();
     $('#add-request-modal').foundation('open');
 });
@@ -8,6 +10,8 @@ $('body').on('click', '#add-request-button', function() {
 // модальное окно (узнать цену по парт номеру)
 $('body').on('click', '#price-button', function() {
     $('.name-product').text('');
+    $('.pn-analog').text('');
+    $(".group-stocks").addClass('hide');
     $('#price-modal form')[0].reset();
     $('#price-modal').foundation('open');
 });
@@ -30,15 +34,23 @@ $('[name="part_number"]').keyup(function(e) {
                 $("[name='part_number']").removeClass('error_part');
                 $('.name-product').text(obj.mName).css('color', '#4CAF50');
                 $("[name='price']").val(obj.price);
-                $(".group-stocks").removeClass('hide');
-                $('.name-stock').text(obj.stock).css('color', '#4CAF50');
-                $("[name='quantity']").val(obj.quantity);
+                if(obj.in_stock == 1){
+                    $(".group-stocks").removeClass('hide');
+                    $('.name-stock').text(obj.stock).css('color', '#4CAF50');
+                    $("[name='quantity']").val(obj.quantity);
+                } else {
+                    $(".group-stocks").addClass('hide');
+                }
+                if(obj.is_analog == 1){
+                    $('.pn-analog').text(obj.analog);
+                }
             } else {
                 $('.name-product').text('not found').css('color', 'red');
                 $("[name='price']").val('0');
                 $(".group-stocks").addClass('hide');
                 $('.name-stock').text('');
                 $("[name='quantity']").val('');
+                $('.pn-analog').text('');
             }
         }
     });
@@ -69,6 +81,21 @@ $('#import-edit-status-form').submit(function(e) {
         return false;
     } else {
         $('#import-edit-status-form').find('button').prop('disabled', true);
+        $('#wait').removeClass('hide');
+        setTimeout(function () {
+            e.target.submit()
+        }, 3000);
+    }
+});
+
+
+// Импорт парт аналогов
+$('#import-analog-form').submit(function(e) {
+    e.preventDefault();
+    if ($('#import-analog-form input').hasClass('is-invalid-input')) { // проверка на валидность
+        return false;
+    } else {
+        $('#import-analog-form').find('button').prop('disabled', true);
         $('#wait').removeClass('hide');
         setTimeout(function () {
             e.target.submit()
@@ -140,6 +167,7 @@ $(document).on('click', '#send-order-so', function(e) {
     });
 });
 
+
 // Чистим название парт номера
 $(document).on('click', '.clear_goods_name', function(e) {
     e.preventDefault();
@@ -185,6 +213,45 @@ $(document).on('click', '#send-order-status', function(e) {
                 $('[data-id="' + id_order + '"]').find('.order_status').text(order_status).css('color', 'green');
                 $('#edit-status form')[0].reset();
                 $('#edit-status').foundation('close');
+            } else {
+                alert('Ошибка! Не удалось обновить запись!');
+            }
+        }
+    });
+});
+
+
+
+// Редактируем парт номер и аналог
+var id_record = null;
+$('#goods_data').on('click', '.edit-analog', function(e) {
+    e.preventDefault();
+    $('#edit-analog').foundation('open');
+    var r_pn = $(this).parent('td').parent('tr').find('.r_part').text();
+    var r_analog = $(this).parent('td').parent('tr').find('.r_analog').text();
+    $("#r_pn").val(r_pn.trim());
+    $("#r_analog").val(r_analog.trim());
+    id_record = $(this).parent('td').parent('tr').data('id');
+    console.log(r_pn);
+});
+//Вносим изменения в модальном окне
+$(document).on('click', '#send-pn-analog', function(e) {
+    e.preventDefault();
+    var r_pn = $("#r_pn").val();
+    var r_analog = $("#r_analog").val();
+    var data = "action=edit_pn_analog&id_record=" + id_record + "&part_number=" + r_pn + "&part_analog=" + r_analog;
+
+    $.ajax({
+        url: "/adm/crm/request/request_ajax",
+        type: "POST",
+        data: data,
+        cache: false,
+        success: function (response) {
+            if(response == 200){
+                $('[data-id="' + id_record + '"]').find('.r_part').text(r_pn).css('color', 'green');
+                $('[data-id="' + id_record + '"]').find('.r_analog').text(r_analog).css('color', 'green');
+                $('#edit-analog form')[0].reset();
+                $('#edit-analog').foundation('close');
             } else {
                 alert('Ошибка! Не удалось обновить запись!');
             }

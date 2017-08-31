@@ -218,6 +218,34 @@ class ImportExcel
 
 
     /**
+     * Импорт парт аналогов
+     * @param $file
+     * @return array
+     */
+    public static function importPartNumberAnalog($file)
+    {
+        include_once 'PHPExcel/Classes/PHPExcel/IOFactory.php';
+
+        $inputFileName = $_SERVER['DOCUMENT_ROOT'] . $file;
+        $objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
+
+        $sheetData = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);
+
+        // Убираем нулевой елемент массива - заголовки
+        $newArray = array_splice($sheetData, 1);
+        // Формируем новый массив с ассоциативныи ключами
+        $pushArray = [];
+        $i = 0;
+        foreach($newArray as $data){
+            $pushArray[$i]['part_number'] = $data['A'];
+            $pushArray[$i]['part_analog'] = $data['B'];
+            $i++;
+        }
+        return $pushArray;
+    }
+
+
+    /**
      * Импорт с раздела Batch
      * @param $file
      * @return array

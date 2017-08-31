@@ -43,6 +43,10 @@
                                 <?php endif;?>
 
                                 <a href="/adm/crm/request/completed" class="button primary tool"><i class="fi-check"></i> Completed request</a>
+
+                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.analog', 'view')): ?>
+                                    <a href="/adm/crm/request/list_analog" class="button primary tool"><i class="fi-list"></i> Analog</a>
+                                <?php endif;?>
                             </div>
                             <div class="medium-3 small-12 columns form">
                                 <input type="text" id="goods_search" class="search-input" placeholder="Search..." name="search">
@@ -55,8 +59,15 @@
         <!-- body -->
         <div class="body-content checkout">
             <div class="row">
-                <?php if(isset($request_message) && $request_message != ''):?>
-                    <div class="alert-success" style="margin: 0px auto 10px;"><?=$request_message?></div>
+                <?php if(isset($request_message['add_request']) && $request_message['add_request'] != ''):?>
+                    <div class="medium-12 small-12 columns" style="text-align: center">
+                        <div class="alert-success" style="margin: 0px auto 10px;"><?=$request_message['add_request']?></div>
+                    </div>
+                <?php endif;?>
+                <?php if(isset($request_message['replace_by_analog']) && $request_message['replace_by_analog'] != ''):?>
+                    <div class="medium-12 small-12 columns" style="text-align: center">
+                        <div class="alert-success" style="margin: 0px auto 10px;"><?=$request_message['replace_by_analog']?></div>
+                    </div>
                 <?php endif;?>
                 <?php if($user->role == 'partner'):?>
                 <table id="goods_data">
@@ -218,6 +229,7 @@
             </div>
             <div class="medium-12 small-12 columns">
                 <label>Part Number <span style="color: #4CAF50;" class="name-product"></span></label>
+                <span style="color: orange;" class="pn-analog"></span>
                 <input type="text" class="required" name="part_number" required>
             </div>
             <div class="medium-12 small-12 columns">
