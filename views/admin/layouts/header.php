@@ -53,7 +53,7 @@
                 <?php endif; ?>
 
                 <?php if (Umbrella\app\AdminBase::checkDenied('adm.kpi', 'view')): ?>
-                    <li><a href="/adm/kpi" class="<?= Umbrella\components\Url::IsActive(['/kpi', '/result'], 'active') ?>">KPI</a></li>
+                    <li><a href="/adm/kpi" class="<?= Umbrella\components\Url::IsActive(['/adm/kpi', '/adm/result'], 'active') ?>">KPI</a></li>
                 <?php endif; ?>
 
                 <?php if (Umbrella\app\AdminBase::checkDenied('adm.refund_request', 'view')): ?>

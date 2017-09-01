@@ -251,3 +251,10 @@ Main Components
     border-radius: 4px;
     font-size: 13px;
 }
+
+.ccc-kpi td:not(:first-child){
+    text-align: center;
+}
+.hover-pointer:hover {
+    cursor: pointer;
+}

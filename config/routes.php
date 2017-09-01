@@ -84,6 +84,10 @@ return array(
     'adm/ccc/tree_knowledge/article/edit/([a-z0-9-]+)' => 'umbrella/ccc/Article@editArticle/$1',
     'adm/ccc/tree_knowledge/articles' => 'umbrella/ccc/Article@index',
 
+    'adm/ccc/kpi/date-([a-z0-9-_?&]+)' => 'umbrella/ccc/Kpi@index/$1',
+    'adm/ccc/kpi/import-kpi' => 'umbrella/ccc/Kpi@importKpi',
+    'adm/ccc/kpi' => 'umbrella/ccc/Kpi@index',
+
     'adm/ccc' => 'umbrella/ccc/CustomerCareCenter@index',
 
 

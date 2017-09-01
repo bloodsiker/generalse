@@ -392,6 +392,73 @@ class ImportExcel
         return $pushArray;
     }
 
+
+    /**
+     * Импорт в CCC KPI
+     * @param $file
+     * @return array
+     */
+    public static function importCCCKpi($file)
+    {
+        include_once 'PHPExcel/Classes/PHPExcel/IOFactory.php';
+
+        $inputFileName = $_SERVER['DOCUMENT_ROOT'] . $file;
+        $objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
+
+        $sheetData = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);
+
+        // Убираем нулевой елемент массива - заголовки
+        //$newArray = array_splice($sheetData, 1);
+        $newArray = $sheetData;
+        // Формируем новый массив с ассоциативныи ключами
+        $pushArray = [];
+        $pushArray[0]['name_manager'] = $newArray[1]['B'];
+        $pushArray[0]['out_call'] = $newArray[2]['B'];
+        $pushArray[0]['inc_call'] = $newArray[3]['B'];
+        $pushArray[0]['inc_call_BY'] = $newArray[4]['B'];
+        $pushArray[0]['inc_call_F1'] = $newArray[5]['B'];
+        $pushArray[0]['inc_call_rate'] = intval($newArray[8]['B']);
+        $pushArray[0]['avg_talk_time'] = floatval(str_replace(',', '.', $newArray[9]['B']));
+        $pushArray[0]['call_miss'] = $newArray[10]['B'];
+        $pushArray[0]['completed_map'] = $newArray[11]['B'];
+        $pushArray[0]['created_at'] = $newArray[12]['B'];
+
+        $pushArray[1]['name_manager'] = $newArray[1]['C'];
+        $pushArray[1]['out_call'] = $newArray[2]['C'];
+        $pushArray[1]['inc_call'] = $newArray[3]['C'];
+        $pushArray[1]['inc_call_BY'] = $newArray[4]['C'];
+        $pushArray[1]['inc_call_F1'] = $newArray[5]['C'];
+        $pushArray[1]['inc_call_rate'] = intval($newArray[8]['C']);
+        $pushArray[1]['avg_talk_time'] = floatval(str_replace(',', '.', $newArray[9]['C']));
+        $pushArray[1]['call_miss'] = $newArray[10]['C'];
+        $pushArray[1]['completed_map'] = $newArray[11]['C'];
+        $pushArray[1]['created_at'] = $newArray[12]['C'];
+
+        $pushArray[2]['name_manager'] = $newArray[1]['D'];
+        $pushArray[2]['out_call'] = $newArray[2]['D'];
+        $pushArray[2]['inc_call'] = $newArray[3]['D'];
+        $pushArray[2]['inc_call_BY'] = $newArray[4]['D'];
+        $pushArray[2]['inc_call_F1'] = $newArray[5]['D'];
+        $pushArray[2]['inc_call_rate'] = intval($newArray[8]['D']);
+        $pushArray[2]['avg_talk_time'] = floatval(str_replace(',', '.', $newArray[9]['D']));
+        $pushArray[2]['call_miss'] = $newArray[10]['D'];
+        $pushArray[2]['completed_map'] = $newArray[11]['D'];
+        $pushArray[2]['created_at'] = $newArray[12]['D'];
+
+        $pushArray[3]['name_manager'] = $newArray[1]['E'];
+        $pushArray[3]['out_call'] = $newArray[2]['E'];
+        $pushArray[3]['inc_call'] = $newArray[3]['E'];
+        $pushArray[3]['inc_call_BY'] = $newArray[4]['E'];
+        $pushArray[3]['inc_call_F1'] = $newArray[5]['E'];
+        $pushArray[3]['inc_call_rate'] = intval($newArray[8]['E']);
+        $pushArray[3]['avg_talk_time'] = floatval(str_replace(',', '.', $newArray[9]['E']));
+        $pushArray[3]['call_miss'] = $newArray[10]['E'];
+        $pushArray[3]['completed_map'] = $newArray[11]['E'];
+        $pushArray[3]['created_at'] = $newArray[12]['E'];
+
+        return $pushArray;
+    }
+
 }
 
 //$ddd = ImportExcel::importPurchase(true);
