@@ -142,7 +142,7 @@
                             <th>Partner</th>
                             <th>Partner status</th>
                             <th>Part Number</th>
-                            <th>Part Description</th>
+                            <th class="sort">Part Description</th>
                             <th>Subtype</th>
                             <th>SO Number</th>
                             <th>Price</th>

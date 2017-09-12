@@ -29,7 +29,7 @@
                             <th>Активность</th>
                             <th>Доступы</th>
                             <th>Управление <br> пользователями</th>
-                            <th width="100px">Action</th>
+                            <th width="150px">Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -61,6 +61,12 @@
 
                                             <?php if (Umbrella\app\AdminBase::checkDenied('user.edit', 'view')): ?>
                                                 <a href="/adm/user/update/<?=$userI['id_user']?>" class="button no-margin small"><i class="fi-pencil"></i></a>
+                                            <?php endif; ?>
+
+                                            <?php if (Umbrella\app\AdminBase::checkDenied('user.lock', 'view')): ?>
+                                                <button data-userid="<?=$userI['id_user']?>" class="button no-margin small <?= $userI['is_active'] == 1 ? 'green' : 'red'?>">
+                                                    <i class="fi-<?= $userI['is_active'] == 1 ? 'unlock' : 'lock'?>"></i>
+                                                </button>
                                             <?php endif; ?>
                                         <?php endif; ?>
                                     </td>

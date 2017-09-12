@@ -576,3 +576,14 @@ footer {
   padding: 5px 10px;
   margin: 20px auto;
 }
+
+.umbrella-alert{
+  position: fixed;
+  top: 5px;
+  right: 5px;
+  background: #d64747;
+  color: #fff;
+  padding: 15px 40px;
+  border: 2px solid #fff;
+  z-index: 9999;
+}

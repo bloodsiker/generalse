@@ -32,16 +32,21 @@ class AdminController extends AdminBase
                 echo json_encode($errors);
             } else {
                 //Если данные правильные, запоминаем пользователя в сессию
-                Admin::auth($userId);
                 $user = new User($userId);
+                if($user->is_active == 1){
+                    Admin::auth($userId);
 
-                Logger::getInstance()->log($userId, 'вошел(а) в кабинет');
+                    Logger::getInstance()->log($userId, 'вошел(а) в кабинет');
 
-                //Перенаправляем пользователя в закрытую часть – кабинет
-                //header("Location: /adm/kpi");
-                $succusse['log'] = $user->login_url;
-                $succusse['code'] = 2;
-                echo json_encode($succusse);
+                    //Перенаправляем пользователя в закрытую часть – кабинет
+                    $succusse['log'] = $user->login_url;
+                    $succusse['code'] = 2;
+                    echo json_encode($succusse);
+                } elseif ($user->is_active == 0) {
+                    $errors['log'] = '';
+                    $errors['code'] = 3;
+                    echo json_encode($errors);
+                }
             }
         }
         return true;

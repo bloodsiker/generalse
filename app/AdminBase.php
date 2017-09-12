@@ -39,6 +39,7 @@ abstract class AdminBase extends Controller
         //die('Доступ закрыт');
     }
 
+
     /**
      * проверяем, и запрещаем посещать пользователю закрытые разделы
      * @param $section
@@ -48,7 +49,14 @@ abstract class AdminBase extends Controller
     public static function checkDenied($section, $param = 'view')
     {
         $adminId = Admin::checkLogged();
-        $denied = new UserDenied(new User($adminId));
+        $user = new User($adminId);
+
+        if($user->is_active == 0) {
+            unset($_SESSION['user']);
+            header('Location: /');
+        }
+
+        $denied = new UserDenied($user);
         if($param == 'view'){
             return $denied->checkUserInDeniedList($section, 'slug');
         } elseif ($param == 'controller'){

@@ -1,3 +1,6 @@
+
+$('table').tablesort();
+
 // открыть окно добавления корзины
 $('body').on('click', '#add-request-button', function() {
     $('.name-product').text('');

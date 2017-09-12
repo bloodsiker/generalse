@@ -187,14 +187,43 @@ $(document).ready(function () {
                 success: function(data){
                     var obj = jQuery.parseJSON(data);
                     if(obj.code == 1){
-                        var html = "<p class='error_data'>" + obj.log + "</p>";
+                        //var html = "<p class='error_data'>" + obj.log + "</p>";
 
-                        if($('p').is('.error_data')){
-                            return false;
-                        } else {
-                            $('.form_title').after(html);
+                        // if($('p').is('.error_data')){
+                        //     return false;
+                        // } else {
+                        //     $('.form_title').after(html);
+                        // }
+
+                        var html_error = "<div class='umbrella-alert'>"
+                            + "<span>Не верные данные для входа в кабинет!</span>"
+                            + "</div>";
+
+                        $('body').append(html_error);
+
+                        function remove_elem() {
+                            $('.umbrella-alert').fadeOut(1500, function () {
+                                $('.umbrella-alert').remove();
+                            });
                         }
+                        setTimeout(remove_elem, 5000);
+
                         $(".password_umbrella").val("");
+
+                    } else if(obj.code == 3) {
+
+                        var html_mess = "<div class='umbrella-alert'>"
+                                        + "<span>Доступ к данному аккаунту закрыт!</span>"
+                                        + "</div>";
+
+                        $('body').append(html_mess);
+
+                        function remove_elem() {
+                            $('.umbrella-alert').fadeOut(1500, function () {
+                                $('.umbrella-alert').remove();
+                            });
+                        }
+                        setTimeout(remove_elem, 5000)
 
                     } else {
                         window.location = obj.log;

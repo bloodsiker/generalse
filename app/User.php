@@ -29,6 +29,7 @@ class User
         $this->group_name = $infoUser['group_name'];
         $this->coefficient = $infoUser['kpi_coefficient'];
         $this->login_url = $infoUser['login_url'];
+        $this->is_active = $infoUser['is_active'];
 
         $this->activeUser($this->id_user,date('Y-m-d H:i:s'));
     }
