@@ -21,7 +21,7 @@ class Log
         $data = $db->query("SELECT * FROM gs_log gl
                               INNER JOIN gs_user gu
                                 ON gl.id_user = gu.id_user
-                            ORDER BY gl.id_log DESC LIMIT $num, 30")->fetchAll(PDO::FETCH_ASSOC);
+                            ORDER BY gl.id_log DESC LIMIT $num, 50")->fetchAll(PDO::FETCH_ASSOC);
 
         return $data;
     }

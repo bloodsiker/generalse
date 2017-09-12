@@ -8,6 +8,7 @@ use Umbrella\components\Functions;
 use Umbrella\models\Admin;
 use Umbrella\models\Branch;
 use Umbrella\models\Country;
+use Umbrella\models\DeliveryAddress;
 use Umbrella\models\Denied;
 use Umbrella\models\GroupModel;
 use Umbrella\models\Log;
@@ -251,101 +252,21 @@ class UserController extends AdminBase
     }
 
 
+
     /**
-     * Просмотр праздничных дней и добавление
-     * @param $id_user
+     * Отображаем список функций доступных действйи по пользователю
      * @return bool
      */
-    public function actionUserWeekend($id_user)
+    public function actionShowListFunc()
     {
         $user = $this->user;
 
-        if($user->role == 'partner' || $user->role == 'manager'){
+        $user_id = $_REQUEST['user_id'];
 
-            header("Location: /adm/access_denied");
-
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
-
-            $userInfo = Admin::getAdminById($id_user);
-
-            $listWeekend = Weekend::getWeekendByUser($id_user);
-
-            if(isset($_POST['add_weekend'])){
-                $date_weekend = $_POST['date_weekend'];
-                $description = $_POST['description'];
-
-                $ok = Weekend::addWeekend($id_user, $date_weekend, $description);
-
-                if($ok){
-                    if (!empty($_SERVER['HTTP_REFERER'])){
-                        header("Location: " . $_SERVER['HTTP_REFERER']);
-                    }
-                }
-            }
-            $this->render('admin/users/weekend', compact('user','userInfo', 'listWeekend'));
-        }
+        $this->render('admin/users/show_user_list_func', compact('user', 'user_id'));
         return true;
     }
 
-
-    /**
-     * Обновление праздничных дней
-     * @param $id
-     * @return bool
-     */
-    public function actionUserWeekendUpdate($id)
-    {
-        $user = $this->user;
-
-        if($user->role == 'partner' || $user->role == 'manager'){
-
-            header("Location: /adm/access_denied");
-
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
-
-            $weekendInfo = Weekend::getWeekendById($id);
-
-            if(isset($_POST['update_weekend'])){
-                $id_user = $_POST['id_user'];
-                $options['date_weekend'] = $_POST['date_weekend'];
-                $options['description'] = $_POST['description'];
-
-                $ok = Weekend::updateWeekend($id, $options);
-
-                if($ok){
-                    header("Location: /adm/user/weekend/" . $id_user);
-                }
-            }
-            $this->render('admin/users/update_weekend', compact('user','userInfo', 'weekendInfo'));
-        }
-        return true;
-    }
-
-
-    /**
-     * удаление праздничного дня для юзера
-     * @param $id
-     * @return bool
-     */
-    public function actionUserWeekendDelete($id)
-    {
-        $user = $this->user;
-
-        // Получаем данные о конкретной пользователе
-        $userInfo = Admin::getAdminById($id);
-
-        if($user->role == 'administrator' || $user->role == 'administrator-fin'){
-            Weekend::deleteWeekendById($id);
-        } else {
-            echo "<script>alert('У вас нету прав на удаление')</script>";
-        }
-
-        // Перенаправляем пользователя на страницу управлениями товарами
-        if (!empty($_SERVER['HTTP_REFERER'])){
-            header("Location: " . $_SERVER['HTTP_REFERER']);
-        }
-        return true;
-    }
 
     /**
      * Удаление пользователя
@@ -371,6 +292,71 @@ class UserController extends AdminBase
 
         // Перенаправляем пользователя на страницу управлениями товарами
         header("Location: /adm/users");
+        return true;
+    }
+
+
+
+    /**
+     * Список адресов для доставки клиентам
+     * @param $id_user
+     * @return bool
+     */
+    public function actionUserAddress($id_user)
+    {
+        $user = $this->user;
+
+        $listAddress = DeliveryAddress::getAddressByPartner($id_user);
+
+        $selectUser = new User($id_user);
+
+        if(isset($_REQUEST['add_user_address']) && $_REQUEST['add_user_address'] == 'true'){
+            $address = $_REQUEST['address'];
+            $ok = DeliveryAddress::addAddress($id_user, $address);
+            if($ok) {
+                header("Location: " . $_SERVER['HTTP_REFERER']);
+            }
+        }
+
+        $this->render('admin/users/address/index', compact('user', 'listAddress', 'selectUser'));
+        return true;
+    }
+
+
+    public function actionUserAddressUpdate()
+    {
+        //$user = $this->user;
+
+        if($_REQUEST['action'] == 'edit_address'){
+            $id = $_REQUEST['id_address'];
+            $address = $_REQUEST['address'];
+            $ok = DeliveryAddress::updateAddress($id, $address);
+            if($ok) {
+                echo 200;
+            }
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Delete user address
+     * @param $id
+     * @return bool
+     */
+    public function actionUserAddressDelete($id)
+    {
+        $user = $this->user;
+
+        $address = DeliveryAddress::getAddressById($id);
+
+        DeliveryAddress::deleteUserAddress($id);
+
+        $log = "удалил(а) адрес пользователя - " . $address['address'];
+        Log::addLog($user->id_user, $log);
+
+        header("Location: " . $_SERVER['HTTP_REFERER']);
         return true;
     }
 

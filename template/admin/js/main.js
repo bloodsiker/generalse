@@ -279,7 +279,7 @@ $('#form_warranty').on("submit", function(e) {
 // По клику на кнопку, подгрузка по 50 логов
 $(document).ready(function () {
     $("#imgLoad").hide();  //Скрываем прелоадер
-    var num = 30; //чтобы знать с какой записи вытаскивать данные
+    var num = 50; //чтобы знать с какой записи вытаскивать данные
     $(function () {
         $("#load-log").click(function (e) { //Выполняем если по кнопке кликнули
             e.preventDefault();
@@ -298,7 +298,7 @@ $(document).ready(function () {
                         $("#imgLoad").hide();
                     } else {
                         $("tbody").append(response);
-                        num = num + 30;
+                        num = num + 50;
                         $("#imgLoad").hide();
                     }
                 }

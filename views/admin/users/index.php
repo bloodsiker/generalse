@@ -27,9 +27,8 @@
                             <th>Роль</th>
                             <th>Группа</th>
                             <th>Активность</th>
-                            <th>Доступы</th>
-                            <th>Управление <br> пользователями</th>
-                            <th width="150px">Action</th>
+                            <th width="50">Action</th>
+                            <th width="50">Lock</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -44,30 +43,15 @@
                                     <td><?=$userI['group_name']?></td>
                                     <td><?=$userI['date_active']?></td>
                                     <td>
-                                        <?php if (Umbrella\app\AdminBase::checkDenied('user.denied', 'view')): ?>
-                                            <a href="/adm/user/denied/<?=$userI['id_user']?>" class="button no-margin small"><i class="fi-wrench"></i></a>
-                                        <?php endif; ?>
+                                        <button data-userid="<?=$userI['id_user']?>" class="button no-margin small list-user-func">
+                                            <i class="fi-list"></i>
+                                        </button>
                                     </td>
                                     <td>
-                                        <?php if (Umbrella\app\AdminBase::checkDenied('user.control', 'view')): ?>
-                                            <a href="/adm/user/control/<?=$userI['id_user']?>" class="button no-margin small"><i class="fi-eye"></i></a>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td>
-                                        <?php if ($user->role == 'administrator' || $user->role == 'administrator-fin'): ?>
-                                            <?php if (Umbrella\app\AdminBase::checkDenied('user.delete', 'view')): ?>
-                                                <a href="/adm/user/delete/<?=$userI['id_user']?>" class="button no-margin small" onclick="return confirm('Вы уверены что хотите удалить пользователя?') ? true : false;"><i class="fi-x"></i></a>
-                                            <?php endif; ?>
-
-                                            <?php if (Umbrella\app\AdminBase::checkDenied('user.edit', 'view')): ?>
-                                                <a href="/adm/user/update/<?=$userI['id_user']?>" class="button no-margin small"><i class="fi-pencil"></i></a>
-                                            <?php endif; ?>
-
-                                            <?php if (Umbrella\app\AdminBase::checkDenied('user.lock', 'view')): ?>
-                                                <button data-userid="<?=$userI['id_user']?>" class="button no-margin small <?= $userI['is_active'] == 1 ? 'green' : 'red'?>">
-                                                    <i class="fi-<?= $userI['is_active'] == 1 ? 'unlock' : 'lock'?>"></i>
-                                                </button>
-                                            <?php endif; ?>
+                                        <?php if (Umbrella\app\AdminBase::checkDenied('user.lock', 'view')): ?>
+                                            <button data-userid="<?=$userI['id_user']?>" class="button no-margin small <?= $userI['is_active'] == 1 ? 'green' : 'red'?>">
+                                                <i class="fi-<?= $userI['is_active'] == 1 ? 'unlock' : 'lock'?>"></i>
+                                            </button>
                                         <?php endif; ?>
                                     </td>
                                 </tr>
@@ -157,7 +141,7 @@
                                         <td>
                                             <?php if ($user->role == 'administrator' || $user->role == 'administrator-fin'): ?>
                                                 <?php if (Umbrella\app\AdminBase::checkDenied('country.delete', 'view')): ?>
-                                                    <a href="/adm/country/delete/<?= $country['id_country'] ?>" class="button no-margin small"
+                                                    <a href="/adm/country/delete/<?= $country['id_country'] ?>" class="button no-margin small hide"
                                                    onclick="return confirm('Вы уверены что хотите удалить страну?') ? true : false;"><i
                                                             class="fi-x"></i></a>
                                                 <?php endif; ?>
@@ -177,6 +161,22 @@
                 </div>
             </div>
         </div>
+    </div>
+
+
+
+    <div class="reveal medium" id="show-list-user-func" data-reveal>
+        <div class="row align-bottom">
+            <div class="medium-12 small-12 columns">
+                <h3>List user action</h3>
+            </div>
+            <div class="medium-12 small-12 columns" id="container-details">
+
+            </div>
+        </div>
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
 
 <?php require_once ROOT . '/views/admin/layouts/footer.php' ?>

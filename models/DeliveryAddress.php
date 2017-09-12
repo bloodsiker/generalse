@@ -11,26 +11,103 @@ use Umbrella\components\Db\MySQL;
 class DeliveryAddress
 {
 
+    /**
+     * @param $id_user
+     * @return array
+     */
     public static function getAddressByPartner($id_user)
     {
-        // Соединение с базой данных
         $db = MySQL::getConnection();
 
-        // Делаем запрос к базе данных
         $sql = "SELECT 
                   *
                 FROM gs_user_delivery_address guda
                 WHERE guda.id_user = :id_user";
 
-        // Делаем подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $id_user, PDO::PARAM_INT);
-
-        // Указываем, что хотим получить данные в виде массива
         $result->setFetchMode(PDO::FETCH_ASSOC);
         $result->execute();
-
         return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    /**
+     * Find Address by id
+     * @param $id
+     * @return mixed
+     */
+    public static function getAddressById($id)
+    {
+        $db = MySQL::getConnection();
+
+        $sql = 'SELECT * FROM gs_user_delivery_address WHERE id = :id';
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $id, PDO::PARAM_INT);
+        $result->setFetchMode(PDO::FETCH_ASSOC);
+        $result->execute();
+        return $result->fetch();
+    }
+
+
+    /**
+     * @param $id_user
+     * @param $address
+     * @return int|string
+     */
+    public static function addAddress($id_user, $address)
+    {
+        $db = MySQL::getConnection();
+
+        $sql = 'INSERT INTO gs_user_delivery_address '
+            . '(address, id_user)'
+            . 'VALUES '
+            . '(:address, :id_user)';
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':address', $address, PDO::PARAM_STR);
+        $result->bindParam(':id_user', $id_user, PDO::PARAM_INT);
+        return $result->execute();
+    }
+
+
+    /**
+     * Update user address
+     * @param $id
+     * @param $address
+     * @return bool
+     */
+    public static function updateAddress($id, $address)
+    {
+        $db = MySQL::getConnection();
+
+        $sql = "UPDATE gs_user_delivery_address
+            SET
+                address = :address
+            WHERE id = :id";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $id, PDO::PARAM_INT);
+        $result->bindParam(':address', $address, PDO::PARAM_STR);
+        return $result->execute();
+    }
+
+
+    /**
+     * Delete User address
+     * @param $id
+     * @return bool
+     */
+    public static function deleteUserAddress($id)
+    {
+        $db = MySQL::getConnection();
+
+        $sql = 'DELETE FROM gs_user_delivery_address WHERE id = :id';
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $id, PDO::PARAM_INT);
+        return $result->execute();
     }
 
 }

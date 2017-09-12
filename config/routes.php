@@ -19,15 +19,16 @@ return array(
     'adm/user/control/([0-9]+)' => 'umbrella/User@userControl/$1',
 
 
-    /*********** WEEKEND  ***********/
-    'adm/user/weekend/update/([0-9]+)' => 'umbrella/User@userWeekendUpdate/$1',
-    'adm/user/weekend/delete/([0-9]+)' => 'umbrella/User@userWeekendDelete/$1',
-    'adm/user/weekend/([0-9]+)' => 'umbrella/User@userWeekend/$1',
+    /*********** USER ADDRESS  ***********/
+    'adm/user/address/delete/([0-9]+)' => 'umbrella/User@userAddressDelete/$1',
+    'adm/user/address/update' => 'umbrella/User@userAddressUpdate',
+    'adm/user/address/([0-9]+)' => 'umbrella/User@userAddress/$1',
 
 
     /*********** USERS  ***********/
     'adm/user/delete/([0-9]+)' => 'umbrella/User@delete/$1',
     'adm/user/update/([0-9]+)' => 'umbrella/User@update/$1',
+    'adm/user/show_list_func' => 'umbrella/User@showListFunc',
     'adm/user/check_login' => 'umbrella/User@checkUserLogin',
     'adm/user/add' => 'umbrella/User@addUser',
     'adm/users' => 'umbrella/User@index',
