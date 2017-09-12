@@ -104,7 +104,7 @@
                                     <?php endforeach;?>
                                 <?php endif;?>
                             </tr>
-                            <tr>
+                            <tr class="hide">
                                 <td>Входящий звонок (F1)</td>
                                 <td>-</td>
                                 <?php if(is_array($lastDate)):?>
