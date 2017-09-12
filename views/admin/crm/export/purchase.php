@@ -64,7 +64,7 @@
                     <td><?=$export['so_number']?></td>
                     <td><?=iconv('WINDOWS-1251', 'UTF-8',$export['goods_name'])?></td>
                     <td><?=$export['quantity']?></td>
-                    <td><?=str_replace('.',',', round($export['price'], 2))?></td>
+                    <td><?= round($export['price'], 2)?></td>
                     <td><?=iconv('WINDOWS-1251', 'UTF-8',$export['status_name'])?></td>
                     <td><?=$export['created_on']?></td>
                 </tr>
