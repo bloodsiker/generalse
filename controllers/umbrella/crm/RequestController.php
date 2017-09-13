@@ -113,13 +113,17 @@ class RequestController extends AdminBase
         if($user->role == 'partner'){
 
             $listCheckOrders = Orders::getReserveOrdersByPartnerMsSQL($user->controlUsers($user->id_user), 0);
+            //$listRemovedRequest = Orders::getRemovedRequestByUser($user->controlUsers($user->id_user));
+            $listRemovedRequest = [];
         } elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
 
             $listCheckOrders = Orders::getAllReserveOrdersMsSQL(0);
+            //$listRemovedRequest = Orders::getAllRemovedRequest();
+            $listRemovedRequest = [];
         }
 
         $this->render('admin/crm/request', compact('user','group', 'partnerList', 'order_type',
-            'delivery_address', 'listCheckOrders', 'request_message', 'arrayPartNumber'));
+            'delivery_address', 'listCheckOrders', 'request_message', 'arrayPartNumber', 'listRemovedRequest'));
         return true;
     }
 
@@ -464,9 +468,24 @@ class RequestController extends AdminBase
         $user = $this->user;
         self::checkDenied('crm.request.delete', 'controller');
 
+        $requestInfo = Orders::getOrderRequestInfo($id);
+        $requestInfo['goods_name'] = iconv('WINDOWS-1251', 'UTF-8', $requestInfo['goods_name']);
+        $requestInfo['so_number'] = iconv('WINDOWS-1251', 'UTF-8', $requestInfo['so_number']);
+        $requestInfo['note'] = iconv('WINDOWS-1251', 'UTF-8', $requestInfo['note']);
+        $requestInfo['status_name'] = iconv('WINDOWS-1251', 'UTF-8', $requestInfo['status_name']);
+        $requestInfo['subtype_name'] = iconv('WINDOWS-1251', 'UTF-8', $requestInfo['subtype_name']);
+        $json = json_encode($requestInfo);
+
         $ok = Orders::deleteRequestMsSQLById($id);
 
         if($ok){
+            //Orders::addRemovedRequest($json);
+            $file = ROOT . '/storage/logs/removed_request.txt';
+            $person = (string)$json . "\r\n";
+            // используя флаг FILE_APPEND flag для дописывания содержимого в конец файла
+            // и флаг LOCK_EX для предотвращения записи данного файла кем-нибудь другим в данное время
+            file_put_contents($file, $person, FILE_APPEND | LOCK_EX);
+
             Logger::getInstance()->log($user->id_user, 'удалил request #' . $id);
             header("Location: " . $_SERVER['HTTP_REFERER']);
         }
@@ -526,6 +545,26 @@ class RequestController extends AdminBase
         }
 
         $this->render('admin/crm/request_list_analog', compact('user','listPartAnalog'));
+        return true;
+    }
+
+
+    /**
+     * Загружаем новый файл с ценами
+     * @return bool
+     */
+    public function actionUploadPrice()
+    {
+        if(!empty($_FILES['excel_file']['name'])) {
+
+            $name_real = $_FILES['excel_file']['name'];
+            $file_path = "/upload/attach_request/";
+
+            if (is_uploaded_file($_FILES["excel_file"]["tmp_name"])) {
+                move_uploaded_file($_FILES['excel_file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . $file_path . $name_real);
+            }
+        }
+
         return true;
     }
 

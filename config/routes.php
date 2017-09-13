@@ -99,6 +99,7 @@ return array(
 
 
     /*********** REQUEST  ***********/
+    'adm/crm/request/upload_price' => 'umbrella/crm/Request@uploadPrice',
     'adm/crm/request/list_analog' => 'umbrella/crm/Request@listAnalog',
     'adm/crm/request/request_ajax' => 'umbrella/crm/Request@requestAjax',
     'adm/crm/request/price_part_ajax' => 'umbrella/crm/Request@pricePartNumAjax',

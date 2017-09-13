@@ -920,6 +920,7 @@ class Orders
     }
 
 
+
     /**
      * Delete request by id
      * @param $id
@@ -934,5 +935,87 @@ class Orders
         $result = $db->prepare($sql);
         $result->bindParam(':id', $id, PDO::PARAM_INT);
         return $result->execute();
+    }
+
+
+    /**
+     * Сохраняем удаленные реквесты
+     * @param $remove_request
+     * @return bool
+     */
+    public static function addRemovedRequest($remove_request)
+    {
+        $db = MySQL::getConnection();
+
+        $sql = 'INSERT INTO gm_orders_request_removed '
+            . '(remove_request)'
+            . 'VALUES '
+            . '(:remove_request)';
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':remove_request', $remove_request, PDO::PARAM_STR);
+        return $result->execute();
+    }
+
+
+    /**
+     * Список удаленных реквестов для пользователя
+     * @param $array_id
+     * @return array
+     */
+    public static function getRemovedRequestByUser($array_id)
+    {
+        $db = MySQL::getConnection();
+
+        $idS = implode(',', $array_id);
+
+        $sql = "SELECT
+                gorr.remove_request,
+                gu.name_partner
+                FROM gm_orders_request_removed gorr
+                LEFT JOIN gs_user gu
+                    ON gu.id_user = JSON_EXTRACT(gorr.remove_request, '$.site_account_id')
+                WHERE JSON_EXTRACT(gorr.remove_request, '$.site_account_id') IN ({$idS})";
+
+        $result = $db->prepare($sql);
+        $result->execute();
+        $res = $result->fetchAll(PDO::FETCH_ASSOC);
+        $i = 0;
+        $restore = [];
+        foreach ($res as $request) {
+            $restore[$i] = json_decode($request['remove_request'], true);
+            $restore[$i]['name_partner'] = $request['name_partner'];
+            $i++;
+        }
+        return $restore;
+    }
+
+
+    /**
+     * Список всех
+     * @return array
+     */
+    public static function getAllRemovedRequest()
+    {
+        $db = MySQL::getConnection();
+
+        $sql = "SELECT
+                gorr.remove_request,
+                gu.name_partner
+                FROM gm_orders_request_removed gorr
+                LEFT JOIN gs_user gu
+                    ON gu.id_user = JSON_EXTRACT(gorr.remove_request, '$.site_account_id')";
+
+        $result = $db->prepare($sql);
+        $result->execute();
+        $res = $result->fetchAll(PDO::FETCH_ASSOC);
+        $i = 0;
+        $restore = [];
+        foreach ($res as $request) {
+            $restore[$i] = json_decode($request['remove_request'], true);
+            $restore[$i]['name_partner'] = $request['name_partner'];
+            $i++;
+        }
+        return $restore;
     }
 }

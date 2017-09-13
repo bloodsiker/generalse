@@ -1120,3 +1120,9 @@ td select {
   }
 }
 
+
+/*******  13.09.2017  request  **********/
+
+.upload-progress { position:relative; background-color: #fff; width: 100%; border: 1px solid #ddd; padding: 1px;margin: 0 15px 10px 15px }
+.upload-bar { background-color: #7ad47a; width:0%; height:22px; }
+.upload-percent { position:absolute; display:inline-block; top:0px; left:48%; }

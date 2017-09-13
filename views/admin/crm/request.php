@@ -17,7 +17,7 @@
                     </div>
                     <div class="medium-12 small-12 columns">
                         <div class="row align-bottom">
-                            <div class="medium-9 small-12 columns">
+                            <div class="medium-10 small-12 columns">
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.send', 'view')): ?>
                                     <button class="button primary tool" id="add-request-button"><i class="fi-plus"></i> Request</button>
                                 <?php endif;?>
@@ -42,13 +42,18 @@
                                     <button data-open="import-edit-status-modal" class="button primary tool"><i class="fi-plus"></i> Import status</button>
                                 <?php endif;?>
 
-                                <a href="/adm/crm/request/completed" class="button primary tool"><i class="fi-check"></i> Completed request</a>
+<!--                                <a href="/adm/crm/request/completed" class="button primary tool"><i class="fi-x-circle"></i> Deleted request</a>-->
+                                <button data-open="open-removed-request" class="button primary tool hide"><i class="fi-x-circle"></i> Deleted request</button>
+
+                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.upload.price', 'view')): ?>
+                                    <button data-open="open-upload-price" class="button primary tool"><i class="fi-page-export"></i> Upload Price</button>
+                                <?php endif;?>
 
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.analog', 'view')): ?>
                                     <a href="/adm/crm/request/list_analog" class="button primary tool"><i class="fi-list"></i> Analog</a>
                                 <?php endif;?>
                             </div>
-                            <div class="medium-3 small-12 columns form">
+                            <div class="medium-2 small-12 columns form">
                                 <input type="text" id="goods_search" class="search-input" placeholder="Search..." name="search">
                             </div>
                         </div>
@@ -479,6 +484,121 @@
             </div>
         </div>
     </form>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+
+<div class="reveal" id="open-upload-price" data-reveal>
+    <form action="/adm/crm/request/upload_price" method="post" class="form" enctype="multipart/form-data" data-abide
+          novalidate>
+        <div class="row align-bottom">
+            <div class="medium-12 small-12 columns">
+                <h3>Upload price</h3>
+            </div>
+            <div class="medium-12 small-12 columns">
+                <div class="row">
+
+                    <div class="medium-12 small-12 columns">
+                        <div class="row" style="color: #fff">
+                            <h4>Формат и название файлов</h4>
+                            <ul>
+                                <li>Electrolux: <span style="color: orange">Price_Electrolux.zip</span></li>
+                                <li>Electrolux GE: <span style="color: orange">Electrolux_Prices_GE.zip</span></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="medium-12 small-12 columns">
+                        <div class="row align-bottom ">
+                            <div class="medium-12 small-12 columns">
+                                <label for="upload_new_price" class="button primary">Attach</label>
+                                <input type="file" id="upload_new_price" class="show-for-sr" name="excel_file" multiple>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="medium-12 small-12 columns">
+                        <div class="row">
+                            <div class="upload-progress">
+                                <div class="upload-bar"></div >
+                                <div class="upload-percent">0%</div >
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="medium-12 small-12 columns">
+                        <div class="row">
+                            <div class="medium-6 small-12 columns">
+                                <div id="status" style="color: #fff;"></div>
+                            </div>
+                            <div class="medium-6 small-12 columns">
+                                <input type="submit" class="button primary" value="Upload File to Server">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+
+
+<div class="reveal large" id="open-removed-request" data-reveal>
+    <div class="row align-bottom">
+        <div class="medium-12 small-12 columns">
+            <h3>Deleted requests</h3>
+        </div>
+        <div class="medium-12 small-12 columns">
+
+            <table>
+                <thead>
+                <tr>
+                    <th>Request ID</th>
+                    <th>Partner</th>
+                    <th>Part Number</th>
+                    <th>Part Description</th>
+                    <th>Subtype</th>
+                    <th>SO Number</th>
+                    <th>Price</th>
+                    <th>Address</th>
+                    <th>Note</th>
+                    <th>Status</th>
+                    <th>Date create</th>
+                </tr>
+                </thead>
+               <tbody>
+               <?php if(is_array($listRemovedRequest)):?>
+                   <?php foreach ($listRemovedRequest as $removedRequest):?>
+                       <tr>
+                           <td><?= $removedRequest['id']?></td>
+                           <td><?= $removedRequest['name_partner']?></td>
+                           <td><?= $removedRequest['part_number']?></td>
+                           <td><?= $removedRequest['goods_name']?></td>
+                           <td><?= $removedRequest['subtype_name']?></td>
+                           <td><?= $removedRequest['so_number']?></td>
+                           <td><?= round($removedRequest['price'], 2)?></td>
+                           <td><?= $removedRequest['note']?></td>
+                           <td><?= $removedRequest['note1']?></td>
+                           <td><?= $removedRequest['status_name']?></td>
+                           <td><?= Umbrella\components\Functions::formatDate($removedRequest['created_on'])?></td>
+                       </tr>
+                   <?php endforeach;?>
+               <?php endif;?>
+               </tbody>
+            </table>
+
+        </div>
+    </div>
+
     <button class="close-button" data-close aria-label="Close modal" type="button">
         <span aria-hidden="true">&times;</span>
     </button>
