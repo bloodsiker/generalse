@@ -20,7 +20,7 @@
                     <h2 class="float-left">Список разделов в шапке</h2>
                     <a href="/adm/users" style="margin-bottom: 0" class="button small float-right">Назад</a>
                     <div class="clearfix"></div>
-                    <table border="1" cellspacing="0" cellpadding="5">
+                    <table class="umbrella-table" border="1" cellspacing="0" cellpadding="5">
                         <thead>
                         <tr>
                             <th width="300">Раздел</th>
@@ -65,7 +65,7 @@
                     <?php if(isset($sub_menu) && is_array($sub_menu) && !empty($sub_menu)):?>
                     <h2 class="float-left">Список подразделов</h2>
                     <div class="clearfix"></div>
-                    <table border="1" cellspacing="0" cellpadding="5">
+                    <table class="umbrella-table" border="1" cellspacing="0" cellpadding="5">
                         <thead>
                         <tr>
                             <th width="300">Раздел</th>
@@ -108,7 +108,7 @@
                     <?php if(isset($sub_menu_button) && is_array($sub_menu_button) && !empty($sub_menu_button)):?>
                         <h2 class="float-left">Button && elements</h2>
                         <div class="clearfix"></div>
-                        <table border="1" cellspacing="0" cellpadding="5">
+                        <table class="umbrella-table" border="1" cellspacing="0" cellpadding="5">
                             <thead>
                             <tr>
                                 <th>Name</th>

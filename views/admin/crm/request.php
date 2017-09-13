@@ -75,7 +75,7 @@
                     </div>
                 <?php endif;?>
                 <?php if($user->role == 'partner'):?>
-                <table id="goods_data">
+                <table class="umbrella-table" id="goods_data">
                     <caption>List requests
                         <span id="count_refund" class="text-green">(<?php if (isset($listCheckOrders)) echo count($listCheckOrders) ?>)</span>
                     </caption>
@@ -137,7 +137,7 @@
                 <?php elseif($user->role == 'administrator'
                     || $user->role == 'administrator-fin'
                     || $user->role == 'manager'):?>
-                    <table id="goods_data">
+                    <table class="umbrella-table" id="goods_data">
                         <caption>List requests
                             <span id="count_refund" class="text-green">(<?php if (isset($listCheckOrders)) echo count($listCheckOrders) ?>)</span>
                         </caption>
@@ -559,7 +559,7 @@
         </div>
         <div class="medium-12 small-12 columns">
 
-            <table>
+            <table class="umbrella-table">
                 <thead>
                 <tr>
                     <th>Request ID</th>

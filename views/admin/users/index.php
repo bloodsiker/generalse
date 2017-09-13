@@ -17,7 +17,7 @@
                         <a href="/adm/user/add" class="button small float-right"><i class="fi-plus"></i> Добавить</a>
                     <?php endif;?>
                     <div class="clearfix"></div>
-                    <table border="1" cellspacing="0" cellpadding="5">
+                    <table class="umbrella-table" border="1" cellspacing="0" cellpadding="5">
                         <thead>
                         <tr>
                             <th width="50px">ID</th>
@@ -67,7 +67,7 @@
                         <a href="/adm/group/add" class="button small float-right"><i class="fi-plus"></i> Добавить</a>
                     <?php endif;?>
                     <div class="clearfix"></div>
-                    <table border="1" cellspacing="0" cellpadding="5">
+                    <table class="umbrella-table" border="1" cellspacing="0" cellpadding="5">
                         <thead>
                         <tr>
                             <th>Group</th>
@@ -97,7 +97,7 @@
                         <a href="/adm/branch/add" class="button small float-right"><i class="fi-plus"></i> Добавить</a>
                     <?php endif;?>
                     <div class="clearfix"></div>
-                    <table border="1" cellspacing="0" cellpadding="5">
+                    <table class="umbrella-table" border="1" cellspacing="0" cellpadding="5">
                         <thead>
                         <tr>
                             <th>Branch</th>
@@ -125,7 +125,7 @@
                         <a href="/adm/country/add" class="button small float-right"><i class="fi-plus"></i> Добавить</a>
                     <?php endif;?>
                     <div class="clearfix"></div>
-                    <table border="1" cellspacing="0" cellpadding="5">
+                    <table class="umbrella-table" border="1" cellspacing="0" cellpadding="5">
                         <thead>
                         <tr>
                             <th>Страна</th>

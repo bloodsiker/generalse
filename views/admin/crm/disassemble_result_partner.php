@@ -45,7 +45,7 @@
         <!-- body -->
         <div class="body-content checkout">
             <div class="row">
-                <table id="goods_data">
+                <table class="umbrella-table" id="goods_data">
                     <caption>Last recording on
                         <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-30 days') ?> &mdash;
                         <?= (isset($_GET['end']) && !empty($_GET['end'])) ? $_GET['end'] : date('Y-m-d') ?>

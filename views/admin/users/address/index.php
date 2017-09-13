@@ -7,7 +7,7 @@
                     <h2 class="float-left">Список адресов для пользователя <?= $selectUser->name_partner ?></h2>
                     <a href="/adm/users" style="margin-bottom: 0" class="button small float-right">Назад</a>
                     <div class="clearfix"></div>
-                    <table border="1" cellspacing="0" cellpadding="5">
+                    <table class="umbrella-table" border="1" cellspacing="0" cellpadding="5">
                         <thead>
                         <tr>
                             <th>Address</th>

@@ -93,7 +93,7 @@
             </div>
             <div class="row">
                 <?php if($user->role == 'partner'):?>
-                <table id="goods_data">
+                <table class="umbrella-table" id="goods_data">
                     <caption>Last recordings on
                         <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-7 days') ?> &mdash;
                         <?= (isset($_GET['end']) && !empty($_GET['end'])) ? $_GET['end'] : date('Y-m-d') ?>
@@ -151,7 +151,7 @@
                     </tbody>
                 </table>
                 <?php elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
-                    <table id="goods_data">
+                    <table class="umbrella-table" id="goods_data">
 
                             <caption>Last recordings on
                                 <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-30 days') ?> &mdash;

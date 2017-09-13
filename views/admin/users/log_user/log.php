@@ -14,7 +14,7 @@
             <div class="row body-content">
                 <div class="medium-10 medium-offset-1 small-12 columns">
                     <h2 class="float-left">Логи пользователей</h2>
-                    <table border="1" cellspacing="0" cellpadding="5">
+                    <table class="umbrella-table" border="1" cellspacing="0" cellpadding="5">
                         <thead>
                         <tr>
                             <th width="50px">ID</th>

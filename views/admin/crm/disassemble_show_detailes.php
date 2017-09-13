@@ -8,7 +8,7 @@
 <?php endif;?>
 
 <?php if(is_array($data) && count($data) > 0):?>
-<table>
+<table class="umbrella-table">
     <thead>
     <tr>
         <th>PartNumber</th>

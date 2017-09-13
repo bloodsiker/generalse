@@ -40,7 +40,7 @@
                     <h2 class="text-center">List requests <span class="text-green">(<?=count($requestByPartner)?>)</span></h2>
                     <button class="button primary float-right" onclick="tableToExcel('request', 'W3C Example Table')" style="width: inherit;"><i class="fi-page-export"></i> Export to Excel</button>
                     <div id="request">
-                        <table id="table_refund" class="table" border="1" cellspacing="0" cellpadding="5">
+                        <table id="table_refund" class="umbrella-table table" border="1" cellspacing="0" cellpadding="5">
                             <thead>
                             <tr>
 								<th>ID</th>

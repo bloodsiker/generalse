@@ -57,7 +57,7 @@
                     <div class="alert-success" style="margin: 0px auto 10px;"><?=$request_message?></div>
                 <?php endif;?>
                 <?php if($user->role == 'partner'):?>
-                <table id="goods_data">
+                <table class="umbrella-table" id="goods_data">
                     <caption>Last requests on
                         <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-30 days') ?> &mdash;
                         <?= (isset($_GET['end']) && !empty($_GET['end'])) ? $_GET['end'] : date('Y-m-d') ?>
@@ -127,7 +127,7 @@
                 <?php elseif($user->role == 'administrator'
                     || $user->role == 'administrator-fin'
                     || $user->role == 'manager'):?>
-                    <table id="goods_data">
+                    <table class="umbrella-table" id="goods_data">
                         <caption>Last requests on
                             <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-30 days') ?> &mdash;
                             <?= (isset($_GET['end']) && !empty($_GET['end'])) ? $_GET['end'] : date('Y-m-d') ?>

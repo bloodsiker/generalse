@@ -1,5 +1,5 @@
 <?php if(is_array($listDocument) && count($listDocument) > 0):?>
-    <table>
+    <table class="umbrella-table">
         <caption>Attach file</caption>
         <thead>
         <tr>
@@ -19,7 +19,7 @@
 <?php endif;?>
 
 <?php if(is_array($data)):?>
-<table>
+<table class="umbrella-table">
     <caption>Add Parts</caption>
     <thead>
     <tr>
@@ -42,7 +42,7 @@
 </table>
 
 <hr>
-<table>
+<table class="umbrella-table">
     <caption>Add Local Source</caption>
     <thead>
     <tr>
@@ -66,7 +66,7 @@
     </tbody>
 </table>
 <hr>
-<table>
+<table class="umbrella-table">
     <caption>Close Repair</caption>
     <thead>
     <tr>

@@ -42,7 +42,7 @@
         <div class="body-content checkout">
             <div class="row">
 
-                <table id="goods_data">
+                <table class="umbrella-table" id="goods_data">
                     <thead>
                     <tr>
                         <th>Part number</th>

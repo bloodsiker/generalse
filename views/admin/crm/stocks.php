@@ -36,7 +36,7 @@
         <!-- body -->
         <div class="body-content checkout">
             <div class="row">
-                <table id="goods_data">
+                <table class="umbrella-table" id="goods_data">
 					<?php if(isset($_POST['stock']) && count($_POST['stock']) > 1):?>
                         <caption>Stocks is <span class="text-green">
                                 <?=implode(', ', $_POST['stock'])?></span> is <span class="text-green"><?=(isset($allGoodsByPartner)) ? count($allGoodsByPartner) : 0?></span>  units

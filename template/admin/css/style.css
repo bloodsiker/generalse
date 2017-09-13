@@ -79,7 +79,7 @@ hr{
   -o-animation:      gs 5s infinite; /* Opera 12+ */
   animation:         gs 5s infinite; /* IE 10+, Fx 29+ */
 }
-
+.umbrella-table td {padding: 3px 5px!important;}
 td.alt { background-color: rgba(23, 194, 232, 0.5)!important; }
 table tr:hover{
   background: rgba(154, 152, 152, 0.2)!important;

@@ -37,7 +37,7 @@
                     <button data-open="add-category" class="button no-margin small"><i class="fi-plus"></i> Добавить статью</button>
                 </div>
                 <div class="medium-12 small-12 top-gray columns">
-                    <table border="1" cellspacing="0" cellpadding="5">
+                    <table class="umbrella-table" border="1" cellspacing="0" cellpadding="5">
                         <thead>
                         <tr>
                             <th>ID</th>

@@ -56,7 +56,7 @@
         <div class="body-content checkout">
             <div class="row">
                 <?php if($user->role == 'partner'):?>
-                    <table id="goods_data" class="table">
+                    <table id="goods_data" class="umbrella-table table">
                         <thead>
                         <tr>
                             <th scope="col">Registration Number</th>
@@ -87,7 +87,7 @@
                         </tbody>
                     </table>
                 <?php elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
-                <table id="goods_data">
+                <table class="umbrella-table" id="goods_data">
                     <thead>
                     <tr>
                         <th class="sort">Partner</th>

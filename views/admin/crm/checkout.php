@@ -52,7 +52,7 @@
         <!-- body -->
         <div class="body-content checkout">
             <div class="row">
-                <table>
+                <table class="umbrella-table">
                     <thead>
                     <tr>
                         <th>Purchase Number</th>

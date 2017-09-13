@@ -80,7 +80,7 @@
                         <span>Specify the reason for disassembly device</span>
                         <textarea name="note" id="note" cols="30" rows="3" class="required"></textarea>
                         <span id="count_rows_info">At least <strong style="color: red;">5</strong> lines must be marked and correctly filled for request sending</span>
-                        <table id="result_disassembly">
+                        <table class="umbrella-table" id="result_disassembly">
                             <thead>
                             <tr>
                                 <th></th>

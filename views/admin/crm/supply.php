@@ -57,7 +57,7 @@
             <div class="row">
                 <?php if($user->role == 'partner'):?>
 
-                    <table>
+                    <table class="umbrella-table">
                         <thead>
                         <tr>
                             <th class="sort">ID</th>
@@ -121,7 +121,7 @@
 
                 <?php elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
 
-                    <table>
+                    <table class="umbrella-table">
                         <thead>
                         <tr>
                             <th class="sort">ID</th>
@@ -295,7 +295,7 @@
             <h3>Supply</h3>
         </div>
         <div class="medium-12 small-12 columns">
-            <table>
+            <table class="umbrella-table">
                 <thead>
                 <tr>
                     <th>PartNumber</th>
