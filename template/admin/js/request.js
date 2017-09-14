@@ -62,6 +62,21 @@ $('[name="part_number"]').keyup(function(e) {
 });
 
 
+
+// Отправляем заявку на реквест
+$('#add-request-form').submit(function(e) {
+    e.preventDefault();
+    if ($('#add-request-form input').hasClass('is-invalid-input') || $('#add-request-form select').hasClass('is-invalid-input')) { // проверка на валидность
+        return false;
+    } else {
+        $('#add-request-form').find('button').prop('disabled', true);
+        $('#wait').removeClass('hide');
+        setTimeout(function () {
+            e.target.submit()
+        }, 2000);
+    }
+});
+
 //
 $('#add-request-import-form').submit(function(e) {
     e.preventDefault();
@@ -271,7 +286,7 @@ $(document).on('click', '#send-pn-analog', function(e) {
     var percent = $('.upload-percent');
     var status = $('#status');
 
-    $('form').ajaxForm({
+    $('#price-upload').ajaxForm({
         beforeSend: function() {
             status.empty();
             var percentVal = '0%';

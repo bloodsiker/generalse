@@ -227,7 +227,7 @@
 
 
 <div class="reveal" id="add-request-modal" data-reveal>
-    <form action="" id="add-checkout-form" method="post" class="form" data-abide novalidate>
+    <form action="" id="add-request-form" method="post" class="form" data-abide novalidate>
         <div class="row align-bottom">
             <div class="medium-12 small-12 columns">
                 <h3>New request</h3>
@@ -491,7 +491,7 @@
 
 
 <div class="reveal" id="open-upload-price" data-reveal>
-    <form action="/adm/crm/request/upload_price" method="post" class="form" enctype="multipart/form-data" data-abide
+    <form action="/adm/crm/request/upload_price" id="price-upload" method="post" class="form" enctype="multipart/form-data" data-abide
           novalidate>
         <div class="row align-bottom">
             <div class="medium-12 small-12 columns">
