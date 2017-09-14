@@ -467,7 +467,7 @@
                             <option value="Предварительный">Предварительный</option>
                             <option value="Отказано">Отказано</option>
                             <option value="Выдан">Выдан</option>
-                            <option value="В резерве">В резерве</option>
+                            <option value="Резерв">Резерв</option>
                         </select>
                     </div>
                 </div>
