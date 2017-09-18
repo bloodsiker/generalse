@@ -11,7 +11,7 @@
 <script src="/template/admin/js/vendor/what-input.js"></script>
 <script src="/template/admin/js/vendor/foundation.min.js"></script>
 <script src="/template/admin/js/app.js"></script>
-<script src="/template/admin/js/main.js"></script>
+<script src="/template/admin/js/main.js?v.1.5"></script>
 <script src="/template/admin/js/jquery.tablesort.min.js"></script>
 <script src="/template/admin/js/object.js"></script>
 <script src="/template/admin/js/kpi.js"></script>

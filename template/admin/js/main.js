@@ -494,3 +494,33 @@ $('#add-backlog-form').submit(function(e) {
         }, 3000);
     }
 });
+
+/*****************  Users  *******************/
+$(document).on('click', '.user-lock', function () {
+    var _this = $(this);
+    var lock = _this.data('lock');
+    var user_id = _this.data('userid');
+    console.log(lock);
+
+    $.ajax({
+        url: "/adm/user/ajax_action",
+        type: "POST",
+        data: {action : 'user_lock', lock : lock, user_id: user_id},
+        cache: false,
+        success: function (response) {
+            console.log((response));
+            var obj = JSON.parse(response);
+
+            if(_this.hasClass('green')){
+                _this.attr('data-lock', obj.lock);
+                _this.removeClass('green').addClass(obj.class);
+                _this.find('i').removeClass('fi-unlock').addClass(obj.icon);
+            } else if(_this.hasClass('red')){
+                _this.attr('data-lock', obj.lock);
+                _this.removeClass('red').addClass(obj.class);
+                _this.find('i').removeClass('fi-lock').addClass(obj.icon);
+            }
+        }
+    });
+    return false;
+});

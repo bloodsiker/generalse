@@ -49,7 +49,7 @@
                                     </td>
                                     <td>
                                         <?php if (Umbrella\app\AdminBase::checkDenied('user.lock', 'view')): ?>
-                                            <button data-userid="<?=$userI['id_user']?>" class="button no-margin small <?= $userI['is_active'] == 1 ? 'green' : 'red'?>">
+                                            <button data-lock="<?= $userI['is_active']?>" data-userid="<?=$userI['id_user']?>"  class="button no-margin small user-lock <?= $userI['is_active'] == 1 ? 'green' : 'red'?>">
                                                 <i class="fi-<?= $userI['is_active'] == 1 ? 'unlock' : 'lock'?>"></i>
                                             </button>
                                         <?php endif; ?>

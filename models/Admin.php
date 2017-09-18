@@ -532,6 +532,29 @@ class Admin
         return $result->execute();
     }
 
+
+    /**
+     * Lock user
+     * @param $user_id
+     * @param $lock
+     * @return bool
+     */
+    public static function updateLockUser($user_id, $lock)
+    {
+        $db = MySQL::getConnection();
+
+        $sql = "UPDATE gs_user
+            SET
+                is_active = :is_active
+            WHERE id_user = :id_user";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id_user', $user_id, PDO::PARAM_INT);
+        $result->bindParam(':is_active', $lock, PDO::PARAM_INT);
+        return $result->execute();
+    }
+
+
     /**
      * Полуаем список ролей
      * @return array

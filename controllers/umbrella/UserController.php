@@ -323,6 +323,9 @@ class UserController extends AdminBase
     }
 
 
+    /**
+     * @return bool
+     */
     public function actionUserAddressUpdate()
     {
         //$user = $this->user;
@@ -334,6 +337,33 @@ class UserController extends AdminBase
             if($ok) {
                 echo 200;
             }
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Ajax action in the Users
+     * @return bool
+     */
+    public function actionAjaxAction()
+    {
+        if($_REQUEST['action'] == 'user_lock'){
+            $user_id = $_REQUEST['user_id'];
+            $lock = $_REQUEST['lock'] == 1 ? 0 : 1;
+            $ok = Admin::updateLockUser($user_id, $lock);
+            $result = [];
+            if ($ok && $lock == 1) {
+                $result['lock'] = 1;
+                $result['class'] = 'green';
+                $result['icon'] = 'fi-unlock';
+            } else if ($ok && $lock == 0) {
+                $result['lock'] = 0;
+                $result['class'] = 'red';
+                $result['icon'] = 'fi-lock';
+            }
+            print_r(json_encode($result));
         }
 
         return true;
