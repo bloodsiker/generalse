@@ -235,7 +235,7 @@
             <div class="medium-12 small-12 columns">
                 <label>Part Number <span style="color: #4CAF50;" class="name-product"></span></label>
                 <span style="color: orange;" class="pn-analog"></span>
-                <input type="text" class="required" name="part_number" required>
+                <input type="text" class="required" name="part_number" onkeyup="checkCurrPartNumber(this)" required>
             </div>
             <div class="medium-12 small-12 columns">
                 <label>SO Number</label>

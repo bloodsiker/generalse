@@ -20,6 +20,16 @@ $('body').on('click', '#price-button', function() {
 });
 
 
+// Запрещаем вводить в поле все кроме цифт
+function checkCurrPartNumber(d) {
+    if(window.event)
+    {
+        if(event.keyCode == 37 || event.keyCode == 39) return;
+    }
+    d.value = d.value.replace(/\D/g,'');
+}
+
+
 //PART NUMBER SEARCH
 $('[name="part_number"]').keyup(function(e) {
     //ajax e.target.value
