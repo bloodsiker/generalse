@@ -10,7 +10,7 @@
                         <div class="row">
                             <div class="large-12 columns">
                                 <label>Роль
-                                    <select name="role">
+                                    <select name="role" class="required" required>
                                         <?php if (is_array($roleList)): ?>
                                             <?php foreach ($roleList as $role): ?>
                                                 <option value="<?=$role['id_role']?>" <?php if($userInfo['id_role'] == $role['id_role']) echo 'selected'?>><?=$role['name_role']?></option>
@@ -24,7 +24,7 @@
                         <div class="row">
                             <div class="large-12 columns">
                                 <label>Страна
-                                    <select name="id_country">
+                                    <select name="id_country" class="required" required>
                                         <?php if (is_array($countryList)): ?>
                                             <?php foreach ($countryList as $country): ?>
                                                 <option value="<?=$country['id_country']?>" <?php if($userInfo['id_country'] == $country['id_country']) echo 'selected'?>><?=$country['short_name'] . " - " . $country['full_name']?></option>
@@ -38,14 +38,14 @@
                         <div class="row">
                             <div class="large-12 columns">
                                 <label>Имя
-                                    <input type="text" name="name_partner" value="<?=$userInfo['name_partner']?>" placeholder="Имя" <?php if($userInfo['id_role'] == 2) echo 'disabled' ?>/>
+                                    <input type="text" name="name_partner" value="<?=$userInfo['name_partner']?>" placeholder="Имя" <?php if($userInfo['id_role'] == 2) echo 'disabled' ?> class="required" required/>
                                 </label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="large-12 columns">
                                 <label>Логин
-                                    <input type="text" name="login" value="<?=$userInfo['login']?>" />
+                                    <input type="text" name="login" value="<?=$userInfo['login']?>" class="required" required/>
                                 </label>
                             </div>
                         </div>
@@ -60,8 +60,20 @@
 
                         <div class="row">
                             <div class="large-12 columns">
+                                <label>Перенаправление после авторизации
+                                    <select name="login_url" class="required" required>
+                                        <option value="adm/crm/orders" <?php if($userInfo['login_url'] == 'adm/crm/orders') echo 'selected'?>>CRM/Orders</option>
+                                        <option value="adm/crm/request" <?php if($userInfo['login_url'] == 'adm/crm/request') echo 'selected'?>>CRM/Request</option>
+                                        <option value="adm/ccc" <?php if($userInfo['login_url'] == 'adm/ccc') echo 'selected'?>>CCC</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="large-12 columns">
                                 <label>Отображение в KPI
-                                    <select name="kpi_view">
+                                    <select name="kpi_view" class="required" required>
                                         <option value="0" <?php if($userInfo['kpi_view'] == 0) echo 'selected'?>>Не отображать</option>
                                         <option value="1" <?php if($userInfo['kpi_view'] == 1) echo 'selected'?>>Отображать</option>
                                     </select>

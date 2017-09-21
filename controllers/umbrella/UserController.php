@@ -118,7 +118,11 @@ class UserController extends AdminBase
         $user = $this->user;
 
         $roleList = Admin::getRoleList();
-        $branchList = Branch::getBranchList();
+        $currencyList = Admin::getCurrencyList();
+        $ADBCPriceList = Admin::getABSDPriceList();
+        $staffList = Admin::getStaffList();
+        $stockPlaceList = Admin::getStockPlaceList();
+        $regionList = Admin::getRegionsList();
 
         $countryList = Country::getAllCountry();
 
@@ -137,6 +141,7 @@ class UserController extends AdminBase
                     $options['login'] = $_POST['login'];
                     $options['email'] = $_POST['email'];
                     $options['password'] = Functions::hashPass($_POST['password']);
+                    $options['login_url'] = $_POST['login_url'];
                     $options['kpi_view'] = $_POST['kpi_view'];
                     $options['date_create'] = date("Y-m-d H:i");
 
@@ -145,7 +150,23 @@ class UserController extends AdminBase
                     if($options['id_role'] == 2){
                         $denied_lithograph = new UserService($id_user);
                         $denied_lithograph->addDeniedLithograph();
-                        Admin::addUserMsSql($id_user, $options['name_partner']);
+
+                        $options['site_client_name'] = iconv('UTF-8', 'WINDOWS-1251', $_POST['name_partner']);
+                        $options['name_en'] = !empty($_POST['name_en']) ? iconv('UTF-8', 'WINDOWS-1251', $_POST['name_en']) : null;
+                        $options['address'] = !empty($_POST['address']) ? iconv('UTF-8', 'WINDOWS-1251', $_POST['address']) : null;
+                        $options['address_en'] = !empty($_POST['address_en']) ? iconv('UTF-8', 'WINDOWS-1251', $_POST['address_en']) : null;
+                        $options['for_ttn'] = !empty($_POST['for_ttn']) ? iconv('UTF-8', 'WINDOWS-1251', $_POST['for_ttn']) : null;
+                        $options['curency_id'] = $_POST['curency_id'];
+                        $options['abcd_id'] = !empty($_POST['abcd_id']) ? iconv('UTF-8', 'WINDOWS-1251', $_POST['abcd_id']) : null;
+                        $options['to_electrolux'] = $_POST['to_electrolux'];
+                        $options['to_mail_send'] = $_POST['to_mail_send'];
+                        $options['contract_number'] = !empty($_POST['contract_number']) ? iconv('UTF-8', 'WINDOWS-1251', $_POST['contract_number']) : null;
+                        $options['staff_id'] = !empty($_POST['staff_id']) ? iconv('UTF-8', 'WINDOWS-1251', $_POST['staff_id']) : null;
+                        $options['stock_place_id'] = $_POST['stock_place_id'];
+                        $options['phone'] = !empty($_POST['phone']) ? iconv('UTF-8', 'WINDOWS-1251', $_POST['phone']) : null;
+                        $options['gm_email'] = !empty($_POST['gm_email']) ? iconv('UTF-8', 'WINDOWS-1251', $_POST['gm_email']) : null;
+                        $options['region_id'] = $_POST['region_id'];
+                        Admin::addUserMsSql($id_user, $options);
                     }
                     if($id_user){
                         $log = "добавил нового пользователя " . $options['name_partner'];
@@ -155,7 +176,8 @@ class UserController extends AdminBase
                     }
                 }
             }
-            $this->render('admin/users/create', compact('user', 'roleList', 'branchList', 'countryList'));
+            $this->render('admin/users/create', compact('user', 'roleList', 'countryList',
+                'currencyList', 'ADBCPriceList', 'staffList', 'stockPlaceList', 'regionList'));
         }
         return true;
     }
@@ -214,6 +236,7 @@ class UserController extends AdminBase
                     $options['id_country'] = $_POST['id_country'];
                     $options['login'] = $_POST['login'];
                     $options['email'] = $_POST['email'];
+                    $options['login_url'] = $_POST['login_url'];
                     $options['kpi_view'] = $_POST['kpi_view'];
 
                     // Сохраняем изменения

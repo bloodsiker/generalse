@@ -380,9 +380,9 @@ class Admin
         $db = MySQL::getConnection();
 
         $sql = 'INSERT INTO gs_user '
-            . '(id_role, name_partner, id_country, login, email, password, kpi_view, date_create)'
+            . '(id_role, name_partner, id_country, login, email, password, login_url, kpi_view, date_create)'
             . 'VALUES '
-            . '(:id_role, :name_partner, :id_country, :login, :email, :password, :kpi_view, :date_create)';
+            . '(:id_role, :name_partner, :id_country, :login, :email, :password, :login_url, :kpi_view, :date_create)';
 
         // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
@@ -392,6 +392,7 @@ class Admin
         $result->bindParam(':login', $options['login'], PDO::PARAM_STR);
         $result->bindParam(':email', $options['email'], PDO::PARAM_STR);
         $result->bindParam(':password', $options['password'], PDO::PARAM_STR);
+        $result->bindParam(':login_url', $options['login_url'], PDO::PARAM_STR);
         $result->bindParam(':kpi_view', $options['kpi_view'], PDO::PARAM_INT);
         $result->bindParam(':date_create', $options['date_create'], PDO::PARAM_STR);
 
@@ -403,21 +404,37 @@ class Admin
 
     /**
      * @param $id_user
-     * @param $name
+     * @param $options
      * @return bool
      */
-    public static function addUserMsSql($id_user, $name)
+    public static function addUserMsSql($id_user, $options)
     {
         $db = MsSQL::getConnection();
 
         $sql = 'INSERT INTO dbo.site_gm_users '
-            . '(site_account_id, site_client_name)'
+            . '(site_account_id, site_client_name, name_en, address, address_en, for_ttn, curency_id, abcd_id, to_electrolux, to_mail_send, contract_number, 
+                staff_id, stock_place_id, phone, email, region_id)'
             . 'VALUES '
-            . '(:site_account_id, :site_client_name)';
+            . '(:site_account_id, :site_client_name, :name_en, :address, :address_en, :for_ttn, :curency_id, :abcd_id, :to_electrolux, :to_mail_send, :contract_number, 
+                :staff_id, :stock_place_id, :phone, :email, :region_id)';
 
         $result = $db->prepare($sql);
         $result->bindParam(':site_account_id', $id_user, PDO::PARAM_INT);
-        $result->bindParam(':site_client_name', $name, PDO::PARAM_STR);
+        $result->bindParam(':site_client_name', $options['site_client_name'], PDO::PARAM_STR);
+        $result->bindParam(':name_en', $options['name_en'], PDO::PARAM_STR);
+        $result->bindParam(':address', $options['address'], PDO::PARAM_STR);
+        $result->bindParam(':address_en', $options['address_en'], PDO::PARAM_STR);
+        $result->bindParam(':for_ttn', $options['for_ttn'], PDO::PARAM_STR);
+        $result->bindParam(':curency_id', $options['curency_id'], PDO::PARAM_INT);
+        $result->bindParam(':abcd_id', $options['abcd_id'], PDO::PARAM_INT);
+        $result->bindParam(':to_electrolux', $options['to_electrolux'], PDO::PARAM_INT);
+        $result->bindParam(':to_mail_send', $options['to_mail_send'], PDO::PARAM_INT);
+        $result->bindParam(':contract_number', $options['contract_number'], PDO::PARAM_STR);
+        $result->bindParam(':staff_id', $options['staff_id'], PDO::PARAM_INT);
+        $result->bindParam(':stock_place_id', $options['stock_place_id'], PDO::PARAM_INT);
+        $result->bindParam(':phone', $options['phone'], PDO::PARAM_STR);
+        $result->bindParam(':email', $options['gm_email'], PDO::PARAM_STR);
+        $result->bindParam(':region_id', $options['region_id'], PDO::PARAM_INT);
 
         return $result->execute();
     }
@@ -455,6 +472,7 @@ class Admin
                 id_country = :id_country,
                 login = :login,
                 email = :email,
+                login_url = :login_url,
                 kpi_view = :kpi_view
             WHERE id_user = :id_user";
 
@@ -463,6 +481,7 @@ class Admin
         $result->bindParam(':id_user', $id, PDO::PARAM_INT);
         $result->bindParam(':login', $options['login'], PDO::PARAM_STR);
         $result->bindParam(':email', $options['email'], PDO::PARAM_STR);
+        $result->bindParam(':login_url', $options['login_url'], PDO::PARAM_STR);
         $result->bindParam(':name_partner', $options['name_partner'], PDO::PARAM_STR);
         $result->bindParam(':id_country', $options['id_country'], PDO::PARAM_INT);
         $result->bindParam(':kpi_view', $options['kpi_view'], PDO::PARAM_INT);
@@ -564,6 +583,71 @@ class Admin
         $db = MySQL::getConnection();
 
         $result = $db->query("SELECT * FROM gs_role")->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+
+    /**
+     * Получаем список валюты из GM
+     * @return array
+     */
+    public static function getCurrencyList()
+    {
+        $db = MsSQL::getConnection();
+
+        $result = $db->query("SELECT number, shortName FROM tbl_Curency")->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+
+    /**
+     * Список цен для партнеров
+     * @return array
+     */
+    public static function getABSDPriceList()
+    {
+        $db = MsSQL::getConnection();
+
+        $result = $db->query("SELECT number, priceName FROM tbl_ABCD")->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+
+    /**
+     * Список ответственных
+     * @return array
+     */
+    public static function getStaffList()
+    {
+        $db = MsSQL::getConnection();
+
+        $result = $db->query("SELECT i_d, displayName FROM tbl_Users WHERE isDeleted = 0")->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+
+    /**
+     * Список местоположений складов
+     * @return array
+     */
+    public static function getStockPlaceList()
+    {
+        $db = MsSQL::getConnection();
+
+        $result = $db->query("SELECT stockPlaceID, stockPlaceName FROM tbl_2_StockPlaces WHERE isInner = 1 AND isDeleted = 0")->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+
+    /**
+     * Список регионов
+     * @return array
+     */
+    public static function getRegionsList()
+    {
+        $db = MsSQL::getConnection();
+
+        $result = $db->query("SELECT i_d, mname FROM tbl_Regions")->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
 
