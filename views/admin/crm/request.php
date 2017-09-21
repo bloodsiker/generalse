@@ -235,12 +235,21 @@
             <div class="medium-12 small-12 columns">
                 <label>Part Number <span style="color: #4CAF50;" class="name-product"></span></label>
                 <span style="color: orange;" class="pn-analog"></span>
-                <input type="text" class="required" name="part_number" onkeyup="checkCurrPartNumber(this)" required>
+                <input type="text" class="required" name="part_number" onkeyup="checkCurrPartNumber(this)" autocomplete="off" required>
             </div>
+
             <div class="medium-12 small-12 columns">
                 <label>SO Number</label>
-                <input type="text" class="required" name="so_number" required>
+                <input type="text" name="so_number" autocomplete="off">
             </div>
+
+
+                <div class="medium-12 small-12 columns">
+                    <label>Part description RUS</label>
+                    <input type="text" class="required" name="pn_name_rus" autocomplete="off" required>
+                </div>
+
+
             <div class="medium-12 small-12 columns">
                 <label>Type</label>
                 <select name="order_type_id" class="required" required>

@@ -78,7 +78,9 @@ class RequestController extends AdminBase
                 $options['part_number'] = iconv('UTF-8', 'WINDOWS-1251', trim($_POST['part_number']));
             }
 
+            $options['pn_name_rus'] = isset($_POST['pn_name_rus']) ? iconv('UTF-8', 'WINDOWS-1251', trim($_POST['pn_name_rus'])) : null;
             $options['so_number'] = iconv('UTF-8', 'WINDOWS-1251', trim($_POST['so_number']));
+            $options['so_number'] = !empty($options['pn_name_rus']) ? '[' . $options['pn_name_rus'] . '] - ' . $options['so_number'] : $options['so_number'];
             $options['note'] = $note;
             $options['note_mysql'] = $note_mysql;
             $mName = Products::checkPurchasesPartNumber($options['part_number']);
@@ -102,6 +104,7 @@ class RequestController extends AdminBase
             $ok = Orders::addReserveOrdersMsSQL($options);
             if($ok){
                 $options['request_id'] = $ok;
+                $options['so_number'] = $_POST['so_number'];
                 //Пишем в mysql
                 Orders::addReserveOrders($options);
                 $_SESSION['add_request'] = 'Out of stock, delivery is forming';
