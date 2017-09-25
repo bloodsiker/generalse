@@ -246,7 +246,7 @@
 
                 <div class="medium-12 small-12 columns">
                     <label>Part description RUS</label>
-                    <input type="text" class="required" name="pn_name_rus" autocomplete="off" required>
+                    <input type="text" name="pn_name_rus" autocomplete="off">
                 </div>
 
 

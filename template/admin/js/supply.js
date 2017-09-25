@@ -137,9 +137,12 @@ $(document).on('dblclick', '.checkout tbody tr', function(e) {
                 type: "POST",
                 data: {site_id : site_id, action : 'quantity'},
                 cache: false,
-                success: function (response) {
+                success: function (resp) {
+                    var obj = JSON.parse(resp);
+                    console.log(obj);
                     //alert(response);
-                    $('.supply_count').text(response).css('color', 'green');
+                    $('.supply_count').text(obj.supply).css('color', 'green');
+                    $('.supply_reserve_count').text(obj.reserve).css('color', 'red');
                 }
             });
         }

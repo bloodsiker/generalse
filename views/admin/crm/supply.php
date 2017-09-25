@@ -302,7 +302,7 @@
                     <th>Description PN</th>
                     <th>SO Number</th>
                     <th>Quantity <span class="supply_count"></span></th>
-                    <th>Quantity reserv</th>
+                    <th>Quantity reserv <span class="supply_reserve_count"></span></th>
                     <th>Price</th>
                     <th>Tracking Number</th>
                     <th>Manufacture country</th>

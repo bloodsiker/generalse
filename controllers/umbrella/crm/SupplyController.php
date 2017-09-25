@@ -292,8 +292,10 @@ class SupplyController extends AdminBase
         // Привязываем поставку к GM для дальнейшей обработки
         if($_REQUEST['action'] == 'quantity'){
             $site_id = $_REQUEST['site_id'];
-            $count = Supply::getCountDetailsInSupply($site_id);
-            echo $count;
+            $result = Supply::getCountDetailsInSupply($site_id);
+            $count['supply'] = $result['count'];
+            $count['reserve'] = $result['count_reserv'];
+            echo json_encode($count);
         }
 
         // Привязываем поставку к GM для дальнейшей обработки

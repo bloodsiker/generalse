@@ -220,7 +220,8 @@ class Supply
         $db = MsSQL::getConnection();
 
         $sql = "SELECT
-				  sum(quantity) as count
+				  sum(quantity) as count,
+                  sum(quantity_reserv) as count_reserv
                  FROM dbo.site_gm_supplies_parts
                  WHERE site_id = :site_id";
 
@@ -228,7 +229,7 @@ class Supply
         $result->bindParam(':site_id', $site_id, PDO::PARAM_INT);
         $result->execute();
         $count = $result->fetch(PDO::FETCH_ASSOC);
-        return $count['count'];
+        return $count;
     }
 
     /**
