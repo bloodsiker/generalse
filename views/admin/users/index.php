@@ -28,13 +28,14 @@
                             <th>Группа</th>
                             <th>Активность</th>
                             <th width="50">Action</th>
+                            <th width="50">Info GM</th>
                             <th width="50">Lock</th>
                         </tr>
                         </thead>
                         <tbody>
                         <?php if (is_array($listUsers)): ?>
                             <?php foreach ($listUsers as $userI): ?>
-                                <tr>
+                                <tr data-userid="<?=$userI['id_user']?>">
                                     <td><?=$userI['id_user']?></td>
                                     <td><?=$userI['name_partner']?></td>
                                     <td><?=$userI['short_name'] . " - " . $userI['full_name']?></td>
@@ -43,9 +44,16 @@
                                     <td><?=$userI['group_name']?></td>
                                     <td><?=$userI['date_active']?></td>
                                     <td>
-                                        <button data-userid="<?=$userI['id_user']?>" class="button no-margin small list-user-func">
+                                        <button  class="button no-margin small list-user-func">
                                             <i class="fi-list"></i>
                                         </button>
+                                    </td>
+                                    <td>
+                                        <?php if($userI['role'] == 'partner'):?>
+                                            <button class="button no-margin small info-gm-user dark">
+                                                <i class="fi-info"></i>
+                                            </button>
+                                        <?php endif;?>
                                     </td>
                                     <td>
                                         <?php if (Umbrella\app\AdminBase::checkDenied('user.lock', 'view')): ?>
@@ -171,6 +179,21 @@
                 <h3>List user action</h3>
             </div>
             <div class="medium-12 small-12 columns" id="container-details">
+
+            </div>
+        </div>
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+
+    <div class="reveal medium" id="info-gm-user" data-reveal>
+        <div class="row align-bottom">
+            <div class="medium-12 small-12 columns">
+                <h3>Info GM user</h3>
+            </div>
+            <div class="medium-12 small-12 columns" id="container-user-details">
 
             </div>
         </div>

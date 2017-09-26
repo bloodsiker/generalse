@@ -651,4 +651,40 @@ class Admin
         return $result;
     }
 
+
+
+    /*
+     * Информация о пользователе из GM
+     */
+    public static function getInfoGmUser($user_id)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "SELECT
+                sgu.*,
+                tc.ShortName,
+                ta.PriceName,
+                tu.DisplayName,
+                tbl_2_StockPlaces.StockPlaceName,
+                tbl_Regions.mName
+                FROM site_gm_users sgu
+                    LEFT JOIN tbl_Curency tc
+                        ON sgu.curency_id = tc.Number
+                    LEFT JOIN tbl_ABCD ta
+                        ON sgu.abcd_id = ta.Number
+                    LEFT JOIN tbl_Users tu
+                        ON sgu.staff_id = tu.I_D
+                    LEFT JOIN tbl_2_StockPlaces
+                        ON sgu.stock_place_id = tbl_2_StockPlaces.StockPlaceID
+                    LEFT JOIN tbl_Regions
+                        ON sgu.region_id = tbl_Regions.I_D
+                WHERE sgu.site_account_id = :user_id";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $result->execute();
+        $user = $result->fetch(PDO::FETCH_ASSOC);
+        return $user;
+    }
+
 }

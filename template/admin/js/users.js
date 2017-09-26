@@ -1,6 +1,6 @@
 // Показываем в модальном окне, дополнительную информацию
 $(document).on('click', '.list-user-func', function(e) {
-    var user_id = $(this).attr('data-userid');
+    var user_id = $(this).parent('td').parent('tr').attr('data-userid');
 
     $.ajax({
         url: "/adm/user/show_list_func",
@@ -13,10 +13,27 @@ $(document).on('click', '.list-user-func', function(e) {
             $('#container-details').html(response);
         }
     });
-
     return false;
 });
 
+// Показываем информацию о пользователе из GM
+$(document).on('click', '.info-gm-user', function(e) {
+    var user_id = $(this).parent('td').parent('tr').attr('data-userid');
+
+    $.ajax({
+        url: "/adm/user/info_gm_user",
+        type: "POST",
+        data: {user_id : user_id},
+        cache: false,
+        success: function (response) {
+            //alert(response);
+            console.log(response);
+            $('#info-gm-user').foundation('open');
+            $('#container-user-details').html(response);
+        }
+    });
+    return false;
+});
 
 // Редактируем адрес поставки
 var id_address = '';
@@ -26,8 +43,8 @@ $(document).on('click', '.edit-address', function(e) {
     var user_address = $(this).parent('td').parent('tr').find('.user-address').text();
     $("#user_address").val(user_address.trim());
     id_address = $(this).data('id');
-
 });
+
 $(document).on('click', '#send-user-address', function(e) {
     e.preventDefault();
     var address = $("#user_address").val();

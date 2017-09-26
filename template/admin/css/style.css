@@ -88,6 +88,10 @@ table tr:hover{
   background-color: #c1433c;
 }
 
+.dark {
+  background-color: #323e48;
+}
+
 .aqua {
   background-color: #53cce8;
   color: #fff;
