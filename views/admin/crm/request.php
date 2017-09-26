@@ -109,7 +109,9 @@
                                 <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['site_client_status'])?></td>
                                 <?php endif?>
-                                <td><?= $order['part_number']?></td>
+                                <td style="background: <?= in_array($order['part_number'], $arrayPartNumber) ? '#f79898' : 'inherit'?>">
+                                    <?= $order['part_number']?>
+                                </td>
                                 <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['goods_name'])?></td>
                                 <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['subtype_name'])?></td>
