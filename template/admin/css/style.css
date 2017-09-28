@@ -1130,3 +1130,82 @@ td select {
 .upload-progress { position:relative; background-color: #fff; width: 100%; border: 1px solid #ddd; padding: 1px;margin: 0 15px 10px 15px }
 .upload-bar { background-color: #7ad47a; width:0%; height:22px; }
 .upload-percent { position:absolute; display:inline-block; top:0px; left:48%; }
+
+
+/*********  26.09.2017 innovation  ***********/
+
+.close-changes{
+  margin-top: 5px;
+  color: #fff;
+  opacity: .8;
+  font-size: 40px;
+}
+.close-changes:hover{
+  color: #fff;
+  opacity: .8;
+}
+.new-changes{
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  min-height: 100vh;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 9999;
+  overflow-y: scroll;
+}
+.container-changes{
+  position: absolute;
+  background: none;
+  padding-bottom: 20px;
+  width: 100%;
+}
+.container-changes h4{
+  color: #fff;
+}
+.container-inner {
+  padding: 30px 100px;
+  width: 90%;
+  margin: 0 auto;
+}
+.list-changes{
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 10px;
+  margin-bottom: 15px;
+  background: #fff;
+  color: #4a4a4a;
+  font-size: 14px;
+}
+.list-changes time {
+  font-size: 12px;
+  font-style: italic;
+}
+.add-block-change{
+  padding: 10px;
+}
+.view-ok {
+  border: 1px solid #ddd;
+  background: #f4f4f4;
+  padding: 5px 12px;
+  font-size: 13px;
+}
+
+.view-ok:hover {
+  background: #e7e7e7;
+  border-color: #adadad;
+}
+.link-innovation{
+  position: fixed;
+  top: 99px;
+  right: -13px;
+  background: #323e48;
+  color: #fff;
+  -moz-transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  padding: 2px 5px;
+}
+.link-innovation:hover {
+  color: #fff;
+}

@@ -292,6 +292,22 @@ class UserController extends AdminBase
 
 
     /**
+     * Подгружаем информацию о пользователе из GM
+     * @return bool
+     */
+    public function actionInfoGmUser()
+    {
+        $user_id = $_REQUEST['user_id'];
+
+        $userInfo = Admin::getInfoGmUser($user_id);
+
+        $this->render('admin/users/info_gm_user', compact('userInfo'));
+        return true;
+    }
+
+
+
+    /**
      * Удаление пользователя
      * @param $id
      * @return bool

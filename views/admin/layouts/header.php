@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/template/admin/css/app.css">
     <link rel="stylesheet" href="/template/admin/css/fonts.css">
     <link rel="stylesheet" href="/template/admin/fonts/foundation-icons/foundation-icons.css">
-    <link rel="stylesheet" href="/template/admin/css/style.css?v.1.6">
+    <link rel="stylesheet" href="/template/admin/css/style.css?v.1.8">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/5.0.0/video-js.min.css" rel="stylesheet">
     <?php
 
@@ -79,3 +79,28 @@
         </div>
     </div>
 </header>
+
+<a href="" class="link-innovation hide">News</a>
+
+<?php $listInnovation = $user->checkNewInnovation()?>
+<?php if(is_array($listInnovation)):?>
+<div class="new-changes">
+    <div class="container-changes">
+        <div class="container-inner">
+            <button type="button" class="close close-changes float-right" data-dismiss="modal" aria-label="Close"><span>×</span>
+            </button>
+            <h4>Список изменений в Umbrella</h4>
+            <div>
+                <?php foreach ($listInnovation as $innovation):?>
+                    <div class="list-changes">
+                        <time class="float-right">Дата: <?= \Umbrella\components\Functions::formatDate($innovation['created_at'])?></time>
+                        <?= $innovation['new_content']?>
+                        <button class="view-ok click-view-ok float-right" data-innovation-id="<?= $innovation['id']?>"><i class="fi-check"></i> Ознакомлен(а)</button>
+                        <div class="clearfix"></div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endif; ?>

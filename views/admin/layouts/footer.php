@@ -5,13 +5,15 @@
         <img src="/template/admin/img/wait.svg" alt="">
     </div>
 </div>
+
+
 <script src="/template/admin/js/vendor/jquery.js"></script>
 <script src="/template/admin/js/vendor/js-ui.js"></script>
 <script src="/template/admin/js/calendar-local-eng.js"></script>
 <script src="/template/admin/js/vendor/what-input.js"></script>
 <script src="/template/admin/js/vendor/foundation.min.js"></script>
 <script src="/template/admin/js/app.js"></script>
-<script src="/template/admin/js/main.js?v.1.6"></script>
+<script src="/template/admin/js/main.js?v.1.7"></script>
 <script src="/template/admin/js/jquery.tablesort.min.js"></script>
 <script src="/template/admin/js/object.js"></script>
 <script src="/template/admin/js/kpi.js"></script>
@@ -20,7 +22,7 @@
 <!-- switch  -->
 <?php
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/dashboard')) echo "<script src='/template/admin/js/dashboard.js'></script>";
-if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/user')) echo "<script src='/template/admin/js/users.js'></script>";
+if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/user')) echo "<script src='/template/admin/js/users.js?v.1.6'></script>";
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/stocks')) echo "<script src='/template/admin/js/stocks.js'></script>";
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/returns')) echo "<script src='/template/admin/js/returns.js'></script>";
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/orders')) echo "<script src='/template/admin/js/orders.js'></script>";

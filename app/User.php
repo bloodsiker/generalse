@@ -7,6 +7,7 @@ use Umbrella\models\Admin;
 use Umbrella\models\DeliveryAddress;
 use Umbrella\models\Denied;
 use Umbrella\models\GroupModel;
+use Umbrella\models\Innovation;
 
 /**
  * Class User
@@ -183,13 +184,23 @@ class User
 
     /**
      * Список адресов доставки привязанных к партнеру
-     * @param $id_user
      * @return array
      */
     public function getDeliveryAddress()
     {
         $delivery_address = DeliveryAddress::getAddressByPartner($this->id_user);
         return array_column($delivery_address, 'address');
+    }
+
+
+    /**
+     * Список нововведений для пользователя
+     * @return array|bool
+     */
+    public function checkNewInnovation()
+    {
+        $listInnovation = Innovation::getListNewInnovation($this->id_user);
+        return count($listInnovation) > 0 ? $listInnovation : false;
     }
 
 

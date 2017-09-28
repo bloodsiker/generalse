@@ -2,6 +2,7 @@
 
 return array(
 
+    'adm/innovation/ajax_action' => 'umbrella/Innovation@ajaxAction',
 
     /*********** LOG  ***********/
     'adm/user/ajax_logs' => 'umbrella/Log@ajaxLoad',
@@ -29,6 +30,7 @@ return array(
     'adm/user/delete/([0-9]+)' => 'umbrella/User@delete/$1',
     'adm/user/update/([0-9]+)' => 'umbrella/User@update/$1',
     'adm/user/show_list_func' => 'umbrella/User@showListFunc',
+    'adm/user/info_gm_user' => 'umbrella/User@infoGmUser',
     'adm/user/ajax_action' => 'umbrella/User@ajaxAction',
     'adm/user/check_login' => 'umbrella/User@checkUserLogin',
     'adm/user/add' => 'umbrella/User@addUser',

@@ -550,3 +550,29 @@ $('select[name="role"]').change(function(event) {
             $('select[name="region_id"]').removeAttr('required').removeClass('required');
     }
 });
+
+// Действия с отображением нововведений
+$(document).on('click', '.close-changes', function(e) {
+    $('.new-changes').remove();
+});
+
+$(document).on('click', '.click-view-ok', function () {
+    var _this = $(this);
+    var innovation_id = _this.attr('data-innovation-id');
+
+    $.ajax({
+        url: "/adm/innovation/ajax_action",
+        type: "POST",
+        data: {action : 'innovation_view', innovation_id : innovation_id},
+        cache: false,
+        success: function (response) {
+            if(response == 200){
+                _this.removeAttr('data-innovation-id');
+                _this.removeClass('.click-view-ok');
+                _this.text('Ok');
+            }
+            // var obj = JSON.parse(response);
+        }
+    });
+    return false;
+});
