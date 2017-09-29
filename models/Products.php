@@ -34,28 +34,7 @@ class Products
         }
         return 2;
     }
-	
-	
-	public static function checkPartNumber2($partNumber)
-    {
-        $db = MySQL::getConnection();
 
-        $sql = 'SELECT partNumber FROM gs_products WHERE partNumber = :partNumber';
-
-        // Делаем пдготовленный запрос
-        $result = $db->prepare($sql);
-        $result->bindParam(':partNumber', $partNumber, PDO::PARAM_STR);
-        $result->execute();
-
-        // Получаем ассоциативный массив
-        $pn_number = $result->fetch();
-
-        if ($pn_number) {
-            // Если существует массив, то возращаем 1
-            return 1;
-        }
-        return 2;
-    }
 	
 	
 	/**
