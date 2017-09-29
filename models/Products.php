@@ -171,32 +171,7 @@ class Products
         return 0;
     }
 	
-	
-	/**
-     * Проверяем в заказах на существование по парт номеру
-     * @param $partNumber
-     * @return int|mixed
-     */
-    public static function checkOrdersPartNumber($partNumber)
-    {
-        $db = MySQL::getConnection();
 
-        $sql = 'SELECT goods_name, quantity FROM gs_products WHERE partNumber = :partNumber';
-
-        // Делаем пдготовленный запрос
-        $result = $db->prepare($sql);
-        $result->bindParam(':partNumber', $partNumber, PDO::PARAM_STR);
-        $result->execute();
-
-        // Получаем ассоциативный массив
-        $pn_number = $result->fetch(PDO::FETCH_ASSOC);
-
-        if ($pn_number) {
-            // Если существует массив, то возращаем 1
-            return $pn_number;
-        }
-        return 0;
-    }
 	
 	
 	/**
@@ -285,7 +260,7 @@ class Products
      * @param $partNumber
      * @return int
      */
-    public static function checkPartNumberMoto($partNumber)
+    public static function checkPartNumberInGM($partNumber)
     {
         $db = MsSQL::getConnection();
 

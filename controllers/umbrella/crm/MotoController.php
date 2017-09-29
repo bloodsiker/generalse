@@ -195,7 +195,7 @@ class MotoController extends AdminBase
 
         $result = 0;
         // 5B28C02926
-        $result = Products::checkPartNumberMoto($mtm);
+        $result = Products::checkPartNumberInGM($mtm);
 
         $mName = '';
         $mName = iconv('WINDOWS-1251', 'UTF-8', $result['mName']);
