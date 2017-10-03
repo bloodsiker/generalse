@@ -10,7 +10,9 @@
         }
     ],
     "minimum-stability": "stable",
-    "require": {},
+    "require": {
+        "verot/class.upload.php": "dev-master"
+    },
     "autoload": {
         "psr-4": {
             "Umbrella\\" : ""

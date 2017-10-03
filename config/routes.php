@@ -73,6 +73,12 @@ return array(
     'adm/dashboard' => 'umbrella/Dashboard@index',
 
 
+    /*********** PSR  ***********/
+    'adm/psr/show_upload_file' => 'umbrella/psr/Psr@showUploadFile',
+    'adm/psr/psr_ajax' => 'umbrella/psr/Psr@psrAjax',
+    'adm/psr/ua' => 'umbrella/psr/Psr@index',
+
+
     /*********** CCC  ***********/
     'adm/ccc/tree_knowledge/customer-([a-z0-9-]+)/cat-([0-9]+)/article-([a-z0-9-_?&]+)' => 'umbrella/ccc/TreeKnowledge@viewArticle/$1/$2/$3',
     'adm/ccc/tree_knowledge/customer-([a-z0-9-]+)/s/([a-z0-9-_?&]+)' => 'umbrella/ccc/TreeKnowledge@search/$1/$2',
@@ -209,7 +215,6 @@ return array(
     'adm/refund_request/thank_you_page' => 'umbrella/RefundRequest@thankYouPage',
     'adm/part_num_ajax' => 'umbrella/RefundRequest@partNumAjax',
     'adm/request_ajax' => 'umbrella/RefundRequest@requestAjax',
-    'adm/refund_request/test' => 'umbrella/RefundRequest@test',
 
 
     /*********** KPI  ***********/

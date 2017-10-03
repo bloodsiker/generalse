@@ -266,16 +266,13 @@ class Products
 
         $sql = 'SELECT mName FROM dbo.tbl_GoodsNames WHERE partNumber = :partNumber';
 
-        // Делаем пдготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':partNumber', $partNumber, PDO::PARAM_STR);
         $result->execute();
 
-        // Получаем ассоциативный массив
         $pn_number = $result->fetch(PDO::FETCH_ASSOC);
         $data['mName'] = $pn_number['mName'];
         if ($pn_number) {
-            // Если существует массив, то возращаем id пользователя
             return $data;
         }
         return 0;

@@ -1,3 +1,6 @@
 .idea
 upload/
+vendor/verot
+vendor/composer
+vendor/autoload.php
 

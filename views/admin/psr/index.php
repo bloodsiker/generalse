@@ -1,169 +1,403 @@
 <?php require_once ROOT . '/views/admin/layouts/header.php'; ?>
 <div class="row">
-  <div class="medium-12 small-12 columns">
-    <div class="row header-content">
-      <div class="medium-12 small-12 top-gray columns">
-        <h1>Moto</h1>
-      </div>
-      <div class="medium-12 small-12 bottom-gray colmns">
-        <div class="row align-bottom">
-          <div class="medium-12 text-left small-12 columns">
-            <ul class="menu">
-              <?php require_once ROOT . '/views/admin/layouts/crm_menu.php'; ?>
-            </ul>
-          </div>
-          <div class="medium-12 small-12 columns">
-            <div class="row align-bottom">
-              <div class="medium-3 small-12 columns">
-                <button class="button primary tool" id="add-create-button"><i class="fi-plus"></i> Create</button>
-              </div>
-              <!-- <div class="medium-4  small-12 columns">
-                        <form action="/adm/result/" method="get" id="kpi" class="form">
-                           <div class="row align-bottom">
-                              <div class="medium-4 text-left small-12 columns">
-                                 <label for="right-label"><i class="fi-calendar"></i> From date</label>
-                                 <input type="text" id="date-start" name="start" required>
-                              </div>
-                              <div class="medium-4 small-12 columns">
-                                 <label for="right-label"><i class="fi-calendar"></i> To date</label>
-                                 <input type="text" id="date-end" name="end">
-                              </div>
-                              <div class="medium-4 small-12 columns">
-                                 <button type="submit" class="button primary"><i class="fi-eye"></i> Show</button>
-                              </div>
-                           </div>
-                        </form>
+    <div class="medium-12 small-12 columns">
+        <div class="row header-content">
+            <div class="medium-12 small-12 top-gray columns">
+                <h1>PSR UA</h1>
+            </div>
+            <div class="medium-12 small-12 bottom-gray colmns">
+                <div class="row align-bottom">
+                    <div class="medium-12 text-left small-12 columns">
+                        <ul class="menu">
+                            <?php require_once ROOT . '/views/admin/layouts/psr_menu.php'; ?>
+                        </ul>
+                    </div>
+                    <div class="medium-12 small-12 columns">
+                        <div class="row align-bottom">
+                            <div class="medium-8 small-12 columns">
+                                <?php if (Umbrella\app\AdminBase::checkDenied('adm.psr.create', 'view')): ?>
+                                    <button class="button primary tool" id="add-psr"><i class="fi-plus"></i>Create</button>
+                                <?php endif;?>
+
+                                <?php if (Umbrella\app\AdminBase::checkDenied('adm.psr.add_declaration', 'view')): ?>
+                                    <button class="button primary tool" id="add-psr-dec"><i class="fi-plus"></i>Add declaration number</button>
+                                <?php endif;?>
+                            </div>
+                            <div class="medium-4  small-12 columns">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- body -->
+        <div class="body-content checkout">
+             <div class="row">
+                 <?php if(isset($message_success) && !empty($message_success)):?>
+                     <div class="medium-12 small-12 columns" style="text-align: center">
+                         <div class="<?= $class ?>" style="margin: 0px auto 10px;"><?= $message_success ?></div>
                      </div>
-                     <div class="medium-3 medium-offset-2 small-12 columns">
-                        <form action="#" method="get" class="form">
-                           <input type="text" class="search-input" placeholder="Search..." name="search">
-                           <button class="search-button button primary"><i class="fi-magnifying-glass"></i></button>
-                        </form>
-                     </div> -->
-            </div>
+                 <?php endif;?>
+                 <?php if($user->role == 'partner'):?>
+                     <table class="umbrella-table" id="goods_data">
+                         <thead>
+                         <tr>
+                             <th>ID</th>
+                             <th>Partner</th>
+                             <th>SN number</th>
+                             <th>MTM</th>
+                             <th>Device</th>
+                             <th>Manufacture Date</th>
+                             <th>Purchase Date</th>
+                             <th>Defect description</th>
+                             <th>Device condition</th>
+                             <th>Complectation</th>
+                             <th>Notes</th>
+                             <th>Attach</th>
+                             <th>Status</th>
+                             <th>Declaration number</th>
+                         </tr>
+                         </thead>
+                         <tbody>
+                         <?php if(is_array($listPsr)):?>
+                             <?php foreach ($listPsr as $psr):?>
+                                 <tr>
+                                     <td><?= $psr['id']?></td>
+                                     <td><?= $psr['name_partner']?></td>
+                                     <td><?= $psr['serial_number']?></td>
+                                     <td><?= $psr['part_number']?></td>
+                                     <td><?= $psr['device_name']?></td>
+                                     <td><?= $psr['manufacture_date']?></td>
+                                     <td><?= $psr['purchase_date']?></td>
+                                     <td><?= $psr['defect_description']?></td>
+                                     <td><?= $psr['device_condition']?></td>
+                                     <td><?= $psr['complectation']?></td>
+                                     <td class="text-center">
+                                         <?php if($psr['note'] != ' ' && $psr['note'] != null):?>
+                                             <i class="fi-info has-tip [tip-top]" style="font-size: 16px;"
+                                                data-tooltip aria-haspopup="true"
+                                                data-show-on="small"
+                                                data-click-open="true"
+                                                title="<?= $psr['note']?>"></i>
+                                         <?php endif;?>
+                                     </td>
+                                     <td class="text-center <?= $psr['count_file'] > 0 ? 'blue' : 'red' ?>">
+                                         <button data-open="open-upload-psr" data-psr-id="<?= $psr['id'] ?>">
+                                             <i class="fa fa-paperclip" aria-hidden="true"></i>
+                                         </button>
+                                     </td>
+                                     <td class="<?= \Umbrella\models\psr\Psr::getStatusRequest($psr['status_name'])?>"><?= $psr['status_name']?></td>
+                                     <td><?= $psr['declaration_number']?></td>
+                                 </tr>
+                             <?php endforeach;?>
+                         <?php endif;?>
+                         </tbody>
+                     </table>
+                 <?php elseif($user->role == 'administrator'
+                 || $user->role == 'administrator-fin'
+                 || $user->role == 'manager'):?>
+                     <table class="umbrella-table" id="goods_data">
+                         <thead>
+                         <tr>
+                             <th>ID</th>
+                             <th>Partner</th>
+                             <th>SN number</th>
+                             <th>MTM</th>
+                             <th>Device</th>
+                             <th>Manufacture Date</th>
+                             <th>Purchase Date</th>
+                             <th>Defect description</th>
+                             <th>Device condition</th>
+                             <th>Complectation</th>
+                             <th>Notes</th>
+                             <th>Attach</th>
+                             <th>Status</th>
+                             <th>Declaration number</th>
+                             <th>SO number</th>
+                         </tr>
+                         </thead>
+                         <tbody>
+                         <?php if(is_array($listPsr)):?>
+                             <?php foreach ($listPsr as $psr):?>
+                                 <tr data-id="<?= $psr['id']?>">
+                                     <td><?= $psr['id']?></td>
+                                     <td><?= $psr['name_partner']?></td>
+                                     <td><?= $psr['serial_number']?></td>
+                                     <td><?= $psr['part_number']?></td>
+                                     <td><?= $psr['device_name']?></td>
+                                     <td><?= $psr['manufacture_date']?></td>
+                                     <td><?= $psr['purchase_date']?></td>
+                                     <td><?= $psr['defect_description']?></td>
+                                     <td><?= $psr['device_condition']?></td>
+                                     <td><?= $psr['complectation']?></td>
+                                     <td class="text-center">
+                                         <?php if($psr['note'] != ' ' && $psr['note'] != null):?>
+                                             <i class="fi-info has-tip [tip-top]" style="font-size: 16px;"
+                                                data-tooltip aria-haspopup="true"
+                                                data-show-on="small"
+                                                data-click-open="true"
+                                                title="<?= $psr['note']?>"></i>
+                                         <?php endif;?>
+                                     </td>
+                                     <td class="text-center <?= $psr['count_file'] > 0 ? 'blue' : 'red' ?>">
+                                         <button data-open="open-upload-psr" data-psr-id="<?= $psr['id'] ?>">
+                                             <i class="fa fa-paperclip" aria-hidden="true"></i>
+                                         </button>
+                                     </td>
+                                     <td class="edit-psr-status <?= \Umbrella\models\psr\Psr::getStatusRequest($psr['status_name'])?>">
+                                         <span class="psr_status"><?= $psr['status_name']?></span>
+                                     </td>
+                                     <td><?= $psr['declaration_number']?></td>
+                                     <td class="order-tr-so">
+                                         <span class="psr_so"><?= $psr['so_number']?></span>
+                                         <a href="" class="button edit-so delete"><i class="fi-pencil"></i></a>
+                                     </td>
+                                 </tr>
+                             <?php endforeach;?>
+                         <?php endif;?>
+                         </tbody>
+                     </table>
+                 <?php endif;?>
+
+             </div>
           </div>
-        </div>
-      </div>
     </div>
-    <!-- body -->
-    <!-- <div class="body-content checkout">
-         <div class="row">
-            <table>
-               <thead>
-                  <tr>
-                     <th class="sort">Order Number</th>
-                     <th class="sort">Service Order</th>
-                     <th class="sort">Stock</th>
-                     <th class="sort">Date</th>
-                     <th class="sort">Part Number</th>
-                     <th class="sort">Desription</th>
-                     <th class="sort">Quantity</th>
-                     <th class="sort">Status</th>
-                  </tr>
-               </thead>
-               <tbody>
-               </tbody>
-            </table>
-         </div>
-      </div> -->
-  </div>
 </div>
-<div class="reveal" id="add-checkout-modal" data-reveal>
-  <form action="#" id="add-checkout-form" method="post" class="form" data-abide novalidate>
-    <div class="row align-bottom">
-      <div class="medium-12 small-12 columns">
-        <h3>PSR</h3>
-      </div>
-      <div class="medium-12 small-12 columns">
-        <div class="row">
-          <div class="medium-12 small-12 columns">
-            <div class="row align-bottom ">
-              <div class="medium-12 small-12 columns">
-                <label>Serial Number</label>
-                <input type="text" pattern=".{8,}" class="required" name="Serial_number" required>
-              </div>
-              <div class="medium-12 small-12 columns">
-                <label>MTM</label>
-                <input type="text" class="required" name="mtm" required>
-              </div>
-              <div class="medium-5 small-12 columns">
-                <label>Manufacture Date</label>
-                <input type="text" class="required date" name="Manufacture_Date" required>
-              </div>
-              <div class="medium-5 small-12 columns">
-                <label>Purchase Date</label>
-                <input type="text" class="required date" name="Purchase_date" required>
-              </div>
-              <div class="medium-2 small-12 columns">
-                <label>Days</label>
-                <input type="text" name="Days">
-              </div>
-              <div class="medium-12 small-12 columns">
-                <span class="error-date" style="color: #ff635a;">Unfortunately, It is not PSR. Please, contact your manager</span>
-              </div>
+
+<?php if (Umbrella\app\AdminBase::checkDenied('adm.psr.create', 'view')): ?>
+    <div class="reveal" id="add-psr-modal" data-reveal>
+        <form action="#" id="add-psr-form" method="post" class="form" data-abide novalidate>
+            <div class="row align-bottom">
+                <div class="medium-12 small-12 columns">
+                    <h3>Create PSR</h3>
+                </div>
+                <div class="medium-12 small-12 columns">
+                    <div class="row">
+                        <div class="medium-12 small-12 columns">
+                            <div class="row align-bottom ">
+                                <div class="medium-12 small-12 columns">
+                                    <label>Serial Number</label>
+                                    <input type="text" class="required" name="serial_number" required>
+                                </div>
+                                <div class="medium-12 small-12 columns">
+                                    <label>MTM <span style="color: #4CAF50;" class="name-product"></span></label>
+                                    <input type="text" class="required" name="mtm" required>
+                                </div>
+                                <input type="hidden" name="device_name" value="">
+                                <div class="medium-5 small-12 columns">
+                                    <label>Manufacture Date</label>
+                                    <input type="text" class="required date" name="manufacture_date" required>
+                                </div>
+                                <div class="medium-5 small-12 columns">
+                                    <label>Purchase Date</label>
+                                    <input type="text" class="required date" name="purchase_date" required>
+                                </div>
+                                <div class="medium-2 small-12 columns">
+                                    <label>Days</label>
+                                    <input type="text" name="Days">
+                                </div>
+                                <div class="medium-12 small-12 columns">
+                                    <span class="error-date" style="color: #ff635a; font-size: 14px">Ремонт невозможно зарегистрировать как ПСР, обратитесь к менеджеру</span>
+                                </div>
+
+                                <div class="medium-12 small-12 columns">
+                                    <label>Defect description</label>
+                                    <textarea name="defect_description" cols="30" rows="2" class="required" required></textarea>
+                                </div>
+
+                                <div class="medium-12 small-12 columns">
+                                    <label>Device condition</label>
+                                    <input type="text" class="required" name="device_condition" required>
+                                </div>
+
+                                <div class="medium-12 small-12 columns">
+                                    <label>Complectation</label>
+                                    <input type="text" class="required" name="complectation" required>
+                                </div>
+
+                                <div class="medium-12 small-12 columns">
+                                    <label>Note</label>
+                                    <textarea name="note" cols="30" rows="2"></textarea>
+                                </div>
+
+                                <div class="medium-12 small-12 columns">
+                                    <label>Declaration number</label>
+                                    <input type="text" name="declaration_number">
+                                </div>
+
+                                <input type="hidden" name="add_psr" value="true">
+                            </div>
+                        </div>
+
+
+                        <div class="medium-12 small-12 columns">
+                            <div class="row">
+                                <div class="medium-12 small-12 columns">
+                                    <button type="submit" class="button primary">Send</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </form>
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+<?php endif; ?>
+
+
+<?php if (Umbrella\app\AdminBase::checkDenied('adm.psr.add_declaration', 'view')): ?>
+    <div class="reveal" id="add-dec-number-modal" data-reveal>
+        <form action="#" id="add-dec-number-form" method="post" class="form" data-abide novalidate>
+            <div class="row align-bottom">
+                <div class="medium-12 small-12 columns">
+                    <h3>Add declaration number</h3>
+                </div>
+                <div class="medium-12 small-12 columns">
+                    <div class="row">
+                        <div class="medium-12 small-12 columns">
+                            <div class="row align-bottom ">
+                                <div class="medium-12 small-12 columns">
+                                    <label>ID PSR</label>
+                                    <input type="text" name="psr_id" class="required" required>
+                                </div>
+                                <div class="medium-12 small-12 columns">
+                                    <label>Serial Number</label>
+                                    <input type="text" name="serial_number" disabled>
+                                </div>
+                                <div class="medium-12 small-12 columns">
+                                    <label>MTM</label>
+                                    <input type="text" name="mtm" disabled>
+                                </div>
+                                <div class="medium-12 small-12 columns">
+                                    <label>Device</label>
+                                    <input type="text" name="device_name" disabled>
+                                </div>
+
+                                <div class="medium-12 small-12 columns">
+                                    <label>Declaration number</label>
+                                    <input type="text" class="required" name="declaration_number" required>
+                                </div>
+
+                                <input type="hidden" name="add_psr_dec" value="true">
+                            </div>
+                        </div>
+
+                        <div class="medium-12 small-12 columns">
+                            <div class="row">
+                                <div class="medium-12 small-12 columns">
+                                    <button type="submit" class="button primary">Send</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </form>
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+<?php endif;?>
+
+
+<div class="reveal" id="open-upload-psr" data-reveal>
+    <form action="" id="psr-upload" method="post" class="form" enctype="multipart/form-data" data-abide
+          novalidate>
+        <div class="row align-bottom">
+            <div class="medium-12 small-12 columns">
+                <h3>Upload warranty card</h3>
             </div>
-          </div>
-          <div class="medium-12 small-12 columns">
-            <div class="row">
-              <div class="medium-12 small-12 columns">
-                <label>Level</label>
-                <select name="Level" id="repair_level" class="required" required>
-                  <option value="" selected disabled>none</option>
-                  <option value="L0">L0</option>
-                  <option value="L1">L1</option>
-                  <option value="L2">L2</option>
-                  <option value="ACT">ACT</option>
-                </select>
-              </div>
+            <div class="medium-12 small-12 columns">
+                <div class="row">
+
+                    <div class="medium-12 small-12 columns">
+                        <div class="container-upload-file">
+
+                        </div>
+                    </div>
+
+                    <div class="medium-12 small-12 columns">
+                        <div class="row align-bottom ">
+                            <div class="medium-12 small-12 columns">
+                                <label for="upload_new_price" class="button primary">Attach</label>
+                                <input type="file" id="upload_new_price" class="show-for-sr" name="attach_psr" required multiple>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="medium-12 small-12 columns">
+                        <div class="row">
+                            <div class="medium-6 small-12 columns">
+                                <input type="hidden" name="psr_id" value="">
+                            </div>
+                            <div class="medium-6 small-12 columns">
+                                <button type="submit" class="button primary">Upload File</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="row align-bottom l1-show">
-              <div class="medium-6 small-12 columns">
-                <label>Part Number</label>
-                <input type="text" name="Part_Number">
-              </div>
-              <div class="medium-6 small-12 columns">
-                <label>Source</label>
-                <select class="source" name="Source_1">
-                  <option value="" selected disabled>none</option>
-                  <option value="Local Source">Local Source</option>
-                  <option value="Not Used">Not Used</option>
-                  <option value="Dismantling">Dismantling</option>
-                  <option value="Restored">Restored</option>
-                </select>
-              </div>
-              <div class="medium-6 ls-show small-12 columns">
-                <label>Price</label>
-                <input type="text" pattern="[^a-zA-Z]" name="Price_1">
-              </div>
-              <div class="medium-6 ls-show small-12 columns">
-                  <select name="Price_1" class="required" required>
-                     <option value="USD" selected>USD</option>
-                     <option value="UAH">UAH</option>
-                  </select>
-               </div>
-            </div>
-            <div class="row l1-show">
-              <div class="medium-12 small-12 columns">
-                <button type="button" class="button primary" id="add-parts-info"><i class="fi-plus"></i> add</button>
-              </div>
-            </div>
-          </div>
-          <div class="medium-12 small-12 columns">
-            <div class="row">
-              <div class="medium-6 small-12 columns">
-                <label for="exampleFileUpload" class="button primary">Attach</label>
-                <input type="file" id="exampleFileUpload" class="show-for-sr" name="Attach_file[]" multiple="true">
-              </div>
-              <div class="medium-6 small-12 columns">
-                <button type="submit" class="button primary">Send</button>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
-  </form>
-  <button class="close-button" data-close aria-label="Close modal" type="button">
-    <span aria-hidden="true">&times;</span>
-  </button>
-  </div>
-  <?php require_once ROOT . '/views/admin/layouts/footer.php'; ?>
+    </form>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+
+<div class="reveal" id="edit-so" data-reveal>
+    <form action="#" method="post" class="form" novalidate="">
+        <div class="row align-bottom">
+            <div class="medium-12 small-12 columns">
+                <h3>Edit SO number</h3>
+            </div>
+            <div class="medium-12 small-12 columns">
+                <div class="row">
+                    <div class="medium-12 small-12 columns">
+                        <label>SO number</label>
+                        <input type="text" id="psr_so" name="order_so" autocomplete="off">
+                    </div>
+                </div>
+            </div>
+            <div class="medium-12 small-12 columns">
+                <button type="button" id="send-psr-so" class="button primary">Edit</button>
+            </div>
+        </div>
+    </form>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="reveal" id="edit-status" data-reveal>
+    <form action="#" method="post" class="form" novalidate="">
+        <div class="row align-bottom">
+            <div class="medium-12 small-12 columns">
+                <h3>Edit status</h3>
+            </div>
+            <div class="medium-12 small-12 columns">
+                <div class="row">
+                    <div class="medium-12 small-12 columns">
+                        <label>Status</label>
+                        <select name="psr_status" id="psr_status">
+                            <option value="Зарегистрирован">Зарегистрирован</option>
+                            <option value="Принято, в обработке">Принято, в обработке</option>
+                            <option value="Выдан">Выдан</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="medium-12 small-12 columns">
+                <button type="button" id="send-psr-status" class="button primary">Apply</button>
+            </div>
+        </div>
+    </form>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<?php require_once ROOT . '/views/admin/layouts/footer.php'; ?>

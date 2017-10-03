@@ -11,7 +11,8 @@
     <link rel="stylesheet" href="/template/admin/css/app.css">
     <link rel="stylesheet" href="/template/admin/css/fonts.css">
     <link rel="stylesheet" href="/template/admin/fonts/foundation-icons/foundation-icons.css">
-    <link rel="stylesheet" href="/template/admin/css/style.css?v.1.8">
+    <link rel="stylesheet" href="/template/admin/css/style.css?v.1.9">
+    <link rel="stylesheet" href="/template/admin/font-awesome/css/font-awesome.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/5.0.0/video-js.min.css" rel="stylesheet">
     <?php
 
@@ -70,6 +71,10 @@
 
                 <?php if (Umbrella\app\AdminBase::checkDenied('adm.ccc', 'view')): ?>
                     <li><a href="/adm/ccc"  class="<?= Umbrella\components\Url::IsActive('/ccc', 'active')?>">CCC</a></li>
+                <?php endif; ?>
+
+                <?php if (Umbrella\app\AdminBase::checkDenied('adm.psr', 'view')): ?>
+                    <li><a href="/adm/psr/ua"  class="<?= Umbrella\components\Url::IsActive('/adm/psr', 'active')?>">PSR</a></li>
                 <?php endif; ?>
             </ul>
         </div>

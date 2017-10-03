@@ -623,21 +623,23 @@ class Disassembly
 
     public static function getCountTestMysql($site_id)
     {
-        // Соединение с БД
-        $db = MySQL::getConnection();
+        $db = MsSQL::getConnection();
 
-        // Получение и возврат результатов
-        $sql = "select COUNT(gd.id) as count from gm_decompiles gd
-                INNER JOIN gm_decompiles_parts gdp
-                    ON gd.site_id = gdp.site_id
-                WHERE gd.site_id = :site_id";
-        // Используется подготовленный запрос
+        $sql = "SELECT 
+                sgd.*,
+                sgu.site_client_name,
+                tg.mName
+                FROM site_gm_decompiles sgd
+                    INNER JOIN site_gm_users sgu
+                        ON sgd.site_account_id = sgu.site_account_id
+                    INNER JOIN tbl_GoodsNames tg
+                        ON tg.PartNumber = sgd.part_number
+                WHERE sgd.site_account_id = :site_id
+                ORDER BY sgd.id DESC";
+
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $site_id, PDO::PARAM_INT);
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
     }

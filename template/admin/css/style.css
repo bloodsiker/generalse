@@ -889,7 +889,9 @@ td select {
 
 .clear_goods_name { display: none; }
 .order-tr-goods-name:hover .clear_goods_name  { display: inline; }
-
+.edit-psr-status{
+  cursor: pointer;
+}
 .modal_comment{
   background: #fff;
   padding: 10px;
@@ -906,8 +908,9 @@ td select {
   margin-bottom: 15px;
 }
 .alert-danger{
+  display: inline-block;
   background: rgba(251, 36, 0, 0.68);
-  padding: 10px 20px;
+  padding: 6px 20px;
   margin-bottom: 20px;
   border-radius: 3px;
   border: 2px solid #e05555;
