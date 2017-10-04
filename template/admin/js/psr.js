@@ -1,5 +1,7 @@
 $(document).on('click', '#add-psr', function(e) {
     $('#add-psr-modal form')[0].reset();
+    $('.name-product').text('');
+    $('.error-date').hide();
     $('#add-psr-modal').foundation('open');
 });
 
