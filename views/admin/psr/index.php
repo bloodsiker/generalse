@@ -14,17 +14,17 @@
                     </div>
                     <div class="medium-12 small-12 columns">
                         <div class="row align-bottom">
-                            <div class="medium-8 small-12 columns">
+                            <div class="medium-10 small-12 columns">
                                 <?php if (Umbrella\app\AdminBase::checkDenied('adm.psr.create', 'view')): ?>
-                                    <button class="button primary tool" id="add-psr"><i class="fi-plus"></i>Create</button>
+                                    <button class="button primary tool" id="add-psr"><i class="fi-plus"></i> Create</button>
                                 <?php endif;?>
 
                                 <?php if (Umbrella\app\AdminBase::checkDenied('adm.psr.add_declaration', 'view')): ?>
-                                    <button class="button primary tool" id="add-psr-dec"><i class="fi-plus"></i>Add declaration number</button>
+                                    <button class="button primary tool hide" id="add-psr-dec"><i class="fi-plus"></i> Add declaration number</button>
                                 <?php endif;?>
                             </div>
-                            <div class="medium-4  small-12 columns">
-
+                            <div class="medium-2 small-12 columns">
+                                <input type="text" id="goods_search" class="search-input" placeholder="Search..." name="search">
                             </div>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
                          <tbody>
                          <?php if(is_array($listPsr)):?>
                              <?php foreach ($listPsr as $psr):?>
-                                 <tr>
+                                 <tr class="goods" data-id="<?= $psr['id']?>">
                                      <td><?= $psr['id']?></td>
                                      <td><?= $psr['name_partner']?></td>
                                      <td><?= $psr['serial_number']?></td>
@@ -88,7 +88,26 @@
                                          </button>
                                      </td>
                                      <td class="<?= \Umbrella\models\psr\Psr::getStatusRequest($psr['status_name'])?>"><?= $psr['status_name']?></td>
-                                     <td><?= $psr['declaration_number']?></td>
+                                     <td style="padding: 0!important">
+                                         <table style="margin-bottom: 0; min-height: 50px;">
+                                             <tr>
+                                                 <td style="border-width: 0 0 1px 0" class="block-container">
+                                                     <span class="psr-dec-number"><?= $psr['declaration_number']?></span>
+                                                     <?php if (Umbrella\app\AdminBase::checkDenied('adm.psr.add_declaration', 'view')): ?>
+                                                         <a href="" class="button button-hover edit-dec delete"><i class="fi-pencil"></i></a>
+                                                     <?php endif; ?>
+                                                 </td>
+                                             </tr>
+                                             <tr>
+                                                 <td style="border-width: 0" class="block-container">
+                                                     <span class="psr-dec-number-return"><?= $psr['declaration_number_return']?></span>
+                                                     <?php if (Umbrella\app\AdminBase::checkDenied('adm.psr.add_return_declaration', 'view')): ?>
+                                                         <a href="" class="button button-hover edit-dec-return delete"><i class="fi-pencil"></i></a>
+                                                     <?php endif?>
+                                                 </td>
+                                             </tr>
+                                         </table>
+                                     </td>
                                  </tr>
                              <?php endforeach;?>
                          <?php endif;?>
@@ -120,7 +139,7 @@
                          <tbody>
                          <?php if(is_array($listPsr)):?>
                              <?php foreach ($listPsr as $psr):?>
-                                 <tr data-id="<?= $psr['id']?>">
+                                 <tr class="goods" data-id="<?= $psr['id']?>">
                                      <td><?= $psr['id']?></td>
                                      <td><?= $psr['name_partner']?></td>
                                      <td><?= $psr['serial_number']?></td>
@@ -148,7 +167,26 @@
                                      <td class="edit-psr-status <?= \Umbrella\models\psr\Psr::getStatusRequest($psr['status_name'])?>">
                                          <span class="psr_status"><?= $psr['status_name']?></span>
                                      </td>
-                                     <td><?= $psr['declaration_number']?></td>
+                                     <td style="padding: 0!important;">
+                                         <table style="margin-bottom: 0">
+                                             <tr>
+                                                 <td style="border-width: 0 0 1px 0" class="block-container">
+                                                     <span class="psr-dec-number"><?= $psr['declaration_number']?></span>
+                                                     <?php if (Umbrella\app\AdminBase::checkDenied('adm.psr.add_declaration', 'view')): ?>
+                                                        <a href="" class="button button-hover edit-dec delete"><i class="fi-pencil"></i></a>
+                                                     <?php endif; ?>
+                                                 </td>
+                                             </tr>
+                                             <tr>
+                                                 <td style="border-width: 0 0 0 0" class="block-container">
+                                                     <span class="psr-dec-number-return"><?= $psr['declaration_number_return']?></span>
+                                                     <?php if (Umbrella\app\AdminBase::checkDenied('adm.psr.add_return_declaration', 'view')): ?>
+                                                        <a href="" class="button button-hover edit-dec-return delete"><i class="fi-pencil"></i></a>
+                                                     <?php endif?>
+                                                 </td>
+                                             </tr>
+                                         </table>
+                                     </td>
                                      <td class="order-tr-so">
                                          <span class="psr_so"><?= $psr['so_number']?></span>
                                          <a href="" class="button edit-so delete"><i class="fi-pencil"></i></a>
@@ -371,6 +409,59 @@
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
+
+<?php if (Umbrella\app\AdminBase::checkDenied('adm.psr.add_declaration', 'view')): ?>
+    <div class="reveal" id="edit-dec" data-reveal>
+        <form action="#" method="post" class="form" novalidate="">
+            <div class="row align-bottom">
+                <div class="medium-12 small-12 columns">
+                    <h3>Edit declaration number</h3>
+                </div>
+                <div class="medium-12 small-12 columns">
+                    <div class="row">
+                        <div class="medium-12 small-12 columns">
+                            <label>Declaration number</label>
+                            <input type="text" id="psr_dec" name="declaration_number" autocomplete="off">
+                        </div>
+                    </div>
+                </div>
+                <div class="medium-12 small-12 columns">
+                    <button type="button" id="send-psr-dec" class="button primary">Edit</button>
+                </div>
+            </div>
+        </form>
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+<?php endif; ?>
+
+
+<?php if (Umbrella\app\AdminBase::checkDenied('adm.psr.add_return_declaration', 'view')): ?>
+    <div class="reveal" id="edit-dec-return" data-reveal>
+        <form action="#" method="post" class="form" novalidate="">
+            <div class="row align-bottom">
+                <div class="medium-12 small-12 columns">
+                    <h3>Edit return declaration number</h3>
+                </div>
+                <div class="medium-12 small-12 columns">
+                    <div class="row">
+                        <div class="medium-12 small-12 columns">
+                            <label>Declaration number</label>
+                            <input type="text" id="psr_dec_return" name="declaration_number" autocomplete="off">
+                        </div>
+                    </div>
+                </div>
+                <div class="medium-12 small-12 columns">
+                    <button type="button" id="send-psr-dec-return" class="button primary">Edit</button>
+                </div>
+            </div>
+        </form>
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+<?php endif; ?>
 
 <div class="reveal" id="edit-status" data-reveal>
     <form action="#" method="post" class="form" novalidate="">

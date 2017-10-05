@@ -889,6 +889,10 @@ td select {
 
 .clear_goods_name { display: none; }
 .order-tr-goods-name:hover .clear_goods_name  { display: inline; }
+
+.button-hover{display: none;}
+.block-container:hover .button-hover {display: inline;}
+
 .edit-psr-status{
   cursor: pointer;
 }

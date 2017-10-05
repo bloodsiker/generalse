@@ -90,7 +90,7 @@ class PsrController extends AdminBase
         if(isset($_REQUEST['add_psr_dec']) && $_REQUEST['add_psr_dec'] == 'true'){
             $psr_id = $_REQUEST['psr_id'];
             $declaration_number = $_REQUEST['declaration_number'];
-            $ok = Psr::addNumberDeclarationByPsr($psr_id, $declaration_number);
+            $ok = Psr::addNumberDeclarationByPsr($psr_id, $declaration_number, 'declaration_number');
             if($ok){
                 $_SESSION['psr_success'] = 'Declaration number added';
                 $_SESSION['class'] = 'alert-success';
@@ -148,6 +148,26 @@ class PsrController extends AdminBase
             $id = $_REQUEST['id_psr'];
             $psr_so =  $_REQUEST['psr_so'];
             $ok = Psr::editSoNumberByPsr($id, $psr_so);
+            if($ok){
+                print_r(200);
+            }
+        }
+
+        // Редактируем Declaration number
+        if($_REQUEST['action'] == 'edit_dec') {
+            $id = $_REQUEST['id_psr'];
+            $psr_dec =  $_REQUEST['psr_dec'];
+            $ok = Psr::addNumberDeclarationByPsr($id, $psr_dec, 'declaration_number');
+            if($ok){
+                print_r(200);
+            }
+        }
+
+        // Редактируем Declaration number return
+        if($_REQUEST['action'] == 'edit_dec_return') {
+            $id = $_REQUEST['id_psr'];
+            $psr_dec_return =  $_REQUEST['psr_dec'];
+            $ok = Psr::addNumberDeclarationByPsr($id, $psr_dec_return, 'declaration_number_return');
             if($ok){
                 print_r(200);
             }

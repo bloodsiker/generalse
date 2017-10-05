@@ -242,3 +242,67 @@ $(document).on('click', '#send-psr-status', function(e) {
         }
     });
 });
+
+
+// Редактируем номер декларации
+$(document).on('click', '.edit-dec', function(e) {
+    e.preventDefault();
+    $('#edit-dec').foundation('open');
+    var psr_dec = $(this).siblings('.psr-dec-number').text();
+    $("#psr_dec").val(psr_dec.trim());
+    id_psr = $(this).parents('[data-id]').attr('data-id');
+});
+$(document).on('click', '#send-psr-dec', function(e) {
+    e.preventDefault();
+    var psr_dec = $("#psr_dec").val();
+    var data = "action=edit_dec&id_psr=" + id_psr + "&psr_dec=" + psr_dec;
+
+    $.ajax({
+        url: "/adm/psr/psr_ajax",
+        type: "POST",
+        data: data,
+        cache: false,
+        success: function (response) {
+            console.log(response);
+            if(response == 200){
+                $('[data-id="' + id_psr + '"]').find('.psr-dec-number').text(psr_dec).css('color', 'green');
+                $('#edit-dec form')[0].reset();
+                $('#edit-dec').foundation('close');
+            } else {
+                alert('Ошибка! Не удалось обновить запись!');
+            }
+        }
+    });
+});
+
+
+// Редактируем номер декларации для возврата
+$(document).on('click', '.edit-dec-return', function(e) {
+    e.preventDefault();
+    $('#edit-dec-return').foundation('open');
+    var psr_dec = $(this).siblings('.psr-dec-number-return').text();
+    $("#psr_dec_return").val(psr_dec.trim());
+    id_psr = $(this).parents('[data-id]').attr('data-id');
+});
+$(document).on('click', '#send-psr-dec-return', function(e) {
+    e.preventDefault();
+    var psr_dec = $("#psr_dec_return").val();
+    var data = "action=edit_dec_return&id_psr=" + id_psr + "&psr_dec=" + psr_dec;
+
+    $.ajax({
+        url: "/adm/psr/psr_ajax",
+        type: "POST",
+        data: data,
+        cache: false,
+        success: function (response) {
+            console.log(response);
+            if(response == 200){
+                $('[data-id="' + id_psr + '"]').find('.psr-dec-number-return').text(psr_dec).css('color', 'green');
+                $('#edit-dec-return form')[0].reset();
+                $('#edit-dec-return').foundation('close');
+            } else {
+                alert('Ошибка! Не удалось обновить запись!');
+            }
+        }
+    });
+});

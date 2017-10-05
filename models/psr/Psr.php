@@ -148,15 +148,16 @@ class Psr
      * Обновляем номер декларации для ПСР
      * @param $id_psr
      * @param $declaration_number
+     * @param $name_column
      * @return bool
      */
-    public static function addNumberDeclarationByPsr($id_psr, $declaration_number)
+    public static function addNumberDeclarationByPsr($id_psr, $declaration_number, $name_column)
     {
         $db = MySQL::getConnection();
 
         $sql = "UPDATE gm_psr
             SET
-                declaration_number = :declaration_number
+                {$name_column} = :declaration_number
             WHERE id = :id";
 
         $result = $db->prepare($sql);
@@ -186,6 +187,7 @@ class Psr
         $result->bindParam(':so_number', $so_number, PDO::PARAM_STR);
         return $result->execute();
     }
+
 
 
     /**
