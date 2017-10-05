@@ -35,7 +35,7 @@
                                 <?php endif;?>
 
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.allprice', 'view')): ?>
-                                    <a href="/upload/attach_request/<?= $user->linkDownloadAllPrice()?>" class="button primary tool" download><i class="fi-download"></i> ALL PRICES</a>
+                                    <button data-open="download-all-price" class="button primary tool"><i class="fi-download"></i> ALL PRICES</button>
                                 <?php endif;?>
 
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.import.status', 'view')): ?>
@@ -228,204 +228,209 @@
 </div>
 
 
-<div class="reveal" id="add-request-modal" data-reveal>
-    <form action="" id="add-request-form" method="post" class="form" data-abide novalidate>
-        <div class="row align-bottom">
-            <div class="medium-12 small-12 columns">
-                <h3>New request</h3>
-            </div>
-            <div class="medium-12 small-12 columns">
-                <label>Part Number <span style="color: #4CAF50;" class="name-product"></span></label>
-                <span style="color: orange;" class="pn-analog"></span>
-                <input type="text" class="required" name="part_number" onkeyup="checkCurrPartNumber(this)" autocomplete="off" required>
-            </div>
-
-            <div class="medium-12 small-12 columns">
-                <label>SO Number</label>
-                <input type="text" name="so_number" autocomplete="off">
-            </div>
-
+<?php if (Umbrella\app\AdminBase::checkDenied('crm.request.send', 'view')): ?>
+    <div class="reveal" id="add-request-modal" data-reveal>
+        <form action="" id="add-request-form" method="post" class="form" data-abide novalidate>
+            <div class="row align-bottom">
+                <div class="medium-12 small-12 columns">
+                    <h3>New request</h3>
+                </div>
+                <div class="medium-12 small-12 columns">
+                    <label>Part Number <span style="color: #4CAF50;" class="name-product"></span></label>
+                    <span style="color: orange;" class="pn-analog"></span>
+                    <input type="text" class="required" name="part_number" onkeyup="checkCurrPartNumber(this)" autocomplete="off" required>
+                </div>
 
                 <div class="medium-12 small-12 columns">
-                    <label>Part description RUS</label>
-                    <input type="text" name="pn_name_rus" autocomplete="off">
+                    <label>SO Number</label>
+                    <input type="text" name="so_number" autocomplete="off">
                 </div>
 
 
-            <div class="medium-12 small-12 columns">
-                <label>Type</label>
-                <select name="order_type_id" class="required" required>
-                    <option value="" selected disabled>none</option>
-                    <?php foreach ($order_type as $type):?>
-                        <option value="<?= $type['id']?>"><?= iconv('WINDOWS-1251', 'UTF-8', $type['name'])?></option>
-                    <?php endforeach;?>
-                </select>
-            </div>
-            <?php if(is_array($delivery_address) && !empty($delivery_address)):?>
+                    <div class="medium-12 small-12 columns">
+                        <label>Part description RUS</label>
+                        <input type="text" name="pn_name_rus" autocomplete="off">
+                    </div>
+
+
                 <div class="medium-12 small-12 columns">
-                    <label>Delivery address</label>
-                    <select name="note" class="required" required>
+                    <label>Type</label>
+                    <select name="order_type_id" class="required" required>
                         <option value="" selected disabled>none</option>
-                        <?php foreach ($delivery_address as $address):?>
-                            <option value="<?= $address?>"><?= $address?></option>
+                        <?php foreach ($order_type as $type):?>
+                            <option value="<?= $type['id']?>"><?= iconv('WINDOWS-1251', 'UTF-8', $type['name'])?></option>
                         <?php endforeach;?>
                     </select>
                 </div>
-            <?php endif; ?>
-            <div class="medium-12 small-12 columns">
-                <label>Note</label>
-                <textarea rows="3" name="note1"></textarea>
-            </div>
-            <input type="hidden" name="add_request" value="true">
-            <div class="medium-12 small-12 columns">
-                <button type="submit" class="button primary">Send</button>
-            </div>
-        </div>
-    </form>
-    <button class="close-button" data-close aria-label="Close modal" type="button">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-
-
-<div class="reveal" id="price-modal" data-reveal>
-    <form action="" id="price-form" method="post" class="form" data-abide novalidate>
-        <div class="row align-bottom">
-            <div class="medium-12 small-12 columns">
-                <h3>Price</h3>
-            </div>
-            <div class="medium-12 small-12 columns">
-                <label>Part Number <span style="color: #4CAF50;" class="name-product"></span></label>
-                <input type="text" class="required" name="part_number" required>
-            </div>
-            <div class="medium-12 small-12 columns">
-                <label>Price</label>
-                <input type="text" class="required" name="price" disabled>
-            </div>
-            <div class="medium-12 small-12 columns group-stocks hide">
-                <label>Stock <span style="color: #4CAF50;" class="name-stock"></span></label>
-                <input type="text" class="required" name="quantity" disabled>
-            </div>
-        </div>
-    </form>
-    <button class="close-button" data-close aria-label="Close modal" type="button">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-
-
-<div class="reveal" id="add-request-import-modal" data-reveal>
-    <form action="/adm/crm/request/import" id="add-request-import-form" method="post" class="form" enctype="multipart/form-data" data-abide
-          novalidate>
-        <div class="row align-bottom">
-            <div class="medium-12 small-12 columns">
-                <h3>Import request</h3>
-            </div>
-            <div class="medium-12 small-12 columns">
-                <div class="row">
-                    <?php if(is_array($delivery_address) && !empty($delivery_address)):?>
-                        <div class="medium-12 small-12 columns">
-                            <label>Delivery address</label>
-                            <select name="note" class="required" required>
-                                <option value="" selected disabled>none</option>
-                                <?php foreach ($delivery_address as $address):?>
-                                    <option value="<?= $address?>"><?= $address?></option>
-                                <?php endforeach;?>
-                            </select>
-                        </div>
-                    <?php endif; ?>
-
+                <?php if(is_array($delivery_address) && !empty($delivery_address)):?>
                     <div class="medium-12 small-12 columns">
-                        <label>Type</label>
-                        <select name="order_type_id" class="required" required>
+                        <label>Delivery address</label>
+                        <select name="note" class="required" required>
                             <option value="" selected disabled>none</option>
-                            <?php foreach ($order_type as $type):?>
-                                <option value="<?= $type['id']?>"><?= iconv('WINDOWS-1251', 'UTF-8', $type['name'])?></option>
+                            <?php foreach ($delivery_address as $address):?>
+                                <option value="<?= $address?>"><?= $address?></option>
                             <?php endforeach;?>
                         </select>
                     </div>
+                <?php endif; ?>
+                <div class="medium-12 small-12 columns">
+                    <label>Note</label>
+                    <textarea rows="3" name="note1"></textarea>
+                </div>
+                <input type="hidden" name="add_request" value="true">
+                <div class="medium-12 small-12 columns">
+                    <button type="submit" class="button primary">Send</button>
+                </div>
+            </div>
+        </form>
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+<?php endif; ?>
 
-                    <div class="medium-12 small-12 columns">
-                        <label>Note</label>
-                        <textarea rows="3" name="note1"></textarea>
-                    </div>
+<?php if (Umbrella\app\AdminBase::checkDenied('crm.request.price', 'view')): ?>
+    <div class="reveal" id="price-modal" data-reveal>
+        <form action="" id="price-form" method="post" class="form" data-abide novalidate>
+            <div class="row align-bottom">
+                <div class="medium-12 small-12 columns">
+                    <h3>Price</h3>
+                </div>
+                <div class="medium-12 small-12 columns">
+                    <label>Part Number <span style="color: #4CAF50;" class="name-product"></span></label>
+                    <input type="text" class="required" name="part_number" required>
+                </div>
+                <div class="medium-12 small-12 columns">
+                    <label>Price</label>
+                    <input type="text" class="required" name="price" disabled>
+                </div>
+                <div class="medium-12 small-12 columns group-stocks hide">
+                    <label>Stock <span style="color: #4CAF50;" class="name-stock"></span></label>
+                    <input type="text" class="required" name="quantity" disabled>
+                </div>
+            </div>
+        </form>
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+<?php endif; ?>
 
-                    <div class="medium-12 small-12 columns">
-                        <div class="row align-bottom ">
+<?php if (Umbrella\app\AdminBase::checkDenied('crm.request.import', 'view')): ?>
+    <div class="reveal" id="add-request-import-modal" data-reveal>
+        <form action="/adm/crm/request/import" id="add-request-import-form" method="post" class="form" enctype="multipart/form-data" data-abide
+              novalidate>
+            <div class="row align-bottom">
+                <div class="medium-12 small-12 columns">
+                    <h3>Import request</h3>
+                </div>
+                <div class="medium-12 small-12 columns">
+                    <div class="row">
+                        <?php if(is_array($delivery_address) && !empty($delivery_address)):?>
                             <div class="medium-12 small-12 columns">
-                                <label for="upload_file_form" class="button primary">Attach</label>
-                                <input type="file" id="upload_file_form" class="show-for-sr" name="excel_file" required>
+                                <label>Delivery address</label>
+                                <select name="note" class="required" required>
+                                    <option value="" selected disabled>none</option>
+                                    <?php foreach ($delivery_address as $address):?>
+                                        <option value="<?= $address?>"><?= $address?></option>
+                                    <?php endforeach;?>
+                                </select>
                             </div>
+                        <?php endif; ?>
 
+                        <div class="medium-12 small-12 columns">
+                            <label>Type</label>
+                            <select name="order_type_id" class="required" required>
+                                <option value="" selected disabled>none</option>
+                                <?php foreach ($order_type as $type):?>
+                                    <option value="<?= $type['id']?>"><?= iconv('WINDOWS-1251', 'UTF-8', $type['name'])?></option>
+                                <?php endforeach;?>
+                            </select>
                         </div>
-                    </div>
 
-                    <div class="medium-12 small-12 columns">
-                        <div class="row">
-                            <div class="medium-6 small-12 columns">
-                                <div style="padding-bottom: 37px; color: #fff"><a
-                                            href="/upload/attach_request/request_import.xlsx" style="color: #2ba6cb"
-                                            download="">download</a> a template file to import
+                        <div class="medium-12 small-12 columns">
+                            <label>Note</label>
+                            <textarea rows="3" name="note1"></textarea>
+                        </div>
+
+                        <div class="medium-12 small-12 columns">
+                            <div class="row align-bottom ">
+                                <div class="medium-12 small-12 columns">
+                                    <label for="upload_file_form" class="button primary">Attach</label>
+                                    <input type="file" id="upload_file_form" class="show-for-sr" name="excel_file" required>
                                 </div>
+
                             </div>
-                            <input type="hidden" name="import_request" value="true">
-                            <div class="medium-6 small-12 columns">
-                                <button type="submit" class="button primary">Send</button>
+                        </div>
+
+                        <div class="medium-12 small-12 columns">
+                            <div class="row">
+                                <div class="medium-6 small-12 columns">
+                                    <div style="padding-bottom: 37px; color: #fff"><a
+                                                href="/upload/attach_request/request_import.xlsx" style="color: #2ba6cb"
+                                                download="">download</a> a template file to import
+                                    </div>
+                                </div>
+                                <input type="hidden" name="import_request" value="true">
+                                <div class="medium-6 small-12 columns">
+                                    <button type="submit" class="button primary">Send</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </form>
-    <button class="close-button" data-close aria-label="Close modal" type="button">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
+        </form>
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+<?php endif; ?>
 
+<?php if (Umbrella\app\AdminBase::checkDenied('crm.request.import.status', 'view')): ?>
+    <div class="reveal" id="import-edit-status-modal" data-reveal>
+        <form action="/adm/crm/request/edit_status" id="import-edit-status-form" method="post" class="form" enctype="multipart/form-data" data-abide
+              novalidate>
+            <div class="row align-bottom">
+                <div class="medium-12 small-12 columns">
+                    <h3>Edit status from excel</h3>
+                </div>
+                <div class="medium-12 small-12 columns">
+                    <div class="row">
 
-<div class="reveal" id="import-edit-status-modal" data-reveal>
-    <form action="/adm/crm/request/edit_status" id="import-edit-status-form" method="post" class="form" enctype="multipart/form-data" data-abide
-          novalidate>
-        <div class="row align-bottom">
-            <div class="medium-12 small-12 columns">
-                <h3>Edit status from excel</h3>
-            </div>
-            <div class="medium-12 small-12 columns">
-                <div class="row">
-
-                    <div class="medium-12 small-12 columns">
-                        <div class="row align-bottom ">
-                            <div class="medium-12 small-12 columns">
-                                <label for="upload_file_form_2" class="button primary">Attach</label>
-                                <input type="file" id="upload_file_form_2" class="show-for-sr" name="excel_file" required>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="medium-12 small-12 columns">
-                        <div class="row">
-                            <div class="medium-6 small-12 columns">
-                                <div style="padding-bottom: 37px; color: #fff"><a
-                                            href="/upload/attach_request/edit_status_request.xlsx" style="color: #2ba6cb"
-                                            download="">download</a> a template file to import
+                        <div class="medium-12 small-12 columns">
+                            <div class="row align-bottom ">
+                                <div class="medium-12 small-12 columns">
+                                    <label for="upload_file_form_2" class="button primary">Attach</label>
+                                    <input type="file" id="upload_file_form_2" class="show-for-sr" name="excel_file" required>
                                 </div>
+
                             </div>
-                            <input type="hidden" name="edit_status_from_excel" value="true">
-                            <div class="medium-6 small-12 columns">
-                                <button type="submit" class="button primary">Send</button>
+                        </div>
+
+                        <div class="medium-12 small-12 columns">
+                            <div class="row">
+                                <div class="medium-6 small-12 columns">
+                                    <div style="padding-bottom: 37px; color: #fff"><a
+                                                href="/upload/attach_request/edit_status_request.xlsx" style="color: #2ba6cb"
+                                                download="">download</a> a template file to import
+                                    </div>
+                                </div>
+                                <input type="hidden" name="edit_status_from_excel" value="true">
+                                <div class="medium-6 small-12 columns">
+                                    <button type="submit" class="button primary">Send</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </form>
-    <button class="close-button" data-close aria-label="Close modal" type="button">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
+        </form>
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+<?php endif; ?>
 
 <div class="reveal" id="edit-pn" data-reveal>
     <form action="#" method="post" class="form" novalidate="">
@@ -500,67 +505,124 @@
     </button>
 </div>
 
+<?php if (Umbrella\app\AdminBase::checkDenied('crm.request.upload.price', 'view')): ?>
+    <div class="reveal" id="open-upload-price" data-reveal>
+        <form action="/adm/crm/request/upload_price" id="price-upload" method="post" class="form" enctype="multipart/form-data" data-abide
+              novalidate>
+            <div class="row align-bottom">
+                <div class="medium-12 small-12 columns">
+                    <h3>Upload price</h3>
+                </div>
+                <div class="medium-12 small-12 columns">
+                    <div class="row">
 
-<div class="reveal" id="open-upload-price" data-reveal>
-    <form action="/adm/crm/request/upload_price" id="price-upload" method="post" class="form" enctype="multipart/form-data" data-abide
-          novalidate>
-        <div class="row align-bottom">
-            <div class="medium-12 small-12 columns">
-                <h3>Upload price</h3>
-            </div>
-            <div class="medium-12 small-12 columns">
-                <div class="row">
 
-                    <div class="medium-12 small-12 columns">
-                        <div class="row" style="color: #fff">
-                            <h4>Формат и название файлов</h4>
-                            <ul>
-                                <li>Electrolux: <span style="color: orange">Price_Electrolux.zip</span></li>
-                                <li>Electrolux GE: <span style="color: orange">Electrolux_Prices_GE.zip</span></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="medium-12 small-12 columns">
-                        <div class="row align-bottom ">
-                            <div class="medium-12 small-12 columns">
-                                <label for="upload_new_price" class="button primary">Attach</label>
-                                <input type="file" id="upload_new_price" class="show-for-sr" name="excel_file" multiple>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="medium-12 small-12 columns">
-                        <div class="row">
-                            <div class="upload-progress">
-                                <div class="upload-bar"></div >
-                                <div class="upload-percent">0%</div >
+                        <div class="medium-12 small-12 columns">
+                            <div class="row" style="color: #fff">
+                                <h4>Формат и название файлов</h4>
+                                <ul>
+                                    <li>Electrolux: <span style="color: orange">Price_Electrolux.zip</span></li>
+                                    <li>Electrolux GE: <span style="color: orange">Electrolux_Prices_GE.zip</span></li>
+                                </ul>
                             </div>
                         </div>
-                    </div>
 
+                        <div class="medium-12 small-12 columns">
+                            <label>Partner</label>
+                            <select name="id_group" class="required" required>
+                                <option value="2">Electrolux</option>
+                                <option value="4">Electrolux GE</option>
+                            </select>
+                        </div>
 
-                    <div class="medium-12 small-12 columns">
-                        <div class="row">
-                            <div class="medium-6 small-12 columns">
-                                <div id="status" style="color: #fff;"></div>
+                        <div class="medium-12 small-12 columns">
+                            <div class="row align-bottom ">
+                                <div class="medium-12 small-12 columns">
+                                    <label for="upload_new_price" class="button primary">Attach</label>
+                                    <input type="file" id="upload_new_price" class="show-for-sr" name="excel_file" multiple>
+                                </div>
+
                             </div>
-                            <div class="medium-6 small-12 columns">
-                                <input type="submit" class="button primary" value="Upload File to Server">
+                        </div>
 
+                        <div class="medium-12 small-12 columns">
+                            <div class="row">
+                                <div class="upload-progress">
+                                    <div class="upload-bar"></div >
+                                    <div class="upload-percent">0%</div >
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="medium-12 small-12 columns">
+                            <div class="row">
+                                <div class="medium-6 small-12 columns">
+                                    <div id="status" style="color: #fff;"></div>
+                                </div>
+                                <div class="medium-6 small-12 columns">
+                                    <input type="submit" class="button primary" value="Upload File to Server">
+
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </form>
-    <button class="close-button" data-close aria-label="Close modal" type="button">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
+        </form>
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+<?php endif?>
 
+
+<?php if (Umbrella\app\AdminBase::checkDenied('crm.request.allprice', 'view')): ?>
+    <div class="reveal" id="download-all-price" data-reveal>
+            <div class="row align-bottom">
+                <div class="medium-12 small-12 columns">
+                    <h3>Download all prices in excel file</h3>
+                </div>
+                <div class="medium-12 small-12 columns">
+                    <div class="row">
+
+                        <div class="medium-12 small-12 columns">
+                            <div class="row" style="color: #fff">
+                                <ul>
+                                    <?php if($user->role == 'administrator' || $user->role == 'manager'):?>
+                                        <li>
+                                            <a href="<?= $user->linkUrlDownloadAllPrice(2)?>" download>
+                                                <span style="color: orange"><?= $user->linkNameDownloadAllPrice(2)?></span>
+                                            </a>
+                                            <span class="date-upload-price">new upload date: <?= $user->lastUploadDateAllPrice(2)?></span>
+                                        </li>
+                                        <li>
+                                            <a href="<?= $user->linkUrlDownloadAllPrice(4)?>" download>
+                                                <span style="color: orange"><?= $user->linkNameDownloadAllPrice(4)?></span>
+                                            </a>
+                                            <span class="date-upload-price">new upload date: <?= $user->lastUploadDateAllPrice(4)?></span>
+                                        </li>
+                                    <?php elseif ($user->role == 'partner'):?>
+                                        <li>
+                                            <a href="<?= $user->linkUrlDownloadAllPrice()?>" download>
+                                                <span style="color: orange"><?= $user->linkNameDownloadAllPrice()?></span>
+                                            </a>
+                                            <span class="date-upload-price">new upload date: <?= $user->lastUploadDateAllPrice()?></span>
+                                        </li>
+                                    <?php endif;?>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+<?php endif?>
 
 
 <div class="reveal large" id="open-removed-request" data-reveal>

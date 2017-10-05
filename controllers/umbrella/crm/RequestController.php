@@ -9,10 +9,12 @@ use Umbrella\components\Functions;
 use Umbrella\components\ImportExcel;
 use Umbrella\components\Logger;
 use Umbrella\models\Admin;
+use Umbrella\models\File;
 use Umbrella\models\Orders;
 use Umbrella\models\PartAnalog;
 use Umbrella\models\Products;
 use Umbrella\models\Stocks;
+use upload as FileUpload;
 
 /**
  * Class RequestController
@@ -558,16 +560,18 @@ class RequestController extends AdminBase
      */
     public function actionUploadPrice()
     {
-        if(!empty($_FILES['excel_file']['name'])) {
-
-            $name_real = $_FILES['excel_file']['name'];
-            $file_path = "/upload/attach_request/";
-
-            if (is_uploaded_file($_FILES["excel_file"]["tmp_name"])) {
-                move_uploaded_file($_FILES['excel_file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . $file_path . $name_real);
+        if (!empty($_FILES['excel_file'])) {
+            $handle = new FileUpload($_FILES['excel_file']);
+            if ($handle->uploaded) {
+                $file_name = $handle->file_src_name;
+                $path = '/upload/attach_request/';
+                $handle->process(ROOT . $path);
+                if ($handle->processed) {
+                    File::addNewPriceFile($path, $file_name, $_REQUEST['id_group'], date('Y-m-d'));
+                    $handle->clean();
+                }
             }
         }
-
         return true;
     }
 

@@ -6,6 +6,7 @@ use Umbrella\app\Group;
 use Umbrella\models\Admin;
 use Umbrella\models\DeliveryAddress;
 use Umbrella\models\Denied;
+use Umbrella\models\File;
 use Umbrella\models\GroupModel;
 use Umbrella\models\Innovation;
 
@@ -27,6 +28,7 @@ class User
         $this->role = $infoUser['role'];
         $this->name_role = $infoUser['name_role'];
         $this->country = $infoUser['full_name'];
+        $this->id_group = $infoUser['id_group'];
         $this->group_name = $infoUser['group_name'];
         $this->coefficient = $infoUser['kpi_coefficient'];
         $this->login_url = $infoUser['login_url'];
@@ -204,22 +206,52 @@ class User
     }
 
 
+
+    public function infoFilePriceForUser($id_group = null)
+    {
+        $group = $id_group == null ? $this->id_group : $id_group;
+
+        $infoFile = File::getLastUploadFileForGroup($group);
+
+        return $infoFile;
+    }
+
+
     /**
      * Ссылка на скачивание файла с прайсом
+     * @param $id_group
      * @return null|string
      */
-    public function linkDownloadAllPrice()
+    public function linkUrlDownloadAllPrice($id_group = null)
     {
-        switch ($this->group_name)
-        {
-            case 'Electrolux':
-                return 'Price_Electrolux.zip';
-                break;
-            case 'GE':
-                return 'Electrolux_Prices_GE.zip';
-                break;
-            default:
-                return null;
-        }
+        $infoFile = $this->infoFilePriceForUser($id_group);
+
+        return $infoFile['file_path'] . $infoFile['file_name'];
+    }
+
+    /**
+     * Временное решение
+     * Название ссылки для скачивания
+     * @param null $id_group
+     * @return mixed
+     */
+    public function linkNameDownloadAllPrice($id_group = null)
+    {
+        $infoFile = $this->infoFilePriceForUser($id_group);
+
+        return $infoFile['file_name'];
+    }
+
+    /**
+     * Временное решение
+     * Дата последней загрузки файла
+     * @param null $id_group
+     * @return mixed
+     */
+    public function lastUploadDateAllPrice($id_group = null)
+    {
+        $infoFile = $this->infoFilePriceForUser($id_group);
+
+        return $infoFile['created_at'];
     }
 }
