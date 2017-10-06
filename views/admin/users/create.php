@@ -80,6 +80,7 @@
                                     <select name="login_url" class="required" required>
                                         <option value="adm/crm/orders">CRM/Orders</option>
                                         <option value="adm/crm/request">CRM/Request</option>
+                                        <option value="adm/psr/ua">PSR/PSR UA</option>
                                         <option value="adm/ccc">CCC</option>
                                     </select>
                                 </label>
@@ -217,7 +218,7 @@
                         <div class="row">
                             <div class="large-12 columns">
                                 <label>Местоположение
-                                    <select name="stock_place_id" class="required" required>
+                                    <select name="stock_place_id">
                                         <option value=""></option>
                                         <?php if (is_array($stockPlaceList)): ?>
                                             <?php foreach ($stockPlaceList as $stockPlace): ?>

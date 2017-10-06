@@ -43,6 +43,7 @@ $(document).on('click', '.list-user-func', function(e) {
     return false;
 });
 
+
 // Показываем информацию о пользователе из GM
 $(document).on('click', '.info-gm-user', function(e) {
     var user_id = $(this).parent('td').parent('tr').attr('data-userid');
@@ -61,6 +62,7 @@ $(document).on('click', '.info-gm-user', function(e) {
     });
     return false;
 });
+
 
 // Редактируем адрес поставки
 var id_address = '';
@@ -92,4 +94,30 @@ $(document).on('click', '#send-user-address', function(e) {
             }
         }
     });
+});
+
+
+//При выборе роли пользователя, скрываем\показываем нужные поля для заполнения
+$('select[name="role"]').change(function(event) {
+    switch(event.target.value) {
+        case "2":
+            $('#register-gm').removeClass('hide');
+            $('#register-umbrella').removeClass('medium-offset-3');
+            $('#register-user').removeClass('medium-offset-3 medium-6').addClass('medium-12');
+            $('select[name="curency_id"]').attr('required', 'required').addClass('required');
+            $('select[name="to_electrolux"]').attr('required', 'required').addClass('required');
+            $('select[name="to_mail_send"]').attr('required', 'required').addClass('required');
+            //$('select[name="stock_place_id"]').attr('required', 'required').addClass('required');
+            $('select[name="region_id"]').attr('required', 'required').addClass('required');
+            break;
+        default:
+            $('#register-gm').addClass('hide');
+            $('#register-umbrella').addClass('medium-offset-3');
+            $('#register-user').removeClass('medium-offset-3 medium-12').addClass('medium-6 medium-offset-3');
+            $('select[name="curency_id"]').removeAttr('required').removeClass('required');
+            $('select[name="to_electrolux"]').removeAttr('required').removeClass('required');
+            $('select[name="to_mail_send"]').removeAttr('required').removeClass('required');
+            //$('select[name="stock_place_id"]').removeAttr('required').removeClass('required');
+            $('select[name="region_id"]').removeAttr('required').removeClass('required');
+    }
 });
