@@ -64,10 +64,15 @@
                         <div class="row">
                             <div class="large-12 columns">
                                 <label>Пароль
-                                    <input type="password" name="password" class="required" autocomplete="off" required/>
+                                    <div class="input-group">
+                                        <input type="password" id="user-password" name="password" class="required" autocomplete="off" required/>
+                                        <span class="input-group-label switch-type" onclick="password_rand()">Сгенерировать</span>
+                                        <span class="input-group-label switch-type" onclick="switch_type()"><i class="fi fi-eye"></i></span>
+                                    </div>
                                 </label>
                             </div>
                         </div>
+
 
                         <div class="row">
                             <div class="large-12 columns">

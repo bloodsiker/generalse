@@ -1220,3 +1220,8 @@ td select {
   font-size: 12px;
   color: #40e240;
 }
+.switch-type {
+  cursor: pointer;
+  background: #dcdcdc;
+  border: 2px solid #323e48;
+}

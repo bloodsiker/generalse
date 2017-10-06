@@ -1,3 +1,30 @@
+// Switch input pyte
+function switch_type() {
+    if($('#user-password').attr('type') == 'password'){
+        $('#user-password').attr('type', 'text');
+    } else {
+        $('#user-password').attr('type', 'password');
+    }
+    return true;
+}
+
+// Generate random password
+function password_rand() {
+    var login        = $('#login').val();
+    var result       = '';
+    //var words        = '0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM#@!-_$%';
+    var words        = '0123456789#@!-_$%';
+    var max_position = words.length - 1;
+    for( i = 0; i < 4; ++i ) {
+        position = Math.floor ( Math.random() * max_position );
+        result = result + words.substring(position, position + 1);
+    }
+    var rand = 1 + Math.random() * (999 - 1);
+    rand = Math.round(rand);
+    $('#user-password').val(rand + login + result);
+    return true;
+}
+
 // Показываем в модальном окне, дополнительную информацию
 $(document).on('click', '.list-user-func', function(e) {
     var user_id = $(this).parent('td').parent('tr').attr('data-userid');
