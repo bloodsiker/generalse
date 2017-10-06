@@ -28,10 +28,6 @@
                                     </button>
                                 <?php endif;?>
 
-
-                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.supply.accept', 'view')): ?>
-                                    <button class="button primary tool" disabled id="send_button" onclick="send()"><i class="fi-check"></i> Accept</button>
-                                <?php endif;?>
                             </div>
                         </div>
                     </div>
@@ -87,13 +83,9 @@
                                     <td><?= Umbrella\components\Functions::formatDate($supply['expected_arriving_date'])?></td>
                                     <td class="status-supply <?= Umbrella\models\Supply::getStatusSupply($status)?>"><?=$status?></td>
                                     <?php if (Umbrella\app\AdminBase::checkDenied('crm.supply.accept', 'view')): ?>
-                                        <td>
+                                        <td class="text-center">
                                             <?php if($status != 'Подтверждена'):?>
-                                            <input type="checkbox"
-                                                   onchange="checked_filed(
-                                                                            event,
-                                                                            '<?=$supply['site_id']?>'
-                                                                            )">
+                                                <a href="" class="accept supply-accept" onclick="send(event, <?=$supply['site_id']?>)">Accept</a>
                                             <?php endif;?>
 
                                         </td>
@@ -146,13 +138,9 @@
                                     <td><?=$supply['name']?></td>
                                     <td><?= Umbrella\components\Functions::formatDate($supply['expected_arriving_date'])?></td>
                                     <td class="status-supply <?= Umbrella\models\Supply::getStatusSupply($status)?>"><?=$status?></td>
-                                    <td>
+                                    <td class="text-center">
                                         <?php if($status != 'Подтверждена'):?>
-                                            <input type="checkbox"
-                                                   onchange="checked_filed(
-                                                           event,
-                                                           '<?=$supply['site_id']?>'
-                                                           )">
+                                            <a href="" class="accept supply-accept" onclick="send(event, <?=$supply['site_id']?>)">Accept</a>
                                         <?php endif;?>
 
                                     </td>

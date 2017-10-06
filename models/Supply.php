@@ -302,9 +302,10 @@ class Supply
         $sql = "UPDATE site_gm_supplies
             SET
                 command = :command
-            WHERE site_id IN ($site_id)";
+            WHERE site_id = :site_id";
 
         $result = $db->prepare($sql);
+        $result->bindParam(':site_id', $site_id, PDO::PARAM_INT);
         $result->bindParam(':command', $command, PDO::PARAM_INT);
         return $result->execute();
     }

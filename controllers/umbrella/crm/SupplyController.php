@@ -195,14 +195,9 @@ class SupplyController extends AdminBase
         $user = $this->user;
 
         $group = new Group();
-        // Получаем массив с site_id
-        $json = json_decode($_REQUEST['json'], true);
 
-        // делаем с массива сторку с site_id разделенными запятыми
-        $site_id_array = array_column($json, 'site_id');
-        $site_idS = implode(',', $site_id_array);
-        $array_supply = Supply::getSupplyPartsByIdS($site_idS);
-        //print_r($array_supply);
+        $site_id = $_REQUEST['site_id'];
+        $array_supply = Supply::getSupplyPartsByIdS($site_id);
 
         foreach ($array_supply as $item){
 
@@ -230,10 +225,14 @@ class SupplyController extends AdminBase
             }
             Supply::updateStock($item['id'], $stock);
         }
-        Supply::updateCommand($site_idS, 1);
+        $ok = Supply::updateCommand($site_id, 1);
+        if($ok){
+            echo 200;
+        }
         Logger::getInstance()->log($user->id_user, 'в поставках нажал Accept');
         return true;
     }
+
 
     /**
      * Показываем детали поставки в модальном окне

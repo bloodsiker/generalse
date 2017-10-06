@@ -62,56 +62,51 @@ $('[name="site_id"]').keyup(function(e) {
 
 
 // ================ MODEL ======================
-var model_data = {};
-var count_checked = 0;
-// =============== CHECKBOX ===================
-checked_filed = function (
-    event,
-    number
-) {
-
-    if (event.target.checked) {
-        ++count_checked;
-        model_data[number] = {
-            site_id: number
-        };
-    } else {
-        --count_checked;
-        delete model_data[number];
-    }
-    return count_checked > 0 ? $('#send_button').removeAttr('disabled') : $('#send_button').attr('disabled','');
-};
-
-// ==================== DBCLICK =============
-// show_field = function (
-//     part_number,
-//     description_pn,
-//     so_number
+// var model_data = {};
+// var count_checked = 0;
+// // =============== CHECKBOX ===================
+// checked_filed = function (
+//     event,
+//     number
 // ) {
 //
-//     $('#refactor-field-modal').foundation('open');
-//     $('#part-number').val(part_number);
-//     $('#description-pn').val(description_pn);
-//     $('#so-number').val(so_number);
+//     if (event.target.checked) {
+//         ++count_checked;
+//         model_data[number] = {
+//             site_id: number
+//         };
+//     } else {
+//         --count_checked;
+//         delete model_data[number];
+//     }
+//     return count_checked > 0 ? $('#send_button').removeAttr('disabled') : $('#send_button').attr('disabled','');
 // };
+
 
 
 // =================== SEND ===============
 
-send = function () {
-    //console.log(model_data);
-    var json = JSON.stringify(model_data); // json
-    console.log(json); // send to server json AJAX
-    $('#send_button').prop('disabled', true);
-    document.body.style.cursor = 'wait';
+send = function (event, site_id) {
+    event.preventDefault();
+    var _this = $(event.target);
+
+    $('#wait').removeClass('hide');
+
     $.ajax({
         url: "/adm/crm/supply_ajax",
         type: "POST",
-        data: {json : json},
+        data: {site_id : site_id},
         cache: false,
         success: function (response) {
-            console.log(response);
-            window.location.reload();
+            setTimeout(function () {
+                $('#wait').addClass('hide');
+                if(response == 200){
+                    _this.parent('td').append("<span>Success</span>");
+                    _this.remove();
+                } else {
+                    alert('Ошибка! Не удалось разгрузить на склад!');
+                }
+            }, 2000);
         }
     });
     return false;
@@ -139,8 +134,6 @@ $(document).on('dblclick', '.checkout tbody tr', function(e) {
                 cache: false,
                 success: function (resp) {
                     var obj = JSON.parse(resp);
-                    console.log(obj);
-                    //alert(response);
                     $('.supply_count').text(obj.supply).css('color', 'green');
                     $('.supply_reserve_count').text(obj.reserve).css('color', 'red');
                 }
