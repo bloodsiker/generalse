@@ -66,7 +66,8 @@ class GroupController extends AdminBase
         $user = $this->user;
         $group = new Group();
 
-        $listUsers = Admin::getAllUsers();
+        //$listUsers = Admin::getAllUsers();
+        $listUsers = GroupModel::getUsersWithoutGroup();
         $listUserByGroup = GroupModel::getUsersByGroup($id_group);
 
         if(isset($_POST['add_user_group']) && $_POST['add_user_group'] == 'true'){

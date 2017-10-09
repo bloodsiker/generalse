@@ -55,7 +55,8 @@
                         <select name="id_user">
                             <option value=""></option>
                             <?php foreach ($listUsers as $userG):?>
-                                <option <?= ($group->checkUserInGroups($userG['id_user']) ? 'disabled' : '')?> value="<?=$userG['id_user']?>"><?=$userG['name_partner']?></option>
+<!--                                <option --><?//= ($group->checkUserInGroups($userG['id_user']) ? 'disabled' : '')?><!-- value="--><?//=$userG['id_user']?><!--">--><?//=$userG['name_partner']?><!--</option>-->
+                                <option value="<?=$userG['id_user']?>"><?=$userG['name_partner']?></option>
                             <?php endforeach;?>
                         </select>
                         <?php if (Umbrella\app\AdminBase::checkDenied('group.user.add', 'view')): ?>

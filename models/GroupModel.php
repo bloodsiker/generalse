@@ -138,7 +138,30 @@ class GroupModel
 
         $result = $db->prepare($sql);
         $result->execute();
+        $user = $result->fetchAll(PDO::FETCH_ASSOC);
+        return $user;
+    }
 
+
+    /**
+     * Список пользователей без группы
+     * @return array
+     */
+    public static function getUsersWithoutGroup()
+    {
+        $db = MySQL::getConnection();
+
+        $sql = "SELECT 
+                    gu.id_user,
+                    gu.name_partner,
+                    ggu.id_group 
+                FROM gs_user gu
+                LEFT JOIN gs_group_user ggu
+                    ON gu.id_user = ggu.id_user
+                WHERE ggu.id_group IS NULL";
+
+        $result = $db->prepare($sql);
+        $result->execute();
         $user = $result->fetchAll(PDO::FETCH_ASSOC);
         return $user;
     }
