@@ -140,6 +140,7 @@ class UserController extends AdminBase
         $regionList = Admin::getRegionsList();
 
         $countryList = Country::getAllCountry();
+        $groupList = GroupModel::getGroupList();
 
         if($user->role == 'partner' || $user->role == 'manager'){
 
@@ -184,6 +185,14 @@ class UserController extends AdminBase
                         Admin::addUserMsSql($id_user, $options);
                     }
                     if($id_user){
+                        if(!empty($_REQUEST['id_group'])){
+                            //Добавляем пользователя в выбранную группу
+                            $ok_group = GroupModel::addUserGroup($_REQUEST['id_group'], $id_user);
+                            if($ok_group){
+                                // Добавляем юзеру все запрещенные страницы группы
+                                $user->addDeniedForGroupUser($_REQUEST['id_group'], $id_user);
+                            }
+                        }
                         $log = "добавил нового пользователя " . $options['name_partner'];
                         Log::addLog($user->id_user, $log);
                         $_SESSION['user_success'] = "User {$options['name_partner']} successfully added";
@@ -192,7 +201,7 @@ class UserController extends AdminBase
                     }
                 }
             }
-            $this->render('admin/users/create', compact('user', 'roleList', 'countryList',
+            $this->render('admin/users/create', compact('user', 'roleList', 'countryList', 'groupList',
                 'currencyList', 'ADBCPriceList', 'staffList', 'stockPlaceList', 'regionList'));
         }
         return true;

@@ -89,6 +89,21 @@
 
                         <div class="row">
                             <div class="large-12 columns">
+                                <label>Группа
+                                    <select name="id_group">
+                                        <option value=""></option>
+                                        <?php if (is_array($groupList)): ?>
+                                            <?php foreach ($groupList as $group): ?>
+                                                <option value="<?=$group['id']?>"><?=$group['group_name']?></option>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="large-12 columns">
                                 <label>Отображение в KPI
                                     <select name="kpi_view" class="required" required>
                                         <option value="0">Не отображать</option>

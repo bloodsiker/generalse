@@ -17,10 +17,10 @@
         <div class="medium-12 small-12 columns">
             <div class="row body-content">
                 <div class="medium-9 small-12 columns">
-                    <h2 class="float-left">Список пользователей</h2>
+                    <h2 class="float-left">List users</h2>
                     <form action="" method="post" class="float-left" style="margin-left: 20px">
                         <select name="group" onchange="this.form.submit()">
-                            <option value="all" <?=(isset($_REQUEST['group']) && $_REQUEST['group'] == 'all') ? 'selected' : ''?>>Все</option>
+                            <option value="all" <?=(isset($_REQUEST['group']) && $_REQUEST['group'] == 'all') ? 'selected' : ''?>>All</option>
                             <?php if(is_array($groupList)):?>
                                 <?php foreach ($groupList as $group):?>
                                     <option value="<?= $group['id']?>" <?=(isset($_REQUEST['group']) && $_REQUEST['group'] == $group['id']) ? 'selected' : ''?>><?= $group['group_name']?></option>
@@ -36,12 +36,12 @@
                         <thead>
                         <tr>
                             <th width="50px">ID</th>
-                            <th>Имя</th>
-                            <th>Страна</th>
-                            <th>Логин</th>
-                            <th>Роль</th>
-                            <th>Группа</th>
-                            <th>Активность</th>
+                            <th>Name</th>
+                            <th>Country</th>
+                            <th>Login</th>
+                            <th>Role</th>
+                            <th>Group</th>
+                            <th>Activity</th>
                             <th width="50">Action</th>
                             <th width="50">Info GM</th>
                             <th width="50">Lock</th>
@@ -145,7 +145,7 @@
                     </table>
 
                     <div style="margin-bottom: 50px"></div>
-                    <h2 class="float-left">Страны</h2>
+                    <h2 class="float-left">Country</h2>
                     <?php if (Umbrella\app\AdminBase::checkDenied('country.add', 'view')): ?>
                         <a href="/adm/country/add" class="button small float-right"><i class="fi-plus"></i> Добавить</a>
                     <?php endif;?>
