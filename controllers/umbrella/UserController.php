@@ -42,7 +42,21 @@ class UserController extends AdminBase
     {
         $user = $this->user;
 
-        $listUsers = Admin::getAllUsers();
+        if(isset($_SESSION['user_success'])){
+            $message = $_SESSION['user_success'];
+            unset($_SESSION['user_success']);
+        }
+
+        $filter = 'true';
+
+        if(isset($_REQUEST['group'])){
+            if($_REQUEST['group'] == 'all'){
+                $filter = "true";
+            } else {
+                $filter = " ggu.id_group = {$_REQUEST['group']}";
+            }
+        }
+        $listUsers = Admin::getAllUsers($filter);
 
         $groupList = GroupModel::getGroupList();
         $countryList = Country::getAllCountry();
@@ -54,7 +68,8 @@ class UserController extends AdminBase
 
         } else if($user->role == 'administrator' || $user->role == 'administrator-fin' ){
 
-            $this->render('admin/users/index', compact('user', 'listUsers', 'groupList', 'countryList', 'branchList'));
+            $this->render('admin/users/index', compact('user', 'listUsers', 'groupList',
+                'countryList', 'branchList', 'message'));
         }
         return true;
     }
@@ -133,7 +148,7 @@ class UserController extends AdminBase
         } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
 
             // Обработка формы
-            if (isset($_POST['add_user'])) {
+            if (isset($_POST['add_user']) && $_POST['add_user'] == 'true') {
                 if($_POST['_token'] == $_SESSION['_token']){
                     $options['id_role'] = $_POST['role'];
                     $options['name_partner'] = $_POST['name_partner'];
@@ -171,6 +186,7 @@ class UserController extends AdminBase
                     if($id_user){
                         $log = "добавил нового пользователя " . $options['name_partner'];
                         Log::addLog($user->id_user, $log);
+                        $_SESSION['user_success'] = "User {$options['name_partner']} successfully added";
                         // Перенаправляем пользователя на страницу юзеров
                         header("Location: /adm/users");
                     }

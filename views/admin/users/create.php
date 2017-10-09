@@ -5,7 +5,7 @@
             <h2>Добавить пользователя</h2>
         </div>
         <div class="medium-12 small-12 columns">
-            <form method="post" class="form" data-abide novalidate>
+            <form method="post" class="form" id="create-user" data-abide novalidate>
                 <div class="row body-content">
                     <div class="medium-6 medium-offset-3 small-12 columns" id="register-umbrella" style="background: #EFEFEF; border: 1px solid #323e48; padding-bottom: 10px">
                         <h2 class="text-center">Информация для Umbrella</h2>
@@ -140,7 +140,7 @@
                         <div class="row">
                             <div class="large-12 columns">
                                 <label>Валюта
-                                    <select name="curency_id" class="required" required>
+                                    <select name="curency_id">
                                         <option value=""></option>
                                         <?php if (is_array($currencyList)): ?>
                                             <?php foreach ($currencyList as $currency): ?>
@@ -170,7 +170,7 @@
                         <div class="row">
                             <div class="large-12 columns">
                                 <label>Признак для поляков
-                                    <select name="to_electrolux" class="required" required>
+                                    <select name="to_electrolux">
                                         <option value=""></option>
                                         <option value="1">Да</option>
                                         <option value="0">Нет</option>
@@ -182,7 +182,7 @@
                         <div class="row">
                             <div class="large-12 columns">
                                 <label>Признак для почты в бухгалтерию
-                                    <select name="to_mail_send" class="required" required>
+                                    <select name="to_mail_send">
                                         <option value=""></option>
                                         <option value="1">Да</option>
                                         <option value="0">Нет</option>
@@ -265,8 +265,9 @@
 
 
                     <div class="medium-6 medium-offset-3 small-12 columns" id="register-user" style="background: #EFEFEF; border: 1px solid #323e48; padding-top: 10px">
+                        <input type="hidden" name="add_user" value="true">
                         <a href="/adm/users" class="button primary tool small"><i class="fi-arrow-left"></i> Назад</a>
-                        <button type="submit" id="add_user" name="add_user" class="button primary tool small">Создать</button>
+                        <button type="submit" id="add_user" class="button primary tool small">Создать</button>
                     </div>
                 </div>
             </form>

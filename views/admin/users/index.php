@@ -9,10 +9,25 @@
     </div>
 </div>
     <div class="row">
+        <?php if(isset($message) && !empty($message)):?>
+            <div class="medium-12 small-12 columns" style="text-align: center">
+                <div class="alert-success" style="margin: 20px auto 0;"><?=$message?></div>
+            </div>
+        <?php endif;?>
         <div class="medium-12 small-12 columns">
             <div class="row body-content">
                 <div class="medium-9 small-12 columns">
                     <h2 class="float-left">Список пользователей</h2>
+                    <form action="" method="post" class="float-left" style="margin-left: 20px">
+                        <select name="group" onchange="this.form.submit()">
+                            <option value="all" <?=(isset($_REQUEST['group']) && $_REQUEST['group'] == 'all') ? 'selected' : ''?>>Все</option>
+                            <?php if(is_array($groupList)):?>
+                                <?php foreach ($groupList as $group):?>
+                                    <option value="<?= $group['id']?>" <?=(isset($_REQUEST['group']) && $_REQUEST['group'] == $group['id']) ? 'selected' : ''?>><?= $group['group_name']?></option>
+                                <?php endforeach;?>
+                            <?php endif; ?>
+                        </select>
+                    </form>
                     <?php if (Umbrella\app\AdminBase::checkDenied('user.add', 'view')): ?>
                         <a href="/adm/user/add" class="button small float-right"><i class="fi-plus"></i> Добавить</a>
                     <?php endif;?>
@@ -79,7 +94,8 @@
                         <thead>
                         <tr>
                             <th>Group</th>
-                            <th width="100px">Action</th>
+                            <th width="90px">Count user</th>
+                            <th width="90px">Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -87,6 +103,7 @@
                             <?php foreach ($groupList as $group): ?>
                                 <tr>
                                     <td><?= $group['group_name']?></td>
+                                    <td><?= $group['count_user']?></td>
                                     <td>
                                     <?php if (Umbrella\app\AdminBase::checkDenied('group.view', 'view')): ?>
                                         <a href="/adm/group/<?= $group['id'] ?>" class="button no-margin small"><i

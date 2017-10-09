@@ -164,9 +164,10 @@ class Admin
 
     /**
      * Список всех пользоватей
+     * @param null $filter
      * @return array
      */
-    public static function getAllUsers()
+    public static function getAllUsers($filter = true)
     {
         $db = MySQL::getConnection();
 
@@ -189,9 +190,9 @@ class Admin
                                         gc.full_name
                                     FROM gs_user gu
                                         INNER JOIN gs_role gr
-                                        ON gu.id_role = gr.id_role
+                                            ON gu.id_role = gr.id_role
                                         LEFT JOIN gs_branch_users gbu
-                                        ON gu.id_user = gbu.id_user
+                                            ON gu.id_user = gbu.id_user
                                         LEFT JOIN gs_branch gb
                                             ON gb.id_branch = gbu.id_branch
                                         LEFT JOIN gs_group_user ggu
@@ -200,6 +201,7 @@ class Admin
                                             ON gg.id = ggu.id_group
                                         INNER JOIN gs_country gc
                                             ON gu.id_country = gc.id_country
+                                    WHERE {$filter}
                                     ORDER BY gu.id_user")->fetchAll(PDO::FETCH_ASSOC);
 
         return $data;

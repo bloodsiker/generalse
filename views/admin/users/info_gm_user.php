@@ -12,7 +12,7 @@
         </tr>
         <tr>
             <td>Название английское</td>
-            <td><?= $userInfo['name_en']?></td>
+            <td><?= iconv('WINDOWS-1251', 'UTF-8', $userInfo['name_en'])?></td>
         </tr>
         <tr>
             <td>Адрес</td>
@@ -20,7 +20,7 @@
         </tr>
         <tr>
             <td>Адрес английский</td>
-            <td><?= $userInfo['address_en']?></td>
+            <td><?= iconv('WINDOWS-1251', 'UTF-8', $userInfo['address_en'])?></td>
         </tr>
         <tr>
             <td>Для ТТН</td>

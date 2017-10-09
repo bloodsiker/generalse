@@ -97,6 +97,21 @@ $(document).on('click', '#send-user-address', function(e) {
 });
 
 
+// При успешной валидации отправляем заявку и показываем прелоудер
+$('#create-user').submit(function(e) {
+    e.preventDefault();
+    if ($('#create-user input').hasClass('is-invalid-input') || $('#create-user select').hasClass('is-invalid-input')) { // проверка на валидность
+        return false;
+    } else {
+        $('#create-user').find('button').prop('disabled', true);
+        $('#wait').removeClass('hide');
+        setTimeout(function () {
+            e.target.submit()
+        }, 2000);
+    }
+});
+
+
 //При выборе роли пользователя, скрываем\показываем нужные поля для заполнения
 $('select[name="role"]').change(function(event) {
     switch(event.target.value) {

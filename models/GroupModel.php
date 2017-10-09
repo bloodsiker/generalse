@@ -19,7 +19,13 @@ class GroupModel
     {
         $db = MySQL::getConnection();
 
-        $result = $db->query("SELECT * FROM gs_group")->fetchAll(PDO::FETCH_ASSOC);
+        $result = $db->query("SELECT 
+                                        gg.*,
+                                        (SELECT 
+                                            COUNT(ggu.id) 
+                                         FROM	gs_group_user ggu
+                                         WHERE gg.id = ggu.id_group) AS count_user
+                                        FROM gs_group gg")->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
 
