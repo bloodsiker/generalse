@@ -4,6 +4,7 @@ namespace Umbrella\controllers\umbrella\psr;
 
 use Umbrella\app\AdminBase;
 use Umbrella\app\User;
+use Umbrella\components\Functions;
 use Umbrella\models\Admin;
 use Umbrella\models\Products;
 use Umbrella\models\psr\Psr;
@@ -11,6 +12,11 @@ use upload as FileUpload;
 
 class PsrController extends AdminBase
 {
+    /**
+     *  Path to the upload file for the psr
+     */
+    const UPLOAD_PATH_PSR = '/upload/attach_psr/';
+
     /**
      * @var User
      */
@@ -67,13 +73,12 @@ class PsrController extends AdminBase
         if (!empty($_FILES['attach_psr'])) {
             $handle = new FileUpload($_FILES['attach_psr']);
             if ($handle->uploaded) {
-                $handle->file_new_name_body = $user->name_partner;
+                $handle->file_new_name_body = Functions::strUrl($user->name_partner);
                 $handle->file_name_body_add = '-' . substr_replace(sha1(microtime(true)), '', 15);
                 $file_name = $handle->file_new_name_body . $handle->file_name_body_add . '.' . $handle->file_src_name_ext;
-                $path = '/upload/attach_psr/';
-                $handle->process(ROOT . $path);
+                $handle->process(ROOT . self::UPLOAD_PATH_PSR);
                 if ($handle->processed) {
-                    Psr::addDocumentInPsr($_REQUEST['psr_id'], $path, $file_name);
+                    Psr::addDocumentInPsr($_REQUEST['psr_id'], self::UPLOAD_PATH_PSR, $file_name);
                     $handle->clean();
                     $_SESSION['psr_success'] = 'The warranty card is attached';
                     $_SESSION['class'] = 'alert-success';
