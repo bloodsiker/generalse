@@ -256,9 +256,18 @@ h3 {
 }
 header {
   background-color: #323e48;
-  padding-top: 10px;
   padding-bottom: 10px;
   margin-bottom: 10px; }
+  header .header-user-menu {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: #6f6e6e;
+    margin-bottom: 10px;
+  }
+  header .header-user-menu .user-name {
+    color: #fff;
+    font-size: 14px;
+  }
   header h4 {
     color: #fff;
     font-weight: 700; }

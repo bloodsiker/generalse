@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/template/admin/css/app.css">
     <link rel="stylesheet" href="/template/admin/css/fonts.css">
     <link rel="stylesheet" href="/template/admin/fonts/foundation-icons/foundation-icons.css">
-    <link rel="stylesheet" href="/template/admin/css/style.css?v.1.9.3">
+    <link rel="stylesheet" href="/template/admin/css/style.css?v.1.9.4">
     <link rel="stylesheet" href="/template/admin/font-awesome/css/font-awesome.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/5.0.0/video-js.min.css" rel="stylesheet">
     <?php
@@ -37,13 +37,21 @@
 
 <body>
 <header>
+    <div class="header-user-menu">
+        <div class="row">
+            <div class="medium-12 small-12 column text-right">
+                <span class="user-name"><?=$user->name_partner?></span>
+            </div>
+        </div>
+    </div>
+
     <div class="row align-middle">
         <div class="medium-2 small-12 columns">
             <a href="/adm/kpi">
                 <img src="/template/admin/img/logo.svg" alt="GS Umbrella">
             </a>
         </div>
-        <div class="medium-7 small-12 columns">
+        <div class="medium-8 small-12 columns">
             <ul class="menu align-right">
                 <?php if (Umbrella\app\AdminBase::checkDenied('adm.dashboard', 'view')): ?>
                     <li><a href="/adm/dashboard" class="<?= Umbrella\components\Url::IsActive('/dashboard', 'active') ?>">Dashboard</a></li>
@@ -78,8 +86,7 @@
                 <?php endif; ?>
             </ul>
         </div>
-        <div class="medium-3 small-12 text-right columns">
-            <h4><?=$user->name_partner?></h4>
+        <div class="medium-2 small-12 text-right columns">
             <a class="exit-link" href="/adm/logout">Exit <i class="fi-play"></i></a>
         </div>
     </div>
