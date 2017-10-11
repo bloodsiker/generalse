@@ -39,7 +39,10 @@ class Psr
         $result->bindParam(':declaration_number', $options['declaration_number'], PDO::PARAM_STR);
         $result->bindParam(':status_name', $options['status_name'], PDO::PARAM_STR);
 
-        return $result->execute();
+        if ($result->execute()) {
+            return $db->lastInsertId();
+        }
+        return 0;
     }
 
 

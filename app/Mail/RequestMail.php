@@ -50,7 +50,7 @@ class RequestMail
                 mail($email, 'Request. Замена парт номера на аналог', $mailToManager, $headers);
             }
         }
-        mail('dv@generalse.com', 'Request. Статус изменен', $mailToManager, $headers);
+        mail('dv@generalse.com', 'Request. Замена парт номера на аналог', $mailToManager, $headers);
         return true;
     }
 

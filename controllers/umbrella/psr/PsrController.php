@@ -3,6 +3,7 @@
 namespace Umbrella\controllers\umbrella\psr;
 
 use Umbrella\app\AdminBase;
+use Umbrella\app\Mail\PsrMail;
 use Umbrella\app\User;
 use Umbrella\components\Functions;
 use Umbrella\models\Admin;
@@ -61,8 +62,9 @@ class PsrController extends AdminBase
             $options['declaration_number'] = $_REQUEST['declaration_number'];
             $options['status_name'] = 'Зарегистрирован';
 
-            $ok = Psr::addPsr($options);
-            if($ok){
+            $id = Psr::addPsr($options);
+            if($id){
+                PsrMail::getInstance()->sendEmailWithNewPsr($id, $user->name_partner, $options);
                 $_SESSION['psr_success'] = 'Successful PSR device registration';
                 $_SESSION['class'] = 'alert-success';
                 header('Location: ' . $_SERVER['HTTP_REFERER']);
