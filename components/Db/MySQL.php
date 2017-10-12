@@ -28,8 +28,8 @@ class MySQL implements DataBase
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_EMULATE_PREPARES   => TRUE,
             );
-            $dsn = "mysql:host={$params['host']};dbname={$params['dbname']};charset={$params['dbchar']}";
-            self::$instance = new PDO($dsn, $params['user'], $params['password'], $opt);
+            $dsn = "mysql:host={$_ENV['DB_HOST']};dbname={$_ENV['DB_DATABASE']};charset={$_ENV['DB_CHAR']}";
+            self::$instance = new PDO($dsn, $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $opt);
         }
         return self::$instance;
     }

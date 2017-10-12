@@ -1,6 +1,10 @@
 .idea
+.env
+.env.local
 upload/
 vendor/verot
 vendor/composer
+vendor/josegonzalez
+vendor/m1
 vendor/autoload.php
 

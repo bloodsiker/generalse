@@ -24,7 +24,8 @@ class MsSQL implements DataBase
             $params = include($paramsPath);
 
             try {
-                self::$instance = new PDO ("dblib:host={$params['host']}:{$params['port']};dbname={$params['dbname']}","{$params['user']}","{$params['password']}");
+                self::$instance = new PDO ("dblib:host={$_ENV['DB_MS_HOST']}:{$_ENV['DB_MS_PORT']};dbname={$_ENV['DB_MS_DATABASE']}",
+                    "{$_ENV['DB_MS_USERNAME']}","{$_ENV['DB_MS_PASSWORD']}");
                 //$dbh->exec("set names utf8");
             } catch (\PDOException $e) {
                 echo "Failed to get DB handle: " . $e->getMessage() . "\n";

@@ -84,7 +84,7 @@
     </div>
 </div>
 
-<div class="reveal small" id="stock-filter" data-reveal>
+<div class="reveal large" id="stock-filter" data-reveal>
     <div class="row align-bottom">
         <div class="medium-12 small-12 columns">
             <h3>Stock filter</h3>
