@@ -235,10 +235,15 @@
                 <div class="medium-12 small-12 columns">
                     <h3>New request</h3>
                 </div>
-                <div class="medium-12 small-12 columns">
+                <div class="medium-10 small-10 columns">
                     <label>Part Number <span style="color: #4CAF50;" class="name-product"></span></label>
                     <span style="color: orange;" class="pn-analog"></span>
                     <input type="text" class="required" name="part_number" onkeyup="checkCurrPartNumber(this)" autocomplete="off" required>
+                </div>
+
+                <div class="medium-2 small-2 columns">
+                    <label>Count</label>
+                    <input type="text" class="required" name="part_quantity" value="1" onkeyup="validCount(this)" autocomplete="off" required>
                 </div>
 
                 <div class="medium-12 small-12 columns">

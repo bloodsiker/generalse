@@ -103,15 +103,26 @@ class RequestController extends AdminBase
             $options['note1'] = isset($_POST['note1']) ? iconv('UTF-8', 'WINDOWS-1251', $_POST['note1']): null;
             $options['note1_mysql'] = isset($_POST['note1']) ? $_POST['note1']: null;
 
-            $ok = Orders::addReserveOrdersMsSQL($options);
-            if($ok){
-                $options['request_id'] = $ok;
-                $options['so_number'] = $_POST['so_number'];
-                //Пишем в mysql
-                Orders::addReserveOrders($options);
-                $_SESSION['add_request'] = 'Out of stock, delivery is forming';
-                Logger::getInstance()->log($user->id_user, ' создал новый запрос в Request');
+            $so_number = $options['so_number'];
+            $part_quantity = $_REQUEST['part_quantity'];
+            for($i = 1; $i <= $part_quantity; $i++) {
+                // Если кол-во больше 1, номеруем каждую заявку
+                if($part_quantity > 1){
+                    $options['so_number'] = $so_number . ' (' . $i . ')';
+                }
+
+                $ok = Orders::addReserveOrdersMsSQL($options);
+
+                if($ok){
+                    $options['request_id'] = $ok;
+                    $options['so_number'] = $_POST['so_number'];
+                    //Пишем в mysql
+                    Orders::addReserveOrders($options);
+                    $_SESSION['add_request'] = 'Out of stock, delivery is forming';
+                    Logger::getInstance()->log($user->id_user, ' создал новый запрос в Request');
+                }
             }
+
             header("Location: " . $_SERVER['HTTP_REFERER']);
         }
 

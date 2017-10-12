@@ -29,6 +29,11 @@ function checkCurrPartNumber(d) {
     d.value = d.value.replace(/\D/g,'');
 }
 
+// Запрещаем вводить количество меньше 1
+function validCount(e) {
+    if(e.value < 1) { e.value = 1 }
+}
+
 
 //PART NUMBER SEARCH
 $('[name="part_number"]').keyup(function(e) {
