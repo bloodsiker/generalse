@@ -12,7 +12,7 @@
         <div class="medium-12 small-12 columns">
             <div class="row body-content">
                 <div class="medium-8 small-12 columns">
-                    <h2 class="float-left">Список пользователей для управления</h2>
+                    <h2 class="float-left">Список пользователей для управления(<?= count($listControlUsers)?>)</h2>
                     <a href="/adm/users" style="margin-bottom: 0" class="button small float-right">Назад</a>
                     <div class="clearfix"></div>
                     <table border="1" cellspacing="0" cellpadding="5">
