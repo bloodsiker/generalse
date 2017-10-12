@@ -242,15 +242,15 @@
                 </div>
 
                 <div class="medium-12 small-12 columns">
-                    <label>SO Number</label>
+                    <label>SO Number/Note</label>
                     <input type="text" name="so_number" autocomplete="off">
                 </div>
 
 
-                    <div class="medium-12 small-12 columns">
-                        <label>Part description RUS</label>
-                        <input type="text" name="pn_name_rus" autocomplete="off">
-                    </div>
+                <div class="medium-12 small-12 columns">
+                    <label>Part description RUS</label>
+                    <input type="text" name="pn_name_rus" autocomplete="off">
+                </div>
 
 
                 <div class="medium-12 small-12 columns">
@@ -274,9 +274,10 @@
                     </div>
                 <?php endif; ?>
                 <div class="medium-12 small-12 columns">
-                    <label>Note</label>
-                    <textarea rows="3" name="note1"></textarea>
+                    <label>Stitch on PNC</label>
+                    <input type="text" name="note1" autocomplete="off">
                 </div>
+
                 <input type="hidden" name="add_request" value="true">
                 <div class="medium-12 small-12 columns">
                     <button type="submit" class="button primary">Send</button>
