@@ -88,10 +88,10 @@
                                          </button>
                                      </td>
                                      <td class="<?= \Umbrella\models\psr\Psr::getStatusRequest($psr['status_name'])?>"><?= $psr['status_name']?></td>
-                                     <td style="padding: 0!important">
+                                     <td style="padding: 0!important" class="block-container">
                                          <table style="margin-bottom: 0; min-height: 50px;">
                                              <tr>
-                                                 <td style="border-width: 0 0 1px 0" class="block-container">
+                                                 <td style="border-width: 0 0 1px 0">
                                                      <span class="psr-dec-number"><?= $psr['declaration_number']?></span>
                                                      <?php if (Umbrella\app\AdminBase::checkDenied('adm.psr.add_declaration', 'view')): ?>
                                                          <a href="" class="button button-hover edit-dec delete"><i class="fi-pencil"></i></a>
@@ -99,7 +99,7 @@
                                                  </td>
                                              </tr>
                                              <tr>
-                                                 <td style="border-width: 0" class="block-container">
+                                                 <td style="border-width: 0">
                                                      <span class="psr-dec-number-return"><?= $psr['declaration_number_return']?></span>
                                                      <?php if (Umbrella\app\AdminBase::checkDenied('adm.psr.add_return_declaration', 'view')): ?>
                                                          <a href="" class="button button-hover edit-dec-return delete"><i class="fi-pencil"></i></a>
@@ -167,10 +167,10 @@
                                      <td class="edit-psr-status <?= \Umbrella\models\psr\Psr::getStatusRequest($psr['status_name'])?>">
                                          <span class="psr_status"><?= $psr['status_name']?></span>
                                      </td>
-                                     <td style="padding: 0!important;">
+                                     <td style="padding: 0!important;" class="block-container">
                                          <table style="margin-bottom: 0">
                                              <tr>
-                                                 <td style="border-width: 0 0 1px 0" class="block-container">
+                                                 <td style="border-width: 0 0 1px 0">
                                                      <span class="psr-dec-number"><?= $psr['declaration_number']?></span>
                                                      <?php if (Umbrella\app\AdminBase::checkDenied('adm.psr.add_declaration', 'view')): ?>
                                                         <a href="" class="button button-hover edit-dec delete"><i class="fi-pencil"></i></a>
@@ -178,7 +178,7 @@
                                                  </td>
                                              </tr>
                                              <tr>
-                                                 <td style="border-width: 0 0 0 0" class="block-container">
+                                                 <td style="border-width: 0 0 0 0">
                                                      <span class="psr-dec-number-return"><?= $psr['declaration_number_return']?></span>
                                                      <?php if (Umbrella\app\AdminBase::checkDenied('adm.psr.add_return_declaration', 'view')): ?>
                                                         <a href="" class="button button-hover edit-dec-return delete"><i class="fi-pencil"></i></a>
