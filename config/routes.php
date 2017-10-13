@@ -108,6 +108,7 @@ return array(
 
 
     /*********** REQUEST  ***********/
+    'adm/crm/export/request' => 'umbrella/crm/Request@exportRequests',
     'adm/crm/request/upload_price' => 'umbrella/crm/Request@uploadPrice',
     'adm/crm/request/list_analog' => 'umbrella/crm/Request@listAnalog',
     'adm/crm/request/request_ajax' => 'umbrella/crm/Request@requestAjax',

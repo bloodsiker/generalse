@@ -9,6 +9,7 @@ use Umbrella\components\Functions;
 use Umbrella\components\ImportExcel;
 use Umbrella\components\Logger;
 use Umbrella\models\Admin;
+use Umbrella\models\crm\Request;
 use Umbrella\models\File;
 use Umbrella\models\Orders;
 use Umbrella\models\PartAnalog;
@@ -126,20 +127,34 @@ class RequestController extends AdminBase
             header("Location: " . $_SERVER['HTTP_REFERER']);
         }
 
-        if($user->role == 'partner'){
+        if($user->role == 'partner' || $user->role == 'manager'){
 
             $listCheckOrders = Orders::getReserveOrdersByPartnerMsSQL($user->controlUsers($user->id_user), 0);
             //$listRemovedRequest = Orders::getRemovedRequestByUser($user->controlUsers($user->id_user));
             $listRemovedRequest = [];
-        } elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
+
+            $partnerList = Admin::getPartnerControlUsers($user->controlUsers($user->id_user));
+            $new_partner = array();
+            if(count($partnerList) > 3){
+                $new_partner = array_chunk($partnerList, (int)count($partnerList) / 3);
+            } else {
+                $new_partner[] = $partnerList;
+            }
+
+        } elseif($user->role == 'administrator' || $user->role == 'administrator-fin'){
 
             $listCheckOrders = Orders::getAllReserveOrdersMsSQL(0);
             //$listRemovedRequest = Orders::getAllRemovedRequest();
             $listRemovedRequest = [];
+
+            // Параметры для формирование фильтров
+            $partnerList = Admin::getAllPartner();
+            $new_partner = array_chunk($partnerList, (int)count($partnerList) / 3);
         }
 
         $this->render('admin/crm/request', compact('user','group', 'partnerList', 'order_type',
-            'delivery_address', 'listCheckOrders', 'request_message', 'arrayPartNumber', 'listRemovedRequest'));
+            'delivery_address', 'listCheckOrders', 'request_message', 'arrayPartNumber', 'listRemovedRequest',
+            'new_partner'));
         return true;
     }
 
@@ -561,6 +576,26 @@ class RequestController extends AdminBase
         }
 
         $this->render('admin/crm/request_list_analog', compact('user','listPartAnalog'));
+        return true;
+    }
+
+
+    /**
+     * Page export to excel
+     * @return bool
+     */
+    public function actionExportRequests()
+    {
+        $user = $this->user;
+
+        $start =  isset($_POST['start']) ? $_POST['start'] .' 00:00' : '';
+        $end =  isset($_POST['end']) ? $_POST['end'] .' 23:59' : '';
+        $processed = $_REQUEST['processed'];
+
+        $id_partners = isset($_POST['id_partner']) ? $_POST['id_partner'] : [];
+        $listExport = Request::getExportRequestsByPartners($id_partners, $start, $end, $processed);
+
+        $this->render('admin/crm/export/requests', compact('user', 'listExport'));
         return true;
     }
 

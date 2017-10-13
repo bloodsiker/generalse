@@ -27,7 +27,7 @@
                                 <?php endif;?>
 
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.export', 'view')): ?>
-                                    <button class="button primary tool" onclick="tableToExcel('goods_data', 'Request Table')" style="width: inherit;"><i class="fi-page-export"></i> Export to Excel</button>
+                                    <button data-open="export-modal" class="button primary tool"><i class="fi-page-export"></i> Export to Excel</button>
                                 <?php endif;?>
 
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.price', 'view')): ?>
@@ -629,6 +629,79 @@
         </button>
     </div>
 <?php endif?>
+
+
+<?php if (Umbrella\app\AdminBase::checkDenied('crm.request.export', 'view')): ?>
+    <!--=== EXPORT EXCEL ====-->
+    <div class="reveal large" id="export-modal" data-reveal>
+        <div class="row align-bottom">
+            <div class="medium-12 small-12 columns">
+                <h3>Generate report</h3>
+            </div>
+            <div class="medium-12 small-12 columns">
+                <form action="/adm/crm/export/request/" method="POST" id="form-generate-excel" data-abide>
+
+                    <h4 style="color: #fff">Between date</h4>
+                    <div class="row align-bottom" style="background: #323e48; padding-top: 10px; margin-bottom: 10px">
+                        <div class="medium-8 small-8 columns">
+                            <div class="row">
+                                <div class="medium-6 small-12 columns">
+                                    <label>From Date</label>
+                                    <input type="text" class="required date" value="<?= Umbrella\components\Functions::formatDate(end($listCheckOrders)['created_on'])?>" name="start" required>
+                                </div>
+                                <div class="medium-6 small-12 columns">
+                                    <label>To Date</label>
+                                    <input type="text" class="required date" value="<?= date('Y-m-d')?>" name="end" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="medium-4 small-4 columns">
+                            <label>Status</label>
+                            <select name="processed" id="processed">
+                                <option value="0">Not completed</option>
+                                <option value="1">Completed</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <h4 style="color: #fff">Partners</h4>
+                    <div class="row align-bottom" style="background: #323e48; padding-top: 10px">
+                        <div class="medium-12 small-12 columns">
+                            <input type="text" id="search" placeholder="Search" autocomplete="off">
+                        </div>
+                        <div class="medium-12 small-12 columns">
+                        <span>
+                            <input type="checkbox" onclick="checkAllCheckbox(event)" id="id-all">
+                            <label class="check all" for="id-all" >Выбрать всех</label>
+                        </span>
+                        </div>
+                        <?php if(is_array($new_partner)):?>
+                            <?php foreach($new_partner as $new_arr):?>
+                                <div class="medium-4 small-4 columns">
+                                    <?php foreach($new_arr as $partner):?>
+                                        <span>
+                                       <input type="checkbox" onclick="checkColor(event)" id="id-<?=$partner['id_user'] ?>" name="id_partner[]" value="<?=$partner['id_user'] ?>">
+                                        <label  class="check" for="id-<?=$partner['id_user'] ?>" ><?=$partner['name_partner'] ?></label><br>
+                                    </span>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="row align-bottom" style="padding-top: 10px; margin-top: 10px">
+                        <div class="medium-3 small-3 medium-offset-9 columns">
+                            <button type="submit" id="apply-stock-filter" class="button primary">Generate</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+<?php endif;?>
 
 
 <div class="reveal large" id="open-removed-request" data-reveal>
