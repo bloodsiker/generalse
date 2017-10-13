@@ -532,9 +532,11 @@ $(document).on('click', '.close-changes', function(e) {
     $('.new-changes').remove();
 });
 
+let checkViewInnovation = () => $('.container-inner').find('button.click-view-ok').length;
+
 $(document).on('click', '.click-view-ok', function () {
-    var _this = $(this);
-    var innovation_id = _this.attr('data-innovation-id');
+    let _this = $(this);
+    let innovation_id = _this.attr('data-innovation-id');
 
     $.ajax({
         url: "/adm/innovation/ajax_action",
@@ -544,10 +546,13 @@ $(document).on('click', '.click-view-ok', function () {
         success: function (response) {
             if(response == 200){
                 _this.removeAttr('data-innovation-id');
-                _this.removeClass('.click-view-ok');
+                _this.removeClass('click-view-ok');
                 _this.text('Ok');
+
+                if (!checkViewInnovation()) {
+                    $('.new-changes').remove();
+                }
             }
-            // var obj = JSON.parse(response);
         }
     });
     return false;
