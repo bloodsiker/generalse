@@ -11,6 +11,7 @@ use Umbrella\components\Logger;
 use Umbrella\models\Admin;
 use Umbrella\models\crm\Request;
 use Umbrella\models\File;
+use Umbrella\models\GroupModel;
 use Umbrella\models\Orders;
 use Umbrella\models\PartAnalog;
 use Umbrella\models\Products;
@@ -148,13 +149,20 @@ class RequestController extends AdminBase
             $listRemovedRequest = [];
 
             // Параметры для формирование фильтров
-            $partnerList = Admin::getAllPartner();
-            $new_partner = array_chunk($partnerList, (int)count($partnerList) / 3);
+            $groupList = GroupModel::getGroupList();
+            $userInGroup = [];
+            $i = 0;
+            foreach ($groupList as $group) {
+                $userInGroup[$i]['group_name'] = $group['group_name'];
+                $userInGroup[$i]['group_id'] = $group['id'];
+                $userInGroup[$i]['users'] = GroupModel::getUsersByGroup($group['id']);
+                $i++;
+            }
         }
 
         $this->render('admin/crm/request', compact('user','group', 'partnerList', 'order_type',
             'delivery_address', 'listCheckOrders', 'request_message', 'arrayPartNumber', 'listRemovedRequest',
-            'new_partner'));
+            'new_partner', 'userInGroup'));
         return true;
     }
 
