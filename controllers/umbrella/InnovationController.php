@@ -21,7 +21,6 @@ class InnovationController extends AdminBase
     public function __construct()
     {
         parent::__construct();
-        self::checkDenied('adm.users', 'controller');
         $this->user = new User(Admin::CheckLogged());
     }
 

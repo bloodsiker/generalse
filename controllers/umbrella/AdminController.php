@@ -68,6 +68,9 @@ class AdminController extends AdminBase
     }
 
 
+    /**
+     *
+     */
     public function actionLogout()
     {
         self::checkAdmin();
@@ -75,6 +78,7 @@ class AdminController extends AdminBase
 
         unset($_SESSION['user']);
         unset($_SESSION['_token']);
+        unset($_SESSION['info_user']);
 
         Logger::getInstance()->log($userId, 'вышел(а) с кабинета');
         header("Location: /");

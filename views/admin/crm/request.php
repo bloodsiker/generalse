@@ -279,7 +279,7 @@
                     </div>
                 <?php endif; ?>
                 <div class="medium-12 small-12 columns">
-                    <label>Stitch on PNC</label>
+                    <label>Flash on PNC</label>
                     <input type="text" name="note1" autocomplete="off">
                 </div>
 
