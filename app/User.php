@@ -2,7 +2,6 @@
 
 namespace Umbrella\app;
 
-use Umbrella\app\Group;
 use Umbrella\models\Admin;
 use Umbrella\models\DeliveryAddress;
 use Umbrella\models\Denied;
@@ -43,7 +42,12 @@ class User
      */
     public function getInfoUser($id_user)
     {
-        $user = Admin::getAdminById($id_user);
+        if(isset($_SESSION['info_user']) && !empty($_SESSION['info_user'])){
+            $user = $_SESSION['info_user'];
+        } else {
+            $_SESSION['info_user'] = Admin::getAdminById($id_user);
+            $user = $_SESSION['info_user'];
+        }
 
         return $user;
     }

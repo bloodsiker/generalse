@@ -268,6 +268,7 @@ class UserController extends AdminBase
                     $ok = Admin::updateUserById($id, $options);
 
                     if($ok){
+                        $_SESSION['info_user'] = Admin::getAdminById($id);
                         $log = "редактировал учетку пользователя " . $userInfo['name_partner'];
                         Log::addLog($user->id_user, $log);
                         // Перенаправляем пользователя на страницу юзеров
