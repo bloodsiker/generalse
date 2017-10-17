@@ -292,7 +292,7 @@
 
 
 <!--=== EXPORT EXCEL ====-->
-<div class="reveal small" id="export-modal" data-reveal>
+<div class="reveal large" id="export-modal" data-reveal>
     <div class="row align-bottom">
         <div class="medium-12 small-12 columns">
             <h3>Generate report</h3>
@@ -325,29 +325,74 @@
                 </div>
 
                 <h4 style="color: #fff">Partners</h4>
-                <div class="row align-bottom" style="background: #323e48; padding-top: 10px">
-                    <div class="medium-12 small-12 columns">
-                        <input type="text" id="search" placeholder="Search" autocomplete="off">
-                    </div>
-                    <div class="medium-12 small-12 columns">
-                        <span>
-                            <input type="checkbox" onclick="checkAllCheckbox(event)" id="id-all">
-                            <label class="check all" for="id-all" >Выбрать всех</label>
-                        </span>
-                    </div>
-                    <?php if(is_array($new_partner)):?>
-                        <?php foreach($new_partner as $new_arr):?>
-                            <div class="medium-4 small-4 columns">
-                                <?php foreach($new_arr as $partner):?>
-                                    <span>
-                                       <input type="checkbox" onclick="checkColor(event)" id="id-<?=$partner['id_user'] ?>" name="id_partner[]" value="<?=$partner['id_user'] ?>">
-                                        <label  class="check" for="id-<?=$partner['id_user'] ?>" ><?=$partner['name_partner'] ?></label><br>
-                                    </span>
-                                <?php endforeach; ?>
+                <?php if($user->role == 'administrator' || $user->role == 'fin-administrator'):?>
+                    <div class="row align-bottom" style="background: #323e48; padding-top: 10px">
+                        <div class="medium-12 small-12 columns">
+                            <ul class="tabs" data-deep-link="true" data-update-history="true" data-deep-link-smudge="true" data-deep-link-smudge="500" data-tabs id="deeplinked-tabs">
+                                <?php foreach ($userInGroup as $groups):?>
+                                    <li class="tabs-title">
+                                        <a href="#group-<?= $groups['group_id']?>" aria-selected="true"><?= $groups['group_name']?></a>
+                                    </li>
+                                <?php endforeach;?>
+                            </ul>
+
+                            <div class="tabs-content" data-tabs-content="deeplinked-tabs" style="background: #323e48; margin-bottom: 10px">
+                                <?php foreach ($userInGroup as $groups):?>
+                                    <div class="tabs-panel" id="group-<?= $groups['group_id']?>">
+                                        <div class="row">
+                                            <div class="medium-12 small-12 columns">
+                                                <span>
+                                                    <input type="checkbox" onclick="checkAllCheckbox(event, '#group-<?= $groups['group_id']?>')" id="id-<?= $groups['group_id']?>-all">
+                                                    <label class="check all" for="id-<?= $groups['group_id']?>-all">Выбрать всех</label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <?php foreach($groups['users'] as $partner):?>
+                                                <div class="medium-4 small-4 columns">
+                                                <span>
+                                                    <?php $checked = Umbrella\models\Stocks::checkUser(isset($_POST['id_partner']) ? $_POST['id_partner'] : [], $partner['id_user'])?>
+                                                    <input type="checkbox" <?= ($checked ? 'checked' : '')?> onclick="checkColor(event)" id="id-<?=$partner['id_user'] ?>" name="id_partner[]" value="<?=$partner['id_user'] ?>">
+                                                    <label  class="check" for="id-<?=$partner['id_user'] ?>" style="color: <?= ($checked ? 'green' : '')?>;"><?=$partner['name_partner'] ?></label><br>
+                                                </span>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    </div>
+                                <?php endforeach;?>
                             </div>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </div>
+                        </div>
+                    </div>
+
+                <?php else: ?>
+
+                    <div class="row align-bottom" style="background: #323e48; padding-top: 10px">
+                        <div class="medium-12 small-12 columns">
+                            <input type="text" id="search" placeholder="Search" autocomplete="off">
+                        </div>
+                        <div class="medium-12 small-12 columns">
+                            <span>
+                                <input type="checkbox" onclick="checkAllCheckbox(event)" id="id-all">
+                                <label class="check all" for="id-all" >Выбрать всех</label>
+                            </span>
+                        </div>
+                        <div class="medium-12 small-12 columns">
+                            <div class="row">
+                                <?php if(is_array($partnerList)):?>
+                                    <?php foreach($partnerList as $partner):?>
+                                        <div class="medium-4 small-4 columns">
+                                            <span>
+                                                <?php $checked = Umbrella\models\Stocks::checkUser(isset($_POST['id_partner']) ? $_POST['id_partner'] : [], $partner['id_user'])?>
+                                                <input type="checkbox" <?= ($checked ? 'checked' : '')?> onclick="checkColor(event)" id="id-<?=$partner['id_user'] ?>" name="id_partner[]" value="<?=$partner['id_user'] ?>">
+                                                <label  class="check" for="id-<?=$partner['id_user'] ?>" style="color: <?= ($checked ? 'green' : '')?>;"><?=$partner['name_partner'] ?></label><br>
+                                            </span>
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
 
                 <div class="row align-bottom" style="padding-top: 10px; margin-top: 10px">
                     <div class="medium-3 small-3 medium-offset-9 columns">

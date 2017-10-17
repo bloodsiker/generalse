@@ -135,12 +135,6 @@ class RequestController extends AdminBase
             $listRemovedRequest = [];
 
             $partnerList = Admin::getPartnerControlUsers($user->controlUsers($user->id_user));
-            $new_partner = array();
-            if(count($partnerList) > 3){
-                $new_partner = array_chunk($partnerList, (int)count($partnerList) / 3);
-            } else {
-                $new_partner[] = $partnerList;
-            }
 
         } elseif($user->role == 'administrator' || $user->role == 'administrator-fin'){
 
@@ -158,11 +152,16 @@ class RequestController extends AdminBase
                 $userInGroup[$i]['users'] = GroupModel::getUsersByGroup($group['id']);
                 $i++;
             }
+            // Добавляем в массив пользователей без групп
+            $userNotGroup[0]['group_name'] = 'Without group';
+            $userNotGroup[0]['group_id'] = 'without_group';
+            $userNotGroup[0]['users'] = GroupModel::getUsersWithoutGroup();
+            $userInGroup = array_merge($userInGroup, $userNotGroup);
         }
 
         $this->render('admin/crm/request', compact('user','group', 'partnerList', 'order_type',
             'delivery_address', 'listCheckOrders', 'request_message', 'arrayPartNumber', 'listRemovedRequest',
-            'new_partner', 'userInGroup'));
+            'userInGroup'));
         return true;
     }
 

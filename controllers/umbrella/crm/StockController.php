@@ -59,6 +59,11 @@ class StockController extends AdminBase
                 $userInGroup[$i]['users'] = GroupModel::getUsersByGroup($group['id']);
                 $i++;
             }
+            // Добавляем в массив пользователей без групп
+            $userNotGroup[0]['group_name'] = 'Without group';
+            $userNotGroup[0]['group_id'] = 'without_group';
+            $userNotGroup[0]['users'] = GroupModel::getUsersWithoutGroup();
+            $userInGroup = array_merge($userInGroup, $userNotGroup);
 
             $stocks =  isset($_POST['stock']) ? $_POST['stock'] : [];
             $id_partners = isset($_POST['id_partner']) ? $_POST['id_partner'] : [];

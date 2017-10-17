@@ -157,18 +157,20 @@
                                 <label class="check all" for="id-all" >Выбрать всех</label>
                             </span>
                         </div>
-                        <div class="row">
-                            <?php if(is_array($partnerList)):?>
-                                <?php foreach($partnerList as $partner):?>
-                                    <div class="medium-4 small-4 columns">
-                                        <span>
-                                            <?php $checked = Umbrella\models\Stocks::checkUser(isset($_POST['id_partner']) ? $_POST['id_partner'] : [], $partner['id_user'])?>
-                                            <input type="checkbox" <?= ($checked ? 'checked' : '')?> onclick="checkColor(event)" id="id-<?=$partner['id_user'] ?>" name="id_partner[]" value="<?=$partner['id_user'] ?>">
-                                            <label  class="check" for="id-<?=$partner['id_user'] ?>" style="color: <?= ($checked ? 'green' : '')?>;"><?=$partner['name_partner'] ?></label><br>
-                                        </span>
-                                    </div>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
+                        <div class="medium-12 small-12 columns">
+                            <div class="row">
+                                <?php if(is_array($partnerList)):?>
+                                    <?php foreach($partnerList as $partner):?>
+                                        <div class="medium-4 small-4 columns">
+                                            <span>
+                                                <?php $checked = Umbrella\models\Stocks::checkUser(isset($_POST['id_partner']) ? $_POST['id_partner'] : [], $partner['id_user'])?>
+                                                <input type="checkbox" <?= ($checked ? 'checked' : '')?> onclick="checkColor(event)" id="id-<?=$partner['id_user'] ?>" name="id_partner[]" value="<?=$partner['id_user'] ?>">
+                                                <label  class="check" for="id-<?=$partner['id_user'] ?>" style="color: <?= ($checked ? 'green' : '')?>;"><?=$partner['name_partner'] ?></label><br>
+                                            </span>
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </div>
                         </div>
                     </div>
                 <?php endif; ?>

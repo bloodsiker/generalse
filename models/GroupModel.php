@@ -153,8 +153,7 @@ class GroupModel
 
         $sql = "SELECT 
                     gu.id_user,
-                    gu.name_partner,
-                    ggu.id_group 
+                    gu.name_partner
                 FROM gs_user gu
                 LEFT JOIN gs_group_user ggu
                     ON gu.id_user = ggu.id_user

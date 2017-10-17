@@ -64,30 +64,29 @@ $('#form-generate-excel').submit(function(e) {
 });
 
 
-var checkAllCheckbox = function (event) {
+let checkAllCheckbox = function (event, group) {
 
-    var label = $('.check');
+    let label = $('.check');
     if (event.target.checked) {
-        $("input[type=checkbox]").prop('checked', true);
-        label.css('color', 'green');
+        $(group || document).find("input[type=checkbox]").prop('checked', true);
+        $(group || document).find(label).css('color', 'green');
     } else {
-        $("input[type=checkbox]").prop('checked', false);
-        label.css('color', '#fff');
+        $(group || document).find("input[type=checkbox]").prop('checked', false);
+        $(group || document).find(label).css('color', '#fff');
     }
 
 };
 
 // Отмечаем зеленным цветом выбраный чекбокс
-var checkColor = function (event) {
+let checkColor = function (event) {
 
-    var label = $(event.target).siblings('[for="'+event.target.id+'"]');
+    let label = $(event.target).siblings('[for="'+event.target.id+'"]');
     if (event.target.checked) {
         label.css('color', 'green');
     } else {
         label.css('color', '#fff');
     }
 };
-
 
 // открыть окно добавления корзины
 $('body').on('click', '#add-checkout-button', function() {

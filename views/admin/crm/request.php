@@ -714,18 +714,20 @@
                                 <label class="check all" for="id-all" >Выбрать всех</label>
                             </span>
                             </div>
-                            <?php if(is_array($new_partner)):?>
-                                <?php foreach($new_partner as $new_arr):?>
-                                    <div class="medium-4 small-4 columns">
-                                        <?php foreach($new_arr as $partner):?>
-                                            <span>
-                                       <input type="checkbox" onclick="checkColor(event)" id="id-<?=$partner['id_user'] ?>" name="id_partner[]" value="<?=$partner['id_user'] ?>">
-                                        <label  class="check" for="id-<?=$partner['id_user'] ?>" ><?=$partner['name_partner'] ?></label><br>
-                                    </span>
+                            <div class="medium-12 small-12 columns">
+                                <div class="row">
+                                    <?php if(is_array($partnerList)):?>
+                                        <?php foreach($partnerList as $partner):?>
+                                            <div class="medium-4 small-4 columns">
+                                                <span>
+                                                    <input type="checkbox" onclick="checkColor(event)" id="id-<?=$partner['id_user'] ?>" name="id_partner[]" value="<?=$partner['id_user'] ?>">
+                                                    <label  class="check" for="id-<?=$partner['id_user'] ?>" ><?=$partner['name_partner'] ?></label><br>
+                                                </span>
+                                            </div>
                                         <?php endforeach; ?>
-                                    </div>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
                         </div>
                     <?php endif; ?>
 

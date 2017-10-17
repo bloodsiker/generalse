@@ -6,6 +6,7 @@ use Umbrella\app\User;
 use Umbrella\components\ImportExcel;
 use Umbrella\components\Logger;
 use Umbrella\models\Admin;
+use Umbrella\models\GroupModel;
 use Umbrella\models\Products;
 use Umbrella\models\Purchases;
 
@@ -183,12 +184,6 @@ class PurchaseController extends AdminBase
             // Параметры для формирование фильтров
             $user_ids = $user->controlUsers($user->id_user);
             $partnerList = Admin::getPartnerControlUsers($user_ids);
-            $new_partner = array();
-            if(count($partnerList) > 3){
-                $new_partner = array_chunk($partnerList, (int)count($partnerList) / 3);
-            } else {
-                $new_partner[] = $partnerList;
-            }
 
         } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
 
@@ -202,15 +197,27 @@ class PurchaseController extends AdminBase
                 $interval = '';
             }
             $filter .= $interval;
-            //$listPurchases = Purchases::getAllPurchases($filter);
+
             $listPurchases = Purchases::getAllPurchasesMsSql($filter);
 
             // Параметры для формирование фильтров
-            $partnerList = Admin::getAllPartner();
-            $new_partner = array_chunk($partnerList, (int)count($partnerList) / 3);
+            $groupList = GroupModel::getGroupList();
+            $userInGroup = [];
+            $i = 0;
+            foreach ($groupList as $group) {
+                $userInGroup[$i]['group_name'] = $group['group_name'];
+                $userInGroup[$i]['group_id'] = $group['id'];
+                $userInGroup[$i]['users'] = GroupModel::getUsersByGroup($group['id']);
+                $i++;
+            }
+            // Добавляем в массив пользователей без групп
+            $userNotGroup[0]['group_name'] = 'Without group';
+            $userNotGroup[0]['group_id'] = 'without_group';
+            $userNotGroup[0]['users'] = GroupModel::getUsersWithoutGroup();
+            $userInGroup = array_merge($userInGroup, $userNotGroup);
         }
 
-        $this->render('admin/crm/purchase', compact('user', 'new_partner', 'partnerList', 'listPurchases'));
+        $this->render('admin/crm/purchase', compact('user', 'userInGroup', 'partnerList', 'listPurchases'));
         return true;
 
     }
