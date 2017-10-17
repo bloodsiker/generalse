@@ -678,18 +678,22 @@
                             <div class="tabs-content" data-tabs-content="deeplinked-tabs" style="background: #323e48; margin-bottom: 10px">
                                 <?php foreach ($userInGroup as $groups):?>
                                     <div class="tabs-panel" id="group-<?= $groups['group_id']?>">
-                                        <div class="medium-12 small-12 columns">
-                                            <span>
-                                                <input type="checkbox" onclick="checkAllCheckbox(event, '#group-<?= $groups['group_id']?>')" id="id-<?= $groups['group_id']?>-all">
-                                                <label class="check all" for="id-<?= $groups['group_id']?>-all" >Выбрать всех</label>
-                                            </span>
+                                        <div class="row">
+                                            <div class="medium-12 small-12 columns">
+                                                <span>
+                                                    <input type="checkbox" onclick="checkAllCheckbox(event, '#group-<?= $groups['group_id']?>')" id="id-<?= $groups['group_id']?>-all">
+                                                    <label class="check all" for="id-<?= $groups['group_id']?>-all" >Выбрать всех</label>
+                                                </span>
+                                            </div>
                                         </div>
-                                        <div class="medium-12 small-12 columns">
+                                        <div class="row">
                                             <?php foreach($groups['users'] as $partner):?>
+                                            <div class="medium-4 small-4 columns">
                                                 <span>
                                                    <input type="checkbox" onclick="checkColor(event)" id="id-<?=$partner['id_user'] ?>" name="id_partner[]" value="<?=$partner['id_user'] ?>">
                                                     <label  class="check" for="id-<?=$partner['id_user'] ?>" ><?=$partner['name_partner'] ?></label><br>
                                                 </span>
+                                            </div>
                                             <?php endforeach; ?>
                                         </div>
                                     </div>
@@ -697,6 +701,7 @@
                             </div>
                             </div>
                         </div>
+
                     <?php else: ?>
 
                         <div class="row align-bottom" style="background: #323e48; padding-top: 10px">
