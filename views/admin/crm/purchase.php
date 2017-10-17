@@ -350,11 +350,11 @@
                                         <div class="row">
                                             <?php foreach($groups['users'] as $partner):?>
                                                 <div class="medium-4 small-4 columns">
-                                                <span>
-                                                    <?php $checked = Umbrella\models\Stocks::checkUser(isset($_POST['id_partner']) ? $_POST['id_partner'] : [], $partner['id_user'])?>
-                                                    <input type="checkbox" <?= ($checked ? 'checked' : '')?> onclick="checkColor(event)" id="id-<?=$partner['id_user'] ?>" name="id_partner[]" value="<?=$partner['id_user'] ?>">
-                                                    <label  class="check" for="id-<?=$partner['id_user'] ?>" style="color: <?= ($checked ? 'green' : '')?>;"><?=$partner['name_partner'] ?></label><br>
-                                                </span>
+                                                    <span>
+                                                        <?php $checked = Umbrella\models\Stocks::checkUser(isset($_POST['id_partner']) ? $_POST['id_partner'] : [], $partner['id_user'])?>
+                                                        <input type="checkbox" <?= $checked ? 'checked' : ''?> onclick="checkColor(event)" id="id-<?=$partner['id_user'] ?>" name="id_partner[]" value="<?=$partner['id_user'] ?>">
+                                                        <label  class="check" for="id-<?=$partner['id_user'] ?>" style="color: <?= $checked ? 'green' : ''?>;"><?=$partner['name_partner'] ?></label><br>
+                                                    </span>
                                                 </div>
                                             <?php endforeach; ?>
                                         </div>
@@ -383,8 +383,9 @@
                                         <div class="medium-4 small-4 columns">
                                             <span>
                                                 <?php $checked = Umbrella\models\Stocks::checkUser(isset($_POST['id_partner']) ? $_POST['id_partner'] : [], $partner['id_user'])?>
-                                                <input type="checkbox" <?= ($checked ? 'checked' : '')?> onclick="checkColor(event)" id="id-<?=$partner['id_user'] ?>" name="id_partner[]" value="<?=$partner['id_user'] ?>">
-                                                <label  class="check" for="id-<?=$partner['id_user'] ?>" style="color: <?= ($checked ? 'green' : '')?>;"><?=$partner['name_partner'] ?></label><br>
+                                                <?php $checkUser = $user->id_user == $partner['id_user'] ? true : false?>
+                                                <input type="checkbox" <?= ($checked || $checkUser) ? 'checked' : ''?> onclick="checkColor(event)" id="id-<?=$partner['id_user'] ?>" name="id_partner[]" value="<?=$partner['id_user'] ?>">
+                                                <label  class="check" for="id-<?=$partner['id_user'] ?>" style="color: <?= ($checked || $checkUser) ? 'green' : ''?>;"><?=$partner['name_partner'] ?></label><br>
                                             </span>
                                         </div>
                                     <?php endforeach; ?>

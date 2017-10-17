@@ -720,8 +720,9 @@
                                         <?php foreach($partnerList as $partner):?>
                                             <div class="medium-4 small-4 columns">
                                                 <span>
-                                                    <input type="checkbox" onclick="checkColor(event)" id="id-<?=$partner['id_user'] ?>" name="id_partner[]" value="<?=$partner['id_user'] ?>">
-                                                    <label  class="check" for="id-<?=$partner['id_user'] ?>" ><?=$partner['name_partner'] ?></label><br>
+                                                    <?php $checkUser = $user->id_user == $partner['id_user'] ? true : false?>
+                                                    <input type="checkbox" <?= $checkUser ? 'checked' : '' ?> onclick="checkColor(event)" id="id-<?=$partner['id_user'] ?>" name="id_partner[]" value="<?=$partner['id_user'] ?>">
+                                                    <label  class="check" for="id-<?=$partner['id_user'] ?>" style="color: <?= $checkUser ? 'green' : ''?>;"><?=$partner['name_partner'] ?></label><br>
                                                 </span>
                                             </div>
                                         <?php endforeach; ?>
