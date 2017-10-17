@@ -6,7 +6,7 @@
     </div>
 </div>
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
 <script src="/template/admin/js/vendor/jquery.js"></script>
 <script src="/template/admin/js/vendor/js-ui.js"></script>
 <script src="/template/admin/js/calendar-local-eng.js"></script>
@@ -32,7 +32,7 @@ if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/moto')) echo 
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/adm/psr')) echo "<script src='/template/admin/js/psr.js?v.1.6'></script>";
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/supply')) echo "<script src='/template/admin/js/supply.js?v.1.6'></script>";
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/request')) echo "<script src='/template/admin/js/vendor/jquery.form.js'></script>
-<script src='/template/admin/js/request.js?v.2.0.3'></script>";
+<script src='/template/admin/js/request.js?v.2.0.4'></script>";
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/other-request')) echo "<script src='/template/admin/js/other_request.js'></script>";
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/ccc')) echo "<script src='/template/admin/js/ccc/knowledge.js'></script>";
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/adm/lithographer') ||
@@ -44,6 +44,9 @@ if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/adm/lithographer'
 
 ?>
 
+<script>
+    new Clipboard('.btn-clip');
+</script>
 
 <script>
     $(document).ready(function() {

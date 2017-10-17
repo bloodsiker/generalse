@@ -6,6 +6,7 @@ $('body').on('click', '#add-request-button', function() {
     $('.name-product').text('');
     $('.pn-analog').text('');
     $(".group-stocks").addClass('hide');
+    $(".group-analog").addClass('hide');
     $('#add-request-modal form')[0].reset();
     $('#add-request-modal').foundation('open');
 });
@@ -15,6 +16,7 @@ $('body').on('click', '#price-button', function() {
     $('.name-product').text('');
     $('.pn-analog').text('');
     $(".group-stocks").addClass('hide');
+    $(".group-analog").addClass('hide');
     $('#price-modal form')[0].reset();
     $('#price-modal').foundation('open');
 });
@@ -135,7 +137,16 @@ $('[name="part_number"]').keyup(function(e) {
                     $(".group-stocks").addClass('hide');
                 }
                 if(obj.is_analog == 1){
-                    $('.pn-analog').text(obj.analog);
+                    $('.pn-analog').text(obj.message + obj.analog);
+                    $("[name='part-analog']").val(obj.analog);
+                    $("[name='analog-price']").val(obj.analog_price);
+                    $('.group-analog').removeClass('hide');
+
+                } else {
+                    $('.pn-analog').text('');
+                    $("[name='part-analog']").val('');
+                    $("[name='analog-price']").val('');
+                    $(".group-analog").addClass('hide');
                 }
             } else {
                 $('.name-product').text('not found').css('color', 'red');
@@ -144,6 +155,9 @@ $('[name="part_number"]').keyup(function(e) {
                 $('.name-stock').text('');
                 $("[name='quantity']").val('');
                 $('.pn-analog').text('');
+                $("[name='part-analog']").val('');
+                $("[name='analog-price']").val('');
+                $(".group-analog").addClass('hide');
             }
         }
     });

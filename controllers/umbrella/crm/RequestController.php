@@ -353,8 +353,11 @@ class RequestController extends AdminBase
                 $data['quantity'] = $partInStock['quantity'] . ' Units';
             }
             if($partNumberAnalog){
+                $price = Products::getPricePartNumber($partNumberAnalog['part_analog'], $user->id_user);
                 $data['is_analog'] = 1;
-                $data['analog'] = 'Парт номер будет заменен на аналог ' . $partNumberAnalog['part_analog'];
+                $data['message'] = 'Парт номер будет заменен на аналог ';
+                $data['analog'] = $partNumberAnalog['part_analog'];
+                $data['analog_price'] = round($price['price'], 2);
             }
             print_r(json_encode($data));
         }

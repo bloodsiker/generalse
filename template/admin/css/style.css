@@ -1235,3 +1235,7 @@ td select {
   background: #dcdcdc;
   border: 2px solid #323e48;
 }
+.copy-analog {
+  cursor: pointer;
+  background: #dcdcdc;
+}
