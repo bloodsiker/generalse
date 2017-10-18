@@ -31,9 +31,9 @@ class Stocks
                  sgt.price,
                  sgu.site_client_name
                 FROM site_gm_stocks sgt
-                INNER JOIN tbl_Users tu with (nolock)
+                INNER JOIN tbl_Users tu
                     ON sgt.site_account_id = tu.site_gs_account_id
-                INNER JOIN site_gm_users sgu with (nolock)
+                INNER JOIN site_gm_users sgu
                     ON sgu.id = tu.site_gs_account_id
                 WHERE sgu.site_account_id = :id_user";
         // Используется подготовленный запрос
@@ -69,9 +69,9 @@ class Stocks
                  sgt.price,
                  sgu.site_client_name
                 FROM site_gm_stocks sgt
-                INNER JOIN tbl_Users tu with (nolock)
+                INNER JOIN tbl_Users tu 
                     ON sgt.site_account_id = tu.site_gs_account_id
-                INNER JOIN site_gm_users sgu with (nolock)
+                INNER JOIN site_gm_users sgu 
                     ON sgu.id = tu.site_gs_account_id
                 WHERE sgu.site_account_id = :id_user
                 AND stock_name = :stock_name";
@@ -110,9 +110,9 @@ class Stocks
                  sgt.price,
                  sgu.site_client_name
                 FROM site_gm_stocks sgt
-                INNER JOIN tbl_Users tu with (nolock)
+                INNER JOIN tbl_Users tu
                     ON sgt.site_account_id = tu.site_gs_account_id
-                INNER JOIN site_gm_users sgu with (nolock)
+                INNER JOIN site_gm_users sgu
                     ON sgu.id = tu.site_gs_account_id
                 WHERE sgu.site_account_id IN ({$ids_partner})
                 AND stock_name IN ('{$stock_iconv}')";
@@ -148,9 +148,9 @@ class Stocks
                  sgt.price,
                  sgu.site_client_name
                 FROM site_gm_stocks sgt
-                INNER JOIN tbl_Users tu with (nolock)
+                INNER JOIN tbl_Users tu
                     ON sgt.site_account_id = tu.site_gs_account_id
-                INNER JOIN site_gm_users sgu with (nolock)
+                INNER JOIN site_gm_users sgu
                     ON sgu.id = tu.site_gs_account_id
                 WHERE sgu.site_account_id = :id_partner
                 AND stock_name IN ('{$stock_iconv}')
@@ -187,9 +187,9 @@ class Stocks
                  sgt.price,
                  sgu.site_client_name
                 FROM site_gm_stocks sgt
-                INNER JOIN tbl_Users tu with (nolock)
+                INNER JOIN tbl_Users tu
                     ON sgt.site_account_id = tu.site_gs_account_id
-                INNER JOIN site_gm_users sgu with (nolock)
+                INNER JOIN site_gm_users sgu
                     ON sgu.id = tu.site_gs_account_id";
         // Используется подготовленный запрос
         $result = $db->prepare($sql);
@@ -224,9 +224,9 @@ class Stocks
                  sgt.price,
                  sgu.site_client_name
                 FROM site_gm_stocks sgt
-                INNER JOIN tbl_Users tu with (nolock)
+                INNER JOIN tbl_Users tu
                     ON sgt.site_account_id = tu.site_gs_account_id
-                INNER JOIN site_gm_users sgu with (nolock)
+                INNER JOIN site_gm_users sgu
                     ON sgu.id = tu.site_gs_account_id
                 WHERE stock_name = :stock_name";
         // Используется подготовленный запрос

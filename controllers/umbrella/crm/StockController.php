@@ -41,8 +41,8 @@ class StockController extends AdminBase
             $partnerList = Admin::getPartnerControlUsers($user_ids);
             $list_stock = $user->renderSelectStocks($user->id_user, 'stocks');
 
-            $stocks =  isset($_POST['stock']) ? $_POST['stock'] : [];
-            $id_partners = isset($_POST['id_partner']) ? $_POST['id_partner'] : [];
+            $stocks =  isset($_REQUEST['stock']) ? $_REQUEST['stock'] : [];
+            $id_partners = isset($_REQUEST['id_partner']) ? $_REQUEST['id_partner'] : [];
             $allGoodsByPartner = Stocks::getGoodsInStocksPartners($id_partners, $stocks);
 
         } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
@@ -65,12 +65,13 @@ class StockController extends AdminBase
             $userNotGroup[0]['users'] = GroupModel::getUsersWithoutGroup();
             $userInGroup = array_merge($userInGroup, $userNotGroup);
 
-            $stocks =  isset($_POST['stock']) ? $_POST['stock'] : [];
-            $id_partners = isset($_POST['id_partner']) ? $_POST['id_partner'] : [];
+            $stocks =  isset($_REQUEST['stock']) ? $_REQUEST['stock'] : [];
+            $id_partners = isset($_REQUEST['id_partner']) ? $_REQUEST['id_partner'] : [];
+
             $allGoodsByPartner = Stocks::getGoodsInStocksPartners($id_partners, $stocks);
         }
 
-        $this->render('admin/crm/stocks', compact('user','partnerList', 'new_stock',
+        $this->render('admin/crm/stocks', compact('user','partnerList',
             'allGoodsByPartner', 'userInGroup', 'list_stock'));
         return true;
 

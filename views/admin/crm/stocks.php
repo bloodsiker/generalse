@@ -65,7 +65,7 @@
                     <?php if (isset($allGoodsByPartner)): ?>
                         <?php foreach ($allGoodsByPartner as $goods): ?>
                             <tr class="goods">
-                                <td><?=$goods['site_client_name']?></td>
+                                <td><?=iconv('WINDOWS-1251', 'UTF-8', $goods['site_client_name'])?></td>
                                 <td><?=$goods['part_number']?></td>
                                 <td><?=iconv('WINDOWS-1251', 'UTF-8', $goods['goods_name'])?></td>
                                 <td><?=iconv('WINDOWS-1251', 'UTF-8', $goods['stock_name'])?></td>
