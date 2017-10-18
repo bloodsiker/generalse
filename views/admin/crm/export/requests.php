@@ -68,7 +68,7 @@
             <?php foreach ($listExport as $export):?>
                 <tr>
                     <td><?=$export['id']?></td>
-                    <td><?=$export['site_client_name']?></td>
+                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $export['site_client_name'])?></td>
                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $export['site_client_status'])?></td>
                     <td><?=$export['part_number']?></td>
                     <td><?=iconv('WINDOWS-1251', 'UTF-8',$export['goods_name'])?></td>

@@ -118,7 +118,7 @@
                             <?php foreach ($allReturnsByPartner as $return): ?>
                                 <tr data-return="<?=$return['stock_return_id']?>" class="goods">
                                     <td><?=$return['stock_return_id']?></td>
-                                    <td><?=$return['site_client_name']?></td>
+                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $return['site_client_name'])?></td>
                                     <td><?=$return['order_number']?></td>
                                     <td><?=iconv('WINDOWS-1251', 'UTF-8', $return['so_number'])?></td>
                                     <?php if(empty($return['stock_name'])):?>
@@ -179,7 +179,7 @@
                             <?php foreach ($allReturnsByPartner as $return): ?>
                                 <tr data-return="<?=$return['stock_return_id']?>" class="goods">
                                     <td><?=$return['stock_return_id']?></td>
-                                    <td><?=$return['site_client_name']?></td>
+                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $return['site_client_name'])?></td>
                                     <td><?=$return['order_number']?></td>
                                     <td><?=iconv('WINDOWS-1251', 'UTF-8', $return['so_number'])?></td>
                                     <?php if(empty($return['stock_name'])):?>

@@ -55,7 +55,7 @@
         <?php if(isset($listExport) && is_array($listExport)):?>
             <?php foreach ($listExport as $export):?>
                 <tr>
-                    <td><?=$export['site_client_name']?></td>
+                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $export['site_client_name'])?></td>
                     <td style="text-align: center;"><?=$export['stock_return_id']?></td>
                     <td style="text-align: center;"><?=$export['order_number']?></td>
                     <td style="text-align: center;"><?=iconv('WINDOWS-1251', 'UTF-8',$export['so_number'])?></td>

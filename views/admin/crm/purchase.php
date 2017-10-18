@@ -166,8 +166,8 @@
                             <tr data-siteid="<?=$purchase['purchase_id']?>" data-purchase=""
                                 class="<?php echo(Umbrella\components\Functions::calcDiffSec($purchase['created_on']) < 120) ? 'check_lenovo_ok' : ''?>">
                                 <td><?=$purchase['purchase_id'] ?></td>
-                                <td><?=$purchase['site_client_name'] ?></td>
-                                <td><?=iconv('WINDOWS-1251', 'UTF-8', $purchase['stock_name'])?></td>
+                                <td><?= iconv('WINDOWS-1251', 'UTF-8', $purchase['site_client_name']) ?></td>
+                                <td><?= iconv('WINDOWS-1251', 'UTF-8', $purchase['stock_name'])?></td>
 								<?php $status = iconv('WINDOWS-1251', 'UTF-8', $purchase['status_name'])?>
 								<td class="<?= Umbrella\models\Purchases::getStatusRequest($status)?>"><?= ($status == NULL) ? 'Expect' : $status?></td>
                                 <td><?=Umbrella\components\Functions::formatDate($purchase['created_on'])?></td>
@@ -198,7 +198,7 @@
                                 <tr data-siteid="<?=$purchase['purchase_id']?>" data-purchase=""
                                     class="<?php echo(Umbrella\components\Functions::calcDiffSec($purchase['created_on']) < 120) ? 'check_lenovo_ok' : ''?>">
                                     <td><?=$purchase['purchase_id'] ?></td>
-                                    <td><?=$purchase['site_client_name']?></td>
+                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $purchase['site_client_name'])?></td>
                                     <td><?=iconv('WINDOWS-1251', 'UTF-8', $purchase['stock_name'])?></td>
                                     <?php $status = iconv('WINDOWS-1251', 'UTF-8', $purchase['status_name'])?>
                                     <td class="<?= Umbrella\models\Purchases::getStatusRequest($status)?>"><?= ($status == NULL) ? 'Expect' : $status?></td>

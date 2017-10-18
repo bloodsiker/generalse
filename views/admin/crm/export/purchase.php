@@ -58,7 +58,7 @@
 
                 <tr>
                     <td><?=$export['purchase_id']?></td>
-                    <td><?=$export['site_client_name']?></td>
+                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $export['site_client_name'])?></td>
                     <td><?=iconv('WINDOWS-1251', 'UTF-8',$export['stock_name'])?></td>
                     <td><?=$export['part_number']?></td>
                     <td><?=$export['so_number']?></td>

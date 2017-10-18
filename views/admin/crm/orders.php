@@ -196,7 +196,7 @@
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.request_id', 'view')): ?>
                                     <td><?= $order['request_id']?></td>
                                 <?php endif;?>
-                                <td><?= $order['site_client_name']?></td>
+                                <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['site_client_name'])?></td>
                                 <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['site_client_status'])?></td>
                                 <?php endif?>
@@ -285,7 +285,7 @@
                                     <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.request_id', 'view')): ?>
                                         <td><?= $order['request_id']?></td>
                                     <?php endif;?>
-                                    <td><?= $order['site_client_name']?></td>
+                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['site_client_name'])?></td>
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['site_client_status'])?></td>
                                     <td><?= $order['order_number']?></td>
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></td>
@@ -603,7 +603,7 @@
 <div class="reveal large" id="show-details" data-reveal>
     <div class="row align-bottom">
         <div class="medium-12 small-12 columns">
-            <h3>Purchase goods</h3>
+            <h3>Order goods</h3>
         </div>
         <div class="medium-12 small-12 columns">
             <table class="umbrella-table">
