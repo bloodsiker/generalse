@@ -1,6 +1,6 @@
 <?php
 
-//Общие настройки
+// Main config
 $config = require_once (ROOT . '/config/app.php');
 
 if($config['debug'] == true) {
@@ -12,11 +12,14 @@ if($config['debug'] == true) {
 }
 date_default_timezone_set($config['timezone']);
 ini_set('max_file_uploads', "10");
-session_start();
 
 
-// Подключение файлов системы
+// Include file system
 require_once(ROOT . '/vendor/autoload.php');
+
+// Start session
+session_start();
+//Josantonius\Session\Session::init();
 
 
 //Static Environment Definition
@@ -31,7 +34,7 @@ josegonzalez\Dotenv\Loader::load([
     'toEnv'     => true
 ]);
 
-//Вызов Router
+//Router run
 require_once(ROOT . '/components/Router.php');
 $router = new Umbrella\components\Router();
 $router->run();

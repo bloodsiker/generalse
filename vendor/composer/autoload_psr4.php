@@ -8,4 +8,5 @@ $baseDir = dirname($vendorDir);
 return array(
     'Umbrella\\' => array($baseDir . '/'),
     'M1\\Env\\' => array($vendorDir . '/m1/env/src'),
+    'Josantonius\\Session\\' => array($vendorDir . '/josantonius/session/src/Session'),
 );

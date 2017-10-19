@@ -15,6 +15,10 @@ class ComposerStaticInit757ae5c9dd284343ce5a49deba304424
         array (
             'M1\\Env\\' => 7,
         ),
+        'J' => 
+        array (
+            'Josantonius\\Session\\' => 20,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -25,6 +29,10 @@ class ComposerStaticInit757ae5c9dd284343ce5a49deba304424
         'M1\\Env\\' => 
         array (
             0 => __DIR__ . '/..' . '/m1/env/src',
+        ),
+        'Josantonius\\Session\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/josantonius/session/src/Session',
         ),
     );
 

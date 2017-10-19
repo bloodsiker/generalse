@@ -156,5 +156,58 @@
             "dotenv",
             "php"
         ]
+    },
+    {
+        "name": "josantonius/session",
+        "version": "1.1.3",
+        "version_normalized": "1.1.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/Josantonius/PHP-Session.git",
+            "reference": "65e8cb07901eda66b9a24d1d6e44b3a2f6299ce2"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/Josantonius/PHP-Session/zipball/65e8cb07901eda66b9a24d1d6e44b3a2f6299ce2",
+            "reference": "65e8cb07901eda66b9a24d1d6e44b3a2f6299ce2",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.6 || ^7.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "5.7.*"
+        },
+        "time": "2017-09-17T22:56:40+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.0-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Josantonius\\Session\\": "src/Session/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Josantonius",
+                "email": "hello@josantonius.com",
+                "homepage": "https://josantonius.com",
+                "role": "Developer"
+            }
+        ],
+        "description": "PHP library for handling sessions.",
+        "keywords": [
+            "hhvm",
+            "php",
+            "session"
+        ]
     }
 ]
