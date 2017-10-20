@@ -12,7 +12,7 @@ var count;
 
 var checkNote = false;
 $(document).on('keyup', '#note', function (e) {
-    checkNote = e.target.value.length > 5;
+    checkNote = e.target.value.length > 2;
     note = e.target.value;
     showButton();
 });

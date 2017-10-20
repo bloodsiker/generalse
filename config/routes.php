@@ -140,6 +140,7 @@ return array(
 
     /*********** PURCHASE  ***********/
     'adm/crm/export/purchase' => 'umbrella/crm/Purchase@exportPurchase',
+    'adm/crm/purchase/s/([a-z0-9-_?&]+)' => 'umbrella/crm/Purchase@search/$1',
     'adm/crm/purchase/([a-z0-9-_?&]+)' => 'umbrella/crm/Purchase@purchase/$1',
     'adm/crm/purchase_part_num_ajax' => 'umbrella/crm/Purchase@purchasePartNumAjax',
     'adm/crm/show_purchses' => 'umbrella/crm/Purchase@showDetailPurchases',

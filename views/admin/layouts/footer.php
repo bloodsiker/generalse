@@ -27,7 +27,7 @@ if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/stocks')) ech
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/returns')) echo "<script src='/template/admin/js/returns.js'></script>";
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/orders')) echo "<script src='/template/admin/js/orders.js?v.1.5'></script>";
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/purchase')) echo "<script src='/template/admin/js/purchase.js?v.1.5'></script>";
-if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/disassembly')) echo "<script src='/template/admin/js/disassembly.js'></script>";
+if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/disassembly')) echo "<script src='/template/admin/js/disassembly.js?v.1.5.0'></script>";
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/moto')) echo "<script src='/template/admin/js/moto.js'></script>";
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/adm/psr')) echo "<script src='/template/admin/js/psr.js?v.1.6'></script>";
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/supply')) echo "<script src='/template/admin/js/supply.js?v.1.6'></script>";

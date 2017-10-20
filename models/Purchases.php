@@ -330,7 +330,53 @@ class Purchases
     }
 
 
+    /**
+     * Поиск по покупкам
+     * @param $search
+     * @param string $filter
+     * @return array
+     */
+    public static function getSearchInPurchase($search, $filter = '')
+    {
+        $db = MsSQL::getConnection();
 
+        $sql = "SELECT 
+                   sgp.purchase_id,
+                   sgp.created_on,
+                   sgp.stock_name,
+                   sgp.status_name,
+                   sgpe.part_number,
+                   sgpe.goods_name,
+                   sgpe.quantity,
+                   sgpe.price,
+                   sgpe.so_number,
+                   sgu.site_client_name
+                FROM site_gm_purchases sgp 
+                LEFT JOIN site_gm_purchases_elements sgpe
+                   on sgp.purchase_id = sgpe.purchase_id
+                INNER JOIN site_gm_users sgu 
+                  ON sgp.site_account_id = sgu.site_account_id
+                WHERE 1 = 1 {$filter} 
+                AND (sgp.purchase_id LIKE ?
+                OR sgp.stock_name LIKE ?
+                OR sgpe.part_number LIKE ?
+                OR sgpe.goods_name LIKE ?
+                OR sgpe.so_number LIKE ?
+                OR sgu.site_client_name LIKE ?)
+                ORDER BY sgp.id DESC";
+
+        $result = $db->prepare($sql);
+        $result->execute(array("%$search%", "%$search%", "%$search%", "%$search%", "%$search%", "%$search%"));
+        $all = $result->fetchAll(PDO::FETCH_ASSOC);
+        return $all;
+    }
+
+
+
+    /**
+     * @param $status
+     * @return bool|string
+     */
     public static function getStatusRequest($status)
     {
         switch($status)

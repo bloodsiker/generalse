@@ -124,35 +124,14 @@
             </div>
         </div>
         <div class="body-content checkout">
-			<div class="row">
-                <div class="medium-12 small-12 columns">
-                    <?php if(isset($arr_check_stock)):?>
-                        <p>Эти парт номера были найдены на таких складах:</p>
-                        <ul>
-                            <?php foreach($arr_check_stock as $pn_stock):?>
-                                <li><?=$pn_stock['part_number'] ?> найден на <?=$pn_stock['stock_name'] ?></li>
-                            <?php endforeach;?>
-                        </ul>
-                        <p>Пожалуйста, оформите заказ.</p>
-                    <?php endif;?>
-                    <?php if(isset($arr_error_pn)):?>
-                        <p>Заявка отправлена кроме парт номеров, которые не найдены в базе:</p>
-                        <ul>
-                        <?php foreach($arr_error_pn as $error):?>
-                            <li><?=$error ?></li>
-                        <?php endforeach;?>
-                        </ul>
-                        <p>Обратитесь пожалуйста к менеджеру.</p>
-                    <?php endif;?>
-                </div>
-            </div>
             <div class="row">
                 <?php if($user->role == 'partner'):?>
                 <table class="umbrella-table">
-                    <caption>Last recordings on
-                        <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-7 days') ?> &mdash;
-                        <?= (isset($_GET['end']) && !empty($_GET['end'])) ? $_GET['end'] : date('Y-m-d') ?>
-                        <span id="count_refund" class="text-green">(<?php if (isset($listPurchases)) echo count($listPurchases) ?>)</span>
+                    <caption>
+                        Search result for <?= iconv('WINDOWS-1251', 'UTF-8', $search)?>
+                        <span id="count_refund" class="text-green">
+                            (<?php if (isset($listPurchases)) echo count($listPurchases) ?>)
+                        </span>
                     </caption>
                     <thead>
                     <tr>
@@ -168,9 +147,9 @@
                         <?php foreach($listPurchases as $purchase):?>
                             <tr data-siteid="<?=$purchase['purchase_id']?>" data-purchase=""
                                 class="<?php echo(Umbrella\components\Functions::calcDiffSec($purchase['created_on']) < 120) ? 'check_lenovo_ok' : ''?>">
-                                <td><?=$purchase['purchase_id'] ?></td>
-                                <td><?= iconv('WINDOWS-1251', 'UTF-8', $purchase['site_client_name']) ?></td>
-                                <td><?= iconv('WINDOWS-1251', 'UTF-8', $purchase['stock_name'])?></td>
+                                <td><?= \Umbrella\components\Functions::replaceSearchResult($search, $purchase['purchase_id']) ?></td>
+                                <td><?= \Umbrella\components\Functions::replaceSearchResult($search, $purchase['site_client_name']) ?></td>
+                                <td><?= \Umbrella\components\Functions::replaceSearchResult($search, $purchase['stock_name'])?></td>
 								<?php $status = iconv('WINDOWS-1251', 'UTF-8', $purchase['status_name'])?>
 								<td class="<?= Umbrella\models\Purchases::getStatusRequest($status)?>"><?= ($status == NULL) ? 'Expect' : $status?></td>
                                 <td><?=Umbrella\components\Functions::formatDate($purchase['created_on'])?></td>
@@ -181,10 +160,11 @@
                 </table>
                 <?php elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
                     <table class="umbrella-table">
-                        <caption>Last recordings on
-                            <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-7 days') ?> &mdash;
-                            <?= (isset($_GET['end']) && !empty($_GET['end'])) ? $_GET['end'] : date('Y-m-d') ?>
-                            <span id="count_refund" class="text-green">(<?php if (isset($listPurchases)) echo count($listPurchases) ?>)</span>
+                        <caption>
+                            Search result for <?= iconv('WINDOWS-1251', 'UTF-8', $search)?>
+                            <span id="count_refund" class="text-green">
+                            (<?php if (isset($listPurchases)) echo count($listPurchases) ?>)
+                        </span>
                         </caption>
                         <thead>
                         <tr>
@@ -200,9 +180,9 @@
                             <?php foreach($listPurchases as $purchase):?>
                                 <tr data-siteid="<?=$purchase['purchase_id']?>" data-purchase=""
                                     class="<?php echo(Umbrella\components\Functions::calcDiffSec($purchase['created_on']) < 120) ? 'check_lenovo_ok' : ''?>">
-                                    <td><?=$purchase['purchase_id'] ?></td>
-                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $purchase['site_client_name'])?></td>
-                                    <td><?=iconv('WINDOWS-1251', 'UTF-8', $purchase['stock_name'])?></td>
+                                    <td><?= \Umbrella\components\Functions::replaceSearchResult($search, $purchase['purchase_id']) ?></td>
+                                    <td><?= \Umbrella\components\Functions::replaceSearchResult($search, $purchase['site_client_name'])?></td>
+                                    <td><?=\Umbrella\components\Functions::replaceSearchResult($search, $purchase['stock_name'])?></td>
                                     <?php $status = iconv('WINDOWS-1251', 'UTF-8', $purchase['status_name'])?>
                                     <td class="<?= Umbrella\models\Purchases::getStatusRequest($status)?>"><?= ($status == NULL) ? 'Expect' : $status?></td>
                                     <td><?=Umbrella\components\Functions::formatDate($purchase['created_on'])?></td>
@@ -217,7 +197,7 @@
     </div>
 </div>
 <div class="reveal" id="add-checkout-modal" data-reveal>
-    <form action="#" id="add-checkout-form" method="post" class="form" data-abide novalidate>
+    <form action="/adm/crm/purchase" id="add-checkout-form" method="post" class="form" data-abide novalidate>
         <div class="row align-bottom">
             <div class="medium-12 small-12 columns">
                 <h3>New checkout</h3>
@@ -411,53 +391,6 @@
     </button>
 </div>
 
-
-<!-- OLD EXPORT  -->
-<div class="reveal" id="export-modal2" data-reveal>
-    <form action="/adm/crm/export/purchase/" id="" method="get" class="form" data-abide novalidate>
-        <div class="row align-bottom">
-            <div class="medium-12 small-12 columns">
-                <h3>Generate report</h3>
-            </div>
-            <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
-                <div class="medium-12 small-12 columns">
-                    <div class="row">
-                        <div class="medium-12 small-12 columns">
-                            <label><i class="fi-list"></i> Partner
-                                <select name="id_partner" class="required" required>
-                                    <option value="all">All partner</option>
-                                    <?php if(is_array($partnerList)):?>
-                                        <?php foreach($partnerList as $partner):?>
-                                            <option value="<?=$partner['id_user']?>"><?=$partner['name_partner']?></option>
-                                        <?php endforeach;?>
-                                    <?php endif;?>
-                                </select>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            <?php endif;?>
-            <div class="medium-12 small-12 columns">
-                <div class="row">
-                    <div class="medium-6 small-12 columns">
-                        <label>From Date</label>
-                        <input type="text" class="required date" name="start" required>
-                    </div>
-                    <div class="medium-6 small-12 columns">
-                        <label>To Date</label>
-                        <input type="text" class="required date" name="end" required>
-                    </div>
-                </div>
-            </div>
-            <div class="medium-12 small-12 columns">
-                <button type="submit" class="button primary">Generate</button>
-            </div>
-        </div>
-    </form>
-    <button class="close-button" data-close aria-label="Close modal" type="button">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
 
 <div class="reveal large" id="show-details" data-reveal>
     <div class="row align-bottom">
