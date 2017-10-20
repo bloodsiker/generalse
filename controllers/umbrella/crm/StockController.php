@@ -71,10 +71,57 @@ class StockController extends AdminBase
             $allGoodsByPartner = Stocks::getGoodsInStocksPartners($id_partners, $stocks);
         }
 
-        $this->render('admin/crm/stocks', compact('user','partnerList',
+        $this->render('admin/crm/stocks/stocks', compact('user','partnerList',
             'allGoodsByPartner', 'userInGroup', 'list_stock'));
         return true;
+    }
 
+
+
+    public function actionSearch()
+    {
+        $user = $this->user;
+
+        if($user->role == 'partner' || $user->role == 'manager') {
+
+            $search = iconv('UTF-8', 'WINDOWS-1251', trim($_REQUEST['search']));
+
+            $user_ids = $user->controlUsers($user->id_user);
+            $partnerList = Admin::getPartnerControlUsers($user_ids);
+            $list_stock = $user->renderSelectStocks($user->id_user, 'stocks');
+
+            $idS = implode(',', $user_ids);
+            $filter = " AND sgu.site_account_id IN ($idS)";
+            $allGoodsByPartner = Stocks::getSearchInStocks($search, $filter);
+
+        } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
+
+            $search = iconv('UTF-8', 'WINDOWS-1251', trim($_REQUEST['search']));
+
+            $list_stock = $user->renderSelectStocks($user->id_user, 'stocks');
+
+            // Параметры для формирование фильтров
+            $groupList = GroupModel::getGroupList();
+            $userInGroup = [];
+            $i = 0;
+            foreach ($groupList as $group) {
+                $userInGroup[$i]['group_name'] = $group['group_name'];
+                $userInGroup[$i]['group_id'] = $group['id'];
+                $userInGroup[$i]['users'] = GroupModel::getUsersByGroup($group['id']);
+                $i++;
+            }
+            // Добавляем в массив пользователей без групп
+            $userNotGroup[0]['group_name'] = 'Without group';
+            $userNotGroup[0]['group_id'] = 'without_group';
+            $userNotGroup[0]['users'] = GroupModel::getUsersWithoutGroup();
+            $userInGroup = array_merge($userInGroup, $userNotGroup);
+
+            $allGoodsByPartner = Stocks::getSearchInStocks($search);
+        }
+
+        $this->render('admin/crm/stocks/stocks_search', compact('user','partnerList',
+            'allGoodsByPartner', 'userInGroup', 'list_stock', 'search'));
+        return true;
     }
 
 }

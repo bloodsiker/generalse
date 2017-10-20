@@ -200,4 +200,18 @@ class Functions
         }
     }
 
+
+    /**
+     * Совпадение по поисковой строке - подсвечиваем
+     * @param $search
+     * @param $result
+     * @return mixed
+     */
+    public static function replaceSearchResult($search, $result)
+    {
+        $search = iconv('WINDOWS-1251', 'UTF-8', $search);
+        $result = iconv('WINDOWS-1251', 'UTF-8', $result);
+        return preg_replace("/".$search."/i", "<b class='highlight'>".$search."</b>", $result);
+    }
+
 }

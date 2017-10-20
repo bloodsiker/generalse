@@ -28,7 +28,10 @@
                     </div>
 
                      <div class="medium-3 small-12 columns form">
-                        <input type="text" id="goods_search" class="search-input" placeholder="Search..." name="search">
+                         <form action="/adm/crm/stocks/s/" method="get" class="form" data-abide novalidate>
+                             <input type="text" class="required search-input" placeholder="Search..." name="search" required>
+                             <button class="search-button button primary"><i class="fi-magnifying-glass"></i></button>
+                         </form>
                     </div>
                 </div>
             </div>
@@ -36,7 +39,7 @@
         <!-- body -->
         <div class="body-content checkout">
             <div class="row">
-                <table class="umbrella-table" id="goods_data">
+                <table class="umbrella-table">
 					<?php if(isset($_POST['stock']) && count($_POST['stock']) > 1):?>
                         <caption>Stocks is <span class="text-green">
                                 <?=implode(', ', $_POST['stock'])?></span> is <span class="text-green"><?=(isset($allGoodsByPartner)) ? count($allGoodsByPartner) : 0?></span>  units
@@ -52,12 +55,12 @@
                     <thead>
                     <tr>
                         <th class="sort">Partner</th>
-                        <th class="sort">Part Number</th>
+                        <th>Part Number</th>
                         <th class="sort">Description</th>
                         <th class="sort">Stock name</th>
-                        <th class="sort">Quantity</th>
-                        <th class="sort">Sub type</th>
-                        <th class="sort">Serial Number</th>
+                        <th>Quantity</th>
+                        <th>Sub type</th>
+                        <th>Serial Number</th>
                         <th class="sort">Price</th>
                     </tr>
                     </thead>
@@ -90,7 +93,7 @@
             <h3>Stock filter</h3>
         </div>
         <div class="medium-12 small-12 columns">
-            <form action="" method="POST" id="stock_filter">
+            <form action="/adm/crm/stocks/" method="POST" id="stock_filter">
 
                 <h4 style="color: #fff">Stocks</h4>
                 <div class="row align-bottom" style="background: #323e48; padding-top: 10px; margin-bottom: 10px">

@@ -43,6 +43,7 @@ class AdminController extends AdminBase
                     $succusse['code'] = 2;
                     echo json_encode($succusse);
                 } elseif ($user->is_active == 0) {
+                    unset($_SESSION['info_user']);
                     $errors['log'] = '';
                     $errors['code'] = 3;
                     echo json_encode($errors);

@@ -220,7 +220,7 @@ class OrderController extends AdminBase
             $userInGroup = array_merge($userInGroup, $userNotGroup);
         }
 
-        $this->render('admin/crm/orders', compact('partnerList', 'partnerList', 'allOrders',
+        $this->render('admin/crm/orders/orders', compact('partnerList', 'partnerList', 'allOrders',
             'delivery_address', 'user', 'userInGroup'));
         return true;
     }
@@ -268,11 +268,6 @@ class OrderController extends AdminBase
             // Параметры для формирование фильтров
             $user_ids = $user->controlUsers($user->id_user);
             $partnerList = Admin::getPartnerControlUsers($user_ids);
-            if(count($partnerList) > 3){
-                $new_partner = array_chunk($partnerList, (int)count($partnerList) / 3);
-            } else {
-                $new_partner[] = $partnerList;
-            }
 
         } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
 
@@ -291,12 +286,26 @@ class OrderController extends AdminBase
             $allOrders = Orders::getAllOrdersMsSql($filter);
 
             // Параметры для формирование фильтров
-            $partnerList = Admin::getAllPartner();
-            $new_partner = array_chunk($partnerList, (int)count($partnerList) / 3);
+            // Параметры для формирование фильтров
+            $groupList = GroupModel::getGroupList();
+            $userInGroup = [];
+            $i = 0;
+            foreach ($groupList as $group) {
+                $userInGroup[$i]['group_name'] = $group['group_name'];
+                $userInGroup[$i]['group_id'] = $group['id'];
+                $userInGroup[$i]['users'] = GroupModel::getUsersByGroup($group['id']);
+                $i++;
+            }
+            // Добавляем в массив пользователей без групп
+            $userNotGroup[0]['group_name'] = 'Without group';
+            $userNotGroup[0]['group_id'] = 'without_group';
+            $userNotGroup[0]['users'] = GroupModel::getUsersWithoutGroup();
+            $userInGroup = array_merge($userInGroup, $userNotGroup);
         }
 
         //require_once(ROOT . '/views/admin/crm/orders.php');
-        $this->render('admin/crm/orders', compact('new_partner', 'partnerList', 'allOrders', 'delivery_address', 'user', 'arr_error_pn', 'arr_error_text'));
+        $this->render('admin/crm/orders/orders', compact('userInGroup', 'partnerList', 'allOrders',
+            'delivery_address', 'user', 'arr_error_pn', 'arr_error_text'));
         return true;
     }
 
@@ -475,6 +484,53 @@ class OrderController extends AdminBase
         $listExport = Orders::getExportOrdersByPartner($id_partners, $start, $end, $filter);
 
         $this->render('admin/crm/export/orders', compact('user', 'listExport'));
+        return true;
+    }
+
+
+
+    public function actionSearch()
+    {
+        $user = $this->user;
+
+        if($user->role == 'partner' || $user->role == 'manager') {
+
+            $search = iconv('UTF-8', 'WINDOWS-1251', trim($_REQUEST['search']));
+
+            $idS = implode(',', $user->controlUsers($user->id_user));
+            $filter = " AND sgo.site_account_id IN($idS)";
+            $allOrders = Orders::getSearchInOrders($search, $filter);
+
+            // Параметры для формирование фильтров
+            $user_ids = $user->controlUsers($user->id_user);
+            $partnerList = Admin::getPartnerControlUsers($user_ids);
+
+        } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
+
+            $search = iconv('UTF-8', 'WINDOWS-1251', trim($_REQUEST['search']));
+
+            $allOrders = Orders::getSearchInOrders($search);
+
+            // Параметры для формирование фильтров
+            $groupList = GroupModel::getGroupList();
+            $userInGroup = [];
+            $i = 0;
+            foreach ($groupList as $group) {
+                $userInGroup[$i]['group_name'] = $group['group_name'];
+                $userInGroup[$i]['group_id'] = $group['id'];
+                $userInGroup[$i]['users'] = GroupModel::getUsersByGroup($group['id']);
+                $i++;
+            }
+            // Добавляем в массив пользователей без групп
+            $userNotGroup[0]['group_name'] = 'Without group';
+            $userNotGroup[0]['group_id'] = 'without_group';
+            $userNotGroup[0]['users'] = GroupModel::getUsersWithoutGroup();
+            $userInGroup = array_merge($userInGroup, $userNotGroup);
+        }
+
+        //require_once(ROOT . '/views/admin/crm/orders.php');
+        $this->render('admin/crm/orders/orders_search', compact('userInGroup', 'partnerList', 'allOrders',
+            'delivery_address', 'user', 'arr_error_pn', 'arr_error_text', 'search'));
         return true;
     }
 

@@ -185,6 +185,47 @@ class Orders
         return $data;
     }
 
+
+    /**
+     * Поиск по заказам
+     * @param $search
+     * @param $filter
+     * @return array
+     */
+    public static function getSearchInOrders($search, $filter = '')
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "SELECT
+                   sgo.*,
+                   sgu.site_client_name,
+                   sgu.status_name as site_client_status,
+                   sgot.name as type_name,
+                   sgoe.part_number,
+                   sgoe.goods_name
+                FROM site_gm_orders sgo
+                   INNER JOIN site_gm_users sgu
+                     ON sgo.site_account_id = sgu.site_account_id
+                   INNER JOIN site_gm_orders_elements sgoe
+                    ON sgo.order_id = sgoe.order_id
+                   LEFT JOIN site_gm_orders_types sgot
+                     ON sgot.id = sgo.order_type_id
+                WHERE 1 = 1 {$filter}
+                AND (sgo.order_number LIKE ?
+                OR sgoe.part_number LIKE ?
+                OR sgu.site_client_name LIKE ?
+                OR sgo.request_id LIKE ?)
+                ORDER BY sgo.id DESC";
+
+        $result = $db->prepare($sql);
+        //$result->bindParam(':search', $search , PDO::PARAM_STR);
+        $result->execute(array("%$search%", "%$search%", "%$search%", "%$search%"));
+
+        $all = $result->fetchAll(PDO::FETCH_ASSOC);
+        return $all;
+    }
+
+
     /**
      * Просмотр заказов для партнеров
      * @param $id_partner

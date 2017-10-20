@@ -172,10 +172,8 @@ class Stocks
      */
     public static function getAllGoodsAllPartner()
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT
                  sgt.stock_name,
                  sgt.goods_name,
@@ -191,14 +189,9 @@ class Stocks
                     ON sgt.site_account_id = tu.site_gs_account_id
                 INNER JOIN site_gm_users sgu
                     ON sgu.id = tu.site_gs_account_id";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
-        //$result->bindParam(':id_user', $id_partner, PDO::PARAM_INT);
-
-        // Выполнение коменды
         $result->execute();
-
-        //
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
     }
@@ -233,6 +226,44 @@ class Stocks
         $result = $db->prepare($sql);
         $result->bindParam(':stock_name', $stock_name, PDO::PARAM_STR);
         $result->execute();
+        $all = $result->fetchAll(PDO::FETCH_ASSOC);
+        return $all;
+    }
+
+
+    /**
+     * Поиск по складам
+     * @param $search
+     * @param string $filter
+     * @return array
+     */
+    public static function getSearchInStocks($search, $filter = '')
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "SELECT
+                    sgt.stock_name,
+                    sgt.goods_name,
+                    sgt.part_number,
+                    sgt.type_name,
+                    sgt.subtype_name,
+                    sgt.quantity,
+                    sgt.serial_number,
+                    sgt.price,
+                    sgu.site_client_name
+                FROM site_gm_stocks sgt
+                INNER JOIN tbl_Users tu
+                  ON sgt.site_account_id = tu.site_gs_account_id
+                INNER JOIN site_gm_users sgu
+                  ON sgu.id = tu.site_gs_account_id
+                WHERE 1 = 1 {$filter}
+                AND (sgu.site_client_name LIKE ?
+                OR sgt.goods_name LIKE ?
+                OR sgt.part_number LIKE ?
+                OR sgt.serial_number LIKE ?)";
+
+        $result = $db->prepare($sql);
+        $result->execute(array("%$search%", "%$search%", "%$search%", "%$search%"));
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
     }

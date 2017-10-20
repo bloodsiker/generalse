@@ -1239,3 +1239,6 @@ td select {
   cursor: pointer;
   background: #dcdcdc;
 }
+.highlight{
+  color: red;
+}

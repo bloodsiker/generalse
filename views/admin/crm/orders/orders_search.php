@@ -54,7 +54,10 @@
                                 </form>
                             </div>
                             <div class="medium-3 small-12 columns form">
-                                <input type="text" id="goods_search" class="search-input" placeholder="Search..." name="search">
+                                <form action="/adm/crm/orders/s/" method="get" class="form" data-abide novalidate>
+                                    <input type="text" class="required search-input" placeholder="Search..." name="search" required>
+                                    <button class="search-button button primary"><i class="fi-magnifying-glass"></i></button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -149,25 +152,13 @@
         <!-- body -->
         <div class="body-content checkout">
             <div class="row">
-                <div class="medium-12 small-12 columns">
-                    <?php if(isset($arr_error_pn)):?>
-                        <p><?php if(isset($arr_error_text)) echo $arr_error_text;?></p>
-                        <ul>
-                            <?php foreach($arr_error_pn as $error):?>
-                                <li><?=$error ?></li>
-                            <?php endforeach;?>
-                        </ul>
-                        <p>Обратитесь пожалуйста к менеджеру.</p>
-                    <?php endif;?>
-                </div>
-            </div>
-            <div class="row">
                 <?php if($user->role == 'partner'):?>
-                <table class="umbrella-table" id="goods_data">
-                    <caption>Last recordings on
-                        <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-14 days') ?> &mdash;
-                        <?= (isset($_GET['end']) && !empty($_GET['end'])) ? $_GET['end'] : date('Y-m-d') ?>
-                        <span id="count_refund" class="text-green">(<?php if (isset($allOrders)) echo count($allOrders) ?>)</span>
+                <table class="umbrella-table">
+                    <caption>
+                        Search result for <?= iconv('WINDOWS-1251', 'UTF-8', $search)?>
+                        <span id="count_refund" class="text-green">
+                            (<?php if (isset($allOrders)) echo count($allOrders) ?>)
+                        </span>
                     </caption>
                     <thead>
                     <tr>
@@ -175,9 +166,7 @@
                             <th class="sort">Request id</th>
                         <?php endif; ?>
                         <th class="sort">Partner</th>
-                        <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
-                            <th>Partner status</th>
-                        <?php endif?>
+                        <th>PartNumber</th>
                         <th class="sort">Order Number</th>
                         <th class="sort">Service Order</th>
                         <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.type_repair', 'view')): ?>
@@ -194,13 +183,11 @@
                         <?php foreach($allOrders as $order):?>
                             <tr data-order-id="<?=$order['order_id']?>" class="goods">
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.request_id', 'view')): ?>
-                                    <td><?= $order['request_id']?></td>
+                                    <td><?= \Umbrella\components\Functions::replaceSearchResult($search, $order['request_id'])?></td>
                                 <?php endif;?>
-                                <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['site_client_name'])?></td>
-                                <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
-                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['site_client_status'])?></td>
-                                <?php endif?>
-                                <td><?= $order['order_number']?></td>
+                                <td><?= \Umbrella\components\Functions::replaceSearchResult($search, $order['site_client_name'])?></td>
+                                <td><?= \Umbrella\components\Functions::replaceSearchResult($search,  $order['part_number'])?></td>
+                                <td><?= \Umbrella\components\Functions::replaceSearchResult($search, $order['order_number'])?></td>
                                 <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></td>
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.type_repair', 'view')): ?>
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['type_name'])?></td>
@@ -249,23 +236,23 @@
                     </tbody>
                 </table>
 
+
                 <?php elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
 
-                    <table class="umbrella-table" id="goods_data">
-                        <?php if(isset($_GET['start']) && !empty($_GET['start'])):?>
-                            <caption>Last recordings on
-                                <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-7 days') ?> &mdash;
-                                <?= (isset($_GET['end']) && !empty($_GET['end'])) ? $_GET['end'] : date('Y-m-d') ?>
-                                <span id="count_refund" class="text-green">(<?php if (isset($allOrders)) echo count($allOrders) ?>)</span>
-                            </caption>
-                        <?php endif;?>
+                    <table class="umbrella-table">
+                        <caption>
+                            Search result for <?= $search?>
+                            <span id="count_refund" class="text-green">
+                            (<?php if (isset($allOrders)) echo count($allOrders) ?>)
+                        </span>
+                        </caption>
                         <thead>
                         <tr>
                             <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.request_id', 'view')): ?>
                                 <th class="sort">Request id</th>
                             <?php endif;?>
                             <th class="sort">Partner</th>
-                            <th class="sort">Partner status</th>
+                            <th class="sort">PartNumber</th>
                             <th class="sort">Order Number</th>
                             <th class="sort">Service Order</th>
                             <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.type_repair', 'view')): ?>
@@ -283,11 +270,11 @@
                             <?php foreach($allOrders as $order):?>
                                 <tr data-order-id="<?=$order['order_id']?>" class="goods">
                                     <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.request_id', 'view')): ?>
-                                        <td><?= $order['request_id']?></td>
+                                        <td><?= \Umbrella\components\Functions::replaceSearchResult($search, $order['request_id'])?></td>
                                     <?php endif;?>
-                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['site_client_name'])?></td>
-                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['site_client_status'])?></td>
-                                    <td><?= $order['order_number']?></td>
+                                    <td><?= \Umbrella\components\Functions::replaceSearchResult($search, $order['site_client_name'])?></td>
+                                    <td><?= \Umbrella\components\Functions::replaceSearchResult($search,  $order['part_number'])?></td>
+                                    <td><?= \Umbrella\components\Functions::replaceSearchResult($search, $order['order_number'])?></td>
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></td>
                                     <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.type_repair', 'view')): ?>
                                         <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['type_name'])?></td>

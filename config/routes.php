@@ -149,6 +149,7 @@ return array(
 
 
     /*********** STOCKS  ***********/
+    'adm/crm/stocks/s/([a-z0-9-_?&]+)' => 'umbrella/crm/Stock@search/$1',
     'adm/crm/stocks/([a-z0-9-_?&]+)' => 'umbrella/crm/Stock@stocks/$1',
     'adm/crm/stocks' => 'umbrella/crm/Stock@stocks',
 
@@ -163,6 +164,7 @@ return array(
 
     /*********** ORDER  ***********/
     'adm/crm/export/orders' => 'umbrella/crm/Order@exportOrders',
+    'adm/crm/orders/s/([a-z0-9-_?&]+)' => 'umbrella/crm/Order@search/$1',
     'adm/crm/orders/([a-z0-9-_?&]+)' => 'umbrella/crm/Order@orders/$1',
     'adm/crm/orders_part_num_ajax' => 'umbrella/crm/Order@ordersPartNumAjax',
     'adm/crm/show_orders' => 'umbrella/crm/Order@showDetailOrders',
