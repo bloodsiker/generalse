@@ -52,7 +52,7 @@ class ReturnController extends AdminBase
                 $interval = " AND (sgs.status_name = '$status_1' OR sgs.status_name = '$status_2')";
             }
 
-            $interval .= " AND sgs.created_on >= DATEADD(day, -30, GETDATE())";
+            $interval .= " AND sgs.created_on >= DATEADD(day, -14, GETDATE())";
             $allReturnsByPartner = Returns::getReturnsByPartner($user->controlUsers($user->id_user), $interval);
 
         } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
@@ -60,15 +60,18 @@ class ReturnController extends AdminBase
             $status_1 = iconv('UTF-8', 'WINDOWS-1251', 'Предварительный');
             $status_2 = iconv('UTF-8', 'WINDOWS-1251', 'В обработке');
             $interval = " AND (sgs.status_name = '$status_1' OR sgs.status_name = '$status_2')";
-            $interval .= " AND sgs.created_on >= DATEADD(day, -30, GETDATE())";
+            $interval .= " AND sgs.created_on >= DATEADD(day, -14, GETDATE())";
             $allReturnsByPartner = Returns::getAllReturns($interval);
         }
 
-        $this->render('admin/crm/returns', compact('user','partnerList', 'arr_error_return', 'allReturnsByPartner'));
+        $this->render('admin/crm/returns/returns', compact('user','partnerList', 'arr_error_return', 'allReturnsByPartner'));
         return true;
     }
 
 
+    /**
+     * @return bool
+     */
     public function actionReturnsAjax()
     {
         $user = $this->user;
@@ -128,6 +131,7 @@ class ReturnController extends AdminBase
 
     /**
      * Import returns
+     * @return bool
      */
     public function actionImportReturns()
     {
@@ -178,6 +182,7 @@ class ReturnController extends AdminBase
                 header("Location: " . $_SERVER['HTTP_REFERER']);
             }
         }
+        return true;
     }
 
 
@@ -275,6 +280,40 @@ class ReturnController extends AdminBase
         }
 
         $this->render('admin/crm/export/returns', compact('user','listExport'));
+        return true;
+    }
+
+
+    /**
+     * Поиск по Возвратам
+     * @return bool
+     */
+    public function actionSearch()
+    {
+        $user = $this->user;
+
+        if($user->role == 'partner' || $user->role == 'manager') {
+
+            $search = iconv('UTF-8', 'WINDOWS-1251', trim($_REQUEST['search']));
+
+            $user_ids = $user->controlUsers($user->id_user);
+            $partnerList = Admin::getPartnerControlUsers($user_ids);
+
+            $idS = implode(',', $user_ids);
+            $filter = " AND sgs.site_account_id IN ($idS)";
+            $allReturnsByPartner = Returns::getSearchInReturns($search, $filter);
+
+        } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
+
+            $search = iconv('UTF-8', 'WINDOWS-1251', trim($_REQUEST['search']));
+
+            $partnerList = Admin::getAllPartner();
+
+            $allReturnsByPartner = Returns::getSearchInReturns($search);
+        }
+
+        $this->render('admin/crm/returns/returns_search', compact('user','partnerList',
+            'allReturnsByPartner', 'search'));
         return true;
     }
 

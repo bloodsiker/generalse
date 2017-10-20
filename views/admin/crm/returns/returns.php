@@ -46,7 +46,10 @@
                                 <?php endif;?>
                             </div>
                             <div class="medium-3 medium-offset-2 small-12 columns form">
-                                <input type="text" id="goods_search" class="search-input" placeholder="Search..." name="search">
+                                <form action="/adm/crm/returns/s/" method="get" class="form" data-abide novalidate>
+                                    <input type="text" class="required search-input" placeholder="Search..." name="search" required>
+                                    <button class="search-button button primary"><i class="fi-magnifying-glass"></i></button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -93,9 +96,9 @@
             </div>
             <div class="row">
                 <?php if($user->role == 'partner'):?>
-                <table class="umbrella-table" id="goods_data">
+                <table class="umbrella-table">
                     <caption>Last recordings on
-                        <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-7 days') ?> &mdash;
+                        <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-14 days') ?> &mdash;
                         <?= (isset($_GET['end']) && !empty($_GET['end'])) ? $_GET['end'] : date('Y-m-d') ?>
                         <span id="count_refund" class="text-green">(<?php if (isset($allReturnsByPartner)) echo count($allReturnsByPartner) ?>)</span>
                     </caption>
@@ -151,10 +154,10 @@
                     </tbody>
                 </table>
                 <?php elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
-                    <table class="umbrella-table" id="goods_data">
+                    <table class="umbrella-table">
 
                             <caption>Last recordings on
-                                <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-30 days') ?> &mdash;
+                                <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-14 days') ?> &mdash;
                                 <?= (isset($_GET['end']) && !empty($_GET['end'])) ? $_GET['end'] : date('Y-m-d') ?>
                                 <span id="count_refund" class="text-green">(<?php if (isset($allReturnsByPartner)) echo count($allReturnsByPartner) ?>)</span>
                             </caption>
