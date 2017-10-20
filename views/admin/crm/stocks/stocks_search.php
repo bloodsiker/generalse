@@ -23,7 +23,7 @@
                         </button>
 
                         <?php if(isset($allGoodsByPartner) && count($allGoodsByPartner) > 0):?>
-                            <button class="button primary tool" onclick="tableToExcel('goods_data', 'W3C Example Table')" style="width: inherit;"><i class="fi-page-export"></i> Export to Excel</button>
+                            <button class="button primary tool" onclick="tableToExcel('table-to-excel', 'W3C Example Table')" style="width: inherit;"><i class="fi-page-export"></i> Export to Excel</button>
                         <?php endif;?>
                     </div>
 
@@ -39,7 +39,7 @@
         <!-- body -->
         <div class="body-content checkout">
             <div class="row">
-                <table class="umbrella-table">
+                <table class="umbrella-table" id="table-to-excel">
                     <caption>
                         Search result for <?= iconv('WINDOWS-1251', 'UTF-8', $search)?>
                         <span id="count_refund" class="text-green">

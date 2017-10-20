@@ -115,7 +115,7 @@ class PsrController extends AdminBase
             $listPsr = Psr::getAllPsr();
         }
 
-        $this->render('admin/psr/index', compact('user', 'listPsr', 'message_success', 'class'));
+        $this->render('admin/psr/psr_ua/index', compact('user', 'listPsr', 'message_success', 'class'));
         return true;
     }
 
@@ -206,7 +206,7 @@ class PsrController extends AdminBase
 
         $listDocuments = Psr::getAllDocumentsInPsr($psr_id);
 
-        $this->render('admin/psr/show_upload_file', compact('listDocuments'));
+        $this->render('admin/psr/psr_ua/show_upload_file', compact('listDocuments'));
         return true;
     }
 }

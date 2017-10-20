@@ -74,6 +74,8 @@ return array(
 
 
     /*********** PSR  ***********/
+    'adm/psr/activity' => 'umbrella/psr/PsrActivity@index',
+
     'adm/psr/show_upload_file' => 'umbrella/psr/Psr@showUploadFile',
     'adm/psr/psr_ajax' => 'umbrella/psr/Psr@psrAjax',
     'adm/psr/ua' => 'umbrella/psr/Psr@index',
