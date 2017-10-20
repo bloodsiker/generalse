@@ -180,7 +180,7 @@ class MotoController extends AdminBase
 
         }
 
-        $this->render('admin/crm/moto', compact('user', 'partnerList', 'listMoto'));
+        $this->render('admin/crm/moto/moto', compact('user', 'partnerList', 'listMoto'));
         return true;
     }
 
@@ -234,7 +234,7 @@ class MotoController extends AdminBase
         $data = Moto::getShowMoto($site_id);
         $listDocument = Moto::getShowDocumentByMoto($site_id);
 
-        $this->render('admin/crm/moto_show_detailes', compact('user', 'data', 'listDocument'));
+        $this->render('admin/crm/moto/moto_show_detailes', compact('user', 'data', 'listDocument'));
         return true;
     }
 }

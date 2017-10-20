@@ -116,7 +116,8 @@ class SupplyController extends AdminBase
             }
         }
 
-        $this->render('admin/crm/supply', compact('user', 'partnerList', 'supply_error_part', 'allSupply', 'listPayDesk'));
+        $this->render('admin/crm/supply/supply', compact('user', 'partnerList',
+            'supply_error_part', 'allSupply', 'listPayDesk'));
         return true;
     }
 

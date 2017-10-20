@@ -29,11 +29,6 @@
 <?php endif; ?>
 
 
-<?php if (Umbrella\app\AdminBase::checkDenied('crm.psr', 'view')): ?>
-    <li><a href="/adm/crm/psr" class="<?= Umbrella\components\Url::IsActive('/crm/psr', 'active') ?>">PSR</a></li>
-<?php endif; ?>
-
-
 <?php if (Umbrella\app\AdminBase::checkDenied('crm.backlog', 'view')): ?>
     <li><a href="/adm/crm/backlog" class="<?= Umbrella\components\Url::IsActive('/crm/backlog', 'active') ?>">Backlog Analysis Function</a></li>
 <?php endif; ?>

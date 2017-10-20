@@ -157,6 +157,7 @@ return array(
     /*********** RETURNS  ***********/
     'adm/crm/export/returns/([a-z0-9-_?&]+)' => 'umbrella/crm/Return@exportReturns/$1',
     'adm/crm/returns/filter/([a-z0-9-_?&]+)' => 'umbrella/crm/Return@filterReturns/$1',
+    'adm/crm/returns/s/([a-z0-9-_?&]+)' => 'umbrella/crm/Return@search/$1',
     'adm/crm/import_returns' => 'umbrella/crm/Return@importReturns',
     'adm/crm/returns_ajax' => 'umbrella/crm/Return@returnsAjax',
     'adm/crm/returns' => 'umbrella/crm/Return@returns',
@@ -176,7 +177,6 @@ return array(
 
     /*********** DISASSEMBLY  ***********/
     'adm/crm/export/disassembly/([a-z0-9-_?&]+)' => 'umbrella/crm/Disassembly@exportDisassembly/$1',
-    'adm/crm/disassembly_all' => 'umbrella/crm/Disassembly@allDisassembl',
     'adm/crm/show_disassembly' => 'umbrella/crm/Disassembly@showDetailDisassembl',
     'adm/crm/disassembly_action_ajax' => 'umbrella/crm/Disassembly@disassemblyActionAjax',
     'adm/crm/disassembly_ajax' => 'umbrella/crm/Disassembly@disassemblyAjax',
@@ -192,10 +192,6 @@ return array(
     'adm/crm/moto_part_num_ajax' => 'umbrella/crm/Moto@motoPartNumAjax',
     'adm/crm/moto/([a-z0-9-_?&]+)' => 'umbrella/crm/Moto@moto/$1',
     'adm/crm/moto' => 'umbrella/crm/Moto@moto',
-
-
-    /*********** PSR  ***********/
-    'adm/crm/psr' => 'umbrella/crm/Psr@psr',
 
 
     /*********** LITHOGRAPHER  ***********/

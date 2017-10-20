@@ -46,7 +46,7 @@ class DisassemblyController extends AdminBase
             $bomList = Disassembly::getRequestByPartner($id_partner, $serial_number);
         }
 
-        $this->render('admin/crm/disassemble', compact('user', 'partnerList', 'bomList'));
+        $this->render('admin/crm/disassemble/disassemble', compact('user', 'partnerList', 'bomList'));
         return true;
     }
 
@@ -75,7 +75,8 @@ class DisassemblyController extends AdminBase
             $filter .= $interval;
             $listDisassembly = Disassembly::getDisassemblyByPartner($user->controlUsers($user->id_user), $filter);
 
-            $this->render('admin/crm/disassemble_result_partner', compact('user', 'partnerList', 'listDisassembly'));
+            $this->render('admin/crm/disassemble/disassemble_result_partner',
+                compact('user', 'partnerList', 'listDisassembly'));
 
         } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
 
@@ -102,24 +103,13 @@ class DisassemblyController extends AdminBase
             $filter .= $interval;
             $listDisassembly = Disassembly::getAllDisassembly($filter);
 
-            $this->render('admin/crm/disassemble_result_admin', compact('user', 'partnerList', 'listDisassembly'));
+            $this->render('admin/crm/disassemble/disassemble_result_admin',
+                compact('user', 'partnerList', 'listDisassembly'));
         }
 
         return true;
     }
 
-    /**
-     * @return bool
-     */
-    public function actionAllDisassembl()
-    {
-        $user = $this->user;
-
-        $listDisassembly = Disassembly::getAllRequest();
-
-        $this->render('admin/crm/all', compact('user','listDisassembly'));
-        return true;
-    }
 
     /**
      * @return bool
@@ -244,7 +234,7 @@ class DisassemblyController extends AdminBase
         $site_id = $_REQUEST['site_id'];
         $data = Disassembly::getShowDetailsDisassembly($site_id);
         $comment = Disassembly::getShowCommentDisassembly($site_id);
-        $this->render('admin/crm/disassemble_show_detailes', compact('user', 'data', 'comment'));
+        $this->render('admin/crm/disassemble/disassemble_show_detailes', compact('user', 'data', 'comment'));
         return true;
     }
 

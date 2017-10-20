@@ -217,7 +217,7 @@ class PurchaseController extends AdminBase
             $userInGroup = array_merge($userInGroup, $userNotGroup);
         }
 
-        $this->render('admin/crm/purchase', compact('user', 'userInGroup', 'partnerList', 'listPurchases'));
+        $this->render('admin/crm/purchase/purchase', compact('user', 'userInGroup', 'partnerList', 'listPurchases'));
         return true;
 
     }
@@ -279,7 +279,7 @@ class PurchaseController extends AdminBase
             $new_partner = array_chunk($partnerList, (int)count($partnerList) / 3);
         }
 
-        $this->render('admin/crm/purchase', compact('user', 'new_partner', 'partnerList', 'listPurchases', 'arr_error_pn', 'arr_check_stock'));
+        $this->render('admin/crm/purchase/purchase', compact('user', 'new_partner', 'partnerList', 'listPurchases', 'arr_error_pn', 'arr_check_stock'));
         return true;
     }
 

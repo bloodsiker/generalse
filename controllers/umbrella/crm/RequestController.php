@@ -159,7 +159,7 @@ class RequestController extends AdminBase
             $userInGroup = array_merge($userInGroup, $userNotGroup);
         }
 
-        $this->render('admin/crm/request', compact('user','group', 'partnerList', 'order_type',
+        $this->render('admin/crm/request/request', compact('user','group', 'partnerList', 'order_type',
             'delivery_address', 'listCheckOrders', 'request_message', 'arrayPartNumber', 'listRemovedRequest',
             'userInGroup'));
         return true;
@@ -205,7 +205,7 @@ class RequestController extends AdminBase
             $listCheckOrders = Orders::getAllCompletedRequestInOrdersMsSQL($filter);
         }
 
-        $this->render('admin/crm/request_completed', compact('user','listCheckOrders'));
+        $this->render('admin/crm/request/request_completed', compact('user','listCheckOrders'));
         return true;
     }
 
@@ -585,7 +585,7 @@ class RequestController extends AdminBase
             }
         }
 
-        $this->render('admin/crm/request_list_analog', compact('user','listPartAnalog'));
+        $this->render('admin/crm/request/request_list_analog', compact('user','listPartAnalog'));
         return true;
     }
 
