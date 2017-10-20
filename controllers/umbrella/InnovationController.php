@@ -25,11 +25,6 @@ class InnovationController extends AdminBase
     }
 
 
-    public function actionIndex()
-    {
-        return true;
-    }
-
 
     /**
      * Ajax action

@@ -17,23 +17,26 @@ class Innovation
         $db = MySQL::getConnection();
 
         $sql = "SELECT
-                    gi.id,
-                    gi.new_content,
-                    gi.created_at,
-                    gu.id_user,
-                    gu.name_partner
+                  gi.id,
+                  gi.new_content,
+                  gi.created_at,
+                  gu.id_user,
+                  gu.name_partner
                 FROM gs_innovation gi
-                    INNER JOIN gs_group_user ggu
-                        ON gi.group_id = ggu.id_group
-                    INNER JOIN gs_user gu
-                        ON ggu.id_user = gu.id_user
+                  INNER JOIN gs_innovation_group gig
+                      ON gig.innovation_id = gi.id
+                  INNER JOIN gs_group_user ggu
+                      ON gig.group_id = ggu.id_group
+                  INNER JOIN gs_user gu
+                      ON ggu.id_user = gu.id_user
                 WHERE gi.id NOT IN (
-                    SELECT
-                        giv.innovation_id
-                    FROM gs_innovation_view giv
-                    WHERE giv.user_id = :user_id
+                  SELECT
+                      giv.innovation_id
+                  FROM gs_innovation_view giv
+                  WHERE giv.user_id = :user_id
                 )
-                AND gu.id_user = :user_id";
+                AND gu.id_user = :user_id
+                AND gi.created_at > ggu.date_entered";
 
         $result = $db->prepare($sql);
         $result->bindParam(':user_id', $user_id, PDO::PARAM_INT);
