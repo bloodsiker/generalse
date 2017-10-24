@@ -51,7 +51,7 @@ abstract class AdminBase extends Controller
         $adminId = Admin::checkLogged();
         $user = new User($adminId);
 
-        if($user->is_active == 0) {
+        if($user->isActive() == 0) {
             unset($_SESSION['user']);
             header('Location: /');
         }

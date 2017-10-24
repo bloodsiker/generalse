@@ -14,54 +14,140 @@ use Umbrella\models\Innovation;
  */
 class User
 {
+    /**
+     * @var
+     */
     public $id_user;
-    public $name_partner;
-    public $login_url;
-
-    public function __construct($id_user){
-        $infoUser = $this->getInfoUser($id_user);
-        $this->id_user = $infoUser['id_user'];
-        $this->name_partner = $infoUser['name_partner'];
-        $this->email = $infoUser['email'];
-        $this->login = $infoUser['login'];
-        $this->role = $infoUser['role'];
-        $this->name_role = $infoUser['name_role'];
-        $this->country = $infoUser['full_name'];
-        $this->id_group = $infoUser['id_group'];
-        $this->group_name = $infoUser['group_name'];
-        $this->coefficient = $infoUser['kpi_coefficient'];
-        $this->login_url = $infoUser['login_url'];
-        $this->is_active = $infoUser['is_active'];
-
-        $this->activeUser($this->id_user,date('Y-m-d H:i:s'));
-    }
 
     /**
+     * @var
+     */
+    public $name_partner;
+
+    /**
+     * @var mixed
+     */
+    private $infoUser;
+
+
+    /**
+     * User constructor.
      * @param $id_user
+     */
+    public function __construct($id_user){
+        $this->id_user = $id_user;
+        $this->infoUser = $this->getInfoUser();
+        $this->name_partner = $this->infoUser['name_partner'];
+        $this->email = $this->infoUser['email'];
+        $this->login = $this->infoUser['login'];
+        $this->role = $this->infoUser['role'];
+        $this->name_role = $this->infoUser['name_role'];
+        $this->country = $this->infoUser['full_name'];
+        $this->id_group = $this->infoUser['id_group'];
+        $this->group_name = $this->infoUser['group_name'];
+        $this->coefficient = $this->infoUser['kpi_coefficient'];
+        $this->login_url = $this->infoUser['login_url'];
+        $this->is_active = $this->infoUser['is_active'];
+
+        $this->activeUser();
+    }
+
+
+    /**
+     * Get name user
      * @return mixed
      */
-    public function getInfoUser($id_user)
+    public function getName()
+    {
+        return $this->infoUser['name_partner'];
+    }
+
+
+    /**
+     * get URL after user authorization
+     * @return mixed
+     */
+    public function getUrlAfterLogin()
+    {
+        return $this->infoUser['login_url'];
+    }
+
+
+    /**
+     * get user role
+     * @return mixed
+     */
+    public function getRole()
+    {
+        return $this->infoUser['role'];
+    }
+
+
+    /**
+     * flag, informs that the user's account is not banned
+     * @return mixed
+     */
+    public function isActive()
+    {
+        return $this->infoUser['is_active'];
+    }
+
+
+    /**
+     * saved user information in session
+     * @return mixed
+     */
+    public function getInfoUser()
     {
         if(isset($_SESSION['info_user']) && !empty($_SESSION['info_user'])){
             $user = $_SESSION['info_user'];
         } else {
-            $_SESSION['info_user'] = Admin::getAdminById($id_user);
+            $userGS = Admin::getAdminById($this->id_user);
+            $userGM = Admin::getInfoGmUser($this->id_user);
+            if($userGM){
+                $userGS['gm'] = $userGM;
+                $userGS['gm']['status_name'] = iconv('WINDOWS-1251', 'UTF-8', $userGS['gm']['status_name']);
+                $userGS['gm']['PriceName'] = iconv('WINDOWS-1251', 'UTF-8', $userGS['gm']['PriceName']);
+                $userGS['gm']['mName'] = iconv('WINDOWS-1251', 'UTF-8', $userGS['gm']['mName']);
+            }
+            $_SESSION['info_user'] = $userGS;
             $user = $_SESSION['info_user'];
         }
 
         return $user;
     }
 
+
     /**
-     * @param $id_user
-     * @param $date_active
+     * information about user from GM
+     * @return mixed
+     */
+    public function getInfoUserGM()
+    {
+        return $this->infoUser['gm'];
+    }
+
+
+    /**
+     * Partner price status
      * @return bool
      */
-    public function activeUser($id_user, $date_active)
+    public function getUserPriceNameGM()
     {
-        Admin::userLasTimeOnline($id_user, $date_active);
+        if($this->infoUser['gm']){
+            return $this->infoUser['gm']['PriceName'];
+        }
+        return false;
+    }
 
-        return true;
+
+    /**
+     * write record the last active user action
+     * @return bool
+     */
+    public function activeUser()
+    {
+        return Admin::userLasTimeOnline($this->id_user, date('Y-m-d H:i:s'));
     }
 
     /**
@@ -78,7 +164,7 @@ class User
         if($control_users_id){
             $array = array_column($control_users_id, 'control_user_id');
             $new_user = new User($id_user);
-            if($new_user->role == 'partner'){
+            if($new_user->getRole() == 'partner'){
                 $array[] = $id_user;
             }
             $new_array = array_reverse($array);
@@ -210,12 +296,19 @@ class User
     }
 
 
-
-    public function infoFilePriceForUser($id_group = null)
+    /**
+     * get info upload file for group
+     * @param null $id_group
+     * @param null $partner_status
+     * @return mixed
+     */
+    public function infoFilePriceForUser($id_group = null, $partner_status = null)
     {
         $group = $id_group == null ? $this->id_group : $id_group;
 
-        $infoFile = File::getLastUploadFileForGroup($group);
+        $partner_status = $partner_status == null ? $this->getUserPriceNameGM() : $partner_status;
+
+        $infoFile = File::getLastUploadFileForGroup($group, $partner_status);
 
         return $infoFile;
     }
@@ -224,11 +317,12 @@ class User
     /**
      * Ссылка на скачивание файла с прайсом
      * @param $id_group
+     * @param null $partner_status
      * @return null|string
      */
-    public function linkUrlDownloadAllPrice($id_group = null)
+    public function linkUrlDownloadAllPrice($id_group = null, $partner_status = null)
     {
-        $infoFile = $this->infoFilePriceForUser($id_group);
+        $infoFile = $this->infoFilePriceForUser($id_group, $partner_status);
 
         return $infoFile['file_path'] . $infoFile['file_name'];
     }
@@ -237,11 +331,12 @@ class User
      * Временное решение
      * Название ссылки для скачивания
      * @param null $id_group
+     * @param null $partner_status
      * @return mixed
      */
-    public function linkNameDownloadAllPrice($id_group = null)
+    public function linkNameDownloadAllPrice($id_group = null, $partner_status = null)
     {
-        $infoFile = $this->infoFilePriceForUser($id_group);
+        $infoFile = $this->infoFilePriceForUser($id_group, $partner_status);
 
         return $infoFile['file_name'];
     }
@@ -250,11 +345,12 @@ class User
      * Временное решение
      * Дата последней загрузки файла
      * @param null $id_group
+     * @param null $partner_status
      * @return mixed
      */
-    public function lastUploadDateAllPrice($id_group = null)
+    public function lastUploadDateAllPrice($id_group = null, $partner_status = null)
     {
-        $infoFile = $this->infoFilePriceForUser($id_group);
+        $infoFile = $this->infoFilePriceForUser($id_group, $partner_status);
 
         return $infoFile['created_at'];
     }

@@ -55,22 +55,24 @@ class File
      * @param $file_path
      * @param $file_name
      * @param $id_group
+     * @param $partner_status
      * @param $created_at
      * @return bool
      */
-    public static function addNewPriceFile($file_path, $file_name, $id_group, $created_at)
+    public static function addNewPriceFile($file_path, $file_name, $id_group, $partner_status, $created_at)
     {
         $db = MySQL::getConnection();
 
         $sql = 'INSERT INTO gs_upload_file '
-            . '(file_path, file_name, id_group, created_at) '
+            . '(file_path, file_name, id_group, partner_status, created_at) '
             . 'VALUES '
-            . '(:file_path, :file_name, :id_group, :created_at)';
+            . '(:file_path, :file_name, :id_group, :partner_status, :created_at)';
 
         $result = $db->prepare($sql);
         $result->bindParam(':file_path', $file_path, PDO::PARAM_STR);
         $result->bindParam(':file_name', $file_name, PDO::PARAM_STR);
         $result->bindParam(':id_group', $id_group, PDO::PARAM_INT);
+        $result->bindParam(':partner_status', $partner_status, PDO::PARAM_STR);
         $result->bindParam(':created_at', $created_at, PDO::PARAM_STR);
         return $result->execute();
     }
@@ -79,9 +81,10 @@ class File
     /**
      * Последний загруженный файл для группы
      * @param $id_group
+     * @param $partner_status
      * @return mixed
      */
-    public static function getLastUploadFileForGroup($id_group)
+    public static function getLastUploadFileForGroup($id_group, $partner_status)
     {
         $db = MySQL::getConnection();
 
@@ -89,11 +92,13 @@ class File
                   *
                   FROM gs_upload_file
                   WHERE id_group = :id_group
+                  AND partner_status = :partner_status
                   ORDER BY id_record DESC
                   LIMIT 1";
 
         $result = $db->prepare($sql);
         $result->bindParam(':id_group', $id_group, PDO::PARAM_INT);
+        $result->bindParam(':partner_status', $partner_status, PDO::PARAM_STR);
         $result->execute();
         $all = $result->fetch(PDO::FETCH_ASSOC);
         return $all;

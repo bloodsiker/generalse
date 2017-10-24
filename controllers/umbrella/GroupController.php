@@ -130,7 +130,7 @@ class GroupController extends AdminBase
 
         $user = $this->user;
 
-        if($user->role == 'administrator'){
+        if($user->getRole() == 'administrator'){
             $ok = GroupModel::deleteUserFromGroup($id_group, $id_user);
             if($ok){
                 // Удаляем запрещенные страницы, которые запрещены для группы в которой находился пользователь
@@ -157,7 +157,7 @@ class GroupController extends AdminBase
 
         $user = $this->user;
 
-        if($user->role == 'administrator'){
+        if($user->getRole() == 'administrator'){
             GroupModel::deleteStockFromGroup($id);
         } else {
             echo "<script>alert('У вас нету прав на удаление')</script>";
@@ -221,7 +221,8 @@ class GroupController extends AdminBase
             }
         }
 
-        $this->render('admin/group/denied', compact('user', 'list_page', 'sub_menu', 'sub_menu_button', 'new_array', 'id_group', 'group', 'p_id', 'sub_id'));
+        $this->render('admin/group/denied', compact('user', 'list_page', 'sub_menu',
+            'sub_menu_button', 'new_array', 'id_group', 'group', 'p_id', 'sub_id'));
         return true;
     }
 }

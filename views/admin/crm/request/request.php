@@ -17,9 +17,13 @@
                     </div>
                     <div class="medium-12 small-12 columns">
                         <div class="row align-bottom">
-                            <div class="medium-10 small-12 columns">
+                            <div class="medium-12 small-12 columns">
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.send', 'view')): ?>
                                     <button class="button primary tool" id="add-request-button"><i class="fi-plus"></i> Request</button>
+                                <?php endif;?>
+
+                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.multi-request.send', 'view')): ?>
+                                    <button class="button primary tool hide" id="add-multi-request-button"><i class="fi-plus"></i> Multi Request</button>
                                 <?php endif;?>
 
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.import', 'view')): ?>
@@ -53,9 +57,6 @@
                                     <a href="/adm/crm/request/list_analog" class="button primary tool"><i class="fi-list"></i> Analog</a>
                                 <?php endif;?>
                             </div>
-                            <div class="medium-2 small-12 columns form">
-                                <input type="text" id="goods_search" class="search-input" placeholder="Search..." name="search">
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -75,7 +76,7 @@
                     </div>
                 <?php endif;?>
                 <?php if($user->role == 'partner'):?>
-                <table class="umbrella-table" id="goods_data">
+                <table class="umbrella-table">
                     <caption>List requests
                         <span id="count_refund" class="text-green">(<?php if (isset($listCheckOrders)) echo count($listCheckOrders) ?>)</span>
                     </caption>
@@ -139,7 +140,7 @@
                 <?php elseif($user->role == 'administrator'
                     || $user->role == 'administrator-fin'
                     || $user->role == 'manager'):?>
-                    <table class="umbrella-table" id="goods_data">
+                    <table class="umbrella-table">
                         <caption>List requests
                             <span id="count_refund" class="text-green">(<?php if (isset($listCheckOrders)) echo count($listCheckOrders) ?>)</span>
                         </caption>
@@ -304,6 +305,85 @@
         </button>
     </div>
 <?php endif; ?>
+
+
+<?php if (Umbrella\app\AdminBase::checkDenied('crm.multi-request.send', 'view')): ?>
+    <div class="reveal" id="add-multi-request-modal" data-reveal>
+        <form action="" id="add-multi-request-form" method="post" class="form" data-abide novalidate>
+            <div class="row align-bottom">
+                <div class="medium-12 small-12 columns">
+                    <h3>New request</h3>
+                </div>
+                <div class="medium-10 small-10 columns">
+                    <label>Part Number <span style="color: #4CAF50;" class="name-product"></span></label>
+                    <span style="color: orange;" class="pn-analog"></span>
+                    <input type="text" class="required" name="part_number" onkeyup="checkCurrPartNumber(this)" autocomplete="off" required>
+                </div>
+
+                <div class="medium-2 small-2 columns">
+                    <label>Count</label>
+                    <input type="text" class="required" name="part_quantity" value="1" onkeyup="validCount(this)" autocomplete="off" required>
+                </div>
+
+                <div class="medium-6 small-6 columns">
+                    <label>Price</label>
+                    <input type="text" name="price" disabled>
+                </div>
+
+                <div class="medium-6 small-6 columns group-analog hide">
+                    <label>Price analog</label>
+                    <input type="text" name="analog-price" disabled>
+                </div>
+
+                <div class="medium-12 small-12 columns">
+                    <label>SO Number/Note</label>
+                    <input type="text" name="so_number" autocomplete="off">
+                </div>
+
+
+                <div class="medium-12 small-12 columns">
+                    <label>Part description RUS</label>
+                    <input type="text" name="pn_name_rus" autocomplete="off">
+                </div>
+
+
+                <div class="medium-12 small-12 columns">
+                    <label>Type</label>
+                    <select name="order_type_id" class="required" required>
+                        <option value="" selected disabled>none</option>
+                        <?php foreach ($order_type as $type):?>
+                            <option value="<?= $type['id']?>"><?= iconv('WINDOWS-1251', 'UTF-8', $type['name'])?></option>
+                        <?php endforeach;?>
+                    </select>
+                </div>
+                <?php if(is_array($delivery_address) && !empty($delivery_address)):?>
+                    <div class="medium-12 small-12 columns">
+                        <label>Delivery address</label>
+                        <select name="note" class="required" required>
+                            <option value="" selected disabled>none</option>
+                            <?php foreach ($delivery_address as $address):?>
+                                <option value="<?= $address?>"><?= $address?></option>
+                            <?php endforeach;?>
+                        </select>
+                    </div>
+                <?php endif; ?>
+                <div class="medium-12 small-12 columns">
+                    <label>Flash on PNC</label>
+                    <input type="text" name="note1" autocomplete="off">
+                </div>
+
+                <input type="hidden" name="add_request" value="true">
+                <div class="medium-12 small-12 columns">
+                    <button type="submit" class="button primary">Send</button>
+                </div>
+            </div>
+        </form>
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+<?php endif; ?>
+
 
 <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.price', 'view')): ?>
     <div class="reveal" id="price-modal" data-reveal>
@@ -552,17 +632,27 @@
                             <div class="row" style="color: #fff">
                                 <h4>Формат и название файлов</h4>
                                 <ul>
-                                    <li>Electrolux: <span style="color: orange">Price_Electrolux.zip</span></li>
-                                    <li>Electrolux GE: <span style="color: orange">Electrolux_Prices_GE.zip</span></li>
+                                    <li>Electrolux(Партнер): <span style="color: orange">Price_Electrolux.zip</span></li>
+                                    <li>Electrolux(Оптовик): <span style="color: orange">Price_Electrolux_Opt.zip</span></li>
+                                    <li>Electrolux GE(Партнер GE): <span style="color: orange">Electrolux_Prices_GE.zip</span></li>
                                 </ul>
                             </div>
                         </div>
 
-                        <div class="medium-12 small-12 columns">
-                            <label>Partner</label>
+                        <div class="medium-6 small-12 columns">
+                            <label>Group Partner</label>
                             <select name="id_group" class="required" required>
                                 <option value="2">Electrolux</option>
                                 <option value="4">Electrolux GE</option>
+                            </select>
+                        </div>
+
+                        <div class="medium-6 small-12 columns">
+                            <label>Price</label>
+                            <select name="partner_status" class="required" required>
+                                <option value="Партнер">Партнер</option>
+                                <option value="Оптовик">Оптовик</option>
+                                <option value="Партнер GE">Партнер GE</option>
                             </select>
                         </div>
 
@@ -622,16 +712,22 @@
                                 <ul>
                                     <?php if($user->role == 'administrator' || $user->role == 'manager'):?>
                                         <li>
-                                            <a href="<?= $user->linkUrlDownloadAllPrice(2)?>" download>
-                                                <span style="color: orange"><?= $user->linkNameDownloadAllPrice(2)?></span>
+                                            <a href="<?= $user->linkUrlDownloadAllPrice(2, 'Партнер')?>" download>
+                                                <span style="color: orange"><?= $user->linkNameDownloadAllPrice(2, 'Партнер')?></span>
                                             </a>
-                                            <span class="date-upload-price">new upload date: <?= $user->lastUploadDateAllPrice(2)?></span>
+                                            <span class="date-upload-price">new upload date: <?= $user->lastUploadDateAllPrice(2, 'Партнер')?></span>
                                         </li>
                                         <li>
-                                            <a href="<?= $user->linkUrlDownloadAllPrice(4)?>" download>
-                                                <span style="color: orange"><?= $user->linkNameDownloadAllPrice(4)?></span>
+                                            <a href="<?= $user->linkUrlDownloadAllPrice(2, 'Оптовик')?>" download>
+                                                <span style="color: orange"><?= $user->linkNameDownloadAllPrice(2, 'Оптовик')?></span>
                                             </a>
-                                            <span class="date-upload-price">new upload date: <?= $user->lastUploadDateAllPrice(4)?></span>
+                                            <span class="date-upload-price">new upload date: <?= $user->lastUploadDateAllPrice(2, 'Оптовик')?></span>
+                                        </li>
+                                        <li>
+                                            <a href="<?= $user->linkUrlDownloadAllPrice(4, 'Партнер GE')?>" download>
+                                                <span style="color: orange"><?= $user->linkNameDownloadAllPrice(4, 'Партнер GE')?></span>
+                                            </a>
+                                            <span class="date-upload-price">new upload date: <?= $user->lastUploadDateAllPrice(4, 'Партнер GE')?></span>
                                         </li>
                                     <?php elseif ($user->role == 'partner'):?>
                                         <li>

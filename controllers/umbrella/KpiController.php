@@ -38,12 +38,12 @@ class KpiController extends AdminBase
     {
         $user = $this->user;
 
-        if($user->role == 'partner'){
+        if($user->getRole() == 'partner'){
 
-            $lastData = Data::getLastData($user->name_partner, 'DESC');
-            $firstData = Data::getLastData($user->name_partner, 'ASC');
+            $lastData = Data::getLastData($user->getName(), 'DESC');
+            $firstData = Data::getLastData($user->getName(), 'ASC');
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
+        } else if($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin' || $user->getRole() == 'manager'){
 
             $listPartner = Admin::getPartnerViewKpi(1);
             $lastData = Data::getLastDataAdmin('DESC');
@@ -63,7 +63,7 @@ class KpiController extends AdminBase
         self::checkDenied('kpi.usage', 'controller');
         $user = $this->user;
 
-        if($user->role == 'partner'){
+        if($user->getRole() == 'partner'){
 
             $start = $_GET['start'];
             $end = $_GET['end'];
@@ -72,7 +72,7 @@ class KpiController extends AdminBase
             $listUsage = Data::getUsageByAdmin($id_partner, $start, $end);
             Logger::getInstance()->log($user->id_user, "Посмотрел Usage c {$start} - {$end}");
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
+        } else if($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin' || $user->getRole() == 'manager'){
 
             $listPartner = Admin::getPartnerViewKpi(1);
 
@@ -111,11 +111,11 @@ class KpiController extends AdminBase
 
         $user = $this->user;
 
-        if($user->role == 'partner'){
+        if($user->getRole() == 'partner'){
 
             header("Location: /adm/access_denied");
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
+        } else if($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin' || $user->getRole() == 'manager'){
 
             $count_kpi_success = isset($_SESSION['kpi_success']) ? $_SESSION['kpi_success'] : '';
             $count_call_success = isset($_SESSION['call_success']) ? $_SESSION['call_success'] : '';
@@ -281,19 +281,19 @@ class KpiController extends AdminBase
             $end = date('Y-m-d');
         }
 
-        if($user->role == 'partner'){
+        if($user->getRole() == 'partner'){
 
-            $KPI = new KPI($user->name_partner, $start, $end);
-            $lastData = Data::getLastData($user->name_partner, 'DESC');
-            $firstData = Data::getLastData($user->name_partner, 'ASC');
-            $name_partner = $user->name_partner;
+            $KPI = new KPI($user->getName(), $start, $end);
+            $lastData = Data::getLastData($user->getName(), 'DESC');
+            $firstData = Data::getLastData($user->getName(), 'ASC');
+            $name_partner = $user->getName();
 
             Logger::getInstance()->log($user->id_user, "посмотрел отчет KPI с " . $start . " по " . $end);
 
             $this->render('admin/kpi/result_one_partner', compact('user', 'KPI', 'lastData', 'firstData', 'name_partner', 'start', 'end'));
 
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
+        } else if($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin' || $user->getRole() == 'manager'){
 
             $listPartner = Admin::getPartnerViewKpi(1);
 
@@ -302,7 +302,7 @@ class KpiController extends AdminBase
 
                 if($name_partner == 'all'){
 
-                    $KPI = new KPI($user->name_partner, $start, $end);
+                    $KPI = new KPI($user->getName(), $start, $end);
                     $lastData = Data::getLastDataAdmin('DESC');
                     $firstData = Data::getLastDataAdmin('ASC');
 

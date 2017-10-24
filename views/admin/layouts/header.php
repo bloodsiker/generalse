@@ -40,7 +40,7 @@
     <div class="header-user-menu">
         <div class="row">
             <div class="medium-12 small-12 column text-right">
-                <span class="user-name"><?=$user->name_partner?></span>
+                <span class="user-name"><?=$user->getName()?></span>
             </div>
         </div>
     </div>

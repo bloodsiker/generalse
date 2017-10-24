@@ -210,11 +210,6 @@ class RefundRequestController extends AdminBase
             }
         }
 
-        if($user->role == 'partner'){
-
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
-
-        }
         $this->render('admin/refund_request/index', compact('user','countryList', 'not_exit_file', 'arr_error_pn'));
         return true;
     }
@@ -384,13 +379,13 @@ class RefundRequestController extends AdminBase
         $allPartner = Admin::getAllPartner();
         $countryList = Country::getAllCountry();
 
-        if($user->role == 'partner'){
+        if($user->getRole() == 'partner'){
 
             $requestByPartner = Warranty::getRequestByPartner($user->id_user);
 
             $this->render('admin/refund_request/view_request_partner', compact('user','allPartner', 'countryList', 'requestByPartner'));
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
+        } else if($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin' || $user->getRole() == 'manager'){
             $allRequest = Warranty::getAllRequest(0);
 
             $this->render('admin/refund_request/view_request_admin', compact('user','allPartner', 'countryList', 'allRequest'));
@@ -410,7 +405,7 @@ class RefundRequestController extends AdminBase
         $allPartner = Admin::getAllPartner();
         $countryList = Country::getAllCountry();
 
-        if($user->role == 'partner'){
+        if($user->getRole() == 'partner'){
 
             if(empty($_GET['start']) &&
                 empty($_GET['end'])){
@@ -432,7 +427,7 @@ class RefundRequestController extends AdminBase
 
             $this->render('admin/refund_request/view_request_partner', compact('user','allPartner', 'countryList', 'requestByPartner'));
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
+        } else if($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin' || $user->getRole() == 'manager'){
             // Фильтрация
 
             if(empty($_GET['Request_Country']) &&

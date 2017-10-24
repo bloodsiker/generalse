@@ -623,7 +623,7 @@ class RequestController extends AdminBase
                 $path = '/upload/attach_request/';
                 $handle->process(ROOT . $path);
                 if ($handle->processed) {
-                    File::addNewPriceFile($path, $file_name, $_REQUEST['id_group'], date('Y-m-d'));
+                    File::addNewPriceFile($path, $file_name, $_REQUEST['id_group'], $_REQUEST['partner_status'], date('Y-m-d'));
                     $handle->clean();
                 }
             }

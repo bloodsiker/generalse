@@ -12,7 +12,6 @@ use Umbrella\models\DeliveryAddress;
 use Umbrella\models\Denied;
 use Umbrella\models\GroupModel;
 use Umbrella\models\Log;
-use Umbrella\models\Weekend;
 
 /**
  * Class UserController
@@ -62,11 +61,11 @@ class UserController extends AdminBase
         $countryList = Country::getAllCountry();
         $branchList = Branch::getBranchList();
 
-        if($user->role == 'partner' || $user->role == 'manager'){
+        if($user->getRole() == 'partner' || $user->getRole() == 'manager'){
 
             header("Location: /adm/access_denied");
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin' ){
+        } else if($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin' ){
 
             $this->render('admin/users/index', compact('user', 'listUsers', 'groupList',
                 'countryList', 'branchList', 'message'));
@@ -110,7 +109,7 @@ class UserController extends AdminBase
     {
         $user = $this->user;
 
-        if($user->role == 'administrator'){
+        if($user->getRole() == 'administrator'){
             Admin::deleteUserControl($id_user, $control_user_id);
         } else {
             echo "<script>alert('У вас нету прав на удаление')</script>";
@@ -142,11 +141,11 @@ class UserController extends AdminBase
         $countryList = Country::getAllCountry();
         $groupList = GroupModel::getGroupList();
 
-        if($user->role == 'partner' || $user->role == 'manager'){
+        if($user->getRole() == 'partner' || $user->getRole() == 'manager'){
 
             header("Location: /adm/access_denied");
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
+        } else if($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin'){
 
             // Обработка формы
             if (isset($_POST['add_user']) && $_POST['add_user'] == 'true') {
@@ -242,11 +241,11 @@ class UserController extends AdminBase
         // Получаем данные о конкретной пользователе
         $userInfo = Admin::getAdminById($id);
 
-        if($user->role == 'partner' || $user->role == 'manager'){
+        if($user->getRole() == 'partner' || $user->getRole() == 'manager'){
 
             header("Location: /adm/access_denied");
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
+        } else if($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin'){
 
             // Обработка формы
             if (isset($_POST['update'])) {
@@ -347,7 +346,7 @@ class UserController extends AdminBase
         // Получаем данные о конкретной пользователе
         $userInfo = Admin::getAdminById($id);
 
-        if($user->role == 'administrator' || $user->role == 'administrator-fin'){
+        if($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin'){
             Admin::deleteUserById($id);
             $log = "удалил учетку пользователя " . $userInfo['name_partner'];
             Log::addLog($user->id_user, $log);
@@ -508,7 +507,8 @@ class UserController extends AdminBase
             }
         }
 
-        $this->render('admin/users/denied/index', compact('user','user_check', 'list_page', 'sub_menu', 'sub_menu_button', 'new_array', 'p_id', 'sub_id', 'id_user'));
+        $this->render('admin/users/denied/index', compact('user','user_check', 'list_page',
+            'sub_menu', 'sub_menu_button', 'new_array', 'p_id', 'sub_id', 'id_user'));
         return true;
     }
 

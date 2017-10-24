@@ -41,7 +41,8 @@ class RequestMail
         $mailToManager .= "<b>Part Number:</b> {$originPrice['partNumber']} - Price: " . round($originPrice['price'], 2) . "<br>";
         $mailToManager .= "<b>Analog:</b> {$analogPrice['partNumber']} - Price: " . round($analogPrice['price'], 2) ;
 
-        mail('maldini2@ukr.net', 'Request. Замена парт номера на аналог', $mailToManager, $headers);
+        mail('do@generalse.com', 'Request. Замена парт номера на аналог', $mailToManager, $headers);
+        mail('dv@generalse.com', 'Request. Замена парт номера на аналог', $mailToManager, $headers);
 
         $emails = explode(',', $userEmail);
 
@@ -50,7 +51,6 @@ class RequestMail
                 mail($email, 'Request. Замена парт номера на аналог', $mailToManager, $headers);
             }
         }
-        mail('dv@generalse.com', 'Request. Замена парт номера на аналог', $mailToManager, $headers);
         return true;
     }
 
@@ -73,7 +73,8 @@ class RequestMail
         $mailToManager .= "<b>Old status:</b>" . iconv('WINDOWS-1251', 'UTF-8', $oldStatus) . "<br>";
         $mailToManager .= "<b>New status:</b>" . iconv('WINDOWS-1251', 'UTF-8', $newStatus);
 
-        mail('maldini2@ukr.net', 'Request. Замена парт номера на аналог', $mailToManager, $headers);
+        mail('do@generalse.com', 'Request. Статус изменен', $mailToManager, $headers);
+        mail('dv@generalse.com', 'Request. Статус изменен', $mailToManager, $headers);
 
         $emails = explode(',', $userEmail);
 
@@ -82,8 +83,6 @@ class RequestMail
                 mail($email, 'Request. Статус изменен', $mailToManager, $headers);
             }
         }
-
-        mail('dv@generalse.com', 'Request. Статус изменен', $mailToManager, $headers);
         return true;
     }
 }

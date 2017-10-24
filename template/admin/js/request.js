@@ -11,6 +11,15 @@ $('body').on('click', '#add-request-button', function() {
     $('#add-request-modal').foundation('open');
 });
 
+$('body').on('click', '#add-multi-request-button', function() {
+    $('.name-product').text('');
+    $('.pn-analog').text('');
+    $(".group-stocks").addClass('hide');
+    $(".group-analog").addClass('hide');
+    $('#add-multi-request-modal form')[0].reset();
+    $('#add-multi-request-modal').foundation('open');
+});
+
 // модальное окно (узнать цену по парт номеру)
 $('body').on('click', '#price-button', function() {
     $('.name-product').text('');

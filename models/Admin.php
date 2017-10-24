@@ -164,7 +164,7 @@ class Admin
 
     /**
      * Список всех пользоватей
-     * @param null $filter
+     * @param bool $filter
      * @return array
      */
     public static function getAllUsers($filter = true)

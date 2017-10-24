@@ -33,16 +33,16 @@ class AdminController extends AdminBase
             } else {
                 //Если данные правильные, запоминаем пользователя в сессию
                 $user = new User($userId);
-                if($user->is_active == 1){
+                if($user->isActive() == 1){
                     Admin::auth($userId);
 
                     Logger::getInstance()->log($userId, 'вошел(а) в кабинет');
 
                     //Перенаправляем пользователя в закрытую часть – кабинет
-                    $succusse['log'] = $user->login_url;
+                    $succusse['log'] = $user->getUrlAfterLogin();
                     $succusse['code'] = 2;
                     echo json_encode($succusse);
-                } elseif ($user->is_active == 0) {
+                } elseif ($user->isActive() == 0) {
                     unset($_SESSION['info_user']);
                     $errors['log'] = '';
                     $errors['code'] = 3;

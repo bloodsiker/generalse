@@ -3,13 +3,10 @@
 namespace Umbrella\controllers\umbrella\psr;
 
 use Umbrella\app\AdminBase;
-use Umbrella\app\Mail\PsrMail;
 use Umbrella\app\User;
-use Umbrella\components\Functions;
 use Umbrella\models\Admin;
 use Umbrella\models\Products;
 use Umbrella\models\psr\Psr;
-use upload as FileUpload;
 
 class PsrActivityController extends AdminBase
 {
