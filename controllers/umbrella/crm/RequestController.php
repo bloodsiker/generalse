@@ -2,6 +2,7 @@
 namespace Umbrella\controllers\umbrella\crm;
 
 use Josantonius\Session\Session;
+use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
 use Umbrella\app\Group;
 use Umbrella\app\Mail\RequestMail;
@@ -118,8 +119,7 @@ class RequestController extends AdminBase
                     Logger::getInstance()->log($user->id_user, ' создал новый запрос в Request');
                 }
             }
-
-            header("Location: " . $_SERVER['HTTP_REFERER']);
+            Url::previous();
         }
 
         if($user->role == 'partner' || $user->role == 'manager'){
@@ -276,7 +276,7 @@ class RequestController extends AdminBase
                         }
 
                         Logger::getInstance()->log($user->id_user, ' загрузил массив с excel в Request');
-                        header("Location: /adm/crm/request");
+                        Url::redirect('/adm/crm/request');
                     }
                 }
             }
@@ -307,7 +307,7 @@ class RequestController extends AdminBase
                             Orders::addReserveOrdersMsSQL($options);
                         }
                         Logger::getInstance()->log($user->id_user, ' изменил(а) статусы в Request с excel');
-                        header("Location: /adm/crm/request");
+                        Url::redirect('/adm/crm/request');
                     }
                 }
             }
@@ -484,7 +484,7 @@ class RequestController extends AdminBase
                             }
                         }
                         Logger::getInstance()->log($user->id_user, ' изменил(а) статусы в Request с excel');
-                        header("Location: /adm/crm/request");
+                        Url::redirect('/adm/crm/request');
                     }
                 }
             }
@@ -522,7 +522,7 @@ class RequestController extends AdminBase
             file_put_contents($file, $person, FILE_APPEND | LOCK_EX);
 
             Logger::getInstance()->log($user->id_user, 'удалил request #' . $id);
-            header("Location: " . $_SERVER['HTTP_REFERER']);
+            Url::previous();
         }
         return true;
     }
@@ -545,7 +545,7 @@ class RequestController extends AdminBase
 
             $ok = PartAnalog::addPartAnalog($part_number, $part_analog);
             if($ok){
-                header("Location: " . $_SERVER['HTTP_REFERER']);
+                Url::previous();
             }
         }
 
@@ -573,7 +573,7 @@ class RequestController extends AdminBase
                             PartAnalog::addPartAnalog($part_number, $part_analog);
 
                         }
-                        header("Location: " . $_SERVER['HTTP_REFERER']);
+                        Url::previous();
                     }
                 }
             }
@@ -613,6 +613,8 @@ class RequestController extends AdminBase
         if (!empty($_FILES['excel_file'])) {
             $handle = new FileUpload($_FILES['excel_file']);
             if ($handle->uploaded) {
+                //$handle->file_auto_rename = false;
+                $handle->file_overwrite = true;
                 $file_name = $handle->file_src_name;
                 $path = '/upload/attach_request/';
                 $handle->process(ROOT . $path);

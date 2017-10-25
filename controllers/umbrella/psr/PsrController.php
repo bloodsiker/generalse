@@ -3,6 +3,7 @@
 namespace Umbrella\controllers\umbrella\psr;
 
 use Josantonius\Session\Session;
+use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
 use Umbrella\app\Mail\PsrMail;
 use Umbrella\app\User;
@@ -66,7 +67,7 @@ class PsrController extends AdminBase
                 PsrMail::getInstance()->sendEmailWithNewPsr($id, $user->name_partner, $options);
                 Session::set('psr_success', 'Successful PSR device registration');
                 Session::set('class', 'alert-success');
-                header('Location: ' . $_SERVER['HTTP_REFERER']);
+                Url::previous();
             }
         }
 
@@ -83,11 +84,11 @@ class PsrController extends AdminBase
                     $handle->clean();
                     Session::set('psr_success', 'The warranty card is attached');
                     Session::set('class', 'alert-success');
-                    header('Location: ' . $_SERVER['HTTP_REFERER']);
+                    Url::previous();
                 } else {
                     Session::set('psr_success', 'Error : '. $handle->error);
                     Session::set('class', 'alert-danger');
-                    header('Location: ' . $_SERVER['HTTP_REFERER']);
+                    Url::previous();
                 }
             }
         }
@@ -100,11 +101,9 @@ class PsrController extends AdminBase
             if($ok){
                 Session::set('psr_success', 'Declaration number added');
                 Session::set('class', 'alert-success');
-                header('Location: ' . $_SERVER['HTTP_REFERER']);
             }else {
                 Session::set('psr_success', 'Error : Could not add declaration number');
                 Session::set('class', 'alert-danger');
-                header('Location: ' . $_SERVER['HTTP_REFERER']);
             }
         }
 

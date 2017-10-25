@@ -3,6 +3,7 @@
 namespace Umbrella\controllers\umbrella;
 
 use Josantonius\Session\Session;
+use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
 use Umbrella\app\User;
 use Umbrella\components\ImportExcel;
@@ -162,7 +163,7 @@ class KpiController extends AdminBase
                             Session::set('kpi_success', $i);
                         }
                     }
-                    header("Location: /adm/kpi/import");
+                    Url::redirect('/adm/kpi/import');
                 }
             }
 
@@ -206,7 +207,7 @@ class KpiController extends AdminBase
                             Session::set('call_success', $i);
                         }
                     }
-                    header("Location: /adm/kpi/import");
+                    Url::redirect('/adm/kpi/import');
                 }
             }
 
@@ -248,7 +249,7 @@ class KpiController extends AdminBase
                             Session::set('email_success', $i);
                         }
                     }
-                    header("Location: /adm/kpi/import");
+                    Url::redirect('/adm/kpi/import');
                 }
             }
         }

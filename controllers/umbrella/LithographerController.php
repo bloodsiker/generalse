@@ -2,6 +2,7 @@
 
 namespace Umbrella\controllers\umbrella;
 
+use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
 use Umbrella\app\User;
 use Umbrella\models\Admin;
@@ -117,7 +118,7 @@ class LithographerController extends AdminBase
         // список закрытых статей для пользователя
         $listArticlesCloseViewUser = array_column(Lithographer::getArticleCloseViewByIdUser($user->id_user),'id_lithographer');
         if(in_array($id, $listArticlesCloseViewUser)){
-            header("Location: /adm/access_denied");
+            Url::redirect('/adm/access_denied');
         }
 
         $listUsers = Admin::getAllUsers();
@@ -175,9 +176,7 @@ class LithographerController extends AdminBase
                     }
                 }
             }
-            if (!empty($_SERVER['HTTP_REFERER'])){
-                header("Location: " . $_SERVER['HTTP_REFERER']);
-            }
+            Url::previous();
         }
 
 
@@ -207,12 +206,8 @@ class LithographerController extends AdminBase
                         Lithographer::addUserViewClose($user_id, $id);
                     }
                 }
-
-                if (!empty($_SERVER['HTTP_REFERER'])){
-                    header("Location: " . $_SERVER['HTTP_REFERER']);
-                }
+                Url::previous();
             }
-            //print_r($options);
         }
 
 
@@ -242,10 +237,7 @@ class LithographerController extends AdminBase
                         Lithographer::addUserViewClose($user_id, $id);
                     }
                 }
-
-                if (!empty($_SERVER['HTTP_REFERER'])){
-                    header("Location: " . $_SERVER['HTTP_REFERER']);
-                }
+                Url::previous();
             }
         }
         return true;
@@ -296,7 +288,7 @@ class LithographerController extends AdminBase
             if($article['id_author'] == $user->id_user && $article['published'] == 0) {
 
             } else {
-               header("Location: /adm/access_denied");
+               Url::redirect('/adm/access_denied');
             }
         }
 
@@ -322,7 +314,7 @@ class LithographerController extends AdminBase
                         Lithographer::addUserViewClose($user_id, $id);
                     }
                 }
-                header("Location: /adm/lithographer/list");
+                Url::redirect('/adm/lithographer/list');
             }
         }
 
@@ -367,15 +359,15 @@ class LithographerController extends AdminBase
 
         if ($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin') {
             Lithographer::deleteArticleById($id);
-            header("Location: /adm/lithographer/list");
+            Url::redirect('/adm/lithographer/list');
 
         } elseif ($user->getRole() == 'partner') {
 
             if ($article['id_author'] == $user->id_user && $article['published'] == 0) {
                 Lithographer::deleteArticleById($id);
-                header("Location: /adm/lithographer/list");
+                Url::redirect('/adm/lithographer/list');
             } else {
-                header("Location: /adm/access_denied");
+                Url::redirect('/adm/access_denied');
             }
         }
         return true;

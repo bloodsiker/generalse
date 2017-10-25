@@ -13,7 +13,8 @@
     "require": {
         "verot/class.upload.php": "dev-master",
         "josegonzalez/dotenv": "^3.2",
-        "Josantonius/Session": "^1.1"
+        "Josantonius/Session": "^1.1",
+        "Josantonius/Url": "^1.1"
     },
     "autoload": {
         "psr-4": {

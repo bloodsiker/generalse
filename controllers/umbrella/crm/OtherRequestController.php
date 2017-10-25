@@ -1,6 +1,7 @@
 <?php
 namespace Umbrella\controllers\umbrella\crm;
 
+use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
 use Umbrella\app\Mail\OtherRequestMail;
 use Umbrella\app\User;
@@ -53,7 +54,7 @@ class OtherRequestController extends AdminBase
             $id = OtherRequest::addRequestOrders($options);
             if($id){
                 OtherRequestMail::getInstance()->sendEmailGS($options, $user->name_partner, $id);
-                header("Location: " . $_SERVER['HTTP_REFERER']);
+                Url::previous();
             }
         }
 
@@ -118,7 +119,7 @@ class OtherRequestController extends AdminBase
                         OtherRequestMail::getInstance()->sendImportEmailGS($options, $user->name_partner, count($excelArray));
 
                         Logger::getInstance()->log($user->id_user, ' загрузил массив с excel в Lenovo Request');
-                        header("Location: /adm/crm/other-request");
+                        Url::redirect('/adm/crm/other-request');
                     }
                 }
             }

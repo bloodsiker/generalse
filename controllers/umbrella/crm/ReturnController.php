@@ -3,6 +3,7 @@
 namespace Umbrella\controllers\umbrella\crm;
 
 use Josantonius\Session\Session;
+use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
 use Umbrella\app\User;
 use Umbrella\components\ImportExcel;
@@ -177,7 +178,7 @@ class ReturnController extends AdminBase
                         Session::set('error_return',  $errorReturn);
                     }
                 }
-                header("Location: " . $_SERVER['HTTP_REFERER']);
+                Url::previous();
             }
         }
         return true;

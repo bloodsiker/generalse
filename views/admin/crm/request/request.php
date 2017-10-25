@@ -23,7 +23,7 @@
                                 <?php endif;?>
 
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.multi-request.send', 'view')): ?>
-                                    <button class="button primary tool hide" id="add-multi-request-button"><i class="fi-plus"></i> Multi Request</button>
+                                    <button class="button primary tool" id="add-multi-request-button"><i class="fi-plus"></i> Multi Request</button>
                                 <?php endif;?>
 
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.import', 'view')): ?>
@@ -340,39 +340,12 @@
                     <input type="text" name="so_number" autocomplete="off">
                 </div>
 
-
-                <div class="medium-12 small-12 columns">
-                    <label>Part description RUS</label>
-                    <input type="text" name="pn_name_rus" autocomplete="off">
-                </div>
-
-
-                <div class="medium-12 small-12 columns">
-                    <label>Type</label>
-                    <select name="order_type_id" class="required" required>
-                        <option value="" selected disabled>none</option>
-                        <?php foreach ($order_type as $type):?>
-                            <option value="<?= $type['id']?>"><?= iconv('WINDOWS-1251', 'UTF-8', $type['name'])?></option>
-                        <?php endforeach;?>
-                    </select>
-                </div>
-                <?php if(is_array($delivery_address) && !empty($delivery_address)):?>
-                    <div class="medium-12 small-12 columns">
-                        <label>Delivery address</label>
-                        <select name="note" class="required" required>
-                            <option value="" selected disabled>none</option>
-                            <?php foreach ($delivery_address as $address):?>
-                                <option value="<?= $address?>"><?= $address?></option>
-                            <?php endforeach;?>
-                        </select>
-                    </div>
-                <?php endif; ?>
                 <div class="medium-12 small-12 columns">
                     <label>Flash on PNC</label>
                     <input type="text" name="note1" autocomplete="off">
                 </div>
 
-                <input type="hidden" name="add_request" value="true">
+                <input type="hidden" name="add_multi_request" value="true">
                 <div class="medium-12 small-12 columns">
                     <button type="submit" class="button primary">Send</button>
                 </div>

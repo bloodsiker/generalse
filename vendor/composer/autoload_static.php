@@ -17,6 +17,7 @@ class ComposerStaticInit757ae5c9dd284343ce5a49deba304424
         ),
         'J' => 
         array (
+            'Josantonius\\Url\\' => 16,
             'Josantonius\\Session\\' => 20,
         ),
     );
@@ -29,6 +30,10 @@ class ComposerStaticInit757ae5c9dd284343ce5a49deba304424
         'M1\\Env\\' => 
         array (
             0 => __DIR__ . '/..' . '/m1/env/src',
+        ),
+        'Josantonius\\Url\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/josantonius/url/src/Url',
         ),
         'Josantonius\\Session\\' => 
         array (

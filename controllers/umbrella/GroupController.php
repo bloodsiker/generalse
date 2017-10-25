@@ -2,6 +2,7 @@
 
 namespace Umbrella\controllers\umbrella;
 
+use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
 use Umbrella\app\Group;
 use Umbrella\app\User;
@@ -44,7 +45,7 @@ class GroupController extends AdminBase
             $ok = GroupModel::addGroup($options);
 
             if($ok){
-                header("Location: /adm/users");
+                Url::redirect('/adm/users');
             }
         }
 
@@ -78,7 +79,7 @@ class GroupController extends AdminBase
             if($ok){
                 // Добавляем юзеру все запрещенные страницы группы
                 $user->addDeniedForGroupUser($id_group, $id_user);
-                header("Location: " . $_SERVER['HTTP_REFERER']);
+                Url::previous();
             }
         }
 
@@ -109,7 +110,7 @@ class GroupController extends AdminBase
             $id_stock = $_POST['id_stock'];
             $ok = GroupModel::addStockGroup($id_group, $id_stock, $section);
             if($ok){
-                header("Location: " . $_SERVER['HTTP_REFERER']);
+                Url::previous();
             }
         }
 
@@ -140,8 +141,7 @@ class GroupController extends AdminBase
             echo "<script>alert('У вас нету прав на удаление')</script>";
         }
 
-        // Перенаправляем пользователя на страницу управлениями товарами
-        header("Location: " . $_SERVER['HTTP_REFERER']);
+        Url::previous();
         return true;
     }
 
@@ -163,8 +163,7 @@ class GroupController extends AdminBase
             echo "<script>alert('У вас нету прав на удаление')</script>";
         }
 
-        // Перенаправляем пользователя на страницу управлениями товарами
-        header("Location: " . $_SERVER['HTTP_REFERER']);
+        Url::previous();
         return true;
     }
 
@@ -208,7 +207,7 @@ class GroupController extends AdminBase
                 //При добавлении нового запрета для группы, добавляем этот запрет и каждому пользователю
                 $list_user_group = $group->usersFromGroup($id_group);
                 $group->addDeniedUserFromGroup($list_user_group, $name, $slug, $id_group);
-                header("Location: " . $_SERVER['HTTP_REFERER']);
+                Url::previous();
             }
         } elseif(isset($_POST['action']) && $_POST['action'] == 'success'){
             $name = $_POST['name'];
@@ -217,7 +216,7 @@ class GroupController extends AdminBase
             if($ok){
                 //При удалении запретной страницы из группы, она удаляеться у всех членов группы
                 $group->deleteDeniedForGroupUser($id_group, $slug);
-                header("Location: " . $_SERVER['HTTP_REFERER']);
+                Url::previous();
             }
         }
 

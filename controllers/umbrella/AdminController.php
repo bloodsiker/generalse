@@ -3,6 +3,7 @@
 namespace Umbrella\controllers\umbrella;
 
 use Josantonius\Session\Session;
+use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
 use Umbrella\app\User;
 use Umbrella\components\Functions;
@@ -90,7 +91,7 @@ class AdminController extends AdminBase
         Session::destroy('info_user');
 
         Logger::getInstance()->log($userId, 'вышел(а) с кабинета');
-        header("Location: /");
+        Url::redirect('/');
     }
 
 }

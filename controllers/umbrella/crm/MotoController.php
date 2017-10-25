@@ -1,6 +1,7 @@
 <?php
 namespace Umbrella\controllers\umbrella\crm;
 
+use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
 use Umbrella\app\User;
 use Umbrella\components\Logger;
@@ -127,6 +128,7 @@ class MotoController extends AdminBase
             if($ok){
                 Logger::getInstance()->log($user->id_user, 'создал новую заявку ремонта в Motorola ' . $_REQUEST['serial_number']);
                 header("Location: " . $_SERVER['HTTP_REFERER']);
+                Url::previous();
             }
         }
 
@@ -143,7 +145,7 @@ class MotoController extends AdminBase
             $ok = Moto::addPartsMsSQL($options);
             //$ok = Moto::addParts($options);
             if($ok){
-                header("Location: " . $_SERVER['HTTP_REFERER']);
+                Url::previous();
             }
         }
 
@@ -159,7 +161,7 @@ class MotoController extends AdminBase
 
             $ok = Moto::addLocalSourceMsSQL($options);
             if($ok){
-                header("Location: " . $_SERVER['HTTP_REFERER']);
+                Url::previous();
             }
         }
 
@@ -175,7 +177,7 @@ class MotoController extends AdminBase
 
             $ok = Moto::closeRepairMsSQL($options);
             if($ok){
-                header("Location: " . $_SERVER['HTTP_REFERER']);
+                Url::previous();
             }
 
         }

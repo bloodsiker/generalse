@@ -2,6 +2,7 @@
 
 namespace Umbrella\controllers\umbrella;
 
+use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
 use Umbrella\app\User;
 use Umbrella\models\Admin;
@@ -124,7 +125,7 @@ class RefundRequestController extends AdminBase
                                 }
                             }
 
-                            header("Location: /adm/refund_request/thank_you_page");
+                            Url::redirect('/adm/refund_request/thank_you_page');
 
                         } else {
                             //echo "ПН не совпадает " .$count_not_pn;
@@ -198,7 +199,7 @@ class RefundRequestController extends AdminBase
                         }
                     }
                 }
-                header("Location: /adm/refund_request/thank_you_page");
+                    Url::redirect('/adm/refund_request/thank_you_page');
                 } else {
                     array_push($arr_error_pn, $options['PN_MTM']);
                 }

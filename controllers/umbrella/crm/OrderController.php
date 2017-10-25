@@ -2,6 +2,7 @@
 namespace Umbrella\controllers\umbrella\crm;
 
 use Josantonius\Session\Session;
+use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
 use Umbrella\app\User;
 use Umbrella\components\ImportExcel;
@@ -147,7 +148,7 @@ class OrderController extends AdminBase
                     }
                 }
 
-                header("Location: /adm/crm/orders_success");
+                Url::redirect('/adm/crm/orders_success');
             }
         }
 
@@ -285,7 +286,6 @@ class OrderController extends AdminBase
             $allOrders = Orders::getAllOrdersMsSql($filter);
 
             // Параметры для формирование фильтров
-            // Параметры для формирование фильтров
             $groupList = GroupModel::getGroupList();
             $userInGroup = [];
             $i = 0;
@@ -302,7 +302,6 @@ class OrderController extends AdminBase
             $userInGroup = array_merge($userInGroup, $userNotGroup);
         }
 
-        //require_once(ROOT . '/views/admin/crm/orders.php');
         $this->render('admin/crm/orders/orders', compact('userInGroup', 'partnerList', 'allOrders',
             'delivery_address', 'user', 'arr_error_pn', 'arr_error_text'));
         return true;
@@ -527,7 +526,6 @@ class OrderController extends AdminBase
             $userInGroup = array_merge($userInGroup, $userNotGroup);
         }
 
-        //require_once(ROOT . '/views/admin/crm/orders.php');
         $this->render('admin/crm/orders/orders_search', compact('userInGroup', 'partnerList', 'allOrders',
             'delivery_address', 'user', 'arr_error_pn', 'arr_error_text', 'search'));
         return true;

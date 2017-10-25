@@ -2,6 +2,7 @@
 namespace Umbrella\controllers\umbrella;
 
 use Josantonius\Session\Session;
+use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
 use Umbrella\app\Services\UserService;
 use Umbrella\app\User;
@@ -61,7 +62,7 @@ class UserController extends AdminBase
 
         if($user->getRole() == 'partner' || $user->getRole() == 'manager'){
 
-            header("Location: /adm/access_denied");
+            Url::redirect('/adm/access_denied');
 
         } else if($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin' ){
 
@@ -89,7 +90,7 @@ class UserController extends AdminBase
             $control_user_id = $_POST['id_user'];
             $ok = Admin::addUserControl($id_user, $control_user_id);
             if($ok){
-                header("Location: " . $_SERVER['HTTP_REFERER']);
+                Url::previous();
             }
         }
 
@@ -113,9 +114,7 @@ class UserController extends AdminBase
             echo "<script>alert('У вас нету прав на удаление')</script>";
         }
 
-        // Перенаправляем пользователя на страницу управлениями товарами
-        header("Location: " . $_SERVER['HTTP_REFERER']);
-
+        Url::previous();
         return true;
     }
 
@@ -141,7 +140,7 @@ class UserController extends AdminBase
 
         if($user->getRole() == 'partner' || $user->getRole() == 'manager'){
 
-            header("Location: /adm/access_denied");
+            Url::redirect('/adm/access_denied');
 
         } else if($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin'){
 
@@ -193,8 +192,7 @@ class UserController extends AdminBase
                         $log = "добавил нового пользователя " . $options['name_partner'];
                         Log::addLog($user->id_user, $log);
                         Session::set('user_success', "User {$options['name_partner']} successfully added");
-                        // Перенаправляем пользователя на страницу юзеров
-                        header("Location: /adm/users");
+                        Url::redirect('/adm/access_denied');
                     }
                 }
             }
@@ -241,7 +239,7 @@ class UserController extends AdminBase
 
         if($user->getRole() == 'partner' || $user->getRole() == 'manager'){
 
-            header("Location: /adm/access_denied");
+            Url::redirect('/adm/access_denied');
 
         } else if($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin'){
 
@@ -268,8 +266,7 @@ class UserController extends AdminBase
                         Session::destroy('info_user');
                         $log = "редактировал учетку пользователя " . $userInfo['name_partner'];
                         Log::addLog($user->id_user, $log);
-                        // Перенаправляем пользователя на страницу юзеров
-                        header("Location: /adm/users");
+                        Url::redirect('/adm/users');
                     }
                 }
             }
@@ -287,7 +284,7 @@ class UserController extends AdminBase
                         $log = "изменил пароль от учетки пользователя " . $userInfo['name_partner'];
                         Log::addLog($user->id_user, $log);
 
-                        header("Location: /adm/users");
+                        Url::redirect('/adm/users');
                     }
                 }
             }

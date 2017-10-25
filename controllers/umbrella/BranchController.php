@@ -2,6 +2,7 @@
 
 namespace Umbrella\controllers\umbrella;
 
+use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
 use Umbrella\app\User;
 use Umbrella\models\Admin;
@@ -49,7 +50,7 @@ class BranchController extends AdminBase
                     Branch::addUserInBranch($user_id, $id_branch);
                 }
             }
-            header("Location: " . $_SERVER['HTTP_REFERER']);
+            Url::previous();
         }
 
         $this->render('admin/branch/index', compact('user', 'allUserBranch', 'userListBranch', 'listUsers'));
@@ -72,8 +73,7 @@ class BranchController extends AdminBase
             $id_country = Branch::addBranch($options);
 
             if($id_country){
-                // Перенаправляем пользователя на страницу юзеров
-                header("Location: /adm/users");
+                Url::redirect('/adm/users');
             }
         }
 
@@ -97,8 +97,7 @@ class BranchController extends AdminBase
             echo "<script>alert('У вас нету прав на удаление стран')</script>";
         }
 
-        // Перенаправляем пользователя на страницу управлениями товарами
-        header("Location: " . $_SERVER['HTTP_REFERER']);
+        Url::previous();
         return true;
     }
 

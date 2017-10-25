@@ -2,6 +2,7 @@
 
 namespace Umbrella\controllers\umbrella;
 
+use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
 use Umbrella\app\User;
 use Umbrella\models\Admin;
@@ -35,18 +36,15 @@ class CountryController extends AdminBase
 
         $countryList = Country::getAllCountry();
 
-        // Обработка формы
         if (isset($_POST['add_country'])) {
 
             $options['short_name'] = $_POST['short_name'];
             $options['full_name'] = $_POST['full_name'];
 
-            // Сохраняем изменения
             $id_country = Country::addCountry($options);
 
             if($id_country){
-                // Перенаправляем пользователя на страницу юзеров
-                header("Location: /adm/users");
+                Url::redirect('/adm/users');
             }
         }
 
@@ -66,18 +64,15 @@ class CountryController extends AdminBase
 
         $countryById = Country::getCountryId($id_country);
 
-        // Обработка формы
         if (isset($_POST['update_country'])) {
 
             $options['short_name'] = $_POST['short_name'];
             $options['full_name'] = $_POST['full_name'];
 
-            // Сохраняем изменения
             $id_country = Country::updateCountry($id_country, $options);
 
             if($id_country){
-                // Перенаправляем пользователя на страницу юзеров
-                header("Location: /adm/users");
+                Url::redirect('/adm/users');
             }
         }
 
@@ -100,8 +95,7 @@ class CountryController extends AdminBase
             echo "<script>alert('У вас нету прав на удаление стран')</script>";
         }
 
-        // Перенаправляем пользователя на страницу управлениями товарами
-        header("Location: /adm/users");
+        Url::redirect('/adm/users');
         return true;
     }
 

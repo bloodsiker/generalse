@@ -2,6 +2,7 @@
 namespace Umbrella\controllers\umbrella\crm;
 
 use Josantonius\Session\Session;
+use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
 use Umbrella\app\Group;
 use Umbrella\app\User;
@@ -110,7 +111,7 @@ class SupplyController extends AdminBase
                         Session::set('error_supply', $supply_error_part);
                     }
                 }
-                header("Location: /adm/crm/supply");
+                Url::redirect('/adm/crm/supply');
             }
         }
 
@@ -178,7 +179,7 @@ class SupplyController extends AdminBase
                         Session::set('error_supply', $supply_error_part);
                     }
                 }
-                header("Location: /adm/crm/supply");
+                Url::redirect('/adm/crm/supply');
             }
         }
         return true;

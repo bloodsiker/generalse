@@ -2,6 +2,7 @@
 namespace Umbrella\controllers\umbrella\crm;
 
 use Josantonius\Session\Session;
+use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
 use Umbrella\app\User;
 use Umbrella\components\ImportExcel;
@@ -159,7 +160,7 @@ class PurchaseController extends AdminBase
                     }
                 }
 
-                header("Location: /adm/crm/purchase_success");
+                Url::redirect('/adm/crm/purchase_success');
             }
         }
 
@@ -420,7 +421,6 @@ class PurchaseController extends AdminBase
         }
 
         print_r($html);
-
         return true;
     }
 

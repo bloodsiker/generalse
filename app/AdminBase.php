@@ -3,6 +3,7 @@
 namespace Umbrella\app;
 
 use Josantonius\Session\Session;
+use Josantonius\Url\Url;
 use Umbrella\models\Admin;
 use Umbrella\app\UserDenied;
 use Umbrella\app\User;
@@ -54,7 +55,7 @@ abstract class AdminBase extends Controller
 
         if($user->isActive() == 0) {
             Session::destroy('user');
-            header('Location: /');
+            Url::redirect('/');
         }
 
         $denied = new UserDenied($user);
@@ -63,7 +64,7 @@ abstract class AdminBase extends Controller
         } elseif ($param == 'controller'){
             $check = $denied->checkUserInDeniedList($section, 'slug');
             if($check === false){
-                header('Location: /adm/access_denied');
+                Url::redirect('/adm/access_denied');
             }
             return true;
         }
