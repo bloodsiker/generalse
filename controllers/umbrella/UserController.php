@@ -1,6 +1,7 @@
 <?php
 namespace Umbrella\controllers\umbrella;
 
+use Josantonius\Session\Session;
 use Umbrella\app\AdminBase;
 use Umbrella\app\Services\UserService;
 use Umbrella\app\User;
@@ -41,10 +42,7 @@ class UserController extends AdminBase
     {
         $user = $this->user;
 
-        if(isset($_SESSION['user_success'])){
-            $message = $_SESSION['user_success'];
-            unset($_SESSION['user_success']);
-        }
+        $message = Session::pull('user_success');
 
         $filter = 'true';
 
@@ -149,7 +147,7 @@ class UserController extends AdminBase
 
             // Обработка формы
             if (isset($_POST['add_user']) && $_POST['add_user'] == 'true') {
-                if($_POST['_token'] == $_SESSION['_token']){
+                if($_POST['_token'] == Session::get('_token')){
                     $options['id_role'] = $_POST['role'];
                     $options['name_partner'] = $_POST['name_partner'];
                     $options['id_country'] = $_POST['id_country'];
@@ -194,7 +192,7 @@ class UserController extends AdminBase
                         }
                         $log = "добавил нового пользователя " . $options['name_partner'];
                         Log::addLog($user->id_user, $log);
-                        $_SESSION['user_success'] = "User {$options['name_partner']} successfully added";
+                        Session::set('user_success', "User {$options['name_partner']} successfully added");
                         // Перенаправляем пользователя на страницу юзеров
                         header("Location: /adm/users");
                     }
@@ -267,7 +265,7 @@ class UserController extends AdminBase
                     $ok = Admin::updateUserById($id, $options);
 
                     if($ok){
-                        unset($_SESSION['info_user']);
+                        Session::destroy('info_user');
                         $log = "редактировал учетку пользователя " . $userInfo['name_partner'];
                         Log::addLog($user->id_user, $log);
                         // Перенаправляем пользователя на страницу юзеров
@@ -343,18 +341,17 @@ class UserController extends AdminBase
 
         $user = $this->user;
 
-        // Получаем данные о конкретной пользователе
         $userInfo = Admin::getAdminById($id);
 
         if($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin'){
             Admin::deleteUserById($id);
             $log = "удалил учетку пользователя " . $userInfo['name_partner'];
+            Session::set('user_success', "User {$userInfo['name_partner']} deleted!");
             Log::addLog($user->id_user, $log);
         } else {
             echo "<script>alert('У вас нету прав на удаление пользователя')</script>";
         }
 
-        // Перенаправляем пользователя на страницу управлениями товарами
         header("Location: /adm/users");
         return true;
     }

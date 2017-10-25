@@ -2,6 +2,7 @@
 
 namespace Umbrella\controllers\umbrella\crm;
 
+use Josantonius\Session\Session;
 use Umbrella\app\AdminBase;
 use Umbrella\app\User;
 use Umbrella\components\ImportExcel;
@@ -38,10 +39,7 @@ class ReturnController extends AdminBase
 
         $partnerList = Admin::getAllPartner();
 
-        $arr_error_return = (isset($_SESSION['error_return'])) ? $_SESSION['error_return'] : '';
-        if(isset($_SESSION['error_return'])){
-            unset($_SESSION['error_return']);
-        }
+        $arr_error_return = Session::pull('error_return');
 
         $allReturnsByPartner = [];
         if($user->role == 'partner' || $user->role == 'manager') {
@@ -176,7 +174,7 @@ class ReturnController extends AdminBase
                         }
                         Logger::getInstance()->log($user->id_user, 'загрузил массив с excel в Returns');
                         // Пишем в сессию массив с ненайденными so number
-                        $_SESSION['error_return'] = $errorReturn;
+                        Session::set('error_return',  $errorReturn);
                     }
                 }
                 header("Location: " . $_SERVER['HTTP_REFERER']);
@@ -198,10 +196,7 @@ class ReturnController extends AdminBase
 
         $partnerList = Admin::getAllPartner();
 
-        $arr_error_return = (isset($_SESSION['error_return'])) ? $_SESSION['error_return'] : '';
-        if(isset($_SESSION['error_return'])){
-            unset($_SESSION['error_return']);
-        }
+        $arr_error_return = Session::pull('error_return');
 
         if($user->role == 'partner' || $user->role == 'manager') {
 

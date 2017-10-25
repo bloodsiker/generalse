@@ -2,6 +2,7 @@
 
 namespace Umbrella\controllers\umbrella;
 
+use Josantonius\Session\Session;
 use Umbrella\app\AdminBase;
 use Umbrella\app\User;
 use Umbrella\components\Functions;
@@ -23,31 +24,38 @@ class AdminController extends AdminBase
             $login = $_REQUEST['login'];
             $password = Functions::hashPass($_REQUEST['password']);
 
-            //Проверяем существует ли пользователь
-            $userId = Admin::checkAdminData($login, $password);
+            $server = 'up'; // down || up
+            if($server == 'up'){
+                //Проверяем существует ли пользователь
+                $userId = Admin::checkAdminData($login, $password);
 
-            if($userId == false){
-                $errors['log'] = 'Incorrect data entry';
-                $errors['code'] = 1;
-                echo json_encode($errors);
-            } else {
-                //Если данные правильные, запоминаем пользователя в сессию
-                $user = new User($userId);
-                if($user->isActive() == 1){
-                    Admin::auth($userId);
-
-                    Logger::getInstance()->log($userId, 'вошел(а) в кабинет');
-
-                    //Перенаправляем пользователя в закрытую часть – кабинет
-                    $succusse['log'] = $user->getUrlAfterLogin();
-                    $succusse['code'] = 2;
-                    echo json_encode($succusse);
-                } elseif ($user->isActive() == 0) {
-                    unset($_SESSION['info_user']);
-                    $errors['log'] = '';
-                    $errors['code'] = 3;
+                if($userId == false){
+                    $errors['log'] = 'Incorrect data entry';
+                    $errors['code'] = 1;
                     echo json_encode($errors);
+                } else {
+                    //Если данные правильные, запоминаем пользователя в сессию
+                    $user = new User($userId);
+                    if($user->isActive() == 1){
+                        Admin::auth($userId);
+
+                        Logger::getInstance()->log($userId, 'вошел(а) в кабинет');
+
+                        //Перенаправляем пользователя в закрытую часть – кабинет
+                        $succusse['log'] = $user->getUrlAfterLogin();
+                        $succusse['code'] = 2;
+                        echo json_encode($succusse);
+                    } elseif ($user->isActive() == 0) {
+                        Session::destroy('info_user');
+                        $errors['log'] = 'Доступ к данному аккаунту закрыт!';
+                        $errors['code'] = 3;
+                        echo json_encode($errors);
+                    }
                 }
+            } else {
+                $errors['log'] = 'Извините, Umbrella на техническом облуживании!<br> Сервис будет доступен в 10:20';
+                $errors['code'] = 3;
+                echo json_encode($errors);
             }
         }
         return true;
@@ -77,9 +85,9 @@ class AdminController extends AdminBase
         self::checkAdmin();
         $userId = Admin::CheckLogged();
 
-        unset($_SESSION['user']);
-        unset($_SESSION['_token']);
-        unset($_SESSION['info_user']);
+        Session::destroy('user');
+        Session::destroy('_token');
+        Session::destroy('info_user');
 
         Logger::getInstance()->log($userId, 'вышел(а) с кабинета');
         header("Location: /");

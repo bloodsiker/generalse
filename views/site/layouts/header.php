@@ -31,8 +31,10 @@
          <li><a href="/directions">Directions</a></li>
          <li><a href="/career">Career</a></li>
          <li><a href="/contact">Contact</a></li>
-         <?php if(isset($_SESSION['user'])):?>
-         <li><a href="/adm/crm/orders"><i class="fi-unlock"></i>Cabinet</a>
+           <?php \Josantonius\Session\Session::destroy('info_user')?>
+           <?php \Josantonius\Session\Session::destroy('user')?>
+         <?php if(\Josantonius\Session\Session::get('user')):?>
+            <li><a href="/adm/crm/orders"><i class="fi-unlock"></i>Cabinet</a>
          <?php else:?>
          <li><a id="open-auth"><i class="fi-torso"></i>&nbsp;Log&nbsp;in</a>
          <?php endif;?>

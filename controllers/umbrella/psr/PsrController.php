@@ -2,6 +2,7 @@
 
 namespace Umbrella\controllers\umbrella\psr;
 
+use Josantonius\Session\Session;
 use Umbrella\app\AdminBase;
 use Umbrella\app\Mail\PsrMail;
 use Umbrella\app\User;
@@ -40,12 +41,10 @@ class PsrController extends AdminBase
     public function actionIndex()
     {
         $user = $this->user;
-        if(isset($_SESSION['psr_success'])){
-            $message_success = $_SESSION['psr_success'];
-            $class = $_SESSION['class'];
-            unset($_SESSION['psr_success']);
-            unset($_SESSION['class']);
-        }
+
+        $message_success = Session::pull('psr_success');
+        $class = Session::pull('class');
+
 
         if(isset($_REQUEST['add_psr']) && $_REQUEST['add_psr'] == 'true') {
             $options['id_user'] = $user->id_user;
@@ -65,8 +64,8 @@ class PsrController extends AdminBase
             $id = Psr::addPsr($options);
             if($id){
                 PsrMail::getInstance()->sendEmailWithNewPsr($id, $user->name_partner, $options);
-                $_SESSION['psr_success'] = 'Successful PSR device registration';
-                $_SESSION['class'] = 'alert-success';
+                Session::set('psr_success', 'Successful PSR device registration');
+                Session::set('class', 'alert-success');
                 header('Location: ' . $_SERVER['HTTP_REFERER']);
             }
         }
@@ -82,12 +81,12 @@ class PsrController extends AdminBase
                 if ($handle->processed) {
                     Psr::addDocumentInPsr($_REQUEST['psr_id'], self::UPLOAD_PATH_PSR, $file_name);
                     $handle->clean();
-                    $_SESSION['psr_success'] = 'The warranty card is attached';
-                    $_SESSION['class'] = 'alert-success';
+                    Session::set('psr_success', 'The warranty card is attached');
+                    Session::set('class', 'alert-success');
                     header('Location: ' . $_SERVER['HTTP_REFERER']);
                 } else {
-                    $_SESSION['psr_success'] = 'Error : ' . $handle->error;
-                    $_SESSION['class'] = 'alert-danger';
+                    Session::set('psr_success', 'Error : '. $handle->error);
+                    Session::set('class', 'alert-danger');
                     header('Location: ' . $_SERVER['HTTP_REFERER']);
                 }
             }
@@ -99,12 +98,12 @@ class PsrController extends AdminBase
             $declaration_number = $_REQUEST['declaration_number'];
             $ok = Psr::addNumberDeclarationByPsr($psr_id, $declaration_number, 'declaration_number');
             if($ok){
-                $_SESSION['psr_success'] = 'Declaration number added';
-                $_SESSION['class'] = 'alert-success';
+                Session::set('psr_success', 'Declaration number added');
+                Session::set('class', 'alert-success');
                 header('Location: ' . $_SERVER['HTTP_REFERER']);
             }else {
-                $_SESSION['psr_success'] = 'Error : Could not add declaration number';
-                $_SESSION['class'] = 'alert-danger';
+                Session::set('psr_success', 'Error : Could not add declaration number');
+                Session::set('class', 'alert-danger');
                 header('Location: ' . $_SERVER['HTTP_REFERER']);
             }
         }

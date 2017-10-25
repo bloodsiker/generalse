@@ -1,6 +1,7 @@
 <?php
 namespace Umbrella\controllers\umbrella\crm;
 
+use Josantonius\Session\Session;
 use Umbrella\app\AdminBase;
 use Umbrella\app\User;
 use Umbrella\components\ImportExcel;
@@ -40,12 +41,8 @@ class PurchaseController extends AdminBase
 
         $partnerList = Admin::getAllPartner();
 
-        if(isset($_SESSION['error_purchase'])){
-            unset($_SESSION['error_purchase']);
-        }
-        if(isset($_SESSION['error_check_stock'])){
-            unset($_SESSION['error_check_stock']);
-        }
+        Session::destroy('error_purchase');
+        Session::destroy('error_check_stock');
 
         if(isset($_POST['send_excel_file']) && $_REQUEST['send_excel_file'] == 'true'){
             // Полачем последний номер покупки
@@ -129,9 +126,9 @@ class PurchaseController extends AdminBase
                         }
 
                         // Пишем в сессию массив с ненайденными партномерами
-                        $_SESSION['error_purchase'] = $arr_error_pn;
+                        Session::set('error_purchase', $arr_error_pn);
                         // Пишем в сессию массив с ненайденными партномерами на складах
-                        $_SESSION['error_check_stock'] = $arr_check_stock;
+                        Session::set('error_check_stock', $arr_check_stock);
 
 //                        echo "<pre>";
 //                        print_r($insertArray);
@@ -232,8 +229,8 @@ class PurchaseController extends AdminBase
 
         $partnerList = Admin::getAllPartner();
 
-        $arr_error_pn = $_SESSION['error_purchase'];
-        $arr_check_stock = $_SESSION['error_check_stock'];
+        $arr_error_pn = Session::pull('error_purchase');
+        $arr_check_stock = Session::pull('error_check_stock');
 
         if($user->role == 'partner' || $user->role == 'manager') {
 

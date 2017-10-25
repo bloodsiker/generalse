@@ -80,7 +80,7 @@
 <script src="/template/site/js/vendor/foundation.min.js"></script>
 <script src="/template/admin/js/app.js"></script>
 <script src="/template/site/js/parallax.min.js"></script>
-<script src="/template/site/js/main.js"></script>
+<script src="/template/site/js/main.js?v.1.5.0"></script>
 <script src="http://mynameismatthieu.com/WOW/dist/wow.min.js"></script>
 
 <script src="/template/site/js/html2canvas.js"></script>

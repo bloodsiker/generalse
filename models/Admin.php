@@ -2,6 +2,7 @@
 
 namespace Umbrella\models;
 
+use Josantonius\Session\Session;
 use PDO;
 use Umbrella\components\Db\MySQL;
 use Umbrella\components\Db\MsSQL;
@@ -274,9 +275,8 @@ class Admin
      */
     public static function auth($adminId)
     {
-        // После авторизации запоминаем id юзра в сессию.
-        $_SESSION['user'] = $adminId;
-        $_SESSION['_token'] = Functions::generateCode(30);
+        Session::set('user', $adminId);
+        Session::set('_token', Functions::generateCode(30));
     }
 
 
@@ -286,8 +286,8 @@ class Admin
      */
     public static function checkLogged()
     {
-        if (isset($_SESSION['user'])) {
-            return $_SESSION['user'];
+        if (Session::get('user')) {
+            return Session::get('user');
         } else {
             header("Location: /");
         }

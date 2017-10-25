@@ -1,6 +1,7 @@
 <?php
 namespace Umbrella\controllers\umbrella\crm;
 
+use Josantonius\Session\Session;
 use Umbrella\app\AdminBase;
 use Umbrella\app\User;
 use Umbrella\components\ImportExcel;
@@ -40,10 +41,8 @@ class OrderController extends AdminBase
 
         $delivery_address = $user->getDeliveryAddress();
 
-        if(isset($_SESSION['error_orders'])){
-            unset($_SESSION['error_orders']);
-            unset($_SESSION['error_orders_text']);
-        }
+        Session::destroy('error_orders');
+        Session::destroy('error_orders_text');
 
         if(isset($_REQUEST['send_excel_file']) && $_REQUEST['send_excel_file'] == 'true'){
             // Полачем последний номер покупки
@@ -119,10 +118,10 @@ class OrderController extends AdminBase
 //                        print_r($insertArray);
 
                         // Пишем в сессию массив с ненайденными партномерами
-                        $_SESSION['error_orders'] = $arr_error_pn;
+                        Session::set('error_orders', $arr_error_pn);
 
                         if(count($insertArray) > 0){
-                            $_SESSION['error_orders_text'] = 'Заказы созданы кроме парт номеров, которые не найдены на складе ' . $stock . ':';
+                            Session::set('error_orders_text', 'Заказы созданы кроме парт номеров, которые не найдены на складе ' . $stock . ':');
                             foreach ($insertArray as $insert){
                                 $options['site_id'] = $insert['site_id'];
                                 $options['id_user'] = $insert['id_user'];
@@ -143,7 +142,7 @@ class OrderController extends AdminBase
                             }
                             Logger::getInstance()->log($user->id_user, 'импортировал массив с excel в Orders');
                         } else {
-                            $_SESSION['error_orders_text'] = 'Заказы не созданы, так как не один парт номер не найден на складе ' . $stock . ':';
+                            Session::set('error_orders_text', 'Заказы не созданы, так как не один парт номер не найден на складе ' . $stock . ':');
                         }
                     }
                 }
@@ -233,8 +232,8 @@ class OrderController extends AdminBase
     {
         $user = $this->user;
 
-        $arr_error_pn = (isset($_SESSION['error_orders'])) ? $_SESSION['error_orders'] : '';
-        $arr_error_text = (isset($_SESSION['error_orders_text'])) ? $_SESSION['error_orders_text'] : '';
+        $arr_error_pn = Session::pull('error_orders');
+        $arr_error_text = Session::pull('error_orders_text');
 
         if($user->role == 'partner' || $user->role == 'manager') {
 

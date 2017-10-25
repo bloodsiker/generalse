@@ -2,6 +2,7 @@
 
 namespace Umbrella\controllers\umbrella;
 
+use Josantonius\Session\Session;
 use Umbrella\app\AdminBase;
 use Umbrella\app\User;
 use Umbrella\components\ImportExcel;
@@ -117,19 +118,9 @@ class KpiController extends AdminBase
 
         } else if($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin' || $user->getRole() == 'manager'){
 
-            $count_kpi_success = isset($_SESSION['kpi_success']) ? $_SESSION['kpi_success'] : '';
-            $count_call_success = isset($_SESSION['call_success']) ? $_SESSION['call_success'] : '';
-            $count_email_success = isset($_SESSION['email_success']) ? $_SESSION['email_success'] : '';
-
-            if(isset($_SESSION['kpi_success'])){
-                unset($_SESSION['kpi_success']);
-            }
-            if(isset($_SESSION['call_success'])){
-                unset($_SESSION['call_success']);
-            }
-            if(isset($_SESSION['email_success'])){
-                unset($_SESSION['email_success']);
-            }
+            $count_kpi_success = Session::pull('kpi_success');
+            $count_call_success = Session::pull('call_success');
+            $count_email_success = Session::pull('email_success');
 
             if(isset($_REQUEST['kpi_excel_file']) && $_REQUEST['kpi_excel_file'] == 'true'){
 
@@ -168,7 +159,7 @@ class KpiController extends AdminBase
                                 }
                             }
                             Logger::getInstance()->log($user->id_user, 'Импортировал массив KPI');
-                            $_SESSION['kpi_success'] = $i;
+                            Session::set('kpi_success', $i);
                         }
                     }
                     header("Location: /adm/kpi/import");
@@ -212,7 +203,7 @@ class KpiController extends AdminBase
                                 }
                             }
                             Logger::getInstance()->log($user->id_user, 'Импортировал массив Call CSAT');
-                            $_SESSION['call_success'] = $i;
+                            Session::set('call_success', $i);
                         }
                     }
                     header("Location: /adm/kpi/import");
@@ -254,7 +245,7 @@ class KpiController extends AdminBase
                                 }
                             }
                             Logger::getInstance()->log($user->id_user, 'Импортировал массив Email CSAT');
-                            $_SESSION['email_success'] = $i;
+                            Session::set('email_success', $i);
                         }
                     }
                     header("Location: /adm/kpi/import");

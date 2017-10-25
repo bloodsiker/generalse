@@ -1,6 +1,7 @@
 <?php
 namespace Umbrella\controllers\umbrella\crm;
 
+use Josantonius\Session\Session;
 use Umbrella\app\AdminBase;
 use Umbrella\app\Group;
 use Umbrella\app\Mail\RequestMail;
@@ -47,15 +48,8 @@ class RequestController extends AdminBase
         $user = $this->user;
         $group = new Group();
 
-        if(isset($_SESSION['add_request'])){
-            $request_message['add_request'] = $_SESSION['add_request'];
-            unset($_SESSION['add_request']);
-        }
-
-        if(isset($_SESSION['replace_by_analog'])){
-            $request_message['replace_by_analog'] = $_SESSION['replace_by_analog'];
-            unset($_SESSION['replace_by_analog']);
-        }
+        $request_message['add_request'] = Session::pull('add_request');
+        $request_message['replace_by_analog'] = Session::pull('replace_by_analog');
 
         $partnerList = Admin::getAllPartner();
         $order_type = Orders::getAllOrderTypes();
@@ -77,7 +71,7 @@ class RequestController extends AdminBase
             //если имееться аналог парт номера, заменяем его
             if($partAnalog){
                 $options['part_number'] = iconv('UTF-8', 'WINDOWS-1251', $partAnalog['part_analog']);
-                $_SESSION['replace_by_analog'] = "Part number {$_POST['part_number']} is replaced by an analog {$partAnalog['part_analog']}";
+                Session::set('replace_by_analog', "Part number {$_POST['part_number']} is replaced by an analog {$partAnalog['part_analog']}");
             } else {
                 $options['part_number'] = iconv('UTF-8', 'WINDOWS-1251', trim($_POST['part_number']));
             }
@@ -120,7 +114,7 @@ class RequestController extends AdminBase
                     $options['so_number'] = $_POST['so_number'];
                     //Пишем в mysql
                     Orders::addReserveOrders($options);
-                    $_SESSION['add_request'] = 'Out of stock, delivery is forming';
+                    Session::set('add_request', 'Out of stock, delivery is forming');
                     Logger::getInstance()->log($user->id_user, ' создал новый запрос в Request');
                 }
             }
@@ -275,10 +269,10 @@ class RequestController extends AdminBase
                                 Orders::addReserveOrdersMsSQL($options);
                             }
                         }
-                        $_SESSION['add_request'] = 'Out of stock, delivery is forming';
+                        Session::set('add_request', 'Out of stock, delivery is forming');
                         if(count($arrayReplaceAnalog) > 0){
                             $partImplode = implode(', ', $arrayReplaceAnalog);
-                            $_SESSION['replace_by_analog'] = "Part numbers is replaced by an analog {$partImplode}";
+                            Session::set('replace_by_analog', "Part numbers is replaced by an analog {$partImplode}");
                         }
 
                         Logger::getInstance()->log($user->id_user, ' загрузил массив с excel в Request');

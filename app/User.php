@@ -2,6 +2,7 @@
 
 namespace Umbrella\app;
 
+use Josantonius\Session\Session;
 use Umbrella\models\Admin;
 use Umbrella\models\DeliveryAddress;
 use Umbrella\models\Denied;
@@ -99,8 +100,8 @@ class User
      */
     public function getInfoUser()
     {
-        if(isset($_SESSION['info_user']) && !empty($_SESSION['info_user'])){
-            $user = $_SESSION['info_user'];
+        if(Session::get('info_user') && !empty(Session::get('info_user'))){
+            $user = Session::get('info_user');
         } else {
             $userGS = Admin::getAdminById($this->id_user);
             $userGM = Admin::getInfoGmUser($this->id_user);
@@ -110,8 +111,8 @@ class User
                 $userGS['gm']['PriceName'] = iconv('WINDOWS-1251', 'UTF-8', $userGS['gm']['PriceName']);
                 $userGS['gm']['mName'] = iconv('WINDOWS-1251', 'UTF-8', $userGS['gm']['mName']);
             }
-            $_SESSION['info_user'] = $userGS;
-            $user = $_SESSION['info_user'];
+            Session::set('info_user', $userGS);
+            $user = Session::get('info_user');
         }
 
         return $user;

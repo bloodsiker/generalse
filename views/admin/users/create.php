@@ -9,7 +9,7 @@
                 <div class="row body-content">
                     <div class="medium-6 medium-offset-3 small-12 columns" id="register-umbrella" style="background: #EFEFEF; border: 1px solid #323e48; padding-bottom: 10px">
                         <h2 class="text-center">Информация для Umbrella</h2>
-                        <input type="hidden" name="_token" value="<?=$_SESSION['_token']?>">
+                        <input type="hidden" name="_token" value="<?=\Josantonius\Session\Session::get('_token')?>">
                         <div class="row">
                             <div class="large-12 columns">
                                 <label>Роль

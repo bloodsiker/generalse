@@ -42,6 +42,7 @@ class RequestMail
         $mailToManager .= "<b>Analog:</b> {$analogPrice['partNumber']} - Price: " . round($analogPrice['price'], 2) ;
 
         mail('do@generalse.com', 'Request. Замена парт номера на аналог', $mailToManager, $headers);
+        mail('dasha14071995@gmail.com', 'Request. Замена парт номера на аналог', $mailToManager, $headers);
         mail('dv@generalse.com', 'Request. Замена парт номера на аналог', $mailToManager, $headers);
 
         $emails = explode(',', $userEmail);
@@ -74,6 +75,7 @@ class RequestMail
         $mailToManager .= "<b>New status:</b>" . iconv('WINDOWS-1251', 'UTF-8', $newStatus);
 
         mail('do@generalse.com', 'Request. Статус изменен', $mailToManager, $headers);
+        mail('dasha14071995@gmail.com', 'Request. Статус изменен', $mailToManager, $headers);
         mail('dv@generalse.com', 'Request. Статус изменен', $mailToManager, $headers);
 
         $emails = explode(',', $userEmail);

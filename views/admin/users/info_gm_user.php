@@ -56,11 +56,11 @@
         </tr>
         <tr>
             <td>Телефон</td>
-            <td><?= $userInfo['phone']?></td>
+            <td><?= iconv('WINDOWS-1251', 'UTF-8', $userInfo['phone'])?></td>
         </tr>
         <tr>
             <td>Email</td>
-            <td><?= $userInfo['email']?></td>
+            <td><?= iconv('WINDOWS-1251', 'UTF-8', $userInfo['email'])?></td>
         </tr>
         <tr>
             <td>Регион\Город</td>

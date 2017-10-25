@@ -1,6 +1,7 @@
 <?php
 namespace Umbrella\controllers\umbrella\crm;
 
+use Josantonius\Session\Session;
 use Umbrella\app\AdminBase;
 use Umbrella\app\Group;
 use Umbrella\app\User;
@@ -39,10 +40,7 @@ class SupplyController extends AdminBase
     {
         $user = $this->user;
 
-        if(isset($_SESSION['error_supply'])){
-            $supply_error_part = $_SESSION['error_supply'];
-            unset($_SESSION['error_supply']);
-        }
+        $supply_error_part = Session::pull('error_supply');
 
         if ($user->role == 'partner') {
             $allSupply = Supply::getSupplyByPartner($user->idUsersInGroup($user->id_user));
@@ -109,7 +107,7 @@ class SupplyController extends AdminBase
                         }
                         Logger::getInstance()->log($user->id_user, 'Загрузил excel файл с поставками');
                         // Пишем в сессию массив с ненайденными партномерами
-                        $_SESSION['error_supply'] = $supply_error_part;
+                        Session::set('error_supply', $supply_error_part);
                     }
                 }
                 header("Location: /adm/crm/supply");
@@ -177,7 +175,7 @@ class SupplyController extends AdminBase
 
                         Logger::getInstance()->log($user->id_user, 'Загрузил excel файл с дополнениями к поставке ID-' . $site_id);
                         // Пишем в сессию массив с ненайденными партномерами
-                        $_SESSION['error_supply'] = $supply_error_part;
+                        Session::set('error_supply', $supply_error_part);
                     }
                 }
                 header("Location: /adm/crm/supply");

@@ -2,6 +2,7 @@
 
 namespace Umbrella\controllers\umbrella\ccc;
 
+use Josantonius\Session\Session;
 use Umbrella\app\AdminBase;
 use Umbrella\app\Services\CCCKpi;
 use Umbrella\app\User;
@@ -36,10 +37,7 @@ class KpiController extends AdminBase
     {
         $user = $this->user;
 
-        $success_import = isset($_SESSION['success_import']) ? $_SESSION['success_import'] : null;
-        if(isset($_SESSION['success_import'])){
-            unset($_SESSION['success_import']);
-        }
+        $success_import = Session::pull('success_import');
 
         $listData = KPI::getListImportData();
 
@@ -95,7 +93,7 @@ class KpiController extends AdminBase
 
                         Logger::getInstance()->log($user->id_user, 'Загрузил excel файл с массивом CCC KPI' );
                         //Пишем в сессию массив с ненайденными партномерами
-                        $_SESSION['success_import'] = count($excelArray);
+                        Session::set('success_import', count($excelArray));
                     }
                 }
                 header("Location: /adm/ccc/kpi");

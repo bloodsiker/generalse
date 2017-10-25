@@ -2,6 +2,7 @@
 
 namespace Umbrella\app;
 
+use Josantonius\Session\Session;
 use Umbrella\models\Admin;
 use Umbrella\app\UserDenied;
 use Umbrella\app\User;
@@ -52,7 +53,7 @@ abstract class AdminBase extends Controller
         $user = new User($adminId);
 
         if($user->isActive() == 0) {
-            unset($_SESSION['user']);
+            Session::destroy('user');
             header('Location: /');
         }
 

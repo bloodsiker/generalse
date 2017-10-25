@@ -3,6 +3,7 @@
 namespace Umbrella\controllers\umbrella;
 
 use DateTime;
+use Josantonius\Session\Session;
 use Task;
 use TaskListFunction;
 use Umbrella\app\AdminBase;
@@ -180,7 +181,7 @@ class DashboardController extends AdminBase
 
         // Начисление штрафных санкций
         if(isset($_POST['send-penalty']) && $_POST['send-penalty'] == 'true'){
-            if($_POST['_token'] == $_SESSION['_token']){
+            if($_POST['_token'] == Session::get('_token')){
                 $id_number = Balance::getNumberBalanceByUser($id_user);
 
                 $options['id_user'] = $id_user;

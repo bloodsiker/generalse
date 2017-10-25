@@ -213,7 +213,7 @@ $(document).ready(function () {
                     } else if(obj.code == 3) {
 
                         var html_mess = "<div class='umbrella-alert'>"
-                                        + "<span>Доступ к данному аккаунту закрыт!</span>"
+                                        + "<span>" + obj.log + "</span>"
                                         + "</div>";
 
                         $('body').append(html_mess);

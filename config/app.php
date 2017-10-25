@@ -9,6 +9,13 @@ return [
 
 
     /**
+     * Отключаем сайт
+     *  down/up
+     */
+    'server' => 'up',
+
+
+    /**
      * Среда разработки
      * local/production
      */

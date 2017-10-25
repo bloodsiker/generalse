@@ -18,8 +18,8 @@ ini_set('max_file_uploads', "10");
 require_once(ROOT . '/vendor/autoload.php');
 
 // Start session
-session_start();
-//Josantonius\Session\Session::init();
+//session_start();
+Josantonius\Session\Session::init();
 
 
 //Static Environment Definition
