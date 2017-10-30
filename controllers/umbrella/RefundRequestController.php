@@ -50,7 +50,7 @@ class RefundRequestController extends AdminBase
 //            $options['Requestor_Email'] = $_POST['Requestor_Email'];
 
             // Если стоит чек-бокс
-            if($_POST['Multiple_Request'] == 1){
+            if(isset($_POST['Multiple_Request']) && $_POST['Multiple_Request'] == 1){
 
                 if(!empty($_FILES['csv_file']['name'])){
 

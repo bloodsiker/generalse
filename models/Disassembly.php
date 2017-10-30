@@ -150,24 +150,45 @@ class Disassembly
      */
     public static function addDecompilesMsSql($options)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'INSERT INTO dbo.site_gm_decompiles '
             . '(site_id, site_account_id, part_number, serial_number, ready, note)'
             . 'VALUES '
             . '(:site_id, :site_account_id, :part_number, :serial_number, :ready, :note)';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $options['site_id'], PDO::PARAM_INT);
         $result->bindParam(':site_account_id', $options['id_user'], PDO::PARAM_INT);
         $result->bindParam(':part_number', $options['part_number'], PDO::PARAM_STR);
         $result->bindParam(':serial_number', $options['serial_number'], PDO::PARAM_STR);
         $result->bindParam(':ready', $options['ready'], PDO::PARAM_INT);
-        $result->bindParam(':note', iconv('UTF-8', 'WINDOWS-1251', $options['note']), PDO::PARAM_STR);
+        $result->bindParam(':note', $options['note_ms'], PDO::PARAM_STR);
 
+        if ($result->execute()) {
+            return $db->lastInsertId();
+        }
+        return 0;
+    }
+
+
+    /**
+     * @param $id
+     * @param $ready
+     * @return bool
+     */
+    public static function decompileIsReady($id, $ready)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "UPDATE dbo.site_gm_decompiles
+            SET
+                ready = :ready
+            WHERE id = :id";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $id, PDO::PARAM_INT);
+        $result->bindParam(':ready', $ready, PDO::PARAM_INT);
         return $result->execute();
     }
 
@@ -178,21 +199,17 @@ class Disassembly
      */
     public static function addDecompilesParts($options)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'INSERT INTO gm_decompiles_parts '
             . '(site_id, mName, part_number, stock_name, quantity)'
             . 'VALUES '
             . '(:site_id, :mName, :part_number, :stock_name, :quantity)';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $options['site_id'], PDO::PARAM_INT);
         $result->bindParam(':mName', $options['mName'], PDO::PARAM_STR);
         $result->bindParam(':part_number', $options['part_number'], PDO::PARAM_STR);
-        //$result->bindParam(':serial_number', $options['serial_number'], PDO::PARAM_STR);
         $result->bindParam(':stock_name', $options['stock_name'], PDO::PARAM_STR);
         $result->bindParam(':quantity', $options['quantity'], PDO::PARAM_INT);
 
@@ -207,16 +224,13 @@ class Disassembly
      */
     public static function addDecompiles($options)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'INSERT INTO gm_decompiles '
             . '(site_id, id_user, part_number, serial_number, dev_name, stockName, ready, note)'
             . 'VALUES '
             . '(:site_id, :id_user, :part_number, :serial_number, :dev_name, :stockName, :ready, :note)';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $options['site_id'], PDO::PARAM_INT);
         $result->bindParam(':id_user', $options['id_user'], PDO::PARAM_INT);
@@ -237,19 +251,12 @@ class Disassembly
      */
     public static function getLastDecompileId()
     {
-        // Соединение с БД
-        $db = MySQL::getConnection();
+        $db = MsSQL::getConnection();
 
-        // Текст запроса к БД
-        $sql = "SELECT site_id FROM gm_decompiles_parts ORDER BY id DESC LIMIT 1";
+        $sql = "SELECT TOP 1 site_id FROM site_gm_decompiles WHERE site_id IS NOT NULL ORDER BY id DESC";
 
-        // Используется подготовленный запрос
         $result = $db->prepare($sql);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
         $row = $result->fetch();
         return $row['site_id'];
     }
@@ -262,10 +269,8 @@ class Disassembly
      */
     public static function getAllDisassembly($filter)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $data = $db->query("SELECT
                                 gd.site_id,
                                 gd.id_user,
@@ -292,12 +297,10 @@ class Disassembly
      */
     public static function getDisassemblyByPartner($array_id, $filter)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
         $idS = implode(',', $array_id);
 
-        // Получение и возврат результатов
         $sql = "SELECT
                   gd.site_id,
                   gd.part_number,
@@ -311,14 +314,9 @@ class Disassembly
 	                  ON gd.id_user = gu.id_user
                   WHERE gd.id_user IN({$idS}) {$filter}
                     ORDER BY gd.id DESC";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
-        //$result->bindParam(':id_user', $id_partner, PDO::PARAM_INT);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
     }
@@ -383,22 +381,16 @@ class Disassembly
      */
 	public static function getShowDetailsDisassembly($site_id)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT
                 *
                 FROM gm_decompiles_parts gdp
                 WHERE gdp.site_id = :site_id";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $site_id, PDO::PARAM_INT);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
     }
@@ -414,25 +406,19 @@ class Disassembly
 
         $sql = "SELECT gd.note FROM gm_decompiles gd WHERE gd.site_id = :site_id";
 
-        // Делаем пдготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $site_id, PDO::PARAM_INT);
         $result->execute();
-
-        // Получаем ассоциативный массив
         $status = $result->fetch();
-
         return $status;
     }
 
     public static function getExportDisassemblyByPartner($array_id, $start, $end)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
         $idS = implode(',', $array_id);
 
-        // Получение и возврат результатов
         $sql = "SELECT
                   gd.site_id,
                   gd.part_number,
@@ -453,16 +439,12 @@ class Disassembly
                   WHERE gd.id_user IN({$idS})
                   AND gd.date_create BETWEEN :start AND :end
                     ORDER BY gd.id DESC";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         //$result->bindParam(':id_user', $id_partner, PDO::PARAM_INT);
         $result->bindParam(':start', $start, PDO::PARAM_STR);
         $result->bindParam(':end', $end, PDO::PARAM_STR);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
     }
@@ -470,10 +452,8 @@ class Disassembly
 
     public static function getExportDisassemblyAllPartner($start, $end)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT
                     gd.site_id,
                     gd.part_number,
@@ -493,15 +473,11 @@ class Disassembly
                       ON gd.id_user = gu.id_user
                 WHERE gd.date_create BETWEEN :start AND :end
                   ORDER BY gd.id DESC";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':start', $start, PDO::PARAM_STR);
         $result->bindParam(':end', $end, PDO::PARAM_STR);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
     }
@@ -516,17 +492,14 @@ class Disassembly
      */
     public static function updateStatusDisassemblyGM($decompile_id, $command, $comment)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // Текст запроса к БД
         $sql = "UPDATE site_gm_decompiles
             SET
                 command = :command,
                 command_text = :comment
             WHERE decompile_id = :decompile_id";
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':decompile_id', $decompile_id, PDO::PARAM_INT);
         $result->bindParam(':command', $command, PDO::PARAM_INT);
@@ -541,15 +514,12 @@ class Disassembly
      */
     public static function deleteDecompileById($site_id)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'DELETE gm_decompiles, gm_decompiles_parts 
                 FROM gm_decompiles, gm_decompiles_parts 
                 WHERE gm_decompiles.site_id = gm_decompiles_parts.site_id AND gm_decompiles.site_id = :site_id';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $site_id, PDO::PARAM_INT);
         return $result->execute();
@@ -573,75 +543,4 @@ class Disassembly
 
         return true;
     }
-
-
-
-
-
-
-    public static function getTestMysql($status)
-    {
-        // Соединение с БД
-        $db = MsSQL::getConnection();
-
-        // Получение и возврат результатов
-        $sql = "SELECT site_id FROM site_gm_decompiles WHERE status_name = '{$status}' AND site_id IS NOT NULL";
-        // Используется подготовленный запрос
-        $result = $db->prepare($sql);
-
-        // Выполнение коменды
-        $result->execute();
-
-        // Возвращаем значение count - количество
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
-    }
-
-    public static function getCountTestMssql($site_id)
-    {
-        // Соединение с БД
-        $db = MsSQL::getConnection();
-
-        // Получение и возврат результатов
-        $sql = "SELECT 
-                sgd.site_id,
-                sgd.decompile_id
-                FROM site_gm_decompiles sgd
-                INNER JOIN site_gm_decompiles_parts sgdp
-                    ON sgd.decompile_id = sgdp.decompile_id
-                WHERE sgd.site_id = :site_id";
-        // Используется подготовленный запрос
-        $result = $db->prepare($sql);
-        $result->bindParam(':site_id', $site_id, PDO::PARAM_INT);
-        // Выполнение коменды
-        $result->execute();
-
-        // Возвращаем значение count - количество
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
-    }
-
-    public static function getCountTestMysql($site_id)
-    {
-        $db = MsSQL::getConnection();
-
-        $sql = "SELECT 
-                sgd.*,
-                sgu.site_client_name,
-                tg.mName
-                FROM site_gm_decompiles sgd
-                    INNER JOIN site_gm_users sgu
-                        ON sgd.site_account_id = sgu.site_account_id
-                    INNER JOIN tbl_GoodsNames tg
-                        ON tg.PartNumber = sgd.part_number
-                WHERE sgd.site_account_id = :site_id
-                ORDER BY sgd.id DESC";
-
-        $result = $db->prepare($sql);
-        $result->bindParam(':site_id', $site_id, PDO::PARAM_INT);
-        $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
-    }
-
 }
