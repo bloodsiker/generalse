@@ -3,6 +3,7 @@
 namespace Umbrella\app;
 
 use Josantonius\Session\Session;
+use Umbrella\components\Decoder;
 use Umbrella\models\Admin;
 use Umbrella\models\DeliveryAddress;
 use Umbrella\models\Denied;
@@ -55,8 +56,18 @@ class User
 
 
     /**
+     * Get user ID
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id_user;
+    }
+
+
+    /**
      * Get name user
-     * @return mixed
+     * @return string
      */
     public function getName()
     {
@@ -66,7 +77,7 @@ class User
 
     /**
      * get URL after user authorization
-     * @return mixed
+     * @return string
      */
     public function getUrlAfterLogin()
     {
@@ -86,7 +97,7 @@ class User
 
     /**
      * flag, informs that the user's account is not banned
-     * @return mixed
+     * @return int
      */
     public function isActive()
     {
@@ -96,9 +107,9 @@ class User
 
     /**
      * saved user information in session
-     * @return mixed
+     * @return array
      */
-    public function getInfoUser()
+    public function getInfoUser() :array
     {
         if(Session::get('info_user') && !empty(Session::get('info_user'))){
             $user = Session::get('info_user');
@@ -106,15 +117,11 @@ class User
             $userGS = Admin::getAdminById($this->id_user);
             $userGM = Admin::getInfoGmUser($this->id_user);
             if($userGM){
-                $userGS['gm'] = $userGM;
-                $userGS['gm']['status_name'] = iconv('WINDOWS-1251', 'UTF-8', $userGS['gm']['status_name']);
-                $userGS['gm']['PriceName'] = iconv('WINDOWS-1251', 'UTF-8', $userGS['gm']['PriceName']);
-                $userGS['gm']['mName'] = iconv('WINDOWS-1251', 'UTF-8', $userGS['gm']['mName']);
+                $userGS['gm'] = Decoder::arrayToUtf($userGM);
             }
             Session::set('info_user', $userGS);
             $user = Session::get('info_user');
         }
-
         return $user;
     }
 
@@ -139,6 +146,22 @@ class User
             return $this->infoUser['gm']['PriceName'];
         }
         return false;
+    }
+
+
+    /**
+     * Blocked auth user in Umbrella from GM
+     * @return bool
+     */
+    public function getUserBlockedGM()
+    {
+        if(isset($this->infoUser['gm'])){
+            if($this->infoUser['gm']['blocked'] == 0) {
+                return true;
+            }
+            return true; //false
+        }
+        return true;
     }
 
 

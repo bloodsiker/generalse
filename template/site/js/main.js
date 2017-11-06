@@ -206,7 +206,7 @@ $(document).ready(function () {
                                 $('.umbrella-alert').remove();
                             });
                         }
-                        setTimeout(remove_elem, 5000);
+                        setTimeout(remove_elem, 10000);
 
                         $(".password_umbrella").val("");
 
@@ -223,7 +223,7 @@ $(document).ready(function () {
                                 $('.umbrella-alert').remove();
                             });
                         }
-                        setTimeout(remove_elem, 5000)
+                        setTimeout(remove_elem, 10000)
 
                     } else {
                         window.location = obj.log;

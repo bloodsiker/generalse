@@ -17,10 +17,10 @@
 <body>
 <header>
   <div class="row align-middle">
-    <div class="medium-2 small-3 text-center columns">
+    <div class="medium-3 small-3 text-center columns">
       <a href="/"><img src="/template/site/img/About/CalWhiteLogo.svg" class="logo" alt="Generalse"></a>
     </div>
-    <div class="medium-8 medium-offset-2 small-9 text-center columns" >
+    <div class="medium-8 medium-offset-1 small-9 text-center columns" >
       <span data-responsive-toggle="responsive-menu" class="button-mobile-menu">
         <button class="menu-icon white" type="button" data-toggle></button>
       </span>
@@ -31,8 +31,8 @@
          <li><a href="/directions">Directions</a></li>
          <li><a href="/career">Career</a></li>
          <li><a href="/contact">Contact</a></li>
-           <?php \Josantonius\Session\Session::destroy('info_user')?>
-           <?php \Josantonius\Session\Session::destroy('user')?>
+            <?php \Josantonius\Session\Session::destroy('user')?>
+            <?php \Josantonius\Session\Session::destroy('info_user')?>
          <?php if(\Josantonius\Session\Session::get('user')):?>
             <li><a href="/adm/crm/orders"><i class="fi-unlock"></i>Cabinet</a>
          <?php else:?>
