@@ -331,13 +331,20 @@
                                     </td>
                                     <td class="action-control">
                                     <?php if($status_name == 'Предварительный' || $status_name == 'В обработке' || $status_name == 'Резерв'):?>
-                                        <a href="" class="accept order-accept"><i class="fi-check"></i></a>
-                                        <a href="" class="dismiss order-dismiss"><i class="fi-x"></i></a>
+                                        <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.accept', 'view')): ?>
+                                            <a href="" class="accept order-accept"><i class="fi-check"></i></a>
+                                        <?php endif;?>
+
+                                        <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.dismiss', 'view')): ?>
+                                            <a href="" class="dismiss order-dismiss"><i class="fi-x"></i></a>
+                                        <?php endif;?>
                                     <?php endif;?>
 
                                     <?php if(isset($order['request_id'])):?>
                                         <?php if($status_name != 'Выдан' || $status_name != 'Отказано'):?>
+                                            <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.return_to_request', 'view')): ?>
                                             <a href="" data-request-id="<?=$order['request_id']?>" class="return order-return"><i class="fi-loop"></i></a>
+                                            <?php endif;?>
                                         <?php endif;?>
                                     <?php endif;?>
                                     </td>

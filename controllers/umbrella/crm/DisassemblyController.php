@@ -4,6 +4,7 @@ namespace Umbrella\controllers\umbrella\crm;
 
 use Umbrella\app\AdminBase;
 use Umbrella\app\User;
+use Umbrella\components\Decoder;
 use Umbrella\components\Logger;
 use Umbrella\models\Admin;
 use Umbrella\models\Disassembly;
@@ -112,6 +113,7 @@ class DisassemblyController extends AdminBase
 
 
     /**
+     * Делаем разборку
      * @return bool
      */
     public function actionDisassemblyAjax()
@@ -135,14 +137,14 @@ class DisassemblyController extends AdminBase
         $options['part_number'] = $data_json[0]['dev_pn'];
         $options['serial_number'] = $data_json[0]['sn'];
         $options['note'] = $data_json[0]['note'];
+        $options['note_ms'] = Decoder::strToWindows($data_json[0]['note']);
         $options['dev_name'] = $data_json[0]['dev_name'];
         $options['stockName'] = $data_json[0]['stock_name'];
         $options['id_user'] = $data_json[0]['id_partner'];
-        $options['ready'] = 1;
+        $options['ready'] = 0;
         // Разборка детали - шапка
-        $okk = Disassembly::addDecompilesMsSql($options);
-        //$okk = Disassembly::addDecompiles($options);
-        if($okk){
+        $idDecompile = Disassembly::addDecompilesMsSql($options);
+        if($idDecompile){
             Disassembly::addDecompiles($options);
 
             // Перебор массива разборки и запись в бд
@@ -155,21 +157,21 @@ class DisassemblyController extends AdminBase
                 $options['quantity'] = $data['qua'];
                 // Разборка детали
                 $ok = Disassembly::addDecompilesPartsMsSql($options);
-                //$ok = Disassembly::addDecompilesParts($options);
                 if($ok){
                     Disassembly::addDecompilesParts($options);
                     $i++;
                 }
             }
-            Logger::getInstance()->log($user->id_user, 'произвел разборку устройства, SN ' . $options['serial_number']);
             // Кол-во обьектов в массиве должно быть равным кол-ву успешных записей в бд
             if($count == $i){
+                Disassembly::decompileIsReady($idDecompile, 1);
+                Logger::getInstance()->log($user->id_user, 'произвел разборку устройства, SN ' . $options['serial_number']);
                 echo 1;
             } else {
                 echo 0;
             }
         }
-        //print_r($data_json);
+        //print_r($options);
         return true;
     }
 
@@ -290,53 +292,4 @@ class DisassemblyController extends AdminBase
         $this->render('admin/crm/export/disassemble', compact('user', 'listExport', 'comment'));
         return true;
     }
-
-
-    public function actionTest1()
-    {
-        self::checkAdmin();
-
-        $userId = Admin::CheckLogged();
-        $s1 = [305, 306, 307, 308, 309, 310, 311, 312, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 337, 338, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350];
-
-        $arr = Disassembly::getCountTestMysql(8);
-//        $array_ms = [];
-//        $i = 0;
-//        foreach ($s1 as $key => $value){
-//            //echo $value . "<br>";
-//            $arr = Disassembly::getCountTestMysql($value);
-//            $array_ms[$i]['count'] = $arr[0]['count'];
-//            $i++;
-//        }
-
-        //$status = iconv('UTF-8', 'WINDOWS-1251', 'Подтверждена');
-        //$ms_decompile = Disassembly::getTestMysql($status);
-        //$array_id = array_column($ms_decompile, 'site_id');
-        //$string = implode(', ', $array_id);
-//        $arr = Disassembly::getCountTestMysql(305);
-//
-//        echo "<pre>";
-//        print_r($array_ms);
-
-
-        $html = '<table border="1">';
-        foreach ($arr as $ar){
-            $mName = iconv('WINDOWS-1251', 'UTF-8', $ar['mName']);
-            $status = iconv('WINDOWS-1251', 'UTF-8', $ar['status_name']);
-            $html .= '<tr>';
-            $html .= "<td>{$ar['decompile_id']}</td>";
-            $html .= "<td>{$ar['site_client_name']}</td>";
-            $html .= "<td>{$mName}</td>";
-            $html .= "<td>{$ar['part_number']}</td>";
-            $html .= "<td>{$ar['serial_number']}</td>";
-            $html .= "<td>SWAP</td>";
-            $html .= "<td>{$status}</td>";
-            $html .= "<td>{$ar['note']}</td>";
-            $html .= '</tr>';
-        }
-        $html .= '</table>';
-        echo $html;
-        return true;
-    }
-
 }

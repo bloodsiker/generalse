@@ -6,7 +6,7 @@
             <div class="row body-content" style="background: #EFEFEF">
                 <div class="medium-12 small-12 columns">
                     <form method="post">
-                        <input type="hidden" name="_token" value="<?= \Josantonius\Session\Session::get('_token')?>">
+                        <input type="hidden" name="_token" value="<?=\Josantonius\Session\Session::get('_token')?>">
                         <div class="row">
                             <div class="large-12 columns">
                                 <label>Роль
@@ -93,7 +93,7 @@
             <div class="row body-content" style="background: #EFEFEF; margin-top: 30px ">
                 <div class="medium-12 small-12 columns">
                     <form method="post">
-                        <input type="hidden" name="_token" value="<?= \Josantonius\Session\Session::get('_token')?>">
+                        <input type="hidden" name="_token" value="<?=\Josantonius\Session\Session::get('_token')?>">
                         <div class="row">
                             <div class="large-12 columns">
                                 <label>Пароль

@@ -122,9 +122,15 @@
                             <th class="sort">Name</th>
                             <th class="sort">Arriving Date</th>
                             <th class="sort">Status</th>
-                            <th class="sort">Checked</th>
-                            <th class="sort">Bind GM</th>
-                            <th class="sort">Delete</th>
+                            <?php if (Umbrella\app\AdminBase::checkDenied('crm.supply.accept', 'view')): ?>
+                                <th class="sort">Checked</th>
+                            <?php endif; ?>
+                            <?php if (Umbrella\app\AdminBase::checkDenied('crm.supply.bind-gm', 'view')): ?>
+                                <th class="sort">Checked</th>
+                            <?php endif; ?>
+                            <?php if (Umbrella\app\AdminBase::checkDenied('crm.supply.delete', 'view')): ?>
+                                <th class="sort">Checked</th>
+                            <?php endif; ?>
                         </tr>
                         </thead>
                         <tbody>
@@ -138,22 +144,29 @@
                                     <td><?=$supply['name']?></td>
                                     <td><?= Umbrella\components\Functions::formatDate($supply['expected_arriving_date'])?></td>
                                     <td class="status-supply <?= Umbrella\models\Supply::getStatusSupply($status)?>"><?=$status?></td>
-                                    <td class="text-center">
-                                        <?php if($status != 'Подтверждена'):?>
-                                            <a href="" class="accept supply-accept" onclick="send(event, <?=$supply['site_id']?>)">Accept</a>
-                                        <?php endif;?>
+                                    <?php if (Umbrella\app\AdminBase::checkDenied('crm.supply.accept', 'view')): ?>
+                                        <td class="text-center">
+                                            <?php if($status != 'Подтверждена'):?>
+                                                <a href="" class="accept supply-accept" onclick="send(event, <?=$supply['site_id']?>)">Accept</a>
+                                            <?php endif;?>
 
-                                    </td>
-                                    <td class="text-center td-bind-gm">
-                                        <?php if($status == 'предварительная'):?>
-                                            <a href="" class="accept supply-bind-gm">Bind</a>
-                                        <?php endif;?>
-                                    </td>
-                                    <td class="text-center td-supply-delete">
-                                        <?php if($status == 'предварительная'):?>
-                                            <a href="" class="delete supply-delete">Delete</a>
-                                        <?php endif;?>
-                                    </td>
+                                        </td>
+                                    <?php endif; ?>
+                                    <?php if (Umbrella\app\AdminBase::checkDenied('crm.supply.bind-gm', 'view')): ?>
+                                        <td class="text-center td-bind-gm">
+                                            <?php if($status == 'предварительная'):?>
+                                                <a href="" class="accept supply-bind-gm">Bind</a>
+                                            <?php endif;?>
+                                        </td>
+                                    <?php endif; ?>
+
+                                    <?php if (Umbrella\app\AdminBase::checkDenied('crm.supply.delete', 'view')): ?>
+                                        <td class="text-center td-supply-delete">
+                                            <?php if($status == 'предварительная'):?>
+                                                <a href="" class="delete supply-delete">Delete</a>
+                                            <?php endif;?>
+                                        </td>
+                                    <?php endif; ?>
                                 </tr>
                             <?php endforeach;?>
                         <?php endif;?>

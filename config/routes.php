@@ -151,13 +151,13 @@ return array(
     'adm/crm/purchase' => 'umbrella/crm/Purchase@purchase',
 
 
-    /*********** STOCKS  ***********/
+    /*************** STOCKS  ***************/
     'adm/crm/stocks/s/([a-z0-9-_?&]+)' => 'umbrella/crm/Stock@search/$1',
     'adm/crm/stocks/([a-z0-9-_?&]+)' => 'umbrella/crm/Stock@stocks/$1',
     'adm/crm/stocks' => 'umbrella/crm/Stock@stocks',
 
 
-    /*********** RETURNS  ***********/
+    /*************** RETURNS  ***************/
     'adm/crm/export/returns/([a-z0-9-_?&]+)' => 'umbrella/crm/Return@exportReturns/$1',
     'adm/crm/returns/filter/([a-z0-9-_?&]+)' => 'umbrella/crm/Return@filterReturns/$1',
     'adm/crm/returns/s/([a-z0-9-_?&]+)' => 'umbrella/crm/Return@search/$1',
@@ -166,7 +166,7 @@ return array(
     'adm/crm/returns' => 'umbrella/crm/Return@returns',
 
 
-    /*********** ORDER  ***********/
+    /*************** ORDER  ***************/
     'adm/crm/export/orders' => 'umbrella/crm/Order@exportOrders',
     'adm/crm/orders/s/([a-z0-9-_?&]+)' => 'umbrella/crm/Order@search/$1',
     'adm/crm/orders/([a-z0-9-_?&]+)' => 'umbrella/crm/Order@orders/$1',
@@ -185,11 +185,10 @@ return array(
     'adm/crm/disassembly_ajax' => 'umbrella/crm/Disassembly@disassemblyAjax',
     'adm/crm/disassembly_list/([a-z0-9-_?&]+)' => 'umbrella/crm/Disassembly@disassemblyResult/$1',
     'adm/crm/disassembly_list' => 'umbrella/crm/Disassembly@disassemblyResult',
-    'adm/crm/disassembly/test' => 'umbrella/crm/Disassembly@test1',
     'adm/crm/disassembly' => 'umbrella/crm/Disassembly@disassembly',
 
 
-    /*********** MOTO  ***********/
+    /*************** MOTO  ***************/
     'adm/crm/moto_serial_num_ajax' => 'umbrella/crm/Moto@motoSerialNumAjax',
     'adm/crm/show_moto' => 'umbrella/crm/Moto@showMoto',
     'adm/crm/moto_part_num_ajax' => 'umbrella/crm/Moto@motoPartNumAjax',

@@ -47,7 +47,7 @@
 
     <div class="row align-middle">
         <div class="medium-2 small-12 columns">
-            <a href="/adm/kpi">
+            <a href="/">
                 <img src="/template/admin/img/logo.svg" alt="GS Umbrella">
             </a>
         </div>

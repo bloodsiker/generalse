@@ -154,6 +154,14 @@ table tr:hover{
   color: #c1433c;
   text-decoration: underline;
 }
+.stocks-view {
+  margin-left: 0;
+}
+.stocks-view li {
+  font-size: 14px;
+  list-style-type: none;
+  color: orange;
+}
 .list-attachment-file{
   list-style-type: none;
 }
@@ -965,6 +973,7 @@ td select {
   background: rgba(0, 0, 0, 0.68);
   padding: 3px 5px;
   border-radius: 3px;
+  color: #fff;
 }
 .action-control{
   position: relative;
@@ -978,6 +987,13 @@ td select {
   background: #495a68;
   z-index: 9999;
   width: 250px;
+}
+#send-restore {
+  background: rgba(24, 127, 251, 0.68);
+  color: #fff;
+  padding: 5px 10px;
+  margin-top: 5px;
+  float: right;
 }
 #send-dismiss{
   background: rgba(251, 36, 0, 0.68);
@@ -994,6 +1010,10 @@ td select {
   float: right;
 }
 .dismiss-comment{
+  border: 1px solid #323e48 !important;
+  background: #fff!important;
+}
+.push-input{
   border: 1px solid #323e48 !important;
   background: #fff!important;
 }

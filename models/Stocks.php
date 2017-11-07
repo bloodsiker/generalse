@@ -5,6 +5,7 @@ namespace Umbrella\models;
 use PDO;
 use Umbrella\components\Db\MySQL;
 use Umbrella\components\Db\MsSQL;
+use Umbrella\components\Decoder;
 
 class Stocks
 {
@@ -29,6 +30,7 @@ class Stocks
                  sgt.quantity,
                  sgt.serial_number,
                  sgt.price,
+                 sgt.stock_id,
                  sgu.site_client_name
                 FROM site_gm_stocks sgt
                 INNER JOIN tbl_Users tu
@@ -67,6 +69,7 @@ class Stocks
                  sgt.quantity,
                  sgt.serial_number,
                  sgt.price,
+                 sgt.stock_id,
                  sgu.site_client_name
                 FROM site_gm_stocks sgt
                 INNER JOIN tbl_Users tu 
@@ -108,6 +111,7 @@ class Stocks
                  sgt.quantity,
                  sgt.serial_number,
                  sgt.price,
+                 sgt.stock_id,
                  sgu.site_client_name
                 FROM site_gm_stocks sgt
                 INNER JOIN tbl_Users tu
@@ -125,17 +129,25 @@ class Stocks
 
 
     /**
+     *
      * @param $id_partner
      * @param $stocks
      * @param $part_number
+     * @param string $attr
+     * @param string $table
      * @return array
      */
-    public static function checkGoodsInStocksPartners($id_partner, $stocks, $part_number)
+    public static function checkGoodsInStocksPartners($id_partner, $stocks, $part_number, $attr = 'fetch', $table = 'site_gm_stocks')
     {
         $db = MsSQL::getConnection();
 
-        $stocks_name = implode('\' , \'', $stocks);
-        $stock_iconv = iconv('UTF-8', 'WINDOWS-1251', $stocks_name);
+        if(is_array($stocks)){
+            $stocks_name = implode('\' , \'', $stocks);
+        } else {
+            $stocks_name = $stocks;
+        }
+
+        $stock_iconv = Decoder::strToWindows($stocks_name);
 
         $sql = "SELECT
                  sgt.stock_name,
@@ -146,8 +158,9 @@ class Stocks
                  sgt.quantity,
                  sgt.serial_number,
                  sgt.price,
+                 sgt.stock_id,
                  sgu.site_client_name
-                FROM site_gm_stocks sgt
+                FROM {$table} sgt
                 INNER JOIN tbl_Users tu
                     ON sgt.site_account_id = tu.site_gs_account_id
                 INNER JOIN site_gm_users sgu
@@ -161,7 +174,7 @@ class Stocks
         $result->bindParam(':id_partner', $id_partner, PDO::PARAM_INT);
         $result->bindParam(':part_number', $part_number, PDO::PARAM_STR);
         $result->execute();
-        $all = $result->fetch(PDO::FETCH_ASSOC);
+        $all = $result->$attr(PDO::FETCH_ASSOC);
         return $all;
     }
 
@@ -183,6 +196,7 @@ class Stocks
                  sgt.quantity,
                  sgt.serial_number,
                  sgt.price,
+                 sgt.stock_id,
                  sgu.site_client_name
                 FROM site_gm_stocks sgt
                 INNER JOIN tbl_Users tu
@@ -215,6 +229,7 @@ class Stocks
                  sgt.quantity,
                  sgt.serial_number,
                  sgt.price,
+                 sgt.stock_id,
                  sgu.site_client_name
                 FROM site_gm_stocks sgt
                 INNER JOIN tbl_Users tu
@@ -250,6 +265,7 @@ class Stocks
                     sgt.quantity,
                     sgt.serial_number,
                     sgt.price,
+                    sgt.stock_id,
                     sgu.site_client_name
                 FROM site_gm_stocks sgt
                 INNER JOIN tbl_Users tu
@@ -286,6 +302,53 @@ class Stocks
     }
 
 
+
+    public static function checkInStockAndReplaceName($user_id, $stocks_group, $part_number)
+    {
+        $stocks = [];
+        $i = 0;
+
+        // БЛИЖАЙШАЯ ПОСТАВКА
+//        $productSupply = self::checkGoodsInStocksPartners($user_id, 'Local Source', $part_number);
+//        if($productSupply) {$stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня)'] = $productSupply; }
+        // PEX, Киев\ОК или PEX, Киев\б/у
+        foreach ($stocks_group as $stock){
+            $product = self::checkGoodsInStocksPartners($user_id, $stock, $part_number, 'fetch', 'site_gm_stocks_decompiles');
+            if(trim($product['stock_name']) == 'Dismantling' || trim($product['stock_name']) == 'BAD'){
+                if(isset($stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня)'])){
+                    if($stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня)']['quantity'] < $product['quantity']){
+                        $stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня)'] = $product;
+                    }
+                } else {
+                    $stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня)'] = $product;
+                }
+            }
+            $i++;
+        }
+
+        // БУ Склад //PEX, Киев\б/у
+        $productBu = self::checkGoodsInStocksPartners($user_id, 'BAD', $part_number);
+        if($productBu){$stocks['БУ'] = $productBu; }
+
+        foreach ($stocks_group as $stock){
+            $product = self::checkGoodsInStocksPartners($user_id, $stock, $part_number, 'fetch', 'site_gm_stocks');
+            // PEX, Киев\ОК или PEX, Киев\Квазар
+            if(trim($product['stock_name']) == 'BAD' || trim($product['stock_name']) == 'Local Source'){
+                if(isset($stocks['НОВЫЕ'])){
+                    if($stocks['НОВЫЕ']['quantity'] < $product['quantity']){
+                        $stocks['НОВЫЕ'] = $product;
+                    }
+                } else {
+                    $stocks['НОВЫЕ'] = $product;
+                }
+            }
+            $i++;
+        }
+        return array_reverse($stocks);
+    }
+
+
+
     /**
      * Проверяем, есть ли склад в массиве
      * @param $array_stock
@@ -315,4 +378,6 @@ class Stocks
         }
         return false;
     }
+
+
 }

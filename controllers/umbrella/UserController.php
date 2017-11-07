@@ -246,7 +246,7 @@ class UserController extends AdminBase
             // Обработка формы
             if (isset($_POST['update'])) {
 
-                if($_POST['_token'] == $_SESSION['_token']){
+                if($_POST['_token'] == Session::get('_token')){
                     $options['role'] = $_POST['role'];
                     if($options['role'] == 2){
                         $options['name_partner'] = $userInfo['name_partner'];
@@ -266,6 +266,7 @@ class UserController extends AdminBase
                         Session::destroy('info_user');
                         $log = "редактировал учетку пользователя " . $userInfo['name_partner'];
                         Log::addLog($user->id_user, $log);
+                        Session::set('user_success', "user information edited");
                         Url::redirect('/adm/users');
                     }
                 }
@@ -273,7 +274,7 @@ class UserController extends AdminBase
 
 
             if (isset($_POST['update_password'])) {
-                if($_POST['_token'] == $_SESSION['_token']){
+                if($_POST['_token'] == Session::get('_token')){
                     //$options['password'] = Functions::hashPass($_POST['password']);
                     $options['password'] = Functions::hashPass($_POST['password']);
 
@@ -283,7 +284,7 @@ class UserController extends AdminBase
                     if($ok){
                         $log = "изменил пароль от учетки пользователя " . $userInfo['name_partner'];
                         Log::addLog($user->id_user, $log);
-
+                        Session::set('user_success', "user password edited");
                         Url::redirect('/adm/users');
                     }
                 }
