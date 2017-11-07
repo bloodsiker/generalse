@@ -46,8 +46,9 @@
                                     <button data-open="import-edit-status-modal" class="button primary tool"><i class="fi-plus"></i> Import status</button>
                                 <?php endif;?>
 
-<!--                                <a href="/adm/crm/request/completed" class="button primary tool"><i class="fi-x-circle"></i> Deleted request</a>-->
-                                <button data-open="open-removed-request" class="button primary tool hide"><i class="fi-x-circle"></i> Deleted request</button>
+                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.deleted', 'view')): ?>
+                                    <button data-open="open-removed-request" class="button primary tool"><i class="fi-x-circle"></i> Deleted requests</button>
+                                <?php endif;?>
 
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.upload.price', 'view')): ?>
                                     <button data-open="open-upload-price" class="button primary tool"><i class="fi-page-export"></i> Upload Price</button>
@@ -104,8 +105,9 @@
                     <tbody>
                     <?php if(is_array($listCheckOrders)):?>
                         <?php foreach($listCheckOrders as $order):?>
-                            <tr class="goods <?= (Umbrella\components\Functions::calcDiffSec($order['created_on']) < 120) ? 'check_lenovo_ok' : ''?>">
-                                <td><?= $order['id']?></td>
+                            <tr class="goods <?= (Umbrella\components\Functions::calcDiffSec($order['created_on']) < 120) ? 'check_lenovo_ok' : ''?>"
+                                <?= is_null($order['number'])? null : 'data-number=' . $order['number']?>>
+                                <td><?= is_null($order['number'])? $order['id'] : 'Multi-request ' . $order['number']?></td>
                                 <td><?= $order['site_client_name']?></td>
                                 <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['site_client_status'])?></td>
@@ -168,20 +170,25 @@
                         <?php if(is_array($listCheckOrders)):?>
                             <?php foreach($listCheckOrders as $order):?>
                                 <tr class="goods <?= (Umbrella\components\Functions::calcDiffSec($order['created_on']) < 120) ? 'check_lenovo_ok' : ''?>"
-                                    data-id="<?= $order['id']?>">
-                                    <td><?= $order['id']?></td>
+                                    data-id="<?= $order['id']?>"
+                                    <?= is_null($order['number'])? null : 'data-number=' . $order['number']?>>
+                                    <td><?= is_null($order['number'])? $order['id'] : 'Multi-request ' . $order['number']?></td>
                                     <td><?= $order['site_client_name']?></td>
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['site_client_status'])?></td>
                                     <td data-pn="<?= $order['part_number']?>" class="order-tr-pn" style="background: <?= in_array($order['part_number'], $arrayPartNumber) ? '#f79898' : 'inherit'?>">
                                         <span class="order_part_num"><?= $order['part_number']?></span>
                                         <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
-                                            <a href="" class="button edit-pn delete"><i class="fi-pencil"></i></a>
+                                            <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.pn_edit', 'view')): ?>
+                                                <a href="" class="button edit-pn delete"><i class="fi-pencil"></i></a>
+                                            <?php endif;?>
                                         <?php endif;?>
                                     </td>
                                     <td class="order-tr-goods-name">
                                         <span class="pn_goods_name"><?= iconv('WINDOWS-1251', 'UTF-8', $order['goods_name'])?></span>
                                         <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
-                                            <a href="" class="button clear_goods_name delete" onclick="return confirm('Вы уверены что хотите очистить название?') ? true : false;"><i class="fi-loop"></i></a>
+                                            <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.clear_pn_desc', 'view')): ?>
+                                                <a href="" class="button clear_goods_name delete" onclick="return confirm('Вы уверены что хотите очистить название?') ? true : false;"><i class="fi-loop"></i></a>
+                                            <?php endif;?>
                                         <?php endif;?>
                                     </td>
                                     <td>
@@ -190,7 +197,9 @@
                                     <td class="order-tr-so">
                                         <span class="order_so"><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></span>
                                         <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
-                                            <a href="" class="button edit-so delete"><i class="fi-pencil"></i></a>
+                                            <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.so_edit', 'view')): ?>
+                                                <a href="" class="button edit-so delete"><i class="fi-pencil"></i></a>
+                                            <?php endif;?>
                                         <?php endif;?>
                                     </td>
                                     <td><?= str_replace('.',',', round($order['price'], 2))?></td>
@@ -208,13 +217,17 @@
                                     <td class="order-tr-status">
                                         <span class="order_status"><?= iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?></span>
                                         <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
-                                            <a href="" class="button edit-status delete"><i class="fi-pencil"></i></a>
+                                            <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.status_edit', 'view')): ?>
+                                                <a href="" class="button edit-status delete"><i class="fi-pencil"></i></a>
+                                            <?php endif;?>
                                         <?php endif;?>
                                     </td>
                                     <td><?= Umbrella\components\Functions::formatDate($order['created_on'])?></td>
                                     <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.delete', 'view')): ?>
                                         <td class="text-center">
-                                            <a href="/adm/crm/request/delete/<?=$order['id']?>" onclick="return confirm('Вы уверены что хотите удалить?') ? true : false;" class="delete disassemble-delete"><i class="fi-x-circle"></i></a>
+                                            <?php if(is_null($order['number'])):?>
+                                                <button data-reqid="<?= $order['id']?>" onclick="return confirm('Вы уверены что хотите удалить?') ? true : false;" class="delete delete-request"><i class="fi-x-circle"></i></button>
+                                            <?php endif;?>
                                         </td>
                                     <?php endif;?>
                                 </tr>
@@ -308,49 +321,75 @@
 
 
 <?php if (Umbrella\app\AdminBase::checkDenied('crm.multi-request.send', 'view')): ?>
-    <div class="reveal" id="add-multi-request-modal" data-reveal>
-        <form action="" id="add-multi-request-form" method="post" class="form" data-abide novalidate>
-            <div class="row align-bottom">
-                <div class="medium-12 small-12 columns">
-                    <h3>New request</h3>
-                </div>
-                <div class="medium-10 small-10 columns">
-                    <label>Part Number <span style="color: #4CAF50;" class="name-product"></span></label>
-                    <span style="color: orange;" class="pn-analog"></span>
-                    <input type="text" class="required" name="part_number" onkeyup="checkCurrPartNumber(this)" autocomplete="off" required>
+    <div class="reveal large" id="add-multi-request-modal" data-reveal>
+            <div class="row align-top">
+                <div class="medium-5 small-12 columns">
+                    <form action="" id="add-multi-request-form" method="post" class="form" data-abide novalidate>
+                        <div class="row align-top">
+                            <div class="medium-12 small-12 columns">
+                                <h3>New request</h3>
+                            </div>
+
+                            <div class="medium-9 small-9 columns">
+                                <label>Part Number</label>
+                                <input type="text" class="required" name="multi_part_number" autocomplete="off" required>
+                            </div>
+
+                            <div class="medium-3 small-3 columns">
+                                <label>Quantity</label>
+                                <input type="text" class="required" name="part_quantity" value="1" onkeyup="validCount(this)" autocomplete="off" required>
+                            </div>
+
+                            <div class="medium-12 small-12 columns">
+                                <label>Part Description</label>
+                                <input type="text" name="goods_name">
+                            </div>
+
+                            <div class="medium-12 small-12 columns">
+                                <ul class="stocks-view">
+
+                                </ul>
+                            </div>
+
+                            <div class="medium-12 small-12 columns">
+                                <label>Stocks</label>
+                                <select name="stock_id">
+
+                                </select>
+                            </div>
+
+                            <input type="hidden" name="stock_count" value="">
+                            <input type="hidden" name="stock_name" value="">
+
+                            <div class="medium-12 small-12 columns">
+                                <label>Period of the request(days)</label>
+                                <input type="text" name="period" onkeyup="checkCurrPartNumber(this)" autocomplete="off">
+                            </div>
+
+                            <div class="medium-12 small-12 columns">
+                                <label>Note</label>
+                                <input type="text" name="note1" autocomplete="off">
+                            </div>
+
+                            <div class="medium-12 small-12 columns">
+                                <button type="submit" class="button primary">Add to cart</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
 
-                <div class="medium-2 small-2 columns">
-                    <label>Count</label>
-                    <input type="text" class="required" name="part_quantity" value="1" onkeyup="validCount(this)" autocomplete="off" required>
-                </div>
-
-                <div class="medium-6 small-6 columns">
-                    <label>Price</label>
-                    <input type="text" name="price" disabled>
-                </div>
-
-                <div class="medium-6 small-6 columns group-analog hide">
-                    <label>Price analog</label>
-                    <input type="text" name="analog-price" disabled>
-                </div>
-
-                <div class="medium-12 small-12 columns">
-                    <label>SO Number/Note</label>
-                    <input type="text" name="so_number" autocomplete="off">
-                </div>
-
-                <div class="medium-12 small-12 columns">
-                    <label>Flash on PNC</label>
-                    <input type="text" name="note1" autocomplete="off">
-                </div>
-
-                <input type="hidden" name="add_multi_request" value="true">
-                <div class="medium-12 small-12 columns">
-                    <button type="submit" class="button primary">Send</button>
+                <div class="medium-7 small-12 columns">
+                    <div class="row align-top">
+                        <div class="medium-12 small-12 columns">
+                            <h3>Cart</h3>
+                        </div>
+                        <div class="medium-12 small-12 columns" id="cart-container">
+                            <?php require_once ROOT . '/views/admin/crm/request/multi-request-cart.php'?>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </form>
+
         <button class="close-button" data-close aria-label="Close modal" type="button">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -516,78 +555,84 @@
     </div>
 <?php endif; ?>
 
-<div class="reveal" id="edit-pn" data-reveal>
-    <form action="#" method="post" class="form" novalidate="">
-        <div class="row align-bottom">
-            <div class="medium-12 small-12 columns">
-                <h3>Edit part number</h3>
-            </div>
-            <div class="medium-12 small-12 columns">
-                <div class="row">
-                    <div class="medium-12 small-12 columns">
-                        <label>Part number </label>
-                        <input type="text" id="order_pn" name="order_pn" autocomplete="off">
+
+<?php if (Umbrella\app\AdminBase::checkDenied('crm.request.pn_edit', 'view')): ?>
+    <div class="reveal" id="edit-pn" data-reveal>
+        <form action="#" method="post" class="form" novalidate="">
+            <div class="row align-bottom">
+                <div class="medium-12 small-12 columns">
+                    <h3>Edit part number</h3>
+                </div>
+                <div class="medium-12 small-12 columns">
+                    <div class="row">
+                        <div class="medium-12 small-12 columns">
+                            <label>Part number </label>
+                            <input type="text" id="order_pn" name="order_pn" autocomplete="off">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="medium-12 small-12 columns">
-                <button type="button" id="send-order-pn" class="button primary">Edit</button>
-            </div>
-        </div>
-    </form>
-    <button class="close-button" data-close aria-label="Close modal" type="button">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-
-<div class="reveal" id="edit-so" data-reveal>
-    <form action="#" method="post" class="form" novalidate="">
-        <div class="row align-bottom">
-            <div class="medium-12 small-12 columns">
-                <h3>Edit SO number</h3>
-            </div>
-            <div class="medium-12 small-12 columns">
-                <div class="row">
-                    <div class="medium-12 small-12 columns">
-                        <label>SO number</label>
-                        <input type="text" id="order_so" name="order_so" autocomplete="off">
-                    </div>
+                <div class="medium-12 small-12 columns">
+                    <button type="button" id="send-order-pn" class="button primary">Edit</button>
                 </div>
             </div>
-            <div class="medium-12 small-12 columns">
-                <button type="button" id="send-order-so" class="button primary">Edit</button>
-            </div>
-        </div>
-    </form>
-    <button class="close-button" data-close aria-label="Close modal" type="button">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
+        </form>
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+<?php endif; ?>
 
-
-<div class="reveal" id="edit-status" data-reveal>
-    <form action="#" method="post" class="form" novalidate="">
-        <div class="row align-bottom">
-            <div class="medium-12 small-12 columns">
-                <h3>Edit status</h3>
-            </div>
-            <div class="medium-12 small-12 columns">
-                <div class="row">
-                    <div class="medium-12 small-12 columns">
-                        <label>Status</label>
-                        <textarea name="" id="order_status" cols="30" rows="4"></textarea>
+<?php if (Umbrella\app\AdminBase::checkDenied('crm.request.so_edit', 'view')): ?>
+    <div class="reveal" id="edit-so" data-reveal>
+        <form action="#" method="post" class="form" novalidate="">
+            <div class="row align-bottom">
+                <div class="medium-12 small-12 columns">
+                    <h3>Edit SO number</h3>
+                </div>
+                <div class="medium-12 small-12 columns">
+                    <div class="row">
+                        <div class="medium-12 small-12 columns">
+                            <label>SO number</label>
+                            <input type="text" id="order_so" name="order_so" autocomplete="off">
+                        </div>
                     </div>
                 </div>
+                <div class="medium-12 small-12 columns">
+                    <button type="button" id="send-order-so" class="button primary">Edit</button>
+                </div>
             </div>
-            <div class="medium-12 small-12 columns">
-                <button type="button" id="send-order-status" class="button primary">Edit</button>
+        </form>
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+<?php endif; ?>
+
+<?php if (Umbrella\app\AdminBase::checkDenied('crm.request.status_edit', 'view')): ?>
+    <div class="reveal" id="edit-status" data-reveal>
+        <form action="#" method="post" class="form" novalidate="">
+            <div class="row align-bottom">
+                <div class="medium-12 small-12 columns">
+                    <h3>Edit status</h3>
+                </div>
+                <div class="medium-12 small-12 columns">
+                    <div class="row">
+                        <div class="medium-12 small-12 columns">
+                            <label>Status</label>
+                            <textarea name="" id="order_status" cols="30" rows="4"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="medium-12 small-12 columns">
+                    <button type="button" id="send-order-status" class="button primary">Edit</button>
+                </div>
             </div>
-        </div>
-    </form>
-    <button class="close-button" data-close aria-label="Close modal" type="button">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
+        </form>
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+<?php endif; ?>
 
 <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.upload.price', 'view')): ?>
     <div class="reveal" id="open-upload-price" data-reveal>
@@ -841,73 +886,85 @@
     </div>
 <?php endif;?>
 
-
-<div class="reveal large" id="open-removed-request" data-reveal>
+<div class="reveal large" id="show-details" data-reveal>
     <div class="row align-bottom">
         <div class="medium-12 small-12 columns">
-            <h3>Deleted requests</h3>
+            <h3>Request goods</h3>
         </div>
         <div class="medium-12 small-12 columns">
-
             <table class="umbrella-table">
                 <thead>
                 <tr>
                     <th>Request ID</th>
-                    <th>Partner</th>
-                    <th>Part Number</th>
-                    <th>Part Description</th>
-                    <th>Subtype</th>
-                    <th>SO Number</th>
-                    <th>Price</th>
-                    <th>Address</th>
-                    <th>Note</th>
+                    <th>PartNumber</th>
+                    <th>Goods Name</th>
+                    <th>Service Order</th>
                     <th>Status</th>
                     <th>Date create</th>
+                    <th>Period</th>
+                    <th>Delete</th>
                 </tr>
                 </thead>
-               <tbody>
-               <?php if(is_array($listRemovedRequest)):?>
-                   <?php foreach ($listRemovedRequest as $removedRequest):?>
-                       <tr>
-                           <td><?= $removedRequest['id']?></td>
-                           <td><?= $removedRequest['name_partner']?></td>
-                           <td><?= $removedRequest['part_number']?></td>
-                           <td><?= $removedRequest['goods_name']?></td>
-                           <td><?= $removedRequest['subtype_name']?></td>
-                           <td><?= $removedRequest['so_number']?></td>
-                           <td><?= round($removedRequest['price'], 2)?></td>
-                           <td><?= $removedRequest['note']?></td>
-                           <td><?= $removedRequest['note1']?></td>
-                           <td><?= $removedRequest['status_name']?></td>
-                           <td><?= Umbrella\components\Functions::formatDate($removedRequest['created_on'])?></td>
-                       </tr>
-                   <?php endforeach;?>
-               <?php endif;?>
-               </tbody>
-            </table>
+                <tbody id="container-details">
 
+                </tbody>
+            </table>
         </div>
     </div>
-
     <button class="close-button" data-close aria-label="Close modal" type="button">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
 
 
-<script type="text/javascript">
-    var tableToExcel = (function() {
-        var uri = 'data:application/vnd.ms-excel;base64,'
-            , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
-            , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
-            , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) };
-        return function(table, name) {
-            if (!table.nodeType) table = document.getElementById(table);
-            var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML};
-            window.location.href = uri + base64(format(template, ctx))
-        }
-    })()
-</script>
+<?php if (Umbrella\app\AdminBase::checkDenied('crm.request.deleted', 'view')): ?>
+    <div class="reveal large" id="open-removed-request" data-reveal>
+        <div class="row align-bottom">
+            <div class="medium-12 small-12 columns">
+                <h3>Deleted requests</h3>
+            </div>
+            <div class="medium-12 small-12 columns">
 
+                <table class="umbrella-table">
+                    <thead>
+                    <tr>
+                        <th>Request ID</th>
+                        <th>Partner</th>
+                        <th>Part Number</th>
+                        <th>Part Description</th>
+                        <th>SO Number</th>
+                        <th>Price</th>
+                        <th>Note</th>
+                        <th>Date create</th>
+                        <th width="70"></th>
+                    </tr>
+                    </thead>
+                   <tbody>
+                   <?php if(is_array($listRemovedRequest)):?>
+                       <?php foreach ($listRemovedRequest as $removedRequest):?>
+                           <tr>
+                               <td><?= $removedRequest['id']?></td>
+                               <td><?= $removedRequest['site_client_name']?></td>
+                               <td><?= $removedRequest['part_number']?></td>
+                               <td><?= $removedRequest['goods_name']?></td>
+                               <td><?= $removedRequest['so_number']?></td>
+                               <td><?= round($removedRequest['price'], 2)?></td>
+                               <td><?= $removedRequest['note1']?></td>
+                               <td><?= Umbrella\components\Functions::formatDate($removedRequest['created_on'])?></td>
+                               <td><button data-reqid="<?= $removedRequest['id']?>" class="delete restored">restore</button></td>
+                           </tr>
+                       <?php endforeach;?>
+                   <?php endif;?>
+                   </tbody>
+                </table>
+
+            </div>
+        </div>
+
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+<?php endif;?>
 
 <?php require_once ROOT . '/views/admin/layouts/footer.php'; ?>

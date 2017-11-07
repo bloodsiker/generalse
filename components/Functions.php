@@ -214,4 +214,27 @@ class Functions
         return preg_replace("/".$search."/i", "<b class='highlight'>".$search."</b>", $result);
     }
 
+
+    /**
+     * Из ассоциатиного массива удаляем елементы по повторяющихся ключах
+     * @param $key
+     * @param $array
+     * @return array
+     */
+    public static function getUniqueArray($key, $array){
+        $arrayKeys = array(); // массив для хранения ключей
+        $resultArray = array(); // выходной массив
+        foreach($array as $one){ // проходим циклом по всему исходному массиву
+            if(!is_null($one[$key])){
+                if(!in_array($one[$key], $arrayKeys)){ // если такого значения еще не встречаласть, то
+                    $arrayKeys[] = $one[$key]; // пишем значение ключа в массив, для дальнейшей проверки
+                    $resultArray[] = $one; // записываем уникальное значение в выходной массив
+                }
+            } else {
+                $resultArray[] = $one;
+            }
+        }
+        return $resultArray; // возвращаем массив
+    }
+
 }

@@ -7,6 +7,7 @@ use Umbrella\app\AdminBase;
 use Umbrella\app\Group;
 use Umbrella\app\Mail\RequestMail;
 use Umbrella\app\User;
+use Umbrella\components\Decoder;
 use Umbrella\components\Functions;
 use Umbrella\components\ImportExcel;
 use Umbrella\components\Logger;
@@ -63,7 +64,7 @@ class RequestController extends AdminBase
             $note = null;
             $note_mysql = null;
             if(isset($_POST['note'])){
-                $note = iconv('UTF-8', 'WINDOWS-1251', $_POST['note']);
+                $note = Decoder::strToWindows($_POST['note']);
                 $note_mysql = $_POST['note'];
             }
             $options['id_user'] = $user->id_user;
@@ -71,14 +72,14 @@ class RequestController extends AdminBase
             $partAnalog = PartAnalog::getAnalogByPartNumber($_POST['part_number']);
             //если имееться аналог парт номера, заменяем его
             if($partAnalog){
-                $options['part_number'] = iconv('UTF-8', 'WINDOWS-1251', $partAnalog['part_analog']);
+                $options['part_number'] = Decoder::strToWindows($partAnalog['part_analog']);
                 Session::set('replace_by_analog', "Part number {$_POST['part_number']} is replaced by an analog {$partAnalog['part_analog']}");
             } else {
-                $options['part_number'] = iconv('UTF-8', 'WINDOWS-1251', trim($_POST['part_number']));
+                $options['part_number'] = Decoder::strToWindows(trim($_POST['part_number']));
             }
 
-            $options['pn_name_rus'] = isset($_POST['pn_name_rus']) ? iconv('UTF-8', 'WINDOWS-1251', trim($_POST['pn_name_rus'])) : null;
-            $options['so_number'] = iconv('UTF-8', 'WINDOWS-1251', trim($_POST['so_number']));
+            $options['pn_name_rus'] = isset($_POST['pn_name_rus']) ? Decoder::strToWindows(trim($_POST['pn_name_rus'])) : null;
+            $options['so_number'] = Decoder::strToWindows(trim($_POST['so_number']));
             $options['so_number'] = !empty($options['pn_name_rus']) ? '[' . $options['pn_name_rus'] . '] - ' . $options['so_number'] : $options['so_number'];
             $options['note'] = $note;
             $options['note_mysql'] = $note_mysql;
@@ -89,26 +90,27 @@ class RequestController extends AdminBase
             if($user->name_partner == 'Servisexpress'
                 || $user->name_partner == 'Technoservice'
                 || $user->name_partner == 'Techpoint'){
-                $options['status_name'] = iconv('UTF-8', 'WINDOWS-1251', 'Нет в наличии, формируется поставка.');
+                $options['status_name'] = Decoder::strToWindows('Нет в наличии, формируется поставка.');
             } else {
-                $options['status_name'] = iconv('UTF-8', 'WINDOWS-1251', 'Нет в наличии, формируется поставка, ориентировочная дата поставки на наш склад ' . Functions::whatDayOfTheWeekAndAdd(date('Y-m-d')));
+                $options['status_name'] = Decoder::strToWindows('Нет в наличии, формируется поставка, ориентировочная дата поставки на наш склад ' . Functions::whatDayOfTheWeekAndAdd(date('Y-m-d')));
             }
 
             $options['status_name_mysql'] = 'Нет в наличии, формируется поставка, ориентировочная дата поставки на наш склад ' . Functions::whatDayOfTheWeekAndAdd(date('Y-m-d'));
             $options['created_on'] = date('Y-m-d H:i:s');
             $options['order_type_id'] = $_POST['order_type_id'];
-            $options['note1'] = isset($_POST['note1']) ? iconv('UTF-8', 'WINDOWS-1251', $_POST['note1']): null;
+            $options['note1'] = isset($_POST['note1']) ? Decoder::strToWindows($_POST['note1']): null;
             $options['note1_mysql'] = isset($_POST['note1']) ? $_POST['note1']: null;
 
             $so_number = $options['so_number'];
             $part_quantity = $_REQUEST['part_quantity'];
+
             for($i = 1; $i <= $part_quantity; $i++) {
                 // Если кол-во больше 1, номеруем каждую заявку
                 if($part_quantity > 1){
                     $options['so_number'] = $so_number . ' (' . $i . ')';
                 }
 
-                $ok = Orders::addReserveOrdersMsSQL($options);
+                $ok = Request::addReserveOrdersMsSQL($options);
 
                 if($ok){
                     $options['request_id'] = $ok;
@@ -116,7 +118,7 @@ class RequestController extends AdminBase
                     //Пишем в mysql
                     Orders::addReserveOrders($options);
                     Session::set('add_request', 'Out of stock, delivery is forming');
-                    Logger::getInstance()->log($user->id_user, ' создал новый запрос в Request');
+                    Logger::getInstance()->log($user->id_user, ' создал новый запрос в Request '. $options['part_number']);
                 }
             }
             Url::previous();
@@ -124,17 +126,20 @@ class RequestController extends AdminBase
 
         if($user->role == 'partner' || $user->role == 'manager'){
 
-            $listCheckOrders = Orders::getReserveOrdersByPartnerMsSQL($user->controlUsers($user->id_user), 0);
-            //$listRemovedRequest = Orders::getRemovedRequestByUser($user->controlUsers($user->id_user));
-            $listRemovedRequest = [];
+            $listCheckOrders = Request::getReserveOrdersByPartnerMsSQL($user->controlUsers($user->id_user), 0, 1);
+            $listCheckOrders = Functions::getUniqueArray('number', $listCheckOrders);
+            $listRemovedRequest = Decoder::arrayToUtf(Request::getReserveOrdersByPartnerMsSQL($user->controlUsers($user->id_user), 0, 0));
+            //$listRemovedRequest = [];
 
             $partnerList = Admin::getPartnerControlUsers($user->controlUsers($user->id_user));
 
         } elseif($user->role == 'administrator' || $user->role == 'administrator-fin'){
 
-            $listCheckOrders = Orders::getAllReserveOrdersMsSQL(0);
-            //$listRemovedRequest = Orders::getAllRemovedRequest();
-            $listRemovedRequest = [];
+            $listCheckOrders = Request::getAllReserveOrdersMsSQL(0, 1);
+            $listCheckOrders = Functions::getUniqueArray('number', $listCheckOrders);
+            //$listCheckOrders = [];
+            $listRemovedRequest = Decoder::arrayToUtf(Request::getAllReserveOrdersMsSQL(0, 0));
+            //$listRemovedRequest = [];
 
             // Параметры для формирование фильтров
             $groupList = GroupModel::getGroupList();
@@ -324,38 +329,63 @@ class RequestController extends AdminBase
     {
         $user = $this->user;
         $group = new Group();
-        $part_number = $_REQUEST['part_number'];
 
-        $stocks_group = $group->stocksFromGroup($user->idGroupUser($user->id_user), 'name', 'request');
+        // Для electrolux
+        if($_REQUEST['action'] == 'part-price') {
+            $part_number = $_REQUEST['part_number'];
 
-        $result = Products::getPricePartNumber($part_number, $user->id_user);
-        $partInStock = Stocks::checkGoodsInStocksPartners($user->id_user, $stocks_group, $part_number);
-        $partNumberAnalog = PartAnalog::getAnalogByPartNumber($part_number);
+            $stocks_group = $group->stocksFromGroup($user->idGroupUser($user->id_user), 'name', 'request');
 
-        if($result == 0){
-            $data['result'] = 0;
-            $data['action'] = 'not_found';
-            print_r(json_encode($data));
-        } else {
-            $data['result'] = 1;
-            $data['action'] = 'purchase';
-            $data['price'] = round($result['price'], 2);
-            $data['mName'] = iconv('WINDOWS-1251', 'UTF-8', $result['mName']);
-            if($partInStock){
-                $data['in_stock'] = 1;
-                $data['stock'] = iconv('WINDOWS-1251', 'UTF-8', $partInStock['stock_name']);
-                $data['quantity'] = $partInStock['quantity'] . ' Units';
+            $result = Products::getPricePartNumber($part_number, $user->id_user);
+            $partInStock = Stocks::checkGoodsInStocksPartners($user->id_user, $stocks_group, $part_number);
+            $partNumberAnalog = PartAnalog::getAnalogByPartNumber($part_number);
+
+            if($result == 0){
+                $data['result'] = 0;
+                $data['action'] = 'not_found';
+                print_r(json_encode($data));
+            } else {
+                $data['result'] = 1;
+                $data['action'] = 'purchase';
+                $data['price'] = round($result['price'], 2);
+                $data['mName'] = iconv('WINDOWS-1251', 'UTF-8', $result['mName']);
+                if($partInStock){
+                    $data['in_stock'] = 1;
+                    $data['stock'] = iconv('WINDOWS-1251', 'UTF-8', $partInStock['stock_name']);
+                    $data['quantity'] = $partInStock['quantity'] . ' Units';
+                }
+                if($partNumberAnalog){
+                    $price = Products::getPricePartNumber($partNumberAnalog['part_analog'], $user->id_user);
+                    $data['is_analog'] = 1;
+                    $data['message'] = 'Парт номер будет заменен на аналог ';
+                    $data['analog'] = $partNumberAnalog['part_analog'];
+                    $data['analog_price'] = round($price['price'], 2);
+                }
+                print_r(json_encode($data));
             }
-            if($partNumberAnalog){
-                $price = Products::getPricePartNumber($partNumberAnalog['part_analog'], $user->id_user);
-                $data['is_analog'] = 1;
-                $data['message'] = 'Парт номер будет заменен на аналог ';
-                $data['analog'] = $partNumberAnalog['part_analog'];
-                $data['analog_price'] = round($price['price'], 2);
-            }
-            print_r(json_encode($data));
         }
 
+        // Для партнеров Lenovo
+        if($_REQUEST['action'] == 'part-stock') {
+            $part_number = $_REQUEST['part_number']; //SB18C01336
+            $quantity = $_REQUEST['quantity'];
+            $result = [];
+
+            $infoPart = Products::checkPartNumberInGM($part_number);
+            $stocks_group = explode(',', 'BAD,Not Used,Restored,Dismantling,Local Source');
+            $partInStock = Stocks::checkInStockAndReplaceName(12, $stocks_group, $part_number);
+
+            if(sizeof($partInStock) > 0){
+                $result['status'] = 200;
+                $result['stocks'] = Decoder::arrayToUtf($partInStock);
+            } else {
+                $result['status'] = 404;
+            }
+            $result['goods_name'] = Decoder::arrayToUtf([$infoPart['mName']]);
+
+
+            print_r(json_encode($result));
+        }
         return true;
     }
 
@@ -443,6 +473,141 @@ class RequestController extends AdminBase
             }
         }
 
+
+        // Возвращаем реквест из корзины
+        if($_REQUEST['action'] == 'restore_request'){
+            $id_request = $_REQUEST['id_request'];
+            $options['period'] = !empty($_REQUEST['period']) ? (int)$_REQUEST['period'] : null;
+            $options['created_on'] = date('Y-m-d H:i:s');
+            $options['active'] = 1;
+
+            $ok = Request::moveRequestInList($id_request, $options);
+            if($ok){
+                Logger::getInstance()->log($user->getId(), ' переместил request id #' . $id_request . ' с корзины');
+                print_r(200);
+            }
+        }
+
+        if($_REQUEST['action'] == 'save_to_cart'){
+
+            if(Session::get('multi_request_cart')){
+                $arrayInCart = Session::get('multi_request_cart');
+                $lastNumber = array_shift($arrayInCart)['number'];
+            } else {
+                $lastNumber = Request::generateNumber();
+            }
+
+            $saveToCart = [];
+
+            $options['site_account_id'] = $user->getID();
+            $options['part_number'] = trim($_REQUEST['multi_part_number']);
+            $options['part_quantity'] = $_REQUEST['part_quantity'];
+            $options['goods_name'] = Decoder::strToWindows($_REQUEST['goods_name']);
+            $price = Products::getPricePartNumber($options['part_number'], $user->getId());
+            $options['price'] = ($price['price'] != 0) ? $price['price'] : 0;
+            $options['number'] = $lastNumber;
+            $options['period'] = $_REQUEST['period'];
+            $options['note1'] = $_REQUEST['note1'];
+            $options['stock_id'] = isset($_REQUEST['stock_id']) ? $_REQUEST['stock_id'] : null;
+            $options['stock_name'] = $_REQUEST['stock_name'];
+            $options['stock_count'] = $_REQUEST['stock_count'];
+            $options['part_quantity'] = $_REQUEST['part_quantity'];
+
+            $saveToCart = Session::get('multi_request_cart');
+            $saveToCart[] =  $options;
+            Session::set('multi_request_cart', $saveToCart);
+            require_once ROOT . '/views/admin/crm/request/multi-request-cart.php';
+        }
+
+        // Чистим корзину
+        if($_REQUEST['action'] == 'clear_multi_cart'){
+            if(Session::destroy('multi_request_cart')){
+                require_once ROOT . '/views/admin/crm/request/multi-request-cart.php';
+            }
+        }
+
+        //Удаляем элемент с корзины
+        if($_REQUEST['action'] == 'delete_element_multi_cart'){
+            $id_trash = $_REQUEST['id_trash'];
+            $saveToCart = Session::get('multi_request_cart');
+            if(array_key_exists($id_trash, $saveToCart)){
+                unset($saveToCart[$id_trash]);
+                Session::set('multi_request_cart', $saveToCart);
+                require_once ROOT . '/views/admin/crm/request/multi-request-cart.php';
+            }
+        }
+
+        //Send Multi request
+        if($_REQUEST['action'] == 'send-multi-request'){
+
+            $productInCart = Session::get('multi_request_cart');
+
+            foreach ($productInCart as $product){
+                $options['site_account_id'] = $product['site_account_id'];
+                $options['part_number'] = $product['part_number'];
+                $options['part_quantity'] = $product['part_quantity'];
+                $options['goods_name'] = $product['goods_name'];
+                $options['price'] = $product['price'];
+                $options['status_name'] = '';
+                $options['created_on'] = date('Y-m-d H:i:s');
+                $options['number'] = $product['number'];
+                $options['active'] = 1;
+                $options['period'] = !empty($product['period']) ? $product['period'] : null;
+                $options['note1'] = Decoder::strToWindows($product['note1']);
+                $options['stock_id'] = null;
+                $stock_count = $product['stock_count'];
+
+                for ($i = 1; $i <= $options['part_quantity']; $i++) {
+
+                    if ($stock_count >= $i) {
+                        $options['stock_id'] = $product['stock_id'];
+                        $stock_name = $product['stock_name'];
+                        $options['status_name'] = Decoder::strToWindows('Создан запрос со склада ' . $stock_name);
+                    } else {
+                        $options['stock_id'] = null;
+                        $options['status_name'] = Decoder::strToWindows('Ожидает появления позиции на складах или в разборках');
+                    }
+                    Request::addMultiRequestMsSQL($options);
+                }
+            }
+            Session::set('add_request', 'Request is forming');
+            Logger::getInstance()->log($user->id_user, ' создал новый multi-запрос в Request');
+            Session::destroy('multi_request_cart');
+            echo 200;
+        }
+
+        //Удаляем элемент с корзины
+        if($_REQUEST['action'] == 'show-multi-request'){
+            $number = $_REQUEST['number'];
+            $listRequests = Request::getMultiRequestsByNumber($number);
+            $listRequests = Decoder::arrayToUtf($listRequests);
+
+            $html = "";
+            foreach($listRequests as $item){
+                $html .= "<tr>";
+                $html .= "<td>" . $item['id'] . "</td>";
+                $html .= "<td>" . $item['part_number'] . "</td>";
+                $html .= "<td>" . $item['goods_name'] . "</td>";
+                $html .= "<td>" . $item['so_number'] . "</td>";
+                $html .= "<td>" . $item['status_name'] . "</td>";
+                $html .= "<td>" . Functions::formatDate($item['created_on']) . "</td>";
+                $html .= "<td>" . $item['period'] . "</td>";
+                $html .= "<td><button data-reqid='" . $item['id'] . "' class='delete delete-request'>Delete</button></td>";
+                $html .= "</tr>";
+            }
+            print_r($html);
+            return true;
+        }
+
+        // Удаляем реквест в корзину
+        if($_REQUEST['action'] == 'delete_request'){
+            $id_request = $_REQUEST['id_request'];
+            $ok = Request::moveRequest($id_request, 0);
+            if($ok){
+                Logger::getInstance()->log($user->getId(), ' удалил request id #' . $id_request . ' в корзину');
+                print_r(200);
+            }
+        }
         return true;
     }
 
@@ -502,26 +667,27 @@ class RequestController extends AdminBase
     {
         $user = $this->user;
         self::checkDenied('crm.request.delete', 'controller');
+        $ok =  Request::moveRequest($id, 0);
 
-        $requestInfo = Orders::getOrderRequestInfo($id);
-        $requestInfo['goods_name'] = iconv('WINDOWS-1251', 'UTF-8', $requestInfo['goods_name']);
-        $requestInfo['so_number'] = iconv('WINDOWS-1251', 'UTF-8', $requestInfo['so_number']);
-        $requestInfo['note'] = iconv('WINDOWS-1251', 'UTF-8', $requestInfo['note']);
-        $requestInfo['status_name'] = iconv('WINDOWS-1251', 'UTF-8', $requestInfo['status_name']);
-        $requestInfo['subtype_name'] = iconv('WINDOWS-1251', 'UTF-8', $requestInfo['subtype_name']);
-        $json = json_encode($requestInfo);
-
-        $ok = Orders::deleteRequestMsSQLById($id);
+//        $requestInfo = Orders::getOrderRequestInfo($id);
+//        $requestInfo['goods_name'] = iconv('WINDOWS-1251', 'UTF-8', $requestInfo['goods_name']);
+//        $requestInfo['so_number'] = iconv('WINDOWS-1251', 'UTF-8', $requestInfo['so_number']);
+//        $requestInfo['note'] = iconv('WINDOWS-1251', 'UTF-8', $requestInfo['note']);
+//        $requestInfo['status_name'] = iconv('WINDOWS-1251', 'UTF-8', $requestInfo['status_name']);
+//        $requestInfo['subtype_name'] = iconv('WINDOWS-1251', 'UTF-8', $requestInfo['subtype_name']);
+//        $json = json_encode($requestInfo);
+//
+//        $ok = Orders::deleteRequestMsSQLById($id);
 
         if($ok){
             //Orders::addRemovedRequest($json);
-            $file = ROOT . '/storage/logs/removed_request.txt';
-            $person = (string)$json . "\r\n";
-            // используя флаг FILE_APPEND flag для дописывания содержимого в конец файла
-            // и флаг LOCK_EX для предотвращения записи данного файла кем-нибудь другим в данное время
-            file_put_contents($file, $person, FILE_APPEND | LOCK_EX);
+//            $file = ROOT . '/storage/logs/removed_request.txt';
+//            $person = (string)$json . "\r\n";
+//            // используя флаг FILE_APPEND flag для дописывания содержимого в конец файла
+//            // и флаг LOCK_EX для предотвращения записи данного файла кем-нибудь другим в данное время
+//            file_put_contents($file, $person, FILE_APPEND | LOCK_EX);
 
-            Logger::getInstance()->log($user->id_user, 'удалил request #' . $id);
+            Logger::getInstance()->log($user->id_user, 'переместил в корзину request #' . $id);
             Url::previous();
         }
         return true;
@@ -621,6 +787,9 @@ class RequestController extends AdminBase
                 if ($handle->processed) {
                     File::addNewPriceFile($path, $file_name, $_REQUEST['id_group'], $_REQUEST['partner_status'], date('Y-m-d'));
                     $handle->clean();
+                    echo 'Файл успешно загружен!';
+                } else {
+                    echo $handle->error;
                 }
             }
         }

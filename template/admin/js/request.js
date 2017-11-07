@@ -55,6 +55,7 @@ function checkCurrPartNumber(d) {
 // Запрещаем вводить количество меньше 1
 function validCount(e) {
     if(e.value < 1) { e.value = 1 }
+    return e.value * 1 == e.value
 }
 
 
@@ -129,7 +130,7 @@ $('[name="part_number"]').keyup(function(e) {
     $.ajax({
         url: "/adm/crm/request/price_part_ajax",
         type: "POST",
-        data: {part_number : part_number},
+        data: {action : 'part-price', part_number : part_number},
         cache: false,
         success: function (response) {
             console.log(response);
@@ -171,6 +172,248 @@ $('[name="part_number"]').keyup(function(e) {
         }
     });
 
+    return false;
+});
+
+
+
+// Мульти реквест
+let multiPartNumber = function (e) {
+    let part_number = $("#add-multi-request-form [name='multi_part_number']").val();
+    let quantity = $("#add-multi-request-form [name='part_quantity']").val();
+    if(validCount({value:quantity})){
+
+
+        $.ajax({
+            url: "/adm/crm/request/price_part_ajax",
+            type: "POST",
+            data: {action : 'part-stock', part_number : part_number, quantity : quantity},
+            cache: false,
+            success: function (response) {
+                //console.log(response);
+                let obj = JSON.parse(response);
+                if(obj.status == 200){
+
+                    $("#add-multi-request-form [name='goods_name']").val(obj.goods_name[0]);
+                    let arr = [];
+                    console.log(obj.stocks);
+
+                    Object.keys(obj.stocks).forEach(key => {
+                        let count = +obj.stocks[key].quantity > +quantity ? quantity : obj.stocks[key].quantity;
+                       arr.push({
+                           title: key,
+                           count: count,
+                           stock_id: obj.stocks[key].stock_id
+                       });
+                    });
+
+                    $('[name="stock_count"]').val('');
+                    $('[name="stock_name"]').val('');
+                    $('.stocks-view').html('');
+                    $('.stocks-view').html('<li style="color: #09c509;">Found in stock(s):</li>');
+                    $("[name='stock_id']").html('<option value=""></option>');
+                    arr.forEach(key => $('.stocks-view').append('<li>' +key.title +' - ' +key.count +'шт</li>'));
+                    arr.forEach(key => $("select[name='stock_id']")
+                        .append('<option data-count="'+key.count+'" data-stock-name="'+key.title+'" value="' + key.stock_id +'">' +key.title +' - ' +key.count +'шт</option>'));
+
+                } else {
+                    $('[name="stock_name"]').val('');
+                    $("#add-multi-request-form [name='goods_name']").val('');
+                    $('.stocks-view').html('<li>Not found in stocks</li>');
+                    $("[name='stock_id']").html('<option value="">ЗАПРОС НА ПОСТАВКУ</option>');
+                    $('[name="stock_name"]').val('ЗАПРОС НА ПОСТАВКУ');
+
+                }
+            }
+        });
+
+        $(document).on('change', '[name="stock_id"]', function (e) {
+            let count = $(this).find('option:selected').attr('data-count');
+            let stock_name = $(this).find('option:selected').attr('data-stock-name');
+            $('[name="stock_count"]').val(count);
+            $('[name="stock_name"]').val(stock_name);
+        })
+    }
+
+};
+$("#add-multi-request-form [name='multi_part_number'], #add-multi-request-form [name='part_quantity']").keyup(function(e) {
+    multiPartNumber(e);
+});
+
+
+// Востановляем реквест
+$(document).on('click', '.restored', function (e) {
+    let _this = $(this);
+    let id_request = _this.attr('data-reqid');
+
+    $('.dismiss-container').remove();
+    let html = "<div class='dismiss-container'>" +
+        "<input type='number' class='push-input pull-left' name='new-period' style='width: 35%; height: 30px; color: #0a0a0a; padding-left: 10px; margin: 0' placeholder='Period'>" +
+        "<div class='pull-right' style='width: 65%'>" +
+        "<button id='send-restore'>Restore</button>" +
+        "<button id='send-close'>Close</button>" +
+        "</div>" +
+        "</div>";
+    _this.after(html);
+
+    // Удаляем блок с комментариями
+    $('#send-close').click(function () {
+        $('.dismiss-container').remove();
+    });
+
+    $('#send-restore').click(function () {
+        let period = $('[name="new-period"]').val();
+        console.log(period);
+        $.ajax({
+            url: "/adm/crm/request/request_ajax",
+            type: "POST",
+            data: {period : period, action : 'restore_request', id_request : id_request},
+            cache: false,
+            success: function (response) {
+                if(response == 200){
+                    _this.parent('td').parent('tr').fadeOut(700, function () {
+                        _this.parent('td').parent('tr').remove();
+                    });
+                } else {
+                    alert('Error');
+                }
+            }
+        });
+        return false;
+    });
+});
+
+// Добавляем в корзину
+$('#add-multi-request-form').submit(function(e) {
+    e.preventDefault();
+    if ($('#add-multi-request-form input').hasClass('is-invalid-input')) { // проверка на валидность
+        return false;
+    } else {
+        e.preventDefault();
+
+        let data = $('#add-multi-request-form').serialize();
+        data +=data + '&action=save_to_cart';
+        console.log(data);
+        $.ajax({
+            url: "/adm/crm/request/request_ajax",
+            type: "POST",
+            data: data,
+            cache: false,
+            success: function (response) {
+                $('#cart-container').html('');
+                $('#cart-container').html(response);
+                $('#add-multi-request-modal form')[0].reset();
+                $('.stocks-view').html('');
+            }
+        });
+        return false;
+
+        // $('#add-request-form').find('button').prop('disabled', true);
+        // $('#wait').removeClass('hide');
+        // setTimeout(function () {
+        //     e.target.submit()
+        // }, 2000);
+    }
+});
+
+// Чистим корзину в multi-request
+$(document).on('click', '#clear-multi-cart', function (e) {
+    e.preventDefault();
+    $.ajax({
+        url: "/adm/crm/request/request_ajax",
+        type: "POST",
+        data: {action : 'clear_multi_cart'},
+        cache: false,
+        success: function (response) {
+            $('#cart-container').html('');
+            $('#cart-container').html(response);
+        }
+    });
+    return false;
+});
+
+// Удаляем елемент с корзины
+$(document).on('click', '.delete-request-with-cart', function (e) {
+    e.preventDefault();
+    let id_trash = $(this).attr('data-trash-id');
+    $.ajax({
+        url: "/adm/crm/request/request_ajax",
+        type: "POST",
+        data: {id_trash : id_trash, action : 'delete_element_multi_cart'},
+        cache: false,
+        success: function (response) {
+            $('#cart-container').html('');
+            $('#cart-container').html(response);
+        }
+    });
+    return false;
+});
+
+
+$(document).on('click', '#send-multi-cart', function (e) {
+    e.preventDefault();
+    $.ajax({
+        url: "/adm/crm/request/request_ajax",
+        type: "POST",
+        data: {action : 'send-multi-request'},
+        cache: false,
+        success: function (response) {
+            console.log(response);
+            $('#wait').removeClass('hide');
+            if(response == 200){
+                setTimeout(function () {
+                    window.location.reload();
+                }, 2000);
+            } else {
+                alert('Error sending request');
+                $('#wait').addClass('hide');
+            }
+        }
+    });
+    return false;
+});
+
+// Показываем в модальном окне, продукты заказа
+$(document).on('dblclick', '.checkout tbody tr', function(e) {
+    let number = $(this).attr('data-number');
+    if(number){
+        console.log(number);
+        $.ajax({
+            url: "/adm/crm/request/request_ajax",
+            type: "POST",
+            data: {number : number, action : 'show-multi-request'},
+            cache: false,
+            success: function (response) {
+                //alert(response);
+                $('#show-details').foundation('open');
+                $('#container-details').html(response);
+            }
+        });
+        return false;
+    }
+});
+
+
+// Удаляем реквест
+$(document).on('click', '.delete-request', function (e) {
+    let _this = $(this);
+    let id_request = _this.attr('data-reqid');
+
+    $.ajax({
+        url: "/adm/crm/request/request_ajax",
+        type: "POST",
+        data: {action : 'delete_request', id_request : id_request},
+        cache: false,
+        success: function (response) {
+            if(response == 200){
+                _this.parent('td').parent('tr').fadeOut(700, function () {
+                    _this.parent('td').parent('tr').remove();
+                });
+            } else {
+                alert('Error');
+            }
+        }
+    });
     return false;
 });
 
@@ -418,8 +661,9 @@ $(document).on('click', '#send-pn-analog', function(e) {
             percent.html(percentVal);
         },
         complete: function(xhr) {
-            //status.html(xhr.responseText);
-            status.html('Файл успешно загружен!');
+            console.log(xhr);
+            status.html(xhr.responseText);
+            //status.html('Файл успешно загружен!');
         }
     });
 

@@ -4,57 +4,85 @@ namespace Umbrella\models\crm;
 
 use PDO;
 use Umbrella\components\Db\MsSQL;
-use Umbrella\components\Db\MySQL;
 
 class Request
 {
 
     /**
-     * Получаем весь список заказов со статусом (Нет в наличии, формируется поставка)
-     * @param int $completed
-     * @return array
+     * Создаем новый реквест
+     * @param $options
+     * @return bool
      */
-    public static function getAllReserveOrdersMsSQL($completed = 0)
+    public static function addReserveOrdersMsSQL($options)
     {
         $db = MsSQL::getConnection();
 
-        $sql = "SELECT
-                    sgog.id,
-                    sgog.site_account_id,
-                    sgog.part_number,
-                    sgog.goods_name,
-                    sgog.so_number,
-                    sgog.price,
-                    sgog.note,
-                    sgog.status_name,
-                    sgog.created_on,
-                    sgog.note1,
-                    sgog.subtype_name,
-                    sgu.site_client_name,
-                    sgu.status_name as site_client_status,
-                    sgot.name as type_name
-                FROM site_gm_ordering_goods sgog
-                    INNER JOIN site_gm_users sgu
-                        ON sgog.site_account_id = sgu.site_account_id
-                    LEFT JOIN site_gm_orders_types sgot
-                        ON sgot.id = sgog.order_type_id
-                WHERE sgog.processed = :processed
-                ORDER BY sgog.id DESC";
+        $sql = 'INSERT INTO site_gm_ordering_goods '
+            . '(site_account_id, part_number, goods_name, so_number, price, note, status_name, created_on, order_type_id, note1)'
+            . 'VALUES '
+            . '(:site_account_id, :part_number, :goods_name, :so_number, :price, :note, :status_name, :created_on, :order_type_id, :note1)';
 
         $result = $db->prepare($sql);
-        $result->bindParam(':processed', $completed, PDO::PARAM_INT);
-        $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        $result->bindParam(':site_account_id', $options['id_user'], PDO::PARAM_INT);
+        $result->bindParam(':part_number', $options['part_number'], PDO::PARAM_STR);
+        $result->bindParam(':goods_name', $options['goods_name'], PDO::PARAM_STR);
+        $result->bindParam(':so_number', $options['so_number'], PDO::PARAM_STR);
+        $result->bindParam(':price', $options['price'], PDO::PARAM_STR);
+        $result->bindParam(':note', $options['note'], PDO::PARAM_STR);
+        $result->bindParam(':status_name', $options['status_name'], PDO::PARAM_STR);
+        $result->bindParam(':created_on', $options['created_on'], PDO::PARAM_STR);
+        $result->bindParam(':order_type_id', $options['order_type_id'], PDO::PARAM_INT);
+        $result->bindParam(':note1', $options['note1'], PDO::PARAM_INT);
+
+        if ($result->execute()) {
+            return $db->lastInsertId();
+        }
+        return 0;
     }
 
 
     /**
+     * Создаем новый мульти-реквест
+     * @param $options
+     * @return int|string
+     */
+    public static function addMultiRequestMsSQL($options)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = 'INSERT INTO site_gm_ordering_goods '
+            . '(site_account_id, part_number, goods_name, price, status_name, created_on, note1, number, active, period, stock_id)'
+            . 'VALUES '
+            . '(:site_account_id, :part_number, :goods_name, :price, :status_name, :created_on, :note1, :number, :active, :period, :stock_id)';
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':site_account_id', $options['site_account_id'], PDO::PARAM_INT);
+        $result->bindParam(':part_number', $options['part_number'], PDO::PARAM_STR);
+        $result->bindParam(':goods_name', $options['goods_name'], PDO::PARAM_STR);
+        $result->bindParam(':price', $options['price'], PDO::PARAM_STR);
+        $result->bindParam(':status_name', $options['status_name'], PDO::PARAM_STR);
+        $result->bindParam(':note1', $options['note1'], PDO::PARAM_STR);
+        $result->bindParam(':created_on', $options['created_on'], PDO::PARAM_STR);
+        $result->bindParam(':number', $options['number'], PDO::PARAM_INT);
+        $result->bindParam(':active', $options['active'], PDO::PARAM_INT);
+        $result->bindParam(':period', $options['period'], PDO::PARAM_INT);
+        $result->bindParam(':stock_id', $options['stock_id'], PDO::PARAM_INT);
+
+        if ($result->execute()) {
+            return $db->lastInsertId();
+        }
+        return 0;
+    }
+
+
+    /**
+     * Получаем список заказов для партнера со статусом (Нет в наличии, формируется поставка)
      * @param $array_id
-     * @param $filter
+     * @param int $completed
+     * @param int $active
      * @return array
      */
-    public static function getCompletedRequestInOrdersByPartnerMsSQL($array_id, $filter)
+    public static function getReserveOrdersByPartnerMsSQL($array_id, $completed = 0, $active = 1)
     {
         $db = MsSQL::getConnection();
 
@@ -68,26 +96,28 @@ class Request
                  sgog.so_number,
                  sgog.price,
                  sgog.note,
+                 sgog.status_name,
                  sgog.created_on,
                  sgog.note1,
                  sgog.subtype_name,
+                 sgog.period,
+                 sgog.number,
                  sgu.site_client_name,
-                 sgot.name as type_name,
-                 sgo.order_number,
-                 sgo.status_name,
-                 sgo.command_text
+                 sgu.status_name as site_client_status,
+                 sgot.name as type_name
              FROM site_gm_ordering_goods sgog
                  INNER JOIN site_gm_users sgu
                      ON sgog.site_account_id = sgu.site_account_id
                  LEFT JOIN site_gm_orders_types sgot
                      ON sgot.id = sgog.order_type_id
-                 LEFT JOIN site_gm_orders sgo
-                     ON sgog.id = sgo.request_id
-             WHERE sgog.processed = 1
-             AND sgog.site_account_id IN({$idS}) {$filter}
+             WHERE sgog.processed = :processed
+             AND sgog.active = :active
+             AND sgog.site_account_id IN({$idS})
              ORDER BY sgog.id DESC";
 
         $result = $db->prepare($sql);
+        $result->bindParam(':processed', $completed, PDO::PARAM_INT);
+        $result->bindParam(':active', $active, PDO::PARAM_INT);
         $result->execute();
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
@@ -95,11 +125,12 @@ class Request
 
 
     /**
-     * Реквесты которые были выписаны
-     * @param string $filter
+     * Получаем весь список заказов со статусом (Нет в наличии, формируется поставка)
+     * @param int $completed
+     * @param int $active
      * @return array
      */
-    public static function getAllCompletedRequestInOrdersMsSQL($filter = '')
+    public static function getAllReserveOrdersMsSQL($completed = 0, $active = 1)
     {
         $db = MsSQL::getConnection();
 
@@ -115,22 +146,23 @@ class Request
                     sgog.created_on,
                     sgog.note1,
                     sgog.subtype_name,
+                    sgog.period,
+                    sgog.number,
                     sgu.site_client_name,
-                    sgot.name as type_name,
-                    sgo.order_number,
-                    sgo.status_name,
-                    sgo.command_text
+                    sgu.status_name as site_client_status,
+                    sgot.name as type_name
                 FROM site_gm_ordering_goods sgog
                     INNER JOIN site_gm_users sgu
                         ON sgog.site_account_id = sgu.site_account_id
                     LEFT JOIN site_gm_orders_types sgot
                         ON sgot.id = sgog.order_type_id
-                    LEFT JOIN site_gm_orders sgo
-                  		ON sgog.id = sgo.request_id
-                WHERE sgog.processed = 1 {$filter}
+                WHERE sgog.processed = :processed
+                AND sgog.active = :active
                 ORDER BY sgog.id DESC";
 
         $result = $db->prepare($sql);
+        $result->bindParam(':processed', $completed, PDO::PARAM_INT);
+        $result->bindParam(':active', $active, PDO::PARAM_INT);
         $result->execute();
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
@@ -138,170 +170,36 @@ class Request
 
 
     /**
-     * Редактируем парт номер в таблице резерва
-     * @param $id
-     * @param $part_number
-     * @return bool
-     */
-    public static function editPartNumberFromCheckOrdersById($id, $part_number)
-    {
-        $db = MsSQL::getConnection();
-
-        $sql = "UPDATE site_gm_ordering_goods
-            SET
-                part_number = :part_number
-            WHERE id = :id";
-
-        $result = $db->prepare($sql);
-        $result->bindParam(':id', $id, PDO::PARAM_INT);
-        $result->bindParam(':part_number', $part_number, PDO::PARAM_STR);
-        return $result->execute();
-    }
-
-    /**
-     * Редактируем so номер в таблице резерва
-     * @param $id
-     * @param $so_number
-     * @return bool
-     */
-    public static function editSoNumberFromCheckOrdersById($id, $so_number)
-    {
-        $db = MsSQL::getConnection();
-
-        $sql = "UPDATE site_gm_ordering_goods
-            SET
-                so_number = :so_number
-            WHERE id = :id";
-
-        $result = $db->prepare($sql);
-        $result->bindParam(':id', $id, PDO::PARAM_INT);
-        $result->bindParam(':so_number', $so_number, PDO::PARAM_STR);
-        return $result->execute();
-    }
-
-
-    /**
-     * Чистим описание детали
-     * @param $id
-     * @param $goods_name
-     * @return bool
-     */
-    public static function clearGoodsNameFromCheckOrdersById($id, $goods_name)
-    {
-        $db = MsSQL::getConnection();
-
-        $sql = "UPDATE site_gm_ordering_goods
-            SET
-                goods_name = :goods_name
-            WHERE id = :id";
-
-        $result = $db->prepare($sql);
-        $result->bindParam(':id', $id, PDO::PARAM_INT);
-        $result->bindParam(':goods_name', $goods_name, PDO::PARAM_STR);
-        return $result->execute();
-    }
-
-
-    /**
-     * Изменяем статус реквеста
-     * @param $id
-     * @param $status
-     * @return bool
-     */
-    public static function editStatusFromCheckOrdersById($id, $status)
-    {
-        $db = MsSQL::getConnection();
-
-        $sql = "UPDATE site_gm_ordering_goods
-            SET
-                status_name = :status_name
-            WHERE id = :id";
-
-        $result = $db->prepare($sql);
-        $result->bindParam(':id', $id, PDO::PARAM_INT);
-        $result->bindParam(':status_name', $status, PDO::PARAM_STR);
-        return $result->execute();
-    }
-
-
-    /**
-     * Возвращаем выписанные заказ в реквесты
-     * @param $id
-     * @return bool
-     */
-    public static function returnOrderToRequestById($id)
-    {
-        $db = MsSQL::getConnection();
-
-        $sql = "UPDATE site_gm_ordering_goods
-            SET
-                cancel = 1
-            WHERE id = :id";
-
-        $result = $db->prepare($sql);
-        $result->bindParam(':id', $id, PDO::PARAM_INT);
-        return $result->execute();
-    }
-
-
-    /**
-     * Обновялем статус заявки
-     * @param $id
-     * @param $check_status
-     * @return bool
-     */
-    public static function updateCheckReserveOrders($id, $check_status)
-    {
-        $db = MySQL::getConnection();
-
-        $sql = "UPDATE gm_orders_check
-            SET
-                check_status = :check_status
-            WHERE id = :id";
-
-        $result = $db->prepare($sql);
-        $result->bindParam(':id', $id, PDO::PARAM_INT);
-        $result->bindParam(':check_status', $check_status, PDO::PARAM_INT);
-        return $result->execute();
-    }
-
-
-    /**
-     * Информация о реквесте
-     * @param $id_order
+     * Ищем совпадение number
+     * @param $number
      * @return mixed
      */
-    public static function getOrderRequestInfo($id_order)
+    public static function findNumber($number)
     {
         $db = MsSQL::getConnection();
 
-        $sql = "SELECT
-                *
-                FROM site_gm_ordering_goods
-                WHERE id = :id";
+        $sql = "SELECT TOP 1 number FROM site_gm_ordering_goods WHERE number = :number";
 
         $result = $db->prepare($sql);
-        $result->bindParam(':id', $id_order, PDO::PARAM_INT);
+        $result->bindParam(':number', $number, PDO::PARAM_INT);
         $result->execute();
-        $res = $result->fetch(PDO::FETCH_ASSOC);
-        return $res;
+        $row = $result->fetch();
+        return $row;
     }
 
 
     /**
-     * Delete request by id
-     * @param $id
-     * @return bool
+     * Генерируем уникальный number
+     * @return int
      */
-    public static function deleteRequestById($id)
+    public static function generateNumber()
     {
-        $db = MySQL::getConnection();
-
-        $sql = 'DELETE FROM gm_orders_check WHERE id = :id';
-
-        $result = $db->prepare($sql);
-        $result->bindParam(':id', $id, PDO::PARAM_INT);
-        return $result->execute();
+        $number = random_int(0, 999999);
+        $checkNumber = self::findNumber($number);
+        if($checkNumber){
+            self::generateNumber();
+        }
+        return (int)$number;
     }
 
 
@@ -331,6 +229,8 @@ class Request
                  sgog.created_on,
                  sgog.note1,
                  sgog.subtype_name,
+                 sgog.period,
+                 sgog.number,
                  sgu.site_client_name,
                  sgu.status_name as site_client_status,
                  sgot.name as type_name
@@ -353,102 +253,70 @@ class Request
         return $all;
     }
 
+
     /**
-     * Delete request by id
+     * Переместить в корзину
      * @param $id
+     * @param $active
      * @return bool
      */
-    public static function deleteRequestMsSQLById($id)
+    public static function moveRequest($id, $active)
     {
         $db = MsSQL::getConnection();
 
-        $sql = 'DELETE FROM site_gm_ordering_goods WHERE id = :id';
+        $sql = "UPDATE site_gm_ordering_goods
+            SET
+                active = :active
+            WHERE id = :id";
 
         $result = $db->prepare($sql);
         $result->bindParam(':id', $id, PDO::PARAM_INT);
+        $result->bindParam(':active', $active, PDO::PARAM_INT);
         return $result->execute();
     }
 
 
     /**
-     * Сохраняем удаленные реквесты
-     * @param $remove_request
+     * Вернуть с корзины в реквест с новымой атой и периодом
+     * @param $id
+     * @param $options
      * @return bool
      */
-    public static function addRemovedRequest($remove_request)
+    public static function moveRequestInList($id, $options)
     {
-        $db = MySQL::getConnection();
+        $db = MsSQL::getConnection();
 
-        $sql = 'INSERT INTO gm_orders_request_removed '
-            . '(remove_request)'
-            . 'VALUES '
-            . '(:remove_request)';
+        $sql = "UPDATE site_gm_ordering_goods
+            SET
+                active = :active,
+                created_on = :created_on,
+                period = :period
+            WHERE id = :id";
 
         $result = $db->prepare($sql);
-        $result->bindParam(':remove_request', $remove_request, PDO::PARAM_STR);
+        $result->bindParam(':id', $id, PDO::PARAM_INT);
+        $result->bindParam(':active', $options['active'], PDO::PARAM_INT);
+        $result->bindParam(':created_on', $options['created_on'], PDO::PARAM_STR);
+        $result->bindParam(':period', $options['period'], PDO::PARAM_INT);
         return $result->execute();
     }
 
 
     /**
-     * Список удаленных реквестов для пользователя
-     * @param $array_id
+     * Возвращаем реквесты с мультиреквеста
+     * @param $number
      * @return array
      */
-    public static function getRemovedRequestByUser($array_id)
+    public static function getMultiRequestsByNumber($number)
     {
-        $db = MySQL::getConnection();
+        $db = MsSQL::getConnection();
 
-        $idS = implode(',', $array_id);
-
-        $sql = "SELECT
-                gorr.remove_request,
-                gu.name_partner
-                FROM gm_orders_request_removed gorr
-                LEFT JOIN gs_user gu
-                    ON gu.id_user = JSON_EXTRACT(gorr.remove_request, '$.site_account_id')
-                WHERE JSON_EXTRACT(gorr.remove_request, '$.site_account_id') IN ({$idS})";
+        $sql = "SELECT * FROM site_gm_ordering_goods WHERE processed = 0 AND active = 1 AND number = :number";
 
         $result = $db->prepare($sql);
+        $result->bindParam(':number', $number, PDO::PARAM_INT);
         $result->execute();
-        $res = $result->fetchAll(PDO::FETCH_ASSOC);
-        $i = 0;
-        $restore = [];
-        foreach ($res as $request) {
-            $restore[$i] = json_decode($request['remove_request'], true);
-            $restore[$i]['name_partner'] = $request['name_partner'];
-            $i++;
-        }
-        return $restore;
+        $row = $result->fetchAll(PDO::FETCH_ASSOC);
+        return $row;
     }
-
-
-    /**
-     * Список всех
-     * @return array
-     */
-    public static function getAllRemovedRequest()
-    {
-        $db = MySQL::getConnection();
-
-        $sql = "SELECT
-                gorr.remove_request,
-                gu.name_partner
-                FROM gm_orders_request_removed gorr
-                LEFT JOIN gs_user gu
-                    ON gu.id_user = JSON_EXTRACT(gorr.remove_request, '$.site_account_id')";
-
-        $result = $db->prepare($sql);
-        $result->execute();
-        $res = $result->fetchAll(PDO::FETCH_ASSOC);
-        $i = 0;
-        $restore = [];
-        foreach ($res as $request) {
-            $restore[$i] = json_decode($request['remove_request'], true);
-            $restore[$i]['name_partner'] = $request['name_partner'];
-            $i++;
-        }
-        return $restore;
-    }
-
 }
