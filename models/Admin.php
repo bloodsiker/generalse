@@ -7,6 +7,7 @@ use PDO;
 use Umbrella\components\Db\MySQL;
 use Umbrella\components\Db\MsSQL;
 use Umbrella\components\Functions;
+use Umbrella\components\Logger;
 
 class Admin
 {
@@ -277,6 +278,7 @@ class Admin
     {
         Session::set('user', $adminId);
         Session::set('_token', Functions::generateCode(30));
+        Logger::getInstance()->log($adminId, 'вошел(а) в кабинет');
     }
 
 

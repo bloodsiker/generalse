@@ -53,6 +53,14 @@ abstract class AdminBase extends Controller
         $adminId = Admin::checkLogged();
         $user = new User($adminId);
 
+        // Проверка на оплаченные счета
+        if(Url::getUri() != '/adm/risks'){
+            if($user->getUserBlockedGM() !== true){
+                Url::redirect('/adm/risks');
+            }
+        }
+
+        //Проверка на доступ к кабинету
         if($user->isActive() == 0) {
             Session::destroy('user');
             Url::redirect('/');

@@ -147,6 +147,16 @@ table tr:hover{
   background: #ddd;
   border: 1px solid #aaa;
 }
+.risk-message{
+  margin: 30px auto;
+  padding: 40px 40px 20px ;
+  width: 750px;
+  background: #ddd;
+  border: 1px solid #aaa;
+}
+.risk-message a {
+  color: #0c79a2;
+}
 .file_request{
   color: #c1433c;
 }

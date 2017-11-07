@@ -195,6 +195,8 @@ return array(
     'adm/crm/moto/([a-z0-9-_?&]+)' => 'umbrella/crm/Moto@moto/$1',
     'adm/crm/moto' => 'umbrella/crm/Moto@moto',
 
+    'adm/crm' => 'umbrella/crm/Crm@index',
+
 
     /*********** LITHOGRAPHER  ***********/
     'adm/lithographer/s/([a-z0-9-_?&]+)' => 'umbrella/Lithographer@search/$1',
@@ -225,6 +227,7 @@ return array(
     'adm/kpi/import' => 'umbrella/Kpi@import',
     'adm/kpi' => 'umbrella/Kpi@index',
 
+    'adm/risks' => 'umbrella/Risk@risks',
     'adm/access_denied' => 'umbrella/Admin@access',
     'adm/logout' => 'umbrella/Admin@logout',
     'auth' => 'umbrella/Admin@auth',

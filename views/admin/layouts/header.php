@@ -70,7 +70,7 @@
                 <?php endif; ?>
 
                 <?php if (Umbrella\app\AdminBase::checkDenied('adm.crm', 'view')): ?>
-                    <li><a href="/adm/crm/orders" class="<?= Umbrella\components\Url::IsActive('/crm/', 'active') ?>">CRM</a></li>
+                    <li><a href="/adm/crm/" class="<?= Umbrella\components\Url::IsActive('/crm/', 'active') ?>">CRM</a></li>
                 <?php endif; ?>
 
                 <?php if (Umbrella\app\AdminBase::checkDenied('adm.lithographer', 'view')): ?>

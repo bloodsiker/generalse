@@ -2,16 +2,19 @@
 
 namespace Umbrella\controllers\umbrella;
 
-use Josantonius\Url\Url;
-use Umbrella\app\AdminBase;
+use Josantonius\Session\Session;
 use Umbrella\app\User;
+use Umbrella\components\Decoder;
 use Umbrella\models\Admin;
-use Umbrella\models\Country;
+use Umbrella\models\Risk;
+use Umbrella\vendor\controller\Controller;
 
 /**
- * Class CountryController
+ * Просроченные счета по оплате
+ * Class RiskController
+ * @package Umbrella\controllers\umbrella
  */
-class CountryController extends AdminBase
+class RiskController extends Controller
 {
     /**
      * @var User
@@ -28,76 +31,17 @@ class CountryController extends AdminBase
     }
 
     /**
+     * Просроченные платежы
      * @return bool
      */
-    public function actionAddCountry()
+    public function actionRisks()
     {
         $user = $this->user;
+        Session::destroy('info_user');
 
-        $countryList = Country::getAllCountry();
+        $listRisks = Decoder::arrayToUtf(Risk::getUserRisks(15));
 
-        if (isset($_POST['add_country'])) {
-
-            $options['short_name'] = $_POST['short_name'];
-            $options['full_name'] = $_POST['full_name'];
-
-            $id_country = Country::addCountry($options);
-
-            if($id_country){
-                Url::redirect('/adm/users');
-            }
-        }
-
-        $this->render('admin/country/create', compact('user', 'countryList'));
+        $this->render('admin/risks', compact('user', 'listRisks'));
         return true;
     }
-
-
-    /**
-     * @param $id_country
-     * @return bool
-     *
-     */
-    public function actionUpdate($id_country)
-    {
-        $user = $this->user;
-
-        $countryById = Country::getCountryId($id_country);
-
-        if (isset($_POST['update_country'])) {
-
-            $options['short_name'] = $_POST['short_name'];
-            $options['full_name'] = $_POST['full_name'];
-
-            $id_country = Country::updateCountry($id_country, $options);
-
-            if($id_country){
-                Url::redirect('/adm/users');
-            }
-        }
-
-        $this->render('admin/country/update', compact('user', 'countryById'));
-        return true;
-    }
-
-
-    /**
-     * @param $id
-     * @return bool
-     */
-    public function actionDelete($id)
-    {
-        $user = $this->user;
-
-        if($user->role == 'administrator'){
-            Country::deleteCountryById($id);
-        } else {
-            echo "<script>alert('У вас нету прав на удаление стран')</script>";
-        }
-
-        Url::redirect('/adm/users');
-        return true;
-    }
-
-
 }

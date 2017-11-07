@@ -3,118 +3,25 @@
 namespace Umbrella\models;
 
 use PDO;
-use Umbrella\components\Db\MySQL;
+use Umbrella\components\Db\MsSQL;
 
-class Country
+class Risk
 {
 
-    public static function getCountryId($id_country)
+    /**
+     * Просроченные счета
+     * @param $user_id
+     * @return mixed
+     */
+    public static function getUserRisks($user_id)
     {
-        // Соединение с базой данных
-        $db = MySQL::getConnection();
+        $db = MsSQL::getConnection();
 
-        // Делаем запрос к базе данных
-        $sql = 'SELECT * FROM gs_country WHERE id_country = :id_country';
+        $sql = 'SELECT * FROM site_gm_users_risks WHERE site_account_id = :site_account_id ORDER BY id DESC';
 
-        // Делаем подготовленный запрос
         $result = $db->prepare($sql);
-        $result->bindParam(':id_country', $id_country, PDO::PARAM_INT);
-
-        // Указываем, что хотим получить данные в виде массива
-        $result->setFetchMode(PDO::FETCH_ASSOC);
+        $result->bindParam(':site_account_id', $user_id, PDO::PARAM_INT);
         $result->execute();
-
-        return $result->fetch();
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
-
-
-    /**
-     * @param $options
-     * @return int|string
-     */
-    public static function addCountry($options)
-    {
-        // Соединение с БД
-        $db = MySQL::getConnection();
-
-        // Текст запроса к БД
-        $sql = 'INSERT INTO gs_country '
-            . '(short_name, full_name)'
-            . 'VALUES '
-            . '(:short_name, :full_name)';
-
-        // Получение и возврат результатов. Используется подготовленный запрос
-        $result = $db->prepare($sql);
-        $result->bindParam(':short_name', $options['short_name'], PDO::PARAM_STR);
-        $result->bindParam(':full_name', $options['full_name'], PDO::PARAM_STR);
-
-        if ($result->execute()) {
-            // Если запрос выполенен успешно, возвращаем id добавленной записи
-            return $db->lastInsertId();
-        }
-        // Иначе возвращаем 0
-        return 0;
-    }
-
-
-    /**
-     * @param $id
-     * @param $options
-     * @return bool
-     */
-    public static function updateCountry($id, $options)
-    {
-        // Соединение с БД
-        $db = MySQL::getConnection();
-
-        // Текст запроса к БД
-        $sql = "UPDATE gs_country
-            SET
-                short_name = :short_name,
-                full_name = :full_name
-            WHERE id_country = :id_country";
-
-        // Получение и возврат результатов. Используется подготовленный запрос
-        $result = $db->prepare($sql);
-        $result->bindParam(':id_country', $id, PDO::PARAM_INT);
-        $result->bindParam(':short_name', $options['short_name'], PDO::PARAM_STR);
-        $result->bindParam(':full_name', $options['full_name'], PDO::PARAM_STR);
-        return $result->execute();
-    }
-
-
-    /**
-     * Получаем весь список стран
-     * @return array
-     */
-    public static function getAllCountry()
-    {
-        // Соединение с БД
-        $db = MySQL::getConnection();
-
-        // Получение и возврат результатов
-        $data = $db->query('SELECT * FROM gs_country ORDER BY full_name')->fetchAll(PDO::FETCH_ASSOC);
-
-        return $data;
-    }
-
-
-    /**
-     * @param $id
-     * @return bool
-     */
-    public static function deleteCountryById($id)
-    {
-        // Соединение с БД
-        $db = MySQL::getConnection();
-
-        // Текст запроса к БД
-        $sql = 'DELETE FROM gs_country WHERE id_country = :id_country';
-
-        // Получение и возврат результатов. Используется подготовленный запрос
-        $result = $db->prepare($sql);
-        $result->bindParam(':id_country', $id, PDO::PARAM_INT);
-        return $result->execute();
-    }
-
 }
