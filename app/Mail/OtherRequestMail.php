@@ -49,6 +49,7 @@ class OtherRequestMail
         $mailToManager .= "<b>Note:</b> " . $options['note'] . "<br>";
 
         mail('vv@generalse.com', 'Lenovo Request. Новый запрос', $mailToManager, $headers);
+        mail('sales@generalse.com', 'Lenovo Request. Новый запрос', $mailToManager, $headers);
         //mail('maldini2@ukr.net', 'Lenovo Request. Новый запрос', $mailToManager, $headers);
         return true;
     }
@@ -73,6 +74,7 @@ class OtherRequestMail
         $mailToManager .= "<b>Note:</b> " . $options['note'] . "<br>";
 
         mail('vv@generalse.com', 'Lenovo Request. Новый запрос', $mailToManager, $headers);
+        mail('sales@generalse.com', 'Lenovo Request. Новый запрос', $mailToManager, $headers);
         //mail('maldini2@ukr.net', 'Lenovo Request. Новый запрос', $mailToManager, $headers);
         return true;
     }
@@ -153,6 +155,7 @@ class OtherRequestMail
         $mailToManager .= "<b>Price:</b> " . $options['price'] . "<br>";
 
         mail('vv@generalse.com', 'Lenovo Request. Партнер согласился с ценой ', $mailToManager, $headers);
+        mail('sales@generalse.com', 'Lenovo Request. Партнер согласился с ценой ', $mailToManager, $headers);
         return true;
     }
 
@@ -176,6 +179,7 @@ class OtherRequestMail
         $mailToManager .= "<b>Comment:</b> " . $options['comment_disagree'] . "<br>";
 
         mail('vv@generalse.com', 'Lenovo Request. Партнер не согласился с ценой', $mailToManager, $headers);
+        mail('sales@generalse.com', 'Lenovo Request. Партнер не согласился с ценой', $mailToManager, $headers);
         return true;
     }
 

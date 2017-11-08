@@ -3,6 +3,8 @@
 namespace Umbrella\app\Mail;
 
 
+use Umbrella\components\Decoder;
+
 class RequestMail
 {
     private static $instance = NULL;
@@ -42,7 +44,6 @@ class RequestMail
         $mailToManager .= "<b>Analog:</b> {$analogPrice['partNumber']} - Price: " . round($analogPrice['price'], 2) ;
 
         mail('do@generalse.com', 'Request. Замена парт номера на аналог', $mailToManager, $headers);
-        mail('dasha14071995@gmail.com', 'Request. Замена парт номера на аналог', $mailToManager, $headers);
         mail('dv@generalse.com', 'Request. Замена парт номера на аналог', $mailToManager, $headers);
 
         $emails = explode(',', $userEmail);
@@ -71,11 +72,10 @@ class RequestMail
         $headers .= "Content-Transfer-Encoding: 8bit";
 
         $mailToManager = "<b>В Request #:</b> {$id} был изменен статус<br>";
-        $mailToManager .= "<b>Old status:</b>" . iconv('WINDOWS-1251', 'UTF-8', $oldStatus) . "<br>";
-        $mailToManager .= "<b>New status:</b>" . iconv('WINDOWS-1251', 'UTF-8', $newStatus);
+        $mailToManager .= "<b>Old status:</b>" . Decoder::strToUtf($oldStatus) . "<br>";
+        $mailToManager .= "<b>New status:</b>" . Decoder::strToUtf($newStatus);
 
         mail('do@generalse.com', 'Request. Статус изменен', $mailToManager, $headers);
-        mail('dasha14071995@gmail.com', 'Request. Статус изменен', $mailToManager, $headers);
         mail('dv@generalse.com', 'Request. Статус изменен', $mailToManager, $headers);
 
         $emails = explode(',', $userEmail);
