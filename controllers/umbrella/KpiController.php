@@ -84,7 +84,6 @@ class KpiController extends AdminBase
 
 
                 $listUsage = Data::getAllUsageByAdmin($start, $end);
-                $listUsage = [];
                 Logger::getInstance()->log($user->id_user, "Посмотрел Usage c {$start} - {$end} для {$_GET['id_partner']}");
 
             } else {

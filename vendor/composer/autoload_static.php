@@ -54,11 +54,11 @@ class ComposerStaticInit757ae5c9dd284343ce5a49deba304424
         ),
         'Josantonius\\Url\\' => 
         array (
-            0 => __DIR__ . '/..' . '/josantonius/url/src/Url',
+            0 => __DIR__ . '/..' . '/josantonius/url/src',
         ),
         'Josantonius\\Session\\' => 
         array (
-            0 => __DIR__ . '/..' . '/josantonius/session/src/Session',
+            0 => __DIR__ . '/..' . '/josantonius/session/src',
         ),
         'Carbon\\' => 
         array (

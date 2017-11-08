@@ -10,7 +10,7 @@ return array(
     'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
     'Symfony\\Component\\Translation\\' => array($vendorDir . '/symfony/translation'),
     'M1\\Env\\' => array($vendorDir . '/m1/env/src'),
-    'Josantonius\\Url\\' => array($vendorDir . '/josantonius/url/src/Url'),
-    'Josantonius\\Session\\' => array($vendorDir . '/josantonius/session/src/Session'),
+    'Josantonius\\Url\\' => array($vendorDir . '/josantonius/url/src'),
+    'Josantonius\\Session\\' => array($vendorDir . '/josantonius/session/src'),
     'Carbon\\' => array($vendorDir . '/nesbot/carbon/src/Carbon'),
 );
