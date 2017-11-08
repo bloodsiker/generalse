@@ -7,7 +7,10 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Umbrella\\' => array($baseDir . '/'),
+    'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
+    'Symfony\\Component\\Translation\\' => array($vendorDir . '/symfony/translation'),
     'M1\\Env\\' => array($vendorDir . '/m1/env/src'),
     'Josantonius\\Url\\' => array($vendorDir . '/josantonius/url/src/Url'),
     'Josantonius\\Session\\' => array($vendorDir . '/josantonius/session/src/Session'),
+    'Carbon\\' => array($vendorDir . '/nesbot/carbon/src/Carbon'),
 );

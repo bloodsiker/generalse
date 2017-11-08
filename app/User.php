@@ -156,12 +156,22 @@ class User
     public function getUserBlockedGM()
     {
         if(isset($this->infoUser['gm'])){
-            if($this->infoUser['gm']['blocked'] == 0) {
-                return true;
+
+            switch ($this->infoUser['gm']['blocked']){
+                case 0:
+                    return 'active';
+                    break;
+                case 1:
+                    return 'active'; //tomorrow
+                    break;
+                case 2:
+                    return 'active'; //blocked
+                    break;
+                default:
+                    return 'active';
             }
-            return true; //false
         }
-        return true;
+        return 'active';
     }
 
 

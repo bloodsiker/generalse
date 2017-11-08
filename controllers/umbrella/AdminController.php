@@ -38,7 +38,7 @@ class AdminController extends AdminBase
                     //Если данные правильные, запоминаем пользователя в сессию
                     $user = new User($userId);
                     //Проверка на проплату в GM
-                    if($user->getUserBlockedGM() == true){
+                    if($user->getUserBlockedGM() == 'active'){
                         if($user->isActive() == 1){
                             Admin::auth($userId);
 
@@ -60,7 +60,7 @@ class AdminController extends AdminBase
                     }
                 }
             } else {
-                $errors['log'] = 'Извините, Umbrella на техническом облуживании!<br> Сервис будет доступен в 14:45 по Киеву';
+                $errors['log'] = 'Извините, Umbrella на техническом облуживании!<br> Сервис будет доступен в 08.11.2017 в 09:20 по Киеву';
                 $errors['code'] = 3;
                 echo json_encode($errors);
             }

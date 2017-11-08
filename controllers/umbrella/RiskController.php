@@ -39,7 +39,7 @@ class RiskController extends Controller
         $user = $this->user;
         Session::destroy('info_user');
 
-        $listRisks = Decoder::arrayToUtf(Risk::getUserRisks(15));
+        $listRisks = Decoder::arrayToUtf(Risk::getUserRisks($user->getId()));
 
         $this->render('admin/risks', compact('user', 'listRisks'));
         return true;

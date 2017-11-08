@@ -86,13 +86,14 @@ class UserController extends AdminBase
         $listUsers = Admin::getAllUsers();
         $listControlUsers = Admin::getControlUsersId($id_user);
 
-        if(isset($_POST['add_user_control']) && $_POST['add_user_control'] == 'true'){
-            $control_user_id = $_POST['id_user'];
-            $ok = Admin::addUserControl($id_user, $control_user_id);
-            if($ok){
-                Url::previous();
+        if(isset($_REQUEST['add_multi-user_control']) && $_REQUEST['add_multi-user_control'] == 'true'){
+            $users_id = $_POST['id_user'];
+            foreach ($users_id as $user_control_id){
+                Admin::addUserControl($id_user, $user_control_id);
             }
+            Url::previous();
         }
+
 
         $this->render('admin/users/user_control', compact('user', 'id_user', 'listUsers', 'listControlUsers'));
         return true;

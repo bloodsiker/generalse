@@ -78,6 +78,7 @@
                             <div class="large-12 columns">
                                 <label>Перенаправление после авторизации
                                     <select name="login_url" class="required" required>
+                                        <option value="adm/crm/">CRM</option>
                                         <option value="adm/crm/orders">CRM/Orders</option>
                                         <option value="adm/crm/request">CRM/Request</option>
                                         <option value="adm/psr/ua">PSR/PSR UA</option>

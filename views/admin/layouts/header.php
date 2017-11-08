@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/template/admin/css/app.css">
     <link rel="stylesheet" href="/template/admin/css/fonts.css">
     <link rel="stylesheet" href="/template/admin/fonts/foundation-icons/foundation-icons.css">
-    <link rel="stylesheet" href="/template/admin/css/style.css?v.1.9.9">
+    <link rel="stylesheet" href="/template/admin/css/style.css?v.2.0.0">
     <link rel="stylesheet" href="/template/admin/font-awesome/css/font-awesome.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/5.0.0/video-js.min.css" rel="stylesheet">
     <?php
@@ -40,6 +40,9 @@
     <div class="header-user-menu">
         <div class="row">
             <div class="medium-12 small-12 column text-right">
+                <?php if($user->getUserBlockedGM() == 'tomorrow'):?>
+                    <a href="/adm/risks" class="text-red">Внимание!</a>
+                <?php endif;?>
                 <span class="user-name"><?=$user->getName()?></span>
             </div>
         </div>

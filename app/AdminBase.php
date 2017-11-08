@@ -55,8 +55,12 @@ abstract class AdminBase extends Controller
 
         // Проверка на оплаченные счета
         if(Url::getUri() != '/adm/risks'){
-            if($user->getUserBlockedGM() !== true){
-                Url::redirect('/adm/risks');
+            if($user->getUserBlockedGM() != 'active'){
+                if($user->getUserBlockedGM() == 'tomorrow'){
+                    return true;
+                } else {
+                    Url::redirect('/adm/risks');
+                }
             }
         }
 
@@ -66,6 +70,7 @@ abstract class AdminBase extends Controller
             Url::redirect('/');
         }
 
+        // Проверка на доступы к разделам и действиям
         $denied = new UserDenied($user);
         if($param == 'view'){
             return $denied->checkUserInDeniedList($section, 'slug');

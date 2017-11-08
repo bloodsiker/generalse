@@ -65,20 +65,23 @@
     </div>
     <div class="row">
         <div class="medium-6 small-12 columns">
-            <h3>General Center</h3>
+            <h3>General Services Georgia LLC</h3>
             <p>
-                3, Frunze street, <br>
-                Minsk, 220004, Belarus <a target="_blank" href="https://goo.gl/maps/TdXsLW4ncpP2">show on map</a><br>
-                info@rem.by
+                Georgia, Tbilisi, GE-0102 <br>
+                6, Marjanishvili street <a target="_blank" href="https://goo.gl/u5D7ir">show on map</a><br>
+                es@generalse.com
             </p>
         </div>
         <div class="medium-6 small-12 columns">
             <h3>General Services Ukraine LLC</h3>
             <p>
-                General Services LLC,
-                4, Lepse street, <br> office 20, 2nd floor,
-                Kiev, Ukraine <a target="_blank" href="https://goo.gl/maps/p1GLqqUG6Nn">show on map</a><br>
-                es@generalse.com
+                General Services Ukraine LLC, <br>
+                Kiev, Ukraine <br>
+                1, Severo-Syiretskaya street, <a target="_blank" href="https://goo.gl/sj3qYa">show on map</a><br>
+                es@generalse.com <br>
+                Tel: 0 800 501 279 <br>
+                Tel: 044 338 25 59
+
             </p>
         </div>
     </div>
@@ -106,7 +109,8 @@
                     <p class="red">contacts:</p>
                 </div>
                 <div class="medium-8 small-12 columns">
-                    <p>Armenia Tel:+37411300300</p>
+                    <p>Armenia Tel: +37411300350</p>
+                    <p>E-mail: info@service.am</p>
                 </div>
             </div>
         </div>
@@ -119,22 +123,21 @@
                     <p class="red">working hours:</p>
                 </div>
                 <div class="medium-8 small-12 columns">
-                    <p>Monday-Friday: 10:00-18:00</p>
+                    <p>Monday-Saturday: 10:00-19:00</p>
                 </div>
                 <div class="medium-4 small-12 columns">
                     <p class="red">adress:</p>
                 </div>
                 <div class="medium-8 small-12 columns">
                     <p>Yerevan, 20/1 Saryan str.<a target="_blank" href="https://goo.gl/maps/hjJEh3wzDo22"> show on
-                            map</a>;
-                        Yerevan, Northern avenue, 1<a target="_blank" href="https://goo.gl/maps/mzvtoUcvQr12"> show on
                             map</a></p>
                 </div>
                 <div class="medium-4 small-12 columns">
                     <p class="red">contacts:</p>
                 </div>
                 <div class="medium-8 small-12 columns">
-                    <p>Armenia Tel: +37410586048 <br>e-mail: info@remzone.am</p>
+                    <p>Armenia Tel: +37410586048, +37410587450</p>
+                    <p>E-mail: support@remzone.am, info@remzone.am</p>
                 </div>
             </div>
         </div>
@@ -166,6 +169,34 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="medium-12 small-12 columns">
+            <h3>General Center</h3>
+            <div class="row">
+                <div class="medium-4 small-12 columns">
+                    <p class="red">working hours:</p>
+                </div>
+                <div class="medium-8 small-12 columns">
+                    <p>Monday-Friday: 10:00-20:00; Saturday: 11:00-16:00</p>
+                </div>
+                <div class="medium-4 small-12 columns">
+                    <p class="red">adress:</p>
+                </div>
+                <div class="medium-8 small-12 columns">
+                    <p>Minsk, Frunze street, 3<a target="_blank" href="https://goo.gl/VHPKD4"> show on
+                            map</a></p>
+                </div>
+                <div class="medium-4 small-12 columns">
+                    <p class="red">contacts:</p>
+                </div>
+                <div class="medium-8 small-12 columns">
+                    <p>Belarus Tel: +29 969 84 88, +29 540 74 68</p>
+                    <p>E-mail: ml@generalse.com</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <div class="row">
         <div class="medium-12 small-12 columns">
@@ -175,21 +206,20 @@
                     <p class="red">working hours:</p>
                 </div>
                 <div class="medium-8 small-12 columns">
-                    <p>Monday - Friday : 10:00 - 19:00</p>
+                    <p>Monday - Friday : 10:00 - 18:00; Saturday: 10:00-17:00</p>
                 </div>
                 <div class="medium-4 small-12 columns">
                     <p class="red">adress:</p>
                 </div>
                 <div class="medium-8 small-12 columns">
-                    <p>Tbilisi, Rose Revolution Square  37, 0108<a target="_blank"
-                                                                   href="https://goo.gl/maps/6XpHT8h1nZk"> show on
-                            map</a></p>
+                    <p>Tbilisi, Tsabadze street, 8B<a target="_blank" href="https://goo.gl/38xAMi"> show on map</a></p>
                 </div>
                 <div class="medium-4 small-12 columns">
                     <p class="red">contacts:</p>
                 </div>
                 <div class="medium-8 small-12 columns">
-                    <p>Georgia Tel: +995574161118</p>
+                    <p>Georgia Tel: +995322306555</p>
+                    <p>E-mail: Service@goletiani.ge</p>
                 </div>
             </div>
         </div>
@@ -202,7 +232,7 @@
                     <p class="red">working hours:</p>
                 </div>
                 <div class="medium-8 small-12 columns">
-                    <p>Monday - Friday : 10:00 - 19:00</p>
+                    <p>Monday - Friday : 09:00 - 18:00</p>
                 </div>
                 <div class="medium-4 small-12 columns">
                     <p class="red">adress:</p>
@@ -222,13 +252,13 @@
     </div>
     <div class="row">
         <div class="medium-12 small-12 columns">
-            <h3>Accent Electronic SA</h3>
+            <h3>Accent Electronic Service</h3>
             <div class="row">
                 <div class="medium-4 small-12 columns">
                     <p class="red">working hours:</p>
                 </div>
                 <div class="medium-8 small-12 columns">
-                    <p>Monday - Friday : 9:00 - 18:00</p>
+                    <p>Monday - Friday : 9:00 - 18:00; Saturday: 10:00-13:00</p>
                 </div>
                 <div class="medium-4 small-12 columns">
                     <p class="red">adress:</p>
@@ -248,26 +278,27 @@
     </div>
     <div class="row">
         <div class="medium-12 small-12 columns">
-            <h3>PitExim</h3>
+            <h3>ULTRASERVICE SRL</h3>
             <div class="row">
                 <div class="medium-4 small-12 columns">
                     <p class="red">working hours:</p>
                 </div>
                 <div class="medium-8 small-12 columns">
-                    <p>Monday - Friday : 9:00 - 18:00; Saturday: 9:00-12:00</p>
+                    <p>Monday - Friday : 9:00 - 18:00; Saturday: 10:00-14:00</p>
                 </div>
                 <div class="medium-4 small-12 columns">
                     <p class="red">adress:</p>
                 </div>
                 <div class="medium-8 small-12 columns">
-                    <p>Chisinau, V. Alecsandri str. 143<a target="_blank" href="https://goo.gl/maps/hHnk7bvTen62"> show
+                    <p>Chisinau, Calea Iesilor 10, et.3<a target="_blank" href="https://goo.gl/wn3Fm2"> show
                             on map</a></p>
                 </div>
                 <div class="medium-4 small-12 columns">
                     <p class="red">contacts:</p>
                 </div>
                 <div class="medium-8 small-12 columns">
-                    <p>Moldova Tel: +37379800527</p>
+                    <p>Moldova Tel: +37379837777</p>
+                    <p>E-mail: ultraservice@ultraservice.md</p>
                 </div>
             </div>
         </div>

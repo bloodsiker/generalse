@@ -62,8 +62,10 @@
                             <div class="large-12 columns">
                                 <label>Перенаправление после авторизации
                                     <select name="login_url" class="required" required>
+                                        <option value="adm/crm/" <?php if($userInfo['login_url'] == 'adm/crm/') echo 'selected'?>>CRM</option>
                                         <option value="adm/crm/orders" <?php if($userInfo['login_url'] == 'adm/crm/orders') echo 'selected'?>>CRM/Orders</option>
                                         <option value="adm/crm/request" <?php if($userInfo['login_url'] == 'adm/crm/request') echo 'selected'?>>CRM/Request</option>
+                                        <option value="adm/psr/ua" <?php if($userInfo['login_url'] == 'adm/psr/ua') echo 'selected'?>>PSR/PSR UA</option>
                                         <option value="adm/ccc" <?php if($userInfo['login_url'] == 'adm/ccc') echo 'selected'?>>CCC</option>
                                     </select>
                                 </label>

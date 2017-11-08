@@ -15,7 +15,7 @@
                     <h2 class="float-left">Список пользователей для управления(<?= count($listControlUsers)?>)</h2>
                     <a href="/adm/users" style="margin-bottom: 0" class="button small float-right">Назад</a>
                     <div class="clearfix"></div>
-                    <table border="1" cellspacing="0" cellpadding="5">
+                    <table class="umbrella-table" border="1" cellspacing="0" cellpadding="5">
                         <thead>
                         <tr>
                             <th width="50px">ID</th>
@@ -39,16 +39,22 @@
                     </table>
                 </div>
                 <div class="medium-4 small-12 columns">
-                    <h2 class="float-left">Пользователи</h2>
                     <div class="clearfix"></div>
                     <form action="" method="post">
-                        <select name="id_user" id="">
-                            <?php foreach ($listUsers as $userC):?>
-                                <option <?= ($user->checkUserInControl($id_user, $userC['id_user']) ? 'disabled' : '')?> value="<?=$userC['id_user']?>"><?=$userC['name_partner']?></option>
-                            <?php endforeach;?>
-                        </select>
-                        <input type="hidden" name="add_user_control" value="true">
-                        <button type="submit" style="margin-top: 15px" class="button small float-right">Добавить</button>
+                        <fieldset class="fieldset">
+                            <legend>Пользователи</legend>
+                            <div style="height: 400px; overflow-y: scroll">
+                                <?php foreach ($listUsers as $userC):?>
+                                    <?php if(!$user->checkUserInControl($id_user, $userC['id_user'])):?>
+                                        <input id="user-<?=$userC['id_user']?>" type="checkbox" name="id_user[]" value="<?=$userC['id_user']?>">
+                                        <label for="user-<?=$userC['id_user']?>"><?=$userC['name_partner']?></label>
+                                        <br>
+                                    <?php endif;?>
+                                <?php endforeach;?>
+                            </div>
+                            <input type="hidden" name="add_multi-user_control" value="true">
+                            <button type="submit" style="margin-top: 30px" class="button small float-right">Добавить</button>
+                        </fieldset>
                     </form>
                 </div>
             </div>
