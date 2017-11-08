@@ -786,6 +786,18 @@ class Data
     }
 
     /**
+     *
+     * SELECT
+    gk.SERVICE_PROVIDE_NAME,
+    gk.Item_Product_ID,
+    gk.Item_Product_Desc,
+    COUNT(*) AS total
+    FROM gs_kpi gk
+    WHERE gk.Service_Complete_Date BETWEEN '2017-10-25' AND '2017-11-08'
+    AND gk.SERVICE_PROVIDE_NAME = 'GS Accent'
+    AND gk.Item_Product_ID NOT IN('SWAPLAB', 'PHREPL0', 'DPSTDW3', 'DPSTDW1', 'PHREPL2', 'TPSTDW3',
+    'DPSTDW6', 'DPMIDW1', 'DPMIDW2', 'DPMOW02', 'TPSTDW6', 'PHREPL1', 'DPSTDW9')
+    GROUP BY gk.Item_Product_ID
      * @param $id_user
      * @param $start
      * @param $end
@@ -796,18 +808,23 @@ class Data
         $db = MySQL::getConnection();
 
         $sql = "SELECT
-                 gk.SERVICE_PROVIDE_NAME,
-                 gk.Item_Product_ID,
-                 gk.Item_Product_Desc,
-                 COUNT(*) AS total
-                 FROM gs_kpi gk 
-                  INNER JOIN gs_user gu
- 	                ON gk.SERVICE_PROVIDE_NAME = gu.name_partner
-                WHERE gu.id_user = :id_user
-                AND gk.Service_Complete_Date BETWEEN :start_date AND :end_date
+                  DISTINCT gk.Item_Product_ID,
+                  gk.SERVICE_PROVIDE_NAME,
+                  gk.Item_Product_ID,
+                  gk.Item_Product_Desc,
+                  (SELECT count(gk1.Item_Product_ID) FROM gs_kpi gk1
+                      INNER JOIN gs_user gu1
+                          ON gk1.SERVICE_PROVIDE_NAME = gu1.name_partner
+                      WHERE gk1.Service_Complete_Date BETWEEN :start_date AND :end_date
+                      AND gu1.id_user = :id_user
+                      AND gk.Item_Product_ID = gk1.Item_Product_ID) AS total
+                FROM gs_kpi gk 
+                    INNER JOIN gs_user gu
+                      ON gk.SERVICE_PROVIDE_NAME = gu.name_partner
+                WHERE gk.Service_Complete_Date BETWEEN :start_date AND :end_date
+                AND gu.id_user = :id_user
                 AND gk.Item_Product_ID NOT IN('SWAPLAB', 'PHREPL0', 'DPSTDW3', 'DPSTDW1', 'PHREPL2', 'TPSTDW3',
-                  'DPSTDW6', 'DPMIDW1', 'DPMIDW2', 'DPMOW02', 'TPSTDW6', 'PHREPL1', 'DPSTDW9') 
-                GROUP BY gk.Item_Product_ID";
+                 'DPSTDW6', 'DPMIDW1', 'DPMIDW2', 'DPMOW02', 'TPSTDW6', 'PHREPL1', 'DPSTDW9')";
 
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $id_user, PDO::PARAM_INT);
@@ -829,15 +846,20 @@ class Data
         $db = MySQL::getConnection();
 
         $sql = "SELECT
-                    gk.SERVICE_PROVIDE_NAME,
-                    gk.Item_Product_ID,
-                    gk.Item_Product_Desc,
-                  COUNT(*) AS total
-                  FROM gs_kpi gk 
-                 WHERE gk.Service_Complete_Date BETWEEN :start_date AND :end_date
-                 AND gk.Item_Product_ID NOT IN('SWAPLAB', 'PHREPL0', 'DPSTDW3', 'DPSTDW1', 'PHREPL2', 'TPSTDW3',
-                   'DPSTDW6', 'DPMIDW1', 'DPMIDW2', 'DPMOW02', 'TPSTDW6', 'PHREPL1', 'DPSTDW9') 
-                GROUP BY gk.Item_Product_ID";
+                  DISTINCT gk.Item_Product_ID,
+                  gk.SERVICE_PROVIDE_NAME,
+                  gk.Item_Product_ID,
+                  gk.Item_Product_Desc,
+                  (SELECT count(gk1.Item_Product_ID) FROM gs_kpi gk1
+                  WHERE gk1.Service_Complete_Date BETWEEN :start_date AND :end_date
+                    AND gk1.Item_Product_ID NOT IN('SWAPLAB', 'PHREPL0', 'DPSTDW3', 'DPSTDW1', 'PHREPL2', 'TPSTDW3',
+                     'DPSTDW6', 'DPMIDW1', 'DPMIDW2', 'DPMOW02', 'TPSTDW6', 'PHREPL1', 'DPSTDW9')
+                    AND gk.Item_Product_ID = gk1.Item_Product_ID) AS total
+                FROM gs_kpi gk 
+                WHERE gk.Service_Complete_Date BETWEEN :start_date AND :end_date
+                AND gk.Item_Product_ID NOT IN('SWAPLAB', 'PHREPL0', 'DPSTDW3', 'DPSTDW1', 'PHREPL2', 'TPSTDW3',
+                 'DPSTDW6', 'DPMIDW1', 'DPMIDW2', 'DPMOW02', 'TPSTDW6', 'PHREPL1', 'DPSTDW9')
+                ORDER BY gk.SERVICE_PROVIDE_NAME DESC";
 
         $result = $db->prepare($sql);
         $result->bindParam(':start_date', $start, PDO::PARAM_STR);
