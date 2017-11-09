@@ -163,7 +163,7 @@
                     <p class="red">contacts:</p>
                 </div>
                 <div class="medium-8 small-12 columns">
-                    <p>Belarus Tel: +375297816614 <br>e-mail: client@rem.by</p>
+                    <p>Belarus Tel: +375297816614 <br>E-mail: client@rem.by</p>
                 </div>
             </div>
         </div>
@@ -171,7 +171,7 @@
 
     <div class="row">
         <div class="medium-12 small-12 columns">
-            <h3>General Center</h3>
+            <h3>General Centre</h3>
             <div class="row">
                 <div class="medium-4 small-12 columns">
                     <p class="red">working hours:</p>
@@ -271,7 +271,7 @@
                     <p class="red">contacts:</p>
                 </div>
                 <div class="medium-8 small-12 columns">
-                    <p>Moldova Tel: +37322577979 <br>e-mail: service@accent.md</p>
+                    <p>Moldova Tel: +37322577979 <br>E-mail: service@accent.md</p>
                 </div>
             </div>
         </div>

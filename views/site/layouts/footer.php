@@ -42,8 +42,8 @@
             </p>
             <p>
                 Belarus: <br>
-                <a href="http://microdom.by/" target="_blank">Device care</a> <br>
-                <a href="http://service-lenovo.by" target="_blank">General center </a></p>
+                <a href="http://microdom.by/" target="_blank">Device Care</a> <br>
+                <a href="http://service-lenovo.by" target="_blank">General Centre</a></p>
             <p>
                 Georgia:<br>
                 <a href="" onclick="return false">Servisa ICT</a><br>
