@@ -57,7 +57,7 @@ abstract class AdminBase extends Controller
         if(Url::getUri() != '/adm/risks'){
             if($user->getUserBlockedGM() != 'active'){
                 if($user->getUserBlockedGM() == 'tomorrow'){
-                    return true;
+
                 } else {
                     Url::redirect('/adm/risks');
                 }

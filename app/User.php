@@ -162,10 +162,10 @@ class User
                     return 'active';
                     break;
                 case 1:
-                    return 'active'; //tomorrow
+                    return 'tomorrow'; //tomorrow
                     break;
                 case 2:
-                    return 'active'; //blocked
+                    return 'blocked'; //blocked
                     break;
                 default:
                     return 'active';

@@ -171,8 +171,16 @@ $('[name="part_number"]').keyup(function(e) {
             }
         }
     });
-
     return false;
+});
+
+// Показываем скрытый инпут в зависимости от выбраного значения
+$(document).on('change', 'select[name="note"]', function (e) {
+    if(e.target.value == 'other_address'){
+        $('input[name="your_address"]').attr('type', 'text').attr('required', 'required').addClass('required');
+    } else {
+        $('input[name="your_address"]').attr('type', 'hidden').removeAttr('required').removeClass('required');
+    }
 });
 
 

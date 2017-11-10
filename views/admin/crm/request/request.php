@@ -291,17 +291,21 @@
                         <?php endforeach;?>
                     </select>
                 </div>
-                <?php if(is_array($delivery_address) && !empty($delivery_address)):?>
-                    <div class="medium-12 small-12 columns">
-                        <label>Delivery address</label>
-                        <select name="note" class="required" required>
-                            <option value="" selected disabled>none</option>
+
+                <div class="medium-12 small-12 columns">
+                    <label>Delivery address</label>
+                    <select name="note" class="required" required>
+                        <option value="" selected disabled>none</option>
+                        <?php if(is_array($delivery_address)):?>
                             <?php foreach ($delivery_address as $address):?>
                                 <option value="<?= $address?>"><?= $address?></option>
                             <?php endforeach;?>
-                        </select>
-                    </div>
-                <?php endif; ?>
+                        <?php endif; ?>
+                        <option value="other_address">Write another address</option>
+                    </select>
+                    <input type="hidden" name="your_address" placeholder="Enter your address">
+                </div>
+
                 <div class="medium-12 small-12 columns">
                     <label>Flash on PNC</label>
                     <input type="text" name="note1" autocomplete="off">
@@ -449,17 +453,19 @@
                 </div>
                 <div class="medium-12 small-12 columns">
                     <div class="row">
-                        <?php if(is_array($delivery_address) && !empty($delivery_address)):?>
-                            <div class="medium-12 small-12 columns">
-                                <label>Delivery address</label>
-                                <select name="note" class="required" required>
-                                    <option value="" selected disabled>none</option>
+                        <div class="medium-12 small-12 columns">
+                            <label>Delivery address</label>
+                            <select name="note" class="required" required>
+                                <option value="" selected disabled>none</option>
+                                <?php if(is_array($delivery_address)):?>
                                     <?php foreach ($delivery_address as $address):?>
                                         <option value="<?= $address?>"><?= $address?></option>
                                     <?php endforeach;?>
-                                </select>
-                            </div>
-                        <?php endif; ?>
+                                <?php endif; ?>
+                                <option value="other_address">Write another address</option>
+                            </select>
+                            <input type="hidden" name="your_address" placeholder="Enter your address">
+                        </div>
 
                         <div class="medium-12 small-12 columns">
                             <label>Type</label>

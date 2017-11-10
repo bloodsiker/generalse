@@ -64,8 +64,14 @@ class RequestController extends AdminBase
             $note = null;
             $note_mysql = null;
             if(isset($_POST['note'])){
-                $note = Decoder::strToWindows($_POST['note']);
-                $note_mysql = $_POST['note'];
+                if($_POST['note'] == 'other_address'){
+                    $address = $_POST['your_address'];
+                    $note = !empty($address) ? Decoder::strToWindows($address) : null;
+                    $note_mysql = $_POST['your_address'];
+                } else {
+                    $note = Decoder::strToWindows($_POST['note']);
+                    $note_mysql = $_POST['note'];
+                }
             }
             $options['id_user'] = $user->id_user;
 
@@ -237,8 +243,11 @@ class RequestController extends AdminBase
                         $arrayReplaceAnalog = [];
                         foreach ($excelArray as $import){
                             $note = null;
-                            if(isset($_REQUEST['note'])){
-                                $note = iconv('UTF-8', 'WINDOWS-1251', $_REQUEST['note']);
+                            if($_POST['note'] == 'other_address'){
+                                $address = $_POST['your_address'];
+                                $note = !empty($address) ? Decoder::strToWindows($address) : null;
+                            } else {
+                                $note = Decoder::strToWindows($_POST['note']);
                             }
                             $options['id_user'] = $user->id_user;
 
