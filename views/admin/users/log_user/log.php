@@ -20,7 +20,6 @@
                             <th width="50px">ID</th>
                             <th>Имя</th>
                             <th>Лог</th>
-                            <th>IP-user</th>
                             <th>User agent</th>
                             <th width="150px">Дата</th>
                         </tr>
@@ -32,7 +31,6 @@
                                     <td><?=$log['id_log']?></td>
                                     <td><?=$log['name_partner']?></td>
                                     <td><?=$log['log_text']?></td>
-                                    <td><?=$log['ip_user']?></td>
                                     <td><?=$log['user_agent']?></td>
                                     <td><?=$log['date_log']?></td>
                                 </tr>

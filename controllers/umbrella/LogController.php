@@ -57,7 +57,6 @@ class LogController extends AdminBase
                     $html .= "<td>" . $log['id_log'] . "</td>";
                     $html .= "<td>" . $log['name_partner'] . "</td>";
                     $html .= "<td>" . $log['log_text'] . "</td>";
-					$html .= "<td>" . $log['ip_user'] . "</td>";
                     $html .= "<td>" . $log['user_agent'] . "</td>";
                     $html .= "<td>" . $log['date_log'] . "</td>";
                     $html .= "</tr>";

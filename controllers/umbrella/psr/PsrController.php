@@ -8,6 +8,7 @@ use Umbrella\app\AdminBase;
 use Umbrella\app\Mail\PsrMail;
 use Umbrella\app\User;
 use Umbrella\components\Functions;
+use Umbrella\components\Logger;
 use Umbrella\models\Admin;
 use Umbrella\models\Products;
 use Umbrella\models\psr\Psr;
@@ -48,7 +49,7 @@ class PsrController extends AdminBase
 
 
         if(isset($_REQUEST['add_psr']) && $_REQUEST['add_psr'] == 'true') {
-            $options['id_user'] = $user->id_user;
+            $options['id_user'] = $user->getId();
             $options['serial_number'] = $_REQUEST['serial_number'];
             $options['part_number'] = $_REQUEST['mtm'];
             $device = Products::checkPartNumberInGM($_REQUEST['mtm']);
@@ -65,6 +66,7 @@ class PsrController extends AdminBase
             $id = Psr::addPsr($options);
             if($id){
                 PsrMail::getInstance()->sendEmailWithNewPsr($id, $user->name_partner, $options);
+                Logger::getInstance()->log($user->getId(), "Зарегистрировал ПСР MTM {$options['part_number']}, SN {$options['serial_number']}");
                 Session::set('psr_success', 'Successful PSR device registration');
                 Session::set('class', 'alert-success');
                 Url::previous();
@@ -81,6 +83,7 @@ class PsrController extends AdminBase
                 $handle->process(ROOT . self::UPLOAD_PATH_PSR);
                 if ($handle->processed) {
                     Psr::addDocumentInPsr($_REQUEST['psr_id'], self::UPLOAD_PATH_PSR, $file_name);
+                    Logger::getInstance()->log($user->getId(),"Загрузил квитанцию к ПСР # {$_REQUEST['psr_id']}");
                     $handle->clean();
                     Session::set('psr_success', 'The warranty card is attached');
                     Session::set('class', 'alert-success');
