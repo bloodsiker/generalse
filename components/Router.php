@@ -7,13 +7,35 @@ namespace Umbrella\components;
  */
 class Router
 {
-    private $routes;
+
+    /**
+     * @var string
+     */
+    private $directory;
+
+    /**
+     * @var array|mixed
+     */
+    private $routes = [];
+
+    /**
+     * @var
+     */
     private $uri;
 
+
+    /**
+     * Router constructor.
+     */
     public function __construct()
     {
-        $routesPath = ROOT . '/config/routes.php';
-        $this->routes = include($routesPath);
+        $this->directory   = ROOT . '/routes/';
+        $arrayRoutes = $this->dirToArray($this->directory);
+
+        foreach ($arrayRoutes as $file){
+            $routesPath = $this->directory . $file;
+            $this->routes += include($routesPath);
+        }
     }
 
     /**
@@ -26,6 +48,10 @@ class Router
         }
     }
 
+
+    /**
+     * run routig
+     */
     public function run()
     {
         // Получить строку запроса
@@ -83,4 +109,32 @@ class Router
         }
     }
 
+
+    /**
+     * Scan dir
+     * @param $dir
+     * @return array
+     */
+    public function dirToArray($dir) {
+
+        $result = array();
+
+        $cdir = scandir($dir);
+        foreach ($cdir as $key => $value)
+        {
+            if (!in_array($value,array(".","..")))
+            {
+                if (is_dir($dir . DIRECTORY_SEPARATOR . $value))
+                {
+                    $result[$value] = $this->dirToArray($dir . DIRECTORY_SEPARATOR . $value);
+                }
+                else
+                {
+                    $result[] = $value;
+                }
+            }
+        }
+
+        return $result;
+    }
 }

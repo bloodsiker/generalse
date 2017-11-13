@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
     'adm/innovation/ajax_action' => 'umbrella/Innovation@ajaxAction',
 
@@ -239,4 +239,4 @@ return array(
     'directions' => 'Site@directions',
     'for_business' => 'Site@forBusiness',
     'main' => 'Site@index', // actionIndex в SiteController
-);
+];
