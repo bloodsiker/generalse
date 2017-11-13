@@ -1,5 +1,5 @@
 <?php
-namespace App\components\Api;
+namespace Umbrella\components\Api;
 
 class Response
 {
