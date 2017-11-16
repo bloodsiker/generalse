@@ -314,7 +314,7 @@ class Stocks
         // PEX, Киев\ОК или PEX, Киев\б/у
         foreach ($stocks_group as $stock){
             $product = self::checkGoodsInStocksPartners($user_id, $stock, $part_number, 'fetch', 'site_gm_stocks_decompiles');
-            if(trim($product['stock_name']) == 'Dismantling' || trim($product['stock_name']) == 'BAD'){
+            if(trim($product['stock_name']) == 'PEX, Киев\ОК' || trim($product['stock_name']) == 'PEX, Киев\б/у'){
                 if(isset($stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня)'])){
                     if($stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня)']['quantity'] < $product['quantity']){
                         $stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня)'] = $product;
@@ -333,7 +333,7 @@ class Stocks
         foreach ($stocks_group as $stock){
             $product = self::checkGoodsInStocksPartners($user_id, $stock, $part_number, 'fetch', 'site_gm_stocks');
             // PEX, Киев\ОК или PEX, Киев\Квазар
-            if(trim($product['stock_name']) == 'BAD' || trim($product['stock_name']) == 'Local Source'){
+            if(trim($product['stock_name']) == 'PEX, Киев\ОК' || trim($product['stock_name']) == 'PEX, Киев\Квазар'){
                 if(isset($stocks['НОВЫЕ'])){
                     if($stocks['НОВЫЕ']['quantity'] < $product['quantity']){
                         $stocks['НОВЫЕ'] = $product;

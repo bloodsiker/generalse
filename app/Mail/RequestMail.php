@@ -43,7 +43,6 @@ class RequestMail
         $mailToManager .= "<b>Part Number:</b> {$originPrice['partNumber']} - Price: " . round($originPrice['price'], 2) . "<br>";
         $mailToManager .= "<b>Analog:</b> {$analogPrice['partNumber']} - Price: " . round($analogPrice['price'], 2) ;
 
-        mail('do@generalse.com', 'Request. Замена парт номера на аналог', $mailToManager, $headers);
         mail('dv@generalse.com', 'Request. Замена парт номера на аналог', $mailToManager, $headers);
 
         $emails = explode(',', $userEmail);
@@ -75,7 +74,6 @@ class RequestMail
         $mailToManager .= "<b>Old status:</b>" . Decoder::strToUtf($oldStatus) . "<br>";
         $mailToManager .= "<b>New status:</b>" . Decoder::strToUtf($newStatus);
 
-        mail('do@generalse.com', 'Request. Статус изменен', $mailToManager, $headers);
         mail('dv@generalse.com', 'Request. Статус изменен', $mailToManager, $headers);
 
         $emails = explode(',', $userEmail);

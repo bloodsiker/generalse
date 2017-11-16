@@ -9,6 +9,7 @@ use Umbrella\models\DeliveryAddress;
 use Umbrella\models\Denied;
 use Umbrella\models\File;
 use Umbrella\models\GroupModel;
+use Umbrella\models\hr\Auth;
 use Umbrella\models\Innovation;
 
 /**
@@ -32,6 +33,7 @@ class User
     private $infoUser;
 
 
+
     /**
      * User constructor.
      * @param $id_user
@@ -50,6 +52,7 @@ class User
         $this->coefficient = $this->infoUser['kpi_coefficient'];
         $this->login_url = $this->infoUser['login_url'];
         $this->is_active = $this->infoUser['is_active'];
+        $this->token = $this->getToken();
 
         $this->activeUser();
     }
@@ -92,6 +95,50 @@ class User
     public function getRole()
     {
         return $this->infoUser['role'];
+    }
+
+
+    /**
+     * @param $token
+     * @return mixed
+     */
+    public function setToken($token)
+    {
+        return Auth::updateToken($this->id_user, $token);
+    }
+
+
+    /**
+     * return user auth token
+     * @return mixed
+     */
+    public function getToken()
+    {
+        $user = Admin::getAdminById($this->id_user);
+        return isset($user['token']) ? $user['token'] : null;
+    }
+
+
+    /**
+     * Доступ к авторизации к проектам (Umbrella, HR)
+     * @param $permission
+     * @return mixed
+     */
+    public function getAuthProject($permission)
+    {
+        $user = Admin::getAdminById($this->id_user);
+
+        if(is_array($permission)){
+            if(in_array($user['project'], $permission)){
+                return true;
+            }
+            return false;
+        } else {
+            if ($user['project'] == $permission) {
+                return true;
+            }
+            return false;
+        }
     }
 
 
@@ -193,8 +240,6 @@ class User
     {
         $control_users_id = Admin::getControlUsersId($id_user);
         $array = [];
-        //$stock_users_id[]['use_stock_user_id'] = $id_user;
-        //$new_array = array_reverse($stock_users_id);
         if($control_users_id){
             $array = array_column($control_users_id, 'control_user_id');
             $new_user = new User($id_user);
@@ -202,7 +247,6 @@ class User
                 $array[] = $id_user;
             }
             $new_array = array_reverse($array);
-            //$list = implode(',', $array);
             return $new_array;
         } else {
             $array[0] = $id_user;
