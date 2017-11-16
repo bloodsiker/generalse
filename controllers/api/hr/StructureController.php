@@ -1,73 +1,116 @@
 <?php
-namespace Umbrella\controllers\umbrella;
+namespace Umbrella\controllers\api\hr;
 
-use Umbrella\app\AdminBase;
-use Umbrella\app\User;
-use Umbrella\models\Admin;
-use Umbrella\models\Log;
+use Umbrella\app\Api\Middleware\VerifyToken;
+use Umbrella\app\Api\Response;
+use Umbrella\models\api\hr\Structure;
+
 
 /**
- * Class LogController
+ * Class StructureController
+ * @package Umbrella\controllers\api\hr
  */
-class LogController extends AdminBase
+class StructureController
 {
-    /**
-     * @var User
-     */
-    private $user;
 
     /**
-     * LogController constructor.
+     * StructureController constructor.
      */
     public function __construct()
     {
-        parent::__construct();
-        self::checkDenied('user.logs', 'controller');
-        $this->user = new User(Admin::CheckLogged());
+        new VerifyToken();
     }
 
 
-    /**
-     * @return bool
-     */
-    public function actionLogs()
+    public function actionStructure()
     {
-        $user = $this->user;
-
-        $allLogs = Log::getAllLog(0);
-
-        $this->render('admin/users/log_user/log', compact('user', 'allLogs'));
-        return true;
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function actionAjaxLoad()
-    {
-        if($_REQUEST['action'] == 'load_log'){
-            $num = $_REQUEST['num'];
-
-            $resultLog = Log::getAllLog($num);
-            if(count($resultLog) > 0){
-                $html = "";
-                foreach($resultLog as $log){
-                    $html .= "<tr>";
-                    $html .= "<td>" . $log['id_log'] . "</td>";
-                    $html .= "<td>" . $log['name_partner'] . "</td>";
-                    $html .= "<td>" . $log['log_text'] . "</td>";
-                    $html .= "<td>" . $log['user_agent'] . "</td>";
-                    $html .= "<td>" . $log['date_log'] . "</td>";
-                    $html .= "</tr>";
-                }
-                sleep(2); //Сделана задержка в 1 секунду чтобы можно проследить выполнение запроса
-                echo $html;
-            } else {
-                echo 0; //Если записи закончились
-            }
+        $filter = '';
+        $listStructure = [];
+        if(isset($_GET['structure']) && $_GET['structure'] == 'company'){
+            $filter .= ' AND is_company = 1';
+            $listStructure = Structure::getStructureList($filter);
         }
+
+        if(isset($_GET['structure']) && $_GET['structure'] == 'department'){
+            $companyId = (int)$_GET['company_id'];
+            $filter .= " AND is_department = 1 AND p_id = {$companyId}";
+            $listStructure = Structure::getStructureList($filter);
+        }
+
+        if(isset($_GET['structure']) && $_GET['structure'] == 'branch'){
+            $departmentId = (int)$_GET['department_id'];
+            $filter .= " AND is_branch = 1 AND p_id = {$departmentId}";
+            $listStructure = Structure::getStructureList($filter);
+            $listStructure = array_map(function ($value){
+
+                $value['company_id'] = Structure::getCompanyBranch($value['id']);
+                return $value;
+            }, $listStructure);
+        }
+
+        Response::responseJson($listStructure, 200, 'OK');
         return true;
+    }
+
+
+    /**
+     * Add new structure
+     * @return bool
+     */
+    public function actionAddStructure()
+    {
+
+        if(isset($_GET['structure']) && $_GET['structure'] == 'company'){
+            $name = $_GET['name'];
+            Structure::addStructure($name, 0, 'is_company');
+        }
+
+        if(isset($_GET['structure']) && $_GET['structure'] == 'department'){
+            $name = $_GET['name'];
+            $id = (int)$_GET['company_id'];
+            Structure::addStructure($name, $id, 'is_department');
+        }
+
+        if(isset($_GET['structure']) && $_GET['structure'] == 'branch'){
+            $name = $_GET['name'];
+            $id = (int)$_GET['department_id'];
+            Structure::addStructure($name, $id, 'is_branch');
+        }
+
+        Response::responseJson($listStructure = '', 200, 'OK');
+        return true;
+    }
+
+
+    /**
+     * Edit structure
+     */
+    public function actionEditStructure()
+    {
+        $id = (isset($_GET['id']) && !empty($_GET['id'])) ? (int)$_GET['id'] : false;
+        if($id !== false){
+            $name = $_GET['name'];
+            $p_id = $_GET['p_id'];
+            Structure::updateStructure($id, $name, $p_id);
+        }
+
+        Response::responseJson(null, 200, 'OK');
+        return true;
+    }
+
+
+    /**
+     * Delete structure by ID
+     */
+    public function actionDeleteStructure()
+    {
+        $id = (isset($_GET['id']) && !empty($_GET['id'])) ? (int)$_GET['id'] : false;
+        if ($id !== false) {
+            Structure::recursiveDeleteStructure($id);
+            Response::responseJson(null, 200, 'OK');
+        } else {
+            Response::responseJson(null, 400, 'Bad Request');
+        }
     }
 
 }

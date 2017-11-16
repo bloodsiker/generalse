@@ -45,7 +45,8 @@ class UserController extends AdminBase
 
         $message = Session::pull('user_success');
 
-        $filter = 'true';
+        $_REQUEST['group'] = isset($_REQUEST['group']) ? $_REQUEST['group'] : 1;
+        $filter = ' true';
 
         if(isset($_REQUEST['group'])){
             if($_REQUEST['group'] == 'all'){
@@ -193,7 +194,7 @@ class UserController extends AdminBase
                         $log = "добавил нового пользователя " . $options['name_partner'];
                         Log::addLog($user->id_user, $log);
                         Session::set('user_success', "User {$options['name_partner']} successfully added");
-                        Url::redirect('/adm/access_denied');
+                        Url::redirect('/adm/users');
                     }
                 }
             }

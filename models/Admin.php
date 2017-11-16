@@ -346,6 +346,8 @@ class Admin
                    gu.is_active,
                    gu.date_create,
                    gu.date_active,
+                   gu.project,
+                   gu.token,
                    gr.id_role,
                    gr.role,
                    gr.name_role,

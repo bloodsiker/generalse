@@ -1,6 +1,6 @@
 <?php
 
-namespace Umbrella\models\hr;
+namespace Umbrella\models\api\hr;
 
 use PDO;
 use Umbrella\app\User;

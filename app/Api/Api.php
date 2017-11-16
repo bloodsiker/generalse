@@ -1,6 +1,6 @@
 <?php
 
-namespace Umbrella\components\Api;
+namespace Umbrella\app\Api;
 
 
 abstract  class Api
