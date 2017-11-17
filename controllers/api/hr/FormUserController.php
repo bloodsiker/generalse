@@ -5,6 +5,7 @@ use Umbrella\app\Api\Middleware\VerifyToken;
 use Umbrella\app\Api\Response;
 use Umbrella\components\Functions;
 use Umbrella\models\api\hr\FormUser;
+use Umbrella\models\api\hr\FormUserComment;
 use Umbrella\models\api\hr\Structure;
 use upload as FileUpload;
 
@@ -67,6 +68,29 @@ class FormUserController
 
 
     /**
+     * get form user by id
+     * @return bool
+     */
+    public function actionGetUser()
+    {
+        $userId = isset($_GET['id']) ? (int)$_GET['id'] : false;
+        if($userId !== false){
+            $userInfo = FormUser::getFormUserById($userId);
+            if($userInfo){
+                $comments = FormUserComment::getCommentsByFormUser($userId);
+                $data['user'] =  $userInfo;
+                $data['comments'] =  $comments;
+                Response::responseJson($data, 200, 'OK');
+            } else {
+                Response::responseJson(null, 404, 'Form user not found');
+            }
+        }
+        Response::responseJson(null, 400, 'Bad Request');
+        return true;
+    }
+
+
+    /**
      * Add user
      * @return bool
      */
@@ -97,6 +121,60 @@ class FormUserController
         return true;
     }
 
+
+    /**
+     * Edit form user info
+     * @return bool
+     */
+    public function actionEditFormUser()
+    {
+        $data = file_get_contents('php://input');
+        $dataDecode = json_decode($data);
+        $user = $dataDecode->data;
+
+        $options['id'] = $user->id;
+        $options['name'] = $user->name;
+        $options['surname'] = $user->surname;
+        $options['email'] = $user->email;
+        $options['photo'] = $user->photo;
+        $options['company_id'] = $user->company_id;
+        $options['legal_entity'] = $user->legal_entity;
+        $options['department_id'] = $user->department_id;
+        $options['branch_id'] = $user->branch_id == 'false' ? 0 : $user->branch_id;
+        $options['position'] = $user->position;
+        $options['band_id'] = $user->band_id;
+        $options['func_group'] = $user->func_group;
+
+        $ok = FormUser::updateFormUser($options);
+        if($ok){
+            //$history = json_encode($options);
+            Response::responseJson($options, 200, 'OK');
+        } else {
+            Response::responseJson(null, 304, 'Not Modified');
+        }
+        return true;
+    }
+
+
+    /**
+     * Delete form user
+     * @return bool
+     */
+    public function actionDeleteFormUser()
+    {
+        $userId = isset($_GET['id']) ? (int)$_GET['id'] : false;
+        if($userId !== false){
+            $userInfo = FormUser::getFormUserById($userId);
+            if($userInfo){
+                FormUser::deleteFormUserById($userId);
+                Response::responseJson($userInfo, 200, 'OK');
+            } else {
+                Response::responseJson(null, 404, 'Form user not found');
+            }
+        }
+        Response::responseJson(null, 400, 'Bad Request');
+        return true;
+    }
 
 
     /**

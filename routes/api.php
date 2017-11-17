@@ -2,8 +2,13 @@
 
 return [
 
+    'api/form-users/comment/add' => 'api/hr/FormUserComment@addComment',
+
     'api/form-users/upload-photo' => 'api/hr/FormUser@uploadPhoto',
+    'api/form-users/delete([a-z0-9-_?&]+)' => 'api/hr/FormUser@deleteFormUser/$1',
+    'api/form-users/edit' => 'api/hr/FormUser@editFormUser',
     'api/form-users/add' => 'api/hr/FormUser@addFormUser',
+    'api/form-users/get([a-z0-9-_?&]+)' => 'api/hr/FormUser@getUser/$1',
     'api/form-users([a-z0-9-_?&]+)' => 'api/hr/FormUser@usersInStructure/$1',
 
     'api/bands([a-z0-9-_?&]+)' => 'api/hr/Band@allBand/$1',
