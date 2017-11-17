@@ -50,6 +50,35 @@ class RequestController extends AdminBase
         $user = $this->user;
         $group = new Group();
 
+
+//        $stocks_group = $group->stocksFromGroup($user->idGroupUser($user->getId()), 'name', 'request');
+//        //$partInStock = Stocks::checkInStockAndReplaceName($user->getId(), $stocks_group, '04X2397');
+//        $i = 0;
+//        $stocks = [];
+//        foreach ($stocks_group as $stock){
+//            $product = Stocks::checkGoodsInStocksPartners(164, $stock, '04X3624', 'fetch', 'site_gm_stocks');
+//            // PEX, Киев\ОК или PEX, Киев\Квазар
+//            if($product){
+//
+//                if(trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\OK')
+//                    || trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\Квазар')
+//                    || trim($product['stock_name']) == Decoder::strToWindows('KVAZAR, Киев\OK')){
+//                    if($product['quantity'] > 0){
+//                        if(isset($stocks['НОВЫЕ'])){
+//                            if($stocks['НОВЫЕ']['quantity'] < $product['quantity']){
+//                                $stocks['НОВЫЕ'] = $product;
+//                            }
+//                        } else {
+//                            $stocks['НОВЫЕ'] = $product;
+//                        }
+//                    }
+//                }
+//            }
+//            $i++;
+//        }
+//        var_dump($stocks);
+//        die();
+
         $request_message['add_request'] = Session::pull('add_request');
         $request_message['replace_by_analog'] = Session::pull('replace_by_analog');
 
@@ -380,9 +409,11 @@ class RequestController extends AdminBase
             $quantity = $_REQUEST['quantity'];
             $result = [];
 
+
             $infoPart = Products::checkPartNumberInGM($part_number);
-            $stocks_group = explode(',', 'BAD,Not Used,Restored,Dismantling,Local Source');
-            $partInStock = Stocks::checkInStockAndReplaceName(12, $stocks_group, $part_number);
+            //$stocks_group = explode(',', 'BAD,Not Used,Restored,Dismantling,Local Source'); 12
+            $stocks_group = $group->stocksFromGroup($user->idGroupUser($user->getId()), 'name', 'request');
+            $partInStock = Stocks::checkInStockAndReplaceName($user->getId(), $stocks_group, $part_number);
 
             if(sizeof($partInStock) > 0){
                 $result['status'] = 200;
@@ -510,17 +541,21 @@ class RequestController extends AdminBase
 
             $options['site_account_id'] = $user->getID();
             $options['part_number'] = trim($_REQUEST['multi_part_number']);
-            $options['part_quantity'] = $_REQUEST['part_quantity'];
+            if($_REQUEST['part_quantity'] > $_REQUEST['stock_count'] && $_REQUEST['stock_name'] != 'ЗАПРОС НА ПОСТАВКУ'){
+                $options['part_quantity'] = $_REQUEST['stock_count'];
+            } else {
+                $options['part_quantity'] = $_REQUEST['part_quantity'];
+            }
             $options['goods_name'] = Decoder::strToWindows($_REQUEST['goods_name']);
-            $price = Products::getPricePartNumber($options['part_number'], $user->getId());
-            $options['price'] = ($price['price'] != 0) ? $price['price'] : 0;
+            //$price = Products::getPricePartNumber($options['part_number'], $user->getId());
+            //$options['price'] = ($price['price'] != 0) ? round($price['price'], 2) : 0;
+            $options['price'] = $_REQUEST['pn_price'];
             $options['number'] = $lastNumber;
             $options['period'] = $_REQUEST['period'];
             $options['note1'] = $_REQUEST['note1'];
             $options['stock_id'] = isset($_REQUEST['stock_id']) ? $_REQUEST['stock_id'] : null;
             $options['stock_name'] = $_REQUEST['stock_name'];
             $options['stock_count'] = $_REQUEST['stock_count'];
-            $options['part_quantity'] = $_REQUEST['part_quantity'];
 
             $saveToCart = Session::get('multi_request_cart');
             $saveToCart[] =  $options;
@@ -597,7 +632,7 @@ class RequestController extends AdminBase
                 $html .= "<td>" . $item['id'] . "</td>";
                 $html .= "<td>" . $item['part_number'] . "</td>";
                 $html .= "<td>" . $item['goods_name'] . "</td>";
-                $html .= "<td>" . $item['so_number'] . "</td>";
+                $html .= "<td>" . round($item['price'], 2) . ' ' .  $user->getInfoUserGM()['ShortName'] . "</td>";
                 $html .= "<td>" . $item['status_name'] . "</td>";
                 $html .= "<td>" . Functions::formatDate($item['created_on']) . "</td>";
                 $html .= "<td>" . $item['period'] . "</td>";

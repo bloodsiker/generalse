@@ -77,68 +77,97 @@
                     </div>
                 <?php endif;?>
                 <?php if($user->role == 'partner'):?>
-                <table class="umbrella-table">
-                    <caption>List requests
-                        <span id="count_refund" class="text-green">(<?php if (isset($listCheckOrders)) echo count($listCheckOrders) ?>)</span>
-                    </caption>
-                    <thead>
-                    <tr>
-                        <th>Request id</th>
-                        <th>Partner</th>
-                        <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
-                            <th>Partner status</th>
-                        <?php endif?>
-                        <th>Part Number</th>
-                        <th>Part Description</th>
-                        <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
-                            <th>Subtype</th>
-                        <?php endif?>
-                        <th>SO Number</th>
-                        <th>Price</th>
-                        <th>Address</th>
-                        <th>Type</th>
-                        <th>Note</th>
-                        <th>Status</th>
-                        <th>Date create</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php if(is_array($listCheckOrders)):?>
-                        <?php foreach($listCheckOrders as $order):?>
-                            <tr class="goods <?= (Umbrella\components\Functions::calcDiffSec($order['created_on']) < 120) ? 'check_lenovo_ok' : ''?>"
-                                <?= is_null($order['number'])? null : 'data-number=' . $order['number']?>>
-                                <td><?= is_null($order['number'])? $order['id'] : 'Multi-request ' . $order['number']?></td>
-                                <td><?= $order['site_client_name']?></td>
-                                <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
-                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['site_client_status'])?></td>
-                                <?php endif?>
-                                <td style="background: <?= in_array($order['part_number'], $arrayPartNumber) ? '#f79898' : 'inherit'?>">
-                                    <?= $order['part_number']?>
-                                </td>
-                                <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['goods_name'])?></td>
-                                <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
-                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['subtype_name'])?></td>
-                                <?php endif?>
-                                <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></td>
-                                <td><?= str_replace('.',',', round($order['price'], 2))?></td>
-                                <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['note'])?></td>
-                                <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['type_name'])?></td>
-                                <td class="text-center">
-                                    <?php if($order['note1'] != ' ' && $order['note1'] != null):?>
-                                        <i class="fi-info has-tip [tip-top]" style="font-size: 16px;"
-                                           data-tooltip aria-haspopup="true"
-                                           data-show-on="small"
-                                           data-click-open="true"
-                                           title="<?= iconv('WINDOWS-1251', 'UTF-8', $order['note1'])?>"></i>
-                                    <?php endif;?>
-                                </td>
-                                <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?></td>
-                                <td><?= Umbrella\components\Functions::formatDate($order['created_on'])?></td>
+                    <?php if($user->getGroupName() == 'UKRAINE OOW'):?>
+
+                        <table class="umbrella-table">
+                            <caption>List requests
+                                <span id="count_refund" class="text-green">(<?php if (isset($listCheckOrders)) echo count($listCheckOrders) ?>)</span>
+                            </caption>
+                            <thead>
+                            <tr>
+                                <th>Request id</th>
+                                <th>Partner</th>
+                                <th>Date create</th>
                             </tr>
-                        <?php endforeach;?>
+                            </thead>
+                            <tbody>
+                            <?php if(is_array($listCheckOrders)):?>
+                                <?php foreach($listCheckOrders as $order):?>
+                                    <tr class="goods <?= (Umbrella\components\Functions::calcDiffSec($order['created_on']) < 120) ? 'check_lenovo_ok' : ''?>"
+                                        <?= is_null($order['number'])? null : 'data-number=' . $order['number']?>>
+                                        <td><?= is_null($order['number'])? $order['id'] : 'Multi-request ' . $order['number']?></td>
+                                        <td><?= \Umbrella\components\Decoder::strToUtf($order['site_client_name'])?></td>
+                                        <td><?= Umbrella\components\Functions::formatDate($order['created_on'])?></td>
+                                    </tr>
+                                <?php endforeach;?>
+                            <?php endif;?>
+                            </tbody>
+                        </table>
+                    <?php else: ?>
+                        <table class="umbrella-table">
+                            <caption>List requests
+                                <span id="count_refund" class="text-green">(<?php if (isset($listCheckOrders)) echo count($listCheckOrders) ?>)</span>
+                            </caption>
+                            <thead>
+                            <tr>
+                                <th>Request id</th>
+                                <th>Partner</th>
+                                <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
+                                    <th>Partner status</th>
+                                <?php endif?>
+                                <th>Part Number</th>
+                                <th>Part Description</th>
+                                <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
+                                    <th>Subtype</th>
+                                <?php endif?>
+                                <th>SO Number</th>
+                                <th>Price</th>
+                                <th>Address</th>
+                                <th>Type</th>
+                                <th>Note</th>
+                                <th>Status</th>
+                                <th>Date create</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php if(is_array($listCheckOrders)):?>
+                                <?php foreach($listCheckOrders as $order):?>
+                                    <tr class="goods <?= (Umbrella\components\Functions::calcDiffSec($order['created_on']) < 120) ? 'check_lenovo_ok' : ''?>"
+                                        <?= is_null($order['number'])? null : 'data-number=' . $order['number']?>>
+                                        <td><?= is_null($order['number'])? $order['id'] : 'Multi-request ' . $order['number']?></td>
+                                        <td><?= \Umbrella\components\Decoder::strToUtf($order['site_client_name'])?></td>
+                                        <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
+                                            <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['site_client_status'])?></td>
+                                        <?php endif?>
+                                        <td style="background: <?= in_array($order['part_number'], $arrayPartNumber) ? '#f79898' : 'inherit'?>">
+                                            <?= $order['part_number']?>
+                                        </td>
+                                        <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['goods_name'])?></td>
+                                        <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
+                                            <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['subtype_name'])?></td>
+                                        <?php endif?>
+                                        <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></td>
+                                        <td><?= str_replace('.',',', round($order['price'], 2))?></td>
+                                        <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['note'])?></td>
+                                        <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['type_name'])?></td>
+                                        <td class="text-center">
+                                            <?php if($order['note1'] != ' ' && $order['note1'] != null):?>
+                                                <i class="fi-info has-tip [tip-top]" style="font-size: 16px;"
+                                                   data-tooltip aria-haspopup="true"
+                                                   data-show-on="small"
+                                                   data-click-open="true"
+                                                   title="<?= iconv('WINDOWS-1251', 'UTF-8', $order['note1'])?>"></i>
+                                            <?php endif;?>
+                                        </td>
+                                        <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?></td>
+                                        <td><?= Umbrella\components\Functions::formatDate($order['created_on'])?></td>
+                                    </tr>
+                                <?php endforeach;?>
+                            <?php endif;?>
+                            </tbody>
+                        </table>
                     <?php endif;?>
-                    </tbody>
-                </table>
+
                 <?php elseif($user->role == 'administrator'
                     || $user->role == 'administrator-fin'
                     || $user->role == 'manager'):?>
@@ -173,7 +202,7 @@
                                     data-id="<?= $order['id']?>"
                                     <?= is_null($order['number'])? null : 'data-number=' . $order['number']?>>
                                     <td><?= is_null($order['number'])? $order['id'] : 'Multi-request ' . $order['number']?></td>
-                                    <td><?= $order['site_client_name']?></td>
+                                    <td><?= \Umbrella\components\Decoder::strToUtf($order['site_client_name'])?></td>
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['site_client_status'])?></td>
                                     <td data-pn="<?= $order['part_number']?>" class="order-tr-pn" style="background: <?= in_array($order['part_number'], $arrayPartNumber) ? '#f79898' : 'inherit'?>">
                                         <span class="order_part_num"><?= $order['part_number']?></span>
@@ -331,21 +360,21 @@
                     <form action="" id="add-multi-request-form" method="post" class="form" data-abide novalidate>
                         <div class="row align-top">
                             <div class="medium-12 small-12 columns">
-                                <h3>New request</h3>
+                                <h3>Новый запрос</h3>
                             </div>
 
                             <div class="medium-9 small-9 columns">
-                                <label>Part Number</label>
+                                <label>Парт номер</label>
                                 <input type="text" class="required" name="multi_part_number" autocomplete="off" required>
                             </div>
 
                             <div class="medium-3 small-3 columns">
-                                <label>Quantity</label>
-                                <input type="text" class="required" name="part_quantity" value="1" onkeyup="validCount(this)" autocomplete="off" required>
+                                <label>Количество</label>
+                                <input type="number" class="required" name="part_quantity" value="1" autocomplete="off" required>
                             </div>
 
                             <div class="medium-12 small-12 columns">
-                                <label>Part Description</label>
+                                <label>Описание парт номера</label>
                                 <input type="text" name="goods_name">
                             </div>
 
@@ -355,28 +384,34 @@
                                 </ul>
                             </div>
 
-                            <div class="medium-12 small-12 columns">
-                                <label>Stocks</label>
+                            <div class="medium-9 small-12 columns">
+                                <label>Склады</label>
                                 <select name="stock_id">
 
                                 </select>
                             </div>
 
+                            <div class="medium-3 small-3 columns">
+                                <label>Цена</label>
+                                <input type="text" name="stock_price" disabled>
+                            </div>
+
+                            <input type="hidden" name="pn_price" value="">
                             <input type="hidden" name="stock_count" value="">
                             <input type="hidden" name="stock_name" value="">
 
                             <div class="medium-12 small-12 columns">
-                                <label>Period of the request(days)</label>
-                                <input type="text" name="period" onkeyup="checkCurrPartNumber(this)" autocomplete="off">
+                                <label>Срок действия запроса (дней)</label>
+                                <input type="text" name="period" class="required" onkeyup="checkCurrPartNumber(this)" autocomplete="off" required>
                             </div>
 
                             <div class="medium-12 small-12 columns">
-                                <label>Note</label>
+                                <label>Заметки</label>
                                 <input type="text" name="note1" autocomplete="off">
                             </div>
 
                             <div class="medium-12 small-12 columns">
-                                <button type="submit" class="button primary">Add to cart</button>
+                                <button type="submit" class="button primary">Добавить в корзину</button>
                             </div>
                         </div>
                     </form>
@@ -385,7 +420,7 @@
                 <div class="medium-7 small-12 columns">
                     <div class="row align-top">
                         <div class="medium-12 small-12 columns">
-                            <h3>Cart</h3>
+                            <h3>Корзина</h3>
                         </div>
                         <div class="medium-12 small-12 columns" id="cart-container">
                             <?php require_once ROOT . '/views/admin/crm/request/multi-request-cart.php'?>
@@ -904,7 +939,7 @@
                     <th>Request ID</th>
                     <th>PartNumber</th>
                     <th>Goods Name</th>
-                    <th>Service Order</th>
+                    <th>Price</th>
                     <th>Status</th>
                     <th>Date create</th>
                     <th>Period</th>

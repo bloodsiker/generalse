@@ -309,43 +309,90 @@ class Stocks
         $i = 0;
 
         // БЛИЖАЙШАЯ ПОСТАВКА
-//        $productSupply = self::checkGoodsInStocksPartners($user_id, 'Local Source', $part_number);
-//        if($productSupply) {$stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня)'] = $productSupply; }
         // PEX, Киев\ОК или PEX, Киев\б/у
+
         foreach ($stocks_group as $stock){
             $product = self::checkGoodsInStocksPartners($user_id, $stock, $part_number, 'fetch', 'site_gm_stocks_decompiles');
-            if(trim($product['stock_name']) == 'PEX, Киев\ОК' || trim($product['stock_name']) == 'PEX, Киев\б/у'){
-                if(isset($stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня)'])){
-                    if($stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня)']['quantity'] < $product['quantity']){
-                        $stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня)'] = $product;
+            if($product){
+                if(trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\OK')
+                    || trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\Квазар')
+                    || trim($product['stock_name']) == Decoder::strToWindows('KVAZAR, Киев\OK')){
+                    if($product['quantity'] > 0){
+                        if(isset($stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ'])){
+                            if($stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ']['quantity'] < $product['quantity']){
+                                $stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ'] = $product;
+                            }
+                        } else {
+                            $stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ'] = $product;
+                        }
                     }
-                } else {
-                    $stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня)'] = $product;
+                }
+            }
+
+            if($product){
+                if(trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\б/у')
+                    || trim($product['stock_name']) == Decoder::strToWindows('KVAZAR, Киев\б/у')){
+                    if($product['quantity'] > 0){
+                        if(isset($stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ'])){
+                            if($stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ']['quantity'] < $product['quantity']){
+                                $stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ'] = $product;
+                            }
+                        } else {
+                            $stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ'] = $product;
+                        }
+                    }
                 }
             }
             $i++;
         }
 
         // БУ Склад //PEX, Киев\б/у
-        $productBu = self::checkGoodsInStocksPartners($user_id, 'BAD', $part_number);
-        if($productBu){$stocks['БУ'] = $productBu; }
+        foreach ($stocks_group as $stock){
+            $product = self::checkGoodsInStocksPartners($user_id, $stock, $part_number, 'fetch', 'site_gm_stocks');
+            // PEX, Киев\ОК или PEX, Киев\Квазар
+            if($product){
+                if(trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\б/у')
+                    || trim($product['stock_name']) == Decoder::strToWindows('KVAZAR, Киев\б/у')){
+                    if($product['quantity'] > 0){
+                        if(isset($stocks['БУ'])){
+                            if($stocks['БУ']['quantity'] < $product['quantity']){
+                                $stocks['БУ'] = $product;
+                            }
+                        } else {
+                            $stocks['БУ'] = $product;
+                        }
+                    }
+                }
+            }
+            $i++;
+        }
+
+
 
         foreach ($stocks_group as $stock){
             $product = self::checkGoodsInStocksPartners($user_id, $stock, $part_number, 'fetch', 'site_gm_stocks');
             // PEX, Киев\ОК или PEX, Киев\Квазар
-            if(trim($product['stock_name']) == 'PEX, Киев\ОК' || trim($product['stock_name']) == 'PEX, Киев\Квазар'){
-                if(isset($stocks['НОВЫЕ'])){
-                    if($stocks['НОВЫЕ']['quantity'] < $product['quantity']){
-                        $stocks['НОВЫЕ'] = $product;
+            if($product){
+                if(trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\ОК')
+                    || trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\Квазар')
+                    || trim($product['stock_name']) == Decoder::strToWindows('KVAZAR, Киев\OK')){
+                    if($product['quantity'] > 0){
+                        if(isset($stocks['НОВЫЕ'])){
+                            if($stocks['НОВЫЕ']['quantity'] < $product['quantity']){
+                                $stocks['НОВЫЕ'] = $product;
+                            }
+                        } else {
+                            $stocks['НОВЫЕ'] = $product;
+                        }
                     }
-                } else {
-                    $stocks['НОВЫЕ'] = $product;
                 }
             }
             $i++;
         }
         return array_reverse($stocks);
     }
+
+
 
 
 

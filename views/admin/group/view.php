@@ -76,6 +76,7 @@
                             <li><a href="/adm/group/<?=$id_group?>/stock/stocks">Stocks</a></li>
                             <li><a href="/adm/group/<?=$id_group?>/stock/disassembly">Disassembly</a></li>
                             <li><a href="/adm/group/<?=$id_group?>/stock/supply">Supply</a></li>
+                            <li><a href="/adm/group/<?=$id_group?>/stock/request">Request</a></li>
                         </ul>
                     <?php endif; ?>
 

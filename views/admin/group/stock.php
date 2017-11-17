@@ -68,6 +68,7 @@
                             <li><a href="/adm/group/<?=$id_group?>/stock/stocks" class="<?= Umbrella\components\Url::IsActive('/stock/stocks', 'active-section') ?>">Stocks</a></li>
                             <li><a href="/adm/group/<?=$id_group?>/stock/disassembly" class="<?= Umbrella\components\Url::IsActive('/stock/disassembly', 'active-section') ?>">Disassembly</a></li>
                             <li><a href="/adm/group/<?=$id_group?>/stock/supply" class="<?= Umbrella\components\Url::IsActive('/stock/supply', 'active-section') ?>">Supply</a></li>
+                            <li><a href="/adm/group/<?=$id_group?>/stock/request" class="<?= Umbrella\components\Url::IsActive('/stock/request', 'active-section') ?>">Request</a></li>
                         </ul>
                     <?php endif; ?>
                 </div>

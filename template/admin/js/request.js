@@ -198,8 +198,8 @@ let multiPartNumber = function (e) {
             data: {action : 'part-stock', part_number : part_number, quantity : quantity},
             cache: false,
             success: function (response) {
-                //console.log(response);
                 let obj = JSON.parse(response);
+                console.log(obj);
                 if(obj.status == 200){
 
                     $("#add-multi-request-form [name='goods_name']").val(obj.goods_name[0]);
@@ -211,23 +211,29 @@ let multiPartNumber = function (e) {
                        arr.push({
                            title: key,
                            count: count,
-                           stock_id: obj.stocks[key].stock_id
+                           stock_id: obj.stocks[key].stock_id,
+                           price: (+obj.stocks[key].price).toFixed(2)
                        });
                     });
 
                     $('[name="stock_count"]').val('');
                     $('[name="stock_name"]').val('');
+                    $('[name="stock_price"]').val('');
+                    $('[name="pn_price"]').val('');
                     $('.stocks-view').html('');
-                    $('.stocks-view').html('<li style="color: #09c509;">Found in stock(s):</li>');
+                    $('.stocks-view').html('<li style="color: #09c509;">Найдено на складах:</li>');
                     $("[name='stock_id']").html('<option value=""></option>');
                     arr.forEach(key => $('.stocks-view').append('<li>' +key.title +' - ' +key.count +'шт</li>'));
                     arr.forEach(key => $("select[name='stock_id']")
-                        .append('<option data-count="'+key.count+'" data-stock-name="'+key.title+'" value="' + key.stock_id +'">' +key.title +' - ' +key.count +'шт</option>'));
+                        .append('<option data-count="'+key.count+'" data-price="'+key.price+'" data-stock-name="'+key.title+'" value="' + key.stock_id +'">' +key.title +' - ' +key.count +'шт</option>'));
 
                 } else {
                     $('[name="stock_name"]').val('');
-                    $("#add-multi-request-form [name='goods_name']").val('');
-                    $('.stocks-view').html('<li>Not found in stocks</li>');
+                    $('[name="stock_price"]').val('')
+                    $('[name="stock_count"]').val('');
+                    $('[name="pn_price"]').val('');
+                    $("#add-multi-request-form [name='goods_name']").val(obj.goods_name[0]);
+                    $('.stocks-view').html('<li>Не найдено на складах</li>');
                     $("[name='stock_id']").html('<option value="">ЗАПРОС НА ПОСТАВКУ</option>');
                     $('[name="stock_name"]').val('ЗАПРОС НА ПОСТАВКУ');
 
@@ -238,8 +244,14 @@ let multiPartNumber = function (e) {
         $(document).on('change', '[name="stock_id"]', function (e) {
             let count = $(this).find('option:selected').attr('data-count');
             let stock_name = $(this).find('option:selected').attr('data-stock-name');
+            let stock_price = $(this).find('option:selected').attr('data-price');
             $('[name="stock_count"]').val(count);
             $('[name="stock_name"]').val(stock_name);
+            $('[name="stock_price"]').val(stock_price);
+            $('[name="pn_price"]').val(stock_price);
+            // if(quantity >= count && stock_name != 'ЗАПРОС НА ПОСТАВКУ'){
+            //     $("#add-multi-request-form [name='part_quantity']").val(count);
+            // }
         })
     }
 

@@ -32,7 +32,7 @@ if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/moto')) echo 
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/adm/psr')) echo "<script src='/template/admin/js/psr.js?v.1.6'></script>";
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/supply')) echo "<script src='/template/admin/js/supply.js?v.1.6'></script>";
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/request')) echo "<script src='/template/admin/js/vendor/jquery.form.js'></script>
-<script src='/template/admin/js/request.js?v.2.0.6'></script>";
+<script src='/template/admin/js/request.js?v.2.0.8'></script>";
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/other-request')) echo "<script src='/template/admin/js/other_request.js'></script>";
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/ccc')) echo "<script src='/template/admin/js/ccc/knowledge.js'></script>";
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/adm/lithographer') ||

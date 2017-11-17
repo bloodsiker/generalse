@@ -9,7 +9,7 @@ use Umbrella\models\DeliveryAddress;
 use Umbrella\models\Denied;
 use Umbrella\models\File;
 use Umbrella\models\GroupModel;
-use Umbrella\models\hr\Auth;
+use Umbrella\models\api\hr\Auth;
 use Umbrella\models\Innovation;
 
 /**
@@ -95,6 +95,16 @@ class User
     public function getRole()
     {
         return $this->infoUser['role'];
+    }
+
+
+    /**
+     * get group name
+     * @return mixed
+     */
+    public function getGroupName()
+    {
+        return $this->infoUser['group_name'];
     }
 
 
