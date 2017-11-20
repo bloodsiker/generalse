@@ -457,23 +457,57 @@ class Stocks
      */
     public static function replaceNameStockInResultTable($stockName, $role = 'administrator')
     {
-        $stock = null;
+        $stockReplace = null;
+
         $stockName = Decoder::strToUtf($stockName);
         if($role != 'administrator'){
             if($stockName == 'KVAZAR, Киев\OK'
                 || $stockName == 'PEX, Киев\OK'
                 || $stockName == 'PEX, Киев\Квазар'){
-                $stock = 'НОВЫЙ';
+                $stockReplace = 'НОВЫЙ';
             } elseif($stockName == 'KVAZAR, Киев\б/у'
                 || $stockName == 'PEX, Киев\б/у') {
-                $stock = 'БУ';
+                $stockReplace = 'БУ';
             } else {
-                $stock = $stockName;
+                $stockReplace = $stockName;
             }
         } else {
-            $stock = $stockName;
+            $stockReplace = $stockName;
         }
-        return $stock;
+
+        return $stockReplace;
+    }
+
+
+    /**
+     * Подмена названий складов в результатирующей таблице
+     * @param $stockName
+     * @param string $role
+     * @return array
+     */
+    public static function replaceArrayNameStockInResultTable($stockName, $role = 'administrator')
+    {
+        $stockReplace = [];
+
+        if(is_array($stockName)){
+            foreach ($stockName as $stock){
+                if($role != 'administrator'){
+                    if($stock == 'KVAZAR, Киев\OK'
+                        || $stock == 'PEX, Киев\OK'
+                        || $stock == 'PEX, Киев\Квазар'){
+                        $stockReplace[] = 'НОВЫЙ';
+                    } elseif($stock == 'KVAZAR, Киев\б/у'
+                        || $stock == 'PEX, Киев\б/у') {
+                        $stockReplace[] = 'БУ';
+                    } else {
+                        $stockReplace[] = $stock;
+                    }
+                } else {
+                    $stockReplace[] = $stock;
+                }
+            }
+        }
+        return array_unique($stockReplace);
     }
 
 

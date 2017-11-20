@@ -42,7 +42,7 @@
                 <table class="umbrella-table" id="table-to-excel">
 					<?php if(isset($_POST['stock']) && count($_POST['stock']) > 1):?>
                         <caption>Stocks is <span class="text-green">
-                                <?=implode(', ', \Umbrella\models\Stocks::replaceNameStockInResultTable($_POST['stock'], $user->gerRole()))?>
+                                <?=implode(', ', \Umbrella\models\Stocks::replaceArrayNameStockInResultTable($_POST['stock'], $user->getRole()))?>
                             </span> is <span class="text-green"><?=(isset($allGoodsByPartner)) ? count($allGoodsByPartner) : 0?></span>  units
                         </caption>
                     <?php elseif(isset($_POST['stock']) && count($_POST['stock']) == 1):?>
