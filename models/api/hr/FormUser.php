@@ -83,7 +83,7 @@ class FormUser
         $result = $db->prepare($sql);
         $result->bindParam(':id', $id_user, PDO::PARAM_INT);
         $result->execute();
-        return $result->fetchAll(PDO::FETCH_ASSOC);
+        return $result->fetch(PDO::FETCH_ASSOC);
     }
 
 
@@ -96,15 +96,16 @@ class FormUser
         $db = MySQL::getConnection();
 
         $sql = 'INSERT INTO gs_hr_users_form '
-            . '(name, surname, email, photo, company_id, legal_entity, department_id, branch_id, position, band_id, func_group)'
+            . '(name, surname, email, phone, photo, company_id, legal_entity, department_id, branch_id, position, band_id, func_group)'
             . 'VALUES '
-            . '(:name, :surname, :email, :photo, :company_id, :legal_entity, :department_id, :branch_id, :position, :band_id, :func_group)';
+            . '(:name, :surname, :email, :phone, :photo, :company_id, :legal_entity, :department_id, :branch_id, :position, :band_id, :func_group)';
 
         // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':name', $options['name'], PDO::PARAM_STR);
         $result->bindParam(':surname', $options['surname'], PDO::PARAM_STR);
         $result->bindParam(':email', $options['email'], PDO::PARAM_STR);
+        $result->bindParam(':phone', $options['phone'], PDO::PARAM_STR);
         $result->bindParam(':photo', $options['photo'], PDO::PARAM_STR);
         $result->bindParam(':company_id', $options['company_id'], PDO::PARAM_INT);
         $result->bindParam(':legal_entity', $options['legal_entity'], PDO::PARAM_STR);
@@ -135,6 +136,7 @@ class FormUser
                 name = :name,
                 surname = :surname,
                 email = :email,
+                phone = :phone,
                 photo = :photo,
                 company_id = :company_id,
                 legal_entity = :legal_entity,
@@ -150,6 +152,7 @@ class FormUser
         $result->bindParam(':name', $options['name'], PDO::PARAM_STR);
         $result->bindParam(':surname', $options['surname'], PDO::PARAM_STR);
         $result->bindParam(':email', $options['email'], PDO::PARAM_STR);
+        $result->bindParam(':phone', $options['phone'], PDO::PARAM_STR);
         $result->bindParam(':photo', $options['photo'], PDO::PARAM_STR);
         $result->bindParam(':company_id', $options['company_id'], PDO::PARAM_INT);
         $result->bindParam(':legal_entity', $options['legal_entity'], PDO::PARAM_STR);
@@ -161,6 +164,31 @@ class FormUser
         return $result->execute();
     }
 
+
+    /**
+     * @param $id
+     * @param $key_1
+     * @param $key_2
+     * @param $value_1
+     * @param $value_2
+     * @return bool
+     */
+    public static function updateAttrFormUser($id, $key_1, $value_1, $key_2, $value_2)
+    {
+        $db = MySQL::getConnection();
+
+        $sql = "UPDATE gs_hr_users_form
+            SET
+                {$key_1} = :value_1,
+                {$key_2} = :value_2
+            WHERE id = :id";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $id, PDO::PARAM_INT);
+        $result->bindParam(':value_1', $value_1, PDO::PARAM_STR);
+        $result->bindParam(':value_2', $value_2, PDO::PARAM_STR);
+        return $result->execute();
+    }
 
     /**
      * Delete form user
