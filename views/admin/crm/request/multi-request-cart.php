@@ -24,11 +24,11 @@ if(is_array($multiRequestCart)){
             <table class="umbrella-table">
                 <tr>
                     <td width="30%">Парт номер</td>
-                    <td><?= $cart['part_number']?></td>
+                    <td class="cart-part-number"><?= $cart['part_number']?></td>
                 </tr>
                 <tr class="text-<?= $cart['part_quantity'] <= $cart['stock_count'] ? 'green' : 'red'?>">
                     <td width="30%">Количетсво</td>
-                    <td><?= $cart['part_quantity']?></td>
+                    <td class="cart-count"><?= $cart['part_quantity']?></td>
                 </tr>
                 <tr class="text-green">
                     <td width="30%">Количество на складе</td>
@@ -40,7 +40,7 @@ if(is_array($multiRequestCart)){
                 </tr>
                 <tr>
                     <td width="30%">Склад</td>
-                    <td><?= $cart['stock_name']?></td>
+                    <td class="cart-stock"><?= $cart['stock_name']?></td>
                 </tr>
                 <tr>
                     <td width="30%">Цена</td>

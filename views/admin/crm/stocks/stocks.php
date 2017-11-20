@@ -42,7 +42,8 @@
                 <table class="umbrella-table" id="table-to-excel">
 					<?php if(isset($_POST['stock']) && count($_POST['stock']) > 1):?>
                         <caption>Stocks is <span class="text-green">
-                                <?=implode(', ', $_POST['stock'])?></span> is <span class="text-green"><?=(isset($allGoodsByPartner)) ? count($allGoodsByPartner) : 0?></span>  units
+                                <?=implode(', ', \Umbrella\models\Stocks::replaceNameStockInResultTable($_POST['stock'], $user->gerRole()))?>
+                            </span> is <span class="text-green"><?=(isset($allGoodsByPartner)) ? count($allGoodsByPartner) : 0?></span>  units
                         </caption>
                     <?php elseif(isset($_POST['stock']) && count($_POST['stock']) == 1):?>
                         <caption>Stocks is <span class="text-green">
@@ -68,13 +69,13 @@
                     <?php if (isset($allGoodsByPartner)): ?>
                         <?php foreach ($allGoodsByPartner as $goods): ?>
                             <tr class="goods">
-                                <td><?=iconv('WINDOWS-1251', 'UTF-8', $goods['site_client_name'])?></td>
-                                <td><?=$goods['part_number']?></td>
-                                <td><?=iconv('WINDOWS-1251', 'UTF-8', $goods['goods_name'])?></td>
-                                <td><?=iconv('WINDOWS-1251', 'UTF-8', $goods['stock_name'])?></td>
+                                <td><?= \Umbrella\components\Decoder::strToUtf($goods['site_client_name'])?></td>
+                                <td><?= $goods['part_number']?></td>
+                                <td><?= \Umbrella\components\Decoder::strToUtf($goods['goods_name'])?></td>
+                                <td><?= \Umbrella\models\Stocks::replaceNameStockInResultTable($goods['stock_name'], $user->getRole())?></td>
                                 <td><?=$goods['quantity']?></td>
-                                <td><?=iconv('WINDOWS-1251', 'UTF-8', $goods['subtype_name'])?></td>
-                                <td><?=iconv('WINDOWS-1251', 'UTF-8', $goods['serial_number'])?></td>
+                                <td><?= \Umbrella\components\Decoder::strToUtf($goods['subtype_name'])?></td>
+                                <td><?= \Umbrella\components\Decoder::strToUtf($goods['serial_number'])?></td>
                                 <td><?=round($goods['price'], 2)?></td>
                             </tr>
                         <?php endforeach; ?>

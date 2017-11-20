@@ -239,6 +239,7 @@ class ImportExcel
         foreach($newArray as $data){
             $pushArray[$i]['part_number'] = $data['A'];
             $pushArray[$i]['part_analog'] = $data['B'];
+            $pushArray[$i]['comment'] = $data['C'];
             $i++;
         }
         return $pushArray;

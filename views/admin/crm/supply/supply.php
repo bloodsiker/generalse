@@ -65,10 +65,10 @@
                                 <th class="sort">Checked</th>
                             <?php endif; ?>
                             <?php if (Umbrella\app\AdminBase::checkDenied('crm.supply.bind-gm', 'view')): ?>
-                                <th class="sort">Checked</th>
+                                <th class="sort">Bind GM</th>
                             <?php endif; ?>
                             <?php if (Umbrella\app\AdminBase::checkDenied('crm.supply.delete', 'view')): ?>
-                                <th class="sort">Checked</th>
+                                <th class="sort">Delete</th>
                             <?php endif; ?>
                         </tr>
                         </thead>
@@ -126,10 +126,10 @@
                                 <th class="sort">Checked</th>
                             <?php endif; ?>
                             <?php if (Umbrella\app\AdminBase::checkDenied('crm.supply.bind-gm', 'view')): ?>
-                                <th class="sort">Checked</th>
+                                <th class="sort">Bind GM</th>
                             <?php endif; ?>
                             <?php if (Umbrella\app\AdminBase::checkDenied('crm.supply.delete', 'view')): ?>
-                                <th class="sort">Checked</th>
+                                <th class="sort">Delete</th>
                             <?php endif; ?>
                         </tr>
                         </thead>

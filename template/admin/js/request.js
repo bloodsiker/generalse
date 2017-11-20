@@ -146,19 +146,28 @@ $('[name="part_number"]').keyup(function(e) {
                 } else {
                     $(".group-stocks").addClass('hide');
                 }
-                if(obj.is_analog == 1){
-                    $('.pn-analog').text(obj.message + obj.analog);
-                    $("[name='part-analog']").val(obj.analog);
-                    $("[name='analog-price']").val(obj.analog_price);
-                    $('.group-analog').removeClass('hide');
 
+                if(obj.is_available == 1){
+                    $('.pn-analog').text(obj.comment);
+                    $("[name='part_number']").addClass('error_part');
                 } else {
                     $('.pn-analog').text('');
-                    $("[name='part-analog']").val('');
-                    $("[name='analog-price']").val('');
-                    $(".group-analog").addClass('hide');
+                    $("[name='part_number']").removeClass('error_part');
+
+                    if(obj.is_analog == 1){
+                        $('.pn-analog').text(obj.message + obj.analog);
+                        $("[name='part-analog']").val(obj.analog);
+                        $("[name='analog-price']").val(obj.analog_price);
+                        $('.group-analog').removeClass('hide');
+                    } else {
+                        $('.pn-analog').text('');
+                        $("[name='part-analog']").val('');
+                        $("[name='analog-price']").val('');
+                        $(".group-analog").addClass('hide');
+                    }
                 }
             } else {
+                $("[name='part_number']").removeClass('error_part');
                 $('.name-product').text('not found').css('color', 'red');
                 $("[name='price']").val('0');
                 $(".group-stocks").addClass('hide');
@@ -187,6 +196,7 @@ $(document).on('change', 'select[name="note"]', function (e) {
 
 // Мульти реквест
 let multiPartNumber = function (e) {
+    $('#load_part_number').html('<i class="fa fa-spin fa-spinner"></i>');
     let part_number = $("#add-multi-request-form [name='multi_part_number']").val();
     let quantity = $("#add-multi-request-form [name='part_quantity']").val();
     if(validCount({value:quantity})){
@@ -198,46 +208,101 @@ let multiPartNumber = function (e) {
             data: {action : 'part-stock', part_number : part_number, quantity : quantity},
             cache: false,
             success: function (response) {
+                console.log(response);
                 let obj = JSON.parse(response);
                 console.log(obj);
+
+
+                let notStockFunc = () => {
+                    $('[name="stock_name"]').val('');
+                    $('[name="stock_price"]').val('');
+                    $('[name="stock_count"]').val('0');
+                    $('[name="pn_price"]').val('0');
+                    $("#add-multi-request-form [name='goods_name']").val(obj.goods_name[0]);
+                    $('.stocks-view').html('<li>Не найдено на складах</li>');
+                    $("[name='stock_id']").html('<option value="">ЗАПРОС НА ПОСТАВКУ</option>');
+                    $('[name="stock_name"]').val('ЗАПРОС НА ПОСТАВКУ');
+                };
+
                 if(obj.status == 200){
 
                     $("#add-multi-request-form [name='goods_name']").val(obj.goods_name[0]);
                     let arr = [];
                     console.log(obj.stocks);
 
-                    Object.keys(obj.stocks).forEach(key => {
-                        let count = +obj.stocks[key].quantity > +quantity ? quantity : obj.stocks[key].quantity;
-                       arr.push({
-                           title: key,
-                           count: count,
-                           stock_id: obj.stocks[key].stock_id,
-                           price: (+obj.stocks[key].price).toFixed(2)
-                       });
-                    });
+                    let parts_elems = $('#cart-container').find('.cart-part-number');
+                    let stocks_elems = $('#cart-container').find('.cart-stock');
+                    let counts_elems = $('#cart-container').find('.cart-count');
 
-                    $('[name="stock_count"]').val('');
-                    $('[name="stock_name"]').val('');
-                    $('[name="stock_price"]').val('');
-                    $('[name="pn_price"]').val('');
-                    $('.stocks-view').html('');
-                    $('.stocks-view').html('<li style="color: #09c509;">Найдено на складах:</li>');
-                    $("[name='stock_id']").html('<option value=""></option>');
-                    arr.forEach(key => $('.stocks-view').append('<li>' +key.title +' - ' +key.count +'шт</li>'));
-                    arr.forEach(key => $("select[name='stock_id']")
-                        .append('<option data-count="'+key.count+'" data-price="'+key.price+'" data-stock-name="'+key.title+'" value="' + key.stock_id +'">' +key.title +' - ' +key.count +'шт</option>'));
+                    let cart_products = [];
+                    for (let i = 0; i < parts_elems.length; i++) {
+                        if (part_number === parts_elems[i].innerHTML) {
+                            cart_products.push({
+                                part_number: parts_elems[i].innerHTML,
+                                stock: stocks_elems[i].innerHTML,
+                                count: counts_elems[i].innerHTML,
+                            })
+                        }
+                    }
+
+
+                    if (cart_products.length) {
+                        Object.keys(obj.stocks).forEach(key => {
+                            //let count = +obj.stocks[key].quantity > +quantity ? quantity : obj.stocks[key].quantity;
+                            let count = +obj.stocks[key].quantity;
+                            console.log(count);
+
+                            cart_products.forEach(product => {
+                                if (product.stock === key) {
+                                    count = count - product.count;
+
+                                }
+                            });
+
+                            if (count > 0) {
+                                arr.push({
+                                    title: key,
+                                    count: count,
+                                    stock_id: obj.stocks[key].stock_id,
+                                    price: (+obj.stocks[key].price).toFixed(2)
+                                });
+                            }
+
+                        });
+                    } else {
+                        Object.keys(obj.stocks).forEach(key => {
+                            let count = +obj.stocks[key].quantity > +quantity ? quantity : obj.stocks[key].quantity;
+
+                            arr.push({
+                                title: key,
+                                count: count,
+                                stock_id: obj.stocks[key].stock_id,
+                                price: (+obj.stocks[key].price).toFixed(2)
+                            });
+                        });
+                    }
+
+                    if (arr.length) {
+                        $('[name="stock_count"]').val('');
+                        $('[name="stock_name"]').val('');
+                        $('[name="stock_price"]').val('');
+                        $('[name="pn_price"]').val('');
+                        $('.stocks-view').html('');
+                        $('.stocks-view').html('<li style="color: #09c509;">Найдено на складах:</li>');
+                        $("[name='stock_id']").html('<option value=""></option>');
+                        arr.forEach(key => $('.stocks-view').append('<li>' +key.title +' - ' +key.count +'шт</li>'));
+                        arr.forEach(key => $("select[name='stock_id']")
+                            .append('<option data-count="'+key.count+'" data-price="'+key.price+'" data-stock-name="'+key.title+'" value="' + key.stock_id +'">' +key.title +' - ' +key.count +'шт</option>'));
+
+                    } else {
+                        notStockFunc();
+                    }
 
                 } else {
-                    $('[name="stock_name"]').val('');
-                    $('[name="stock_price"]').val('')
-                    $('[name="stock_count"]').val('');
-                    $('[name="pn_price"]').val('');
-                    $("#add-multi-request-form [name='goods_name']").val(obj.goods_name[0]);
-                    $('.stocks-view').html('<li>Не найдено на складах</li>');
-                    $("[name='stock_id']").html('<option value="">ЗАПРОС НА ПОСТАВКУ</option>');
-                    $('[name="stock_name"]').val('ЗАПРОС НА ПОСТАВКУ');
-
+                    notStockFunc();
                 }
+                $('#load_part_number').html('');
+
             }
         });
 
@@ -249,9 +314,6 @@ let multiPartNumber = function (e) {
             $('[name="stock_name"]').val(stock_name);
             $('[name="stock_price"]').val(stock_price);
             $('[name="pn_price"]').val(stock_price);
-            // if(quantity >= count && stock_name != 'ЗАПРОС НА ПОСТАВКУ'){
-            //     $("#add-multi-request-form [name='part_quantity']").val(count);
-            // }
         })
     }
 
@@ -442,7 +504,9 @@ $(document).on('click', '.delete-request', function (e) {
 // Отправляем заявку на реквест
 $('#add-request-form').submit(function(e) {
     e.preventDefault();
-    if ($('#add-request-form input').hasClass('is-invalid-input') || $('#add-request-form select').hasClass('is-invalid-input')) { // проверка на валидность
+    if ($('#add-request-form input').hasClass('is-invalid-input')
+        || $('#add-request-form select').hasClass('is-invalid-input')
+        || $('#add-request-form input').hasClass('error_part')) { // проверка на валидность
         return false;
     } else {
         $('#add-request-form').find('button').prop('disabled', true);

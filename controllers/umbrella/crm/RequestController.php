@@ -50,35 +50,6 @@ class RequestController extends AdminBase
         $user = $this->user;
         $group = new Group();
 
-
-//        $stocks_group = $group->stocksFromGroup($user->idGroupUser($user->getId()), 'name', 'request');
-//        //$partInStock = Stocks::checkInStockAndReplaceName($user->getId(), $stocks_group, '04X2397');
-//        $i = 0;
-//        $stocks = [];
-//        foreach ($stocks_group as $stock){
-//            $product = Stocks::checkGoodsInStocksPartners(164, $stock, '04X3624', 'fetch', 'site_gm_stocks');
-//            // PEX, Киев\ОК или PEX, Киев\Квазар
-//            if($product){
-//
-//                if(trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\OK')
-//                    || trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\Квазар')
-//                    || trim($product['stock_name']) == Decoder::strToWindows('KVAZAR, Киев\OK')){
-//                    if($product['quantity'] > 0){
-//                        if(isset($stocks['НОВЫЕ'])){
-//                            if($stocks['НОВЫЕ']['quantity'] < $product['quantity']){
-//                                $stocks['НОВЫЕ'] = $product;
-//                            }
-//                        } else {
-//                            $stocks['НОВЫЕ'] = $product;
-//                        }
-//                    }
-//                }
-//            }
-//            $i++;
-//        }
-//        var_dump($stocks);
-//        die();
-
         $request_message['add_request'] = Session::pull('add_request');
         $request_message['replace_by_analog'] = Session::pull('replace_by_analog');
 
@@ -86,7 +57,7 @@ class RequestController extends AdminBase
         $order_type = Orders::getAllOrderTypes();
         $delivery_address = $user->getDeliveryAddress();
 
-        $arrayPartNumber = array_column(PartAnalog::getListPartAnalog(), 'part_number');
+        $arrayPartNumber = array_column(PartAnalog::getListPartAnalog('analog'), 'part_number');
 
         if(isset($_POST['add_request']) && $_POST['add_request'] == 'true'){
 
@@ -372,10 +343,10 @@ class RequestController extends AdminBase
         if($_REQUEST['action'] == 'part-price') {
             $part_number = $_REQUEST['part_number'];
 
-            $stocks_group = $group->stocksFromGroup($user->idGroupUser($user->id_user), 'name', 'request');
+            $stocks_group = $group->stocksFromGroup($user->idGroupUser($user->getId()), 'name', 'request');
 
-            $result = Products::getPricePartNumber($part_number, $user->id_user);
-            $partInStock = Stocks::checkGoodsInStocksPartners($user->id_user, $stocks_group, $part_number);
+            $result = Products::getPricePartNumber($part_number, $user->getId());
+            $partInStock = Stocks::checkGoodsInStocksPartners($user->getId(), $stocks_group, $part_number);
             $partNumberAnalog = PartAnalog::getAnalogByPartNumber($part_number);
 
             if($result == 0){
@@ -392,12 +363,18 @@ class RequestController extends AdminBase
                     $data['stock'] = iconv('WINDOWS-1251', 'UTF-8', $partInStock['stock_name']);
                     $data['quantity'] = $partInStock['quantity'] . ' Units';
                 }
-                if($partNumberAnalog){
-                    $price = Products::getPricePartNumber($partNumberAnalog['part_analog'], $user->id_user);
-                    $data['is_analog'] = 1;
-                    $data['message'] = 'Парт номер будет заменен на аналог ';
-                    $data['analog'] = $partNumberAnalog['part_analog'];
-                    $data['analog_price'] = round($price['price'], 2);
+
+                if($partNumberAnalog['type_part'] == 'available'){
+                    $data['is_available'] = 1;
+                    $data['comment'] = 'Парт номер не доступен к заказу: ' . $partNumberAnalog['comment'];
+                } else {
+                    if($partNumberAnalog['type_part'] == 'analog'){
+                        $price = Products::getPricePartNumber($partNumberAnalog['part_analog'], $user->id_user);
+                        $data['is_analog'] = 1;
+                        $data['message'] = 'Парт номер будет заменен на аналог ';
+                        $data['analog'] = $partNumberAnalog['part_analog'];
+                        $data['analog_price'] = round($price['price'], 2);
+                    }
                 }
                 print_r(json_encode($data));
             }
@@ -422,7 +399,6 @@ class RequestController extends AdminBase
                 $result['status'] = 404;
             }
             $result['goods_name'] = Decoder::arrayToUtf([$infoPart['mName']]);
-
 
             print_r(json_encode($result));
         }
@@ -547,15 +523,22 @@ class RequestController extends AdminBase
                 $options['part_quantity'] = $_REQUEST['part_quantity'];
             }
             $options['goods_name'] = Decoder::strToWindows($_REQUEST['goods_name']);
-            //$price = Products::getPricePartNumber($options['part_number'], $user->getId());
+            $price = Products::getPricePartNumber($options['part_number'], $user->getId());
             //$options['price'] = ($price['price'] != 0) ? round($price['price'], 2) : 0;
-            $options['price'] = $_REQUEST['pn_price'];
+            $options['price'] = ($_REQUEST['pn_price'] != 0) ? $_REQUEST['pn_price'] : $price['price'];
             $options['number'] = $lastNumber;
             $options['period'] = $_REQUEST['period'];
             $options['note1'] = $_REQUEST['note1'];
             $options['stock_id'] = isset($_REQUEST['stock_id']) ? $_REQUEST['stock_id'] : null;
             $options['stock_name'] = $_REQUEST['stock_name'];
-            $options['stock_count'] = $_REQUEST['stock_count'];
+            if($options['stock_name'] == 'НОВЫЕ' || $options['stock_name'] == 'БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ'){
+                $options['used'] = 0;
+            } else if($options['stock_name'] == 'БУ' || $options['stock_name'] == 'БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ'){
+                $options['used'] = 1;
+            } else {
+                $options['used'] = 0;
+            }
+            $options['stock_count'] = ($_REQUEST['stock_count'] != 0) ? $_REQUEST['stock_count'] : 0;
 
             $saveToCart = Session::get('multi_request_cart');
             $saveToCart[] =  $options;
@@ -599,6 +582,7 @@ class RequestController extends AdminBase
                 $options['period'] = !empty($product['period']) ? $product['period'] : null;
                 $options['note1'] = Decoder::strToWindows($product['note1']);
                 $options['stock_id'] = null;
+                $options['used'] = $product['used'];
                 $stock_count = $product['stock_count'];
 
                 for ($i = 1; $i <= $options['part_quantity']; $i++) {
@@ -747,13 +731,28 @@ class RequestController extends AdminBase
     {
         $user = $this->user;
 
-        $listPartAnalog = PartAnalog::getListPartAnalog();
+        $listPartAnalog = PartAnalog::getListPartAnalog('analog');
 
         if(isset($_POST['add-analog']) && $_POST['add-analog'] == 'true'){
-            $part_number = $_POST['r_part_number'];
-            $part_analog = $_POST['r_part_analog'];
+            $options['part_number'] = $_POST['r_part_number'];
+            $options['part_analog'] = $_POST['r_part_analog'];
+            $options['type_part'] = 'analog';
+            $options['comment'] = null;
 
-            $ok = PartAnalog::addPartAnalog($part_number, $part_analog);
+            $ok = PartAnalog::addPartAnalog($options);
+            if($ok){
+                Url::previous();
+            }
+        }
+
+        if(isset($_POST['add-not-available']) && $_POST['add-not-available'] == 'true'){
+            $options['part_number'] = $_POST['r_part_number'];
+            $options['part_analog'] = null;
+            $options['type_part'] = 'available';
+            $options['comment'] = $_POST['comment'];
+
+
+            $ok = PartAnalog::addPartAnalog($options);
             if($ok){
                 Url::previous();
             }
@@ -778,9 +777,11 @@ class RequestController extends AdminBase
 
                         foreach ($excelArray as $import){
 
-                            $part_number = $import['part_number'];
-                            $part_analog = $import['part_analog'];
-                            PartAnalog::addPartAnalog($part_number, $part_analog);
+                            $options['part_number'] = $import['part_number'];
+                            $options['part_analog'] = $import['part_analog'];
+                            $options['type_part'] = $_REQUEST['type_part'];
+                            $options['comment'] = $import['comment'];
+                            PartAnalog::addPartAnalog($options);
 
                         }
                         Url::previous();

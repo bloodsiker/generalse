@@ -11,6 +11,7 @@ use Umbrella\models\File;
 use Umbrella\models\GroupModel;
 use Umbrella\models\api\hr\Auth;
 use Umbrella\models\Innovation;
+use Umbrella\models\Stocks;
 
 /**
  * Class User
@@ -328,7 +329,7 @@ class User
         $id_group = $this->idGroupUser($id_user);
         $group = new Group();
         $array_stock = $group->stocksFromGroup($id_group, 'name', $section);
-        return $array_stock;
+        return Stocks::replaceNameStockInFilter($array_stock, 'replace', $this->getRole());
     }
 
 

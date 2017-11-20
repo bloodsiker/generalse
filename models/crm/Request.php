@@ -51,9 +51,9 @@ class Request
         $db = MsSQL::getConnection();
 
         $sql = 'INSERT INTO site_gm_ordering_goods '
-            . '(site_account_id, part_number, goods_name, price, status_name, created_on, note1, number, active, period, stock_id)'
+            . '(site_account_id, part_number, goods_name, price, status_name, created_on, note1, used, number, active, period, stock_id)'
             . 'VALUES '
-            . '(:site_account_id, :part_number, :goods_name, :price, :status_name, :created_on, :note1, :number, :active, :period, :stock_id)';
+            . '(:site_account_id, :part_number, :goods_name, :price, :status_name, :created_on, :note1, :used, :number, :active, :period, :stock_id)';
 
         $result = $db->prepare($sql);
         $result->bindParam(':site_account_id', $options['site_account_id'], PDO::PARAM_INT);
@@ -63,6 +63,7 @@ class Request
         $result->bindParam(':status_name', $options['status_name'], PDO::PARAM_STR);
         $result->bindParam(':note1', $options['note1'], PDO::PARAM_STR);
         $result->bindParam(':created_on', $options['created_on'], PDO::PARAM_STR);
+        $result->bindParam(':used', $options['used'], PDO::PARAM_STR);
         $result->bindParam(':number', $options['number'], PDO::PARAM_INT);
         $result->bindParam(':active', $options['active'], PDO::PARAM_INT);
         $result->bindParam(':period', $options['period'], PDO::PARAM_INT);

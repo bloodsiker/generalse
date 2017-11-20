@@ -10,22 +10,23 @@ class PartAnalog
 
     /**
      * Добавляем новые парт номера и аналоги
-     * @param $part_number
-     * @param $part_analog
+     * @param $options
      * @return bool
      */
-    public static function addPartAnalog($part_number, $part_analog)
+    public static function addPartAnalog($options)
     {
         $db = MySQL::getConnection();
 
         $sql = 'INSERT INTO gm_part_analog '
-            . '(part_number, part_analog)'
+            . '(part_number, part_analog, type_part, comment)'
             . 'VALUES '
-            . '(:part_number, :part_analog)';
+            . '(:part_number, :part_analog, :type_part, :comment)';
 
         $result = $db->prepare($sql);
-        $result->bindParam(':part_number', $part_number, PDO::PARAM_STR);
-        $result->bindParam(':part_analog', $part_analog, PDO::PARAM_STR);
+        $result->bindParam(':part_number', $options['part_number'], PDO::PARAM_STR);
+        $result->bindParam(':part_analog', $options['part_analog'], PDO::PARAM_STR);
+        $result->bindParam(':type_part', $options['type_part'], PDO::PARAM_STR);
+        $result->bindParam(':comment', $options['comment'], PDO::PARAM_STR);
 
         return $result->execute();
     }
@@ -33,18 +34,21 @@ class PartAnalog
 
     /**
      * Получаем список парт номеров и аналогов
+     * @param $type_part
      * @return array
      */
-    public static function getListPartAnalog()
+    public static function getListPartAnalog($type_part)
     {
         $db = MySQL::getConnection();
 
         $sql = "SELECT
                  *
                  FROM gm_part_analog
+                 WHERE type_part = :type_part
                  ORDER BY id DESC";
 
         $result = $db->prepare($sql);
+        $result->bindParam(':type_part', $type_part, PDO::PARAM_STR);
         $result->execute();
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
@@ -61,7 +65,10 @@ class PartAnalog
         $db = MySQL::getConnection();
 
         $sql = "SELECT
-                 part_analog
+                 part_number,
+                 part_analog,
+                 type_part,
+                 comment
                  FROM gm_part_analog
                  WHERE part_number = :part_number
                  ORDER BY id DESC";

@@ -23,11 +23,12 @@
 
                                 <button class="button primary tool" data-open="add-part-analog"><i class="fi-plus"></i> Add analog</button>
 
+                                <button class="button primary tool" data-open="add-part-not-available"><i class="fi-plus"></i> Add not available</button>
+
                                 <button class="button primary tool" data-open="import-analog-modal"><i class="fi-plus"></i> Import analog</button>
 
-                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.export', 'view')): ?>
-                                    <button class="button primary tool" onclick="tableToExcel('goods_data', 'Request Table')" style="width: inherit;"><i class="fi-page-export"></i> Export to Excel</button>
-                                <?php endif;?>
+                                <button class="button primary tool" onclick="tableToExcel('goods_data', 'Request Table')" style="width: inherit;"><i class="fi-page-export"></i> Export to Excel</button>
+
                             </div>
 
                             <div class="medium-3 small-12 columns form">
@@ -138,16 +139,57 @@
     </button>
 </div>
 
+<div class="reveal" id="add-part-not-available" data-reveal>
+    <form action="#" method="post" class="form" novalidate="">
+        <div class="row align-bottom">
+            <div class="medium-12 small-12 columns">
+                <h3>Add part not available</h3>
+            </div>
+            <div class="medium-12 small-12 columns">
+                <div class="row">
+                    <div class="medium-12 small-12 columns">
+                        <label>Part number </label>
+                        <input type="text" name="r_part_number" class="required" required autocomplete="off">
+                    </div>
+                </div>
+            </div>
+            <div class="medium-12 small-12 columns">
+                <div class="row">
+                    <div class="medium-12 small-12 columns">
+                        <label>Comment</label>
+                        <input type="text" name="comment" autocomplete="off">
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" name="add-not-available" value="true">
+            <div class="medium-12 small-12 columns">
+                <button type="submit" class="button primary">Add</button>
+            </div>
+        </div>
+    </form>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
 
 <div class="reveal" id="import-analog-modal" data-reveal>
     <form action="" id="import-analog-form" method="post" class="form" enctype="multipart/form-data" data-abide
           novalidate>
         <div class="row align-bottom">
             <div class="medium-12 small-12 columns">
-                <h3>Import analog</h3>
+                <h3>Import</h3>
             </div>
             <div class="medium-12 small-12 columns">
                 <div class="row">
+
+                    <div class="medium-12 small-12 columns">
+                        <label>Type part number</label>
+                        <select name="type_part" class="required" required>
+                            <option value="analog">Analog</option>
+                            <option value="available">Not available</option>
+                        </select>
+                    </div>
 
                     <div class="medium-12 small-12 columns">
                         <div class="row align-bottom ">

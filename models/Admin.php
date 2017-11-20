@@ -244,8 +244,7 @@ class Admin
                                       FROM gs_user 
                                       INNER JOIN gs_country gc 
                                         ON gs_user.id_country = gc.id_country 
-                                      WHERE id_role = 2
-                                      AND id_user IN({$ids}) ORDER BY name_partner ASC")->fetchAll(PDO::FETCH_ASSOC);
+                                      WHERE id_user IN({$ids}) ORDER BY name_partner ASC")->fetchAll(PDO::FETCH_ASSOC);
 
         return $data;
     }

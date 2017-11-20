@@ -308,43 +308,28 @@ class Stocks
         $stocks = [];
         $i = 0;
 
-        // БЛИЖАЙШАЯ ПОСТАВКА
-        // PEX, Киев\ОК или PEX, Киев\б/у
-
         foreach ($stocks_group as $stock){
-            $product = self::checkGoodsInStocksPartners($user_id, $stock, $part_number, 'fetch', 'site_gm_stocks_decompiles');
+            $product = self::checkGoodsInStocksPartners($user_id, $stock, $part_number, 'fetch', 'site_gm_stocks');
+            // PEX, Киев\ОК или PEX, Киев\Квазар
             if($product){
                 if(trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\OK')
                     || trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\Квазар')
                     || trim($product['stock_name']) == Decoder::strToWindows('KVAZAR, Киев\OK')){
                     if($product['quantity'] > 0){
-                        if(isset($stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ'])){
-                            if($stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ']['quantity'] < $product['quantity']){
-                                $stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ'] = $product;
+                        if(isset($stocks['НОВЫЕ'])){
+                            if($stocks['НОВЫЕ']['quantity'] < $product['quantity']){
+                                $stocks['НОВЫЕ'] = $product;
                             }
                         } else {
-                            $stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ'] = $product;
-                        }
-                    }
-                }
-            }
-
-            if($product){
-                if(trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\б/у')
-                    || trim($product['stock_name']) == Decoder::strToWindows('KVAZAR, Киев\б/у')){
-                    if($product['quantity'] > 0){
-                        if(isset($stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ'])){
-                            if($stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ']['quantity'] < $product['quantity']){
-                                $stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ'] = $product;
-                            }
-                        } else {
-                            $stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ'] = $product;
+                            $product['stock_nam'] = 'НОВЫЕ';
+                            $stocks['НОВЫЕ'] = $product;
                         }
                     }
                 }
             }
             $i++;
         }
+
 
         // БУ Склад //PEX, Киев\б/у
         foreach ($stocks_group as $stock){
@@ -359,6 +344,7 @@ class Stocks
                                 $stocks['БУ'] = $product;
                             }
                         } else {
+                            $product['stock_nam'] = 'БУ';
                             $stocks['БУ'] = $product;
                         }
                     }
@@ -367,32 +353,146 @@ class Stocks
             $i++;
         }
 
-
+        // БЛИЖАЙШАЯ ПОСТАВКА
+        // PEX, Киев\ОК или PEX, Киев\б/у
 
         foreach ($stocks_group as $stock){
-            $product = self::checkGoodsInStocksPartners($user_id, $stock, $part_number, 'fetch', 'site_gm_stocks');
-            // PEX, Киев\ОК или PEX, Киев\Квазар
+            $product = self::checkGoodsInStocksPartners($user_id, $stock, $part_number, 'fetch', 'site_gm_stocks_decompiles');
             if($product){
-                if(trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\ОК')
+                if(trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\OK')
                     || trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\Квазар')
                     || trim($product['stock_name']) == Decoder::strToWindows('KVAZAR, Киев\OK')){
                     if($product['quantity'] > 0){
-                        if(isset($stocks['НОВЫЕ'])){
-                            if($stocks['НОВЫЕ']['quantity'] < $product['quantity']){
-                                $stocks['НОВЫЕ'] = $product;
+                        if(isset($stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ'])){
+                            if($stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ']['quantity'] < $product['quantity']){
+                                $stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ'] = $product;
                             }
                         } else {
-                            $stocks['НОВЫЕ'] = $product;
+                            $product['stock_nam'] = 'БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ';
+                            $stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ'] = $product;
+                        }
+                    }
+                }
+            }
+
+            if($product){
+                if(trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\б/у')
+                    || trim($product['stock_name']) == Decoder::strToWindows('KVAZAR, Киев\б/у')){
+                    if($product['quantity'] > 0){
+                        if(isset($stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ'])){
+                            if($stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ']['quantity'] < $product['quantity']){
+                                $stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ'] = $product;
+                            }
+                        } else {
+                            $product['stock_nam'] = 'БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ';
+                            $stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ'] = $product;
                         }
                     }
                 }
             }
             $i++;
         }
-        return array_reverse($stocks);
+
+        //return array_reverse($stocks);
+        return $stocks;
     }
 
 
+    /**
+     * Подмена названий складов в фильтрации
+     * @param $arrayStocks
+     * @param string $replace  replace || back_replace
+     * @param string $role
+     * @return array
+     */
+    public static function replaceNameStockInFilter($arrayStocks, $replace = 'replace', $role = 'administrator')
+    {
+        $newArrayStocks = [];
+
+        if($role != 'administrator') {
+            if($replace == 'replace'){
+                if(is_array($arrayStocks)){
+                    foreach ($arrayStocks as $stock){
+                        if($stock == 'KVAZAR, Киев\OK'
+                            || $stock == 'PEX, Киев\OK'
+                            || $stock == 'PEX, Киев\Квазар'){
+                            $newArrayStocks[] = 'НОВЫЙ';
+                        } elseif($stock == 'KVAZAR, Киев\б/у'
+                            || $stock == 'PEX, Киев\б/у') {
+                            $newArrayStocks[] = 'БУ';
+                        } else {
+                            $newArrayStocks[] = $stock;
+                        }
+                    }
+                }
+            } elseif ($replace == 'back_replace'){
+                if(is_array($arrayStocks)){
+                    foreach ($arrayStocks as $stock){
+                        if($stock == 'НОВЫЙ'){
+                            $newArrayStocks[] = 'KVAZAR, Киев\OK';
+                            $newArrayStocks[] = 'PEX, Киев\OK';
+                            $newArrayStocks[] = 'PEX, Киев\Квазар';
+                        } elseif($stock == 'БУ') {
+                            $newArrayStocks[] = 'KVAZAR, Киев\б/у';
+                            $newArrayStocks[] = 'PEX, Киев\б/у';
+                        } else {
+                            $newArrayStocks[] = $stock;
+                        }
+                    }
+                }
+            }
+
+        } else {
+            $newArrayStocks = $arrayStocks;
+        }
+        return array_unique($newArrayStocks);
+    }
+
+
+    /**
+     * Подмена названий складов в результатирующей таблице
+     * @param $stockName
+     * @param string $role
+     * @return null|string
+     */
+    public static function replaceNameStockInResultTable($stockName, $role = 'administrator')
+    {
+        $stock = null;
+        $stockName = Decoder::strToUtf($stockName);
+        if($role != 'administrator'){
+            if($stockName == 'KVAZAR, Киев\OK'
+                || $stockName == 'PEX, Киев\OK'
+                || $stockName == 'PEX, Киев\Квазар'){
+                $stock = 'НОВЫЙ';
+            } elseif($stockName == 'KVAZAR, Киев\б/у'
+                || $stockName == 'PEX, Киев\б/у') {
+                $stock = 'БУ';
+            } else {
+                $stock = $stockName;
+            }
+        } else {
+            $stock = $stockName;
+        }
+        return $stock;
+    }
+
+
+
+    /**
+     * Получаем список подтипов
+     * @return array
+     */
+    public static function getListSubType()
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "SELECT id, shortName FROM GoodsSubType";
+
+        $result = $db->prepare($sql);
+        $result->execute();
+        $all = $result->fetchAll(PDO::FETCH_ASSOC);
+        return $all;
+    }
 
 
 

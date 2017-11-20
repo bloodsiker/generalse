@@ -40,15 +40,18 @@ class StockController extends AdminBase
             $user_ids = $user->controlUsers($user->id_user);
             $partnerList = Admin::getPartnerControlUsers($user_ids);
             $list_stock = $user->renderSelectStocks($user->id_user, 'stocks');
+            $listSubType = Stocks::getListSubType();
+            //var_dump($listSubType);
 
             $stocks =  isset($_REQUEST['stock']) ? $_REQUEST['stock'] : [];
+            $stocks = Stocks::replaceNameStockInFilter($stocks, 'back_replace', $user->getRole());
             $id_partners = isset($_REQUEST['id_partner']) ? $_REQUEST['id_partner'] : [];
             $allGoodsByPartner = Stocks::getGoodsInStocksPartners($id_partners, $stocks);
 
         } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
 
             $list_stock = $user->renderSelectStocks($user->id_user, 'stocks');
-
+            $listSubType = Stocks::getListSubType();
             // Параметры для формирование фильтров
             $groupList = GroupModel::getGroupList();
             $userInGroup = [];
@@ -66,13 +69,14 @@ class StockController extends AdminBase
             $userInGroup = array_merge($userInGroup, $userNotGroup);
 
             $stocks =  isset($_REQUEST['stock']) ? $_REQUEST['stock'] : [];
+            $stocks = Stocks::replaceNameStockInFilter($stocks, 'back_replace', $user->getRole());
             $id_partners = isset($_REQUEST['id_partner']) ? $_REQUEST['id_partner'] : [];
 
             $allGoodsByPartner = Stocks::getGoodsInStocksPartners($id_partners, $stocks);
         }
 
         $this->render('admin/crm/stocks/stocks', compact('user','partnerList',
-            'allGoodsByPartner', 'userInGroup', 'list_stock'));
+            'allGoodsByPartner', 'userInGroup', 'list_stock', 'listSubType'));
         return true;
     }
 
