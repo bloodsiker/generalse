@@ -34,6 +34,7 @@ return [
     'adm/user/ajax_action' => 'umbrella/User@ajaxAction',
     'adm/user/check_login' => 'umbrella/User@checkUserLogin',
     'adm/user/add' => 'umbrella/User@addUser',
+    'adm/user-test' => 'umbrella/User@userTest',
     'adm/users' => 'umbrella/User@index',
 
 

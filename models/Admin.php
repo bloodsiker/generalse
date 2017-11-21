@@ -4,6 +4,8 @@ namespace Umbrella\models;
 
 use Josantonius\Session\Session;
 use PDO;
+use Umbrella\app\Api\Token;
+use Umbrella\app\User;
 use Umbrella\components\Db\MySQL;
 use Umbrella\components\Db\MsSQL;
 use Umbrella\components\Functions;
@@ -271,13 +273,19 @@ class Admin
 
     /**
      * //Если данные правильные, запоминаем пользователя в сессию
-     * @param $adminId
+     * @param User $user
+     * @internal param $adminId
      */
-    public static function auth($adminId)
+    public static function auth(User $user)
     {
-        Session::set('user', $adminId);
-        Session::set('_token', Functions::generateCode(30));
-        Logger::getInstance()->log($adminId, 'вошел(а) в кабинет');
+        if($user instanceof User){
+            $token = new Token();
+            $genToken = $token->generateToken();
+            $user->setToken($genToken);
+            Session::set('user', $user->getId());
+            Session::set('_token', $genToken);
+            Logger::getInstance()->log($user->getId(), 'вошел(а) в кабинет');
+        }
     }
 
 
@@ -444,6 +452,29 @@ class Admin
         return $result->execute();
     }
 
+
+    /**
+     * Add stock for users
+     * @param $id_user
+     * @param $stock_id
+     * @return bool
+     */
+    public static function addUserStocksMsSql($id_user, $stock_id)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = 'INSERT INTO dbo.site_gm_users_stocks '
+            . '(site_account_id, stock_id)'
+            . 'VALUES '
+            . '(:site_account_id, :stock_id)';
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':site_account_id', $id_user, PDO::PARAM_INT);
+        $result->bindParam(':stock_id', $stock_id, PDO::PARAM_INT);
+
+        return $result->execute();
+    }
+
     /**
      * Удаляем пользователя
      * @param $id
@@ -601,6 +632,26 @@ class Admin
         $db = MsSQL::getConnection();
 
         $result = $db->query("SELECT number, shortName FROM tbl_Curency")->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    /**
+     * @param $shortName
+     * @return \PDOStatement
+     */
+    public static function getCurrencyIdByName($shortName)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "SELECT
+                 number, shortName 
+                 FROM tbl_Curency
+                 WHERE shortName = :shortName";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':shortName', $shortName, PDO::PARAM_STR);
+        $result->execute();
+        $result = $result->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
 

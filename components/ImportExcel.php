@@ -3,6 +3,7 @@
 namespace Umbrella\components;
 
 use \PHPExcel_IOFactory;
+use Umbrella\models\Admin;
 
 /**
  * Class ImportExcel
@@ -457,6 +458,63 @@ class ImportExcel
         $pushArray[3]['completed_map'] = $newArray[11]['E'];
         $pushArray[3]['created_at'] = $newArray[12]['E'];
 
+        return $pushArray;
+    }
+
+
+    public static function importUsers($file)
+    {
+        include_once 'PHPExcel/Classes/PHPExcel/IOFactory.php';
+
+        $inputFileName = $_SERVER['DOCUMENT_ROOT'] . $file;
+        $objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
+
+        $sheetData = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);
+
+        // Убираем нулевой елемент массива - заголовки
+        $newArray = array_splice($sheetData, 1);
+
+        $pushArray = [];
+        $i = 0;
+        foreach($newArray as $data){
+            // Umbrella
+            $pushArray[$i]['id_role'] = 2;
+            $pushArray[$i]['name_partner'] = $data['A'];
+            $pushArray[$i]['id_country'] = 0; // Ukraine
+            $pushArray[$i]['login'] = ucfirst(Functions::strUrl(Functions::crop_str($data['A'], 12))) . random_int(0, 9);
+            $pushArray[$i]['email'] = '';
+            $genPass = random_int(0, 999) . Functions::strUrl(Functions::crop_str($data['A'], 5)) . '#2017';
+            $pushArray[$i]['v_password'] = $genPass;
+            $pushArray[$i]['password'] = Functions::hashPass($genPass);
+            $pushArray[$i]['login_url'] = 'adm/crm';
+            $pushArray[$i]['kpi_view'] = 0;
+            $pushArray[$i]['date_create'] = date("Y-m-d H:i");
+
+            //GM
+            $id_user = 1;
+            if($id_user){
+                $pushArray[$i]['site_account_id'] = $id_user;
+                $pushArray[$i]['site_client_name'] = Decoder::strToWindows($data['A']);
+                $pushArray[$i]['name_en'] = null;
+                $pushArray[$i]['address'] = null;
+                $pushArray[$i]['address_en'] = null;
+                $pushArray[$i]['for_ttn'] = null;
+                $pushArray[$i]['curency_id'] = Admin::getCurrencyIdByName($data['E'])['number'];//
+                $pushArray[$i]['abcd_id'] = null;
+                $pushArray[$i]['to_electrolux'] = 0;
+                $pushArray[$i]['to_mail_send'] = 0;
+                $pushArray[$i]['contract_number'] = null;
+                $pushArray[$i]['staff_id'] = null;
+
+                $pushArray[$i]['stock_place_id'] = null;
+
+                $pushArray[$i]['phone'] = null;
+                $pushArray[$i]['gm_email'] = null;
+                $pushArray[$i]['region_id'] = null;
+            }
+
+            $i++;
+        }
         return $pushArray;
     }
 

@@ -7,6 +7,8 @@ use Umbrella\app\AdminBase;
 use Umbrella\app\Services\UserService;
 use Umbrella\app\User;
 use Umbrella\components\Functions;
+use Umbrella\components\ImportExcel;
+use Umbrella\components\ImportExcel\ImportUsersFromExcel;
 use Umbrella\models\Admin;
 use Umbrella\models\Branch;
 use Umbrella\models\Country;
@@ -507,6 +509,53 @@ class UserController extends AdminBase
         $this->render('admin/users/denied/index', compact('user','user_check', 'list_page',
             'sub_menu', 'sub_menu_button', 'new_array', 'p_id', 'sub_id', 'id_user'));
         return true;
+    }
+
+
+    public function actionUserTest()
+    {
+        $excel_file = '/upload/users-Umbrella.xlsx';
+        $usersArray = ImportExcel::importUsers($excel_file);
+        var_dump($usersArray);
+        die();
+
+//        $user = new User(1);
+//
+//        $stocks = [2871, 3139, 3140, 3143, 3959, 3960];
+//
+//        foreach ($usersArray as $addUser){
+//            //var_dump($addUser);
+//            $id_user = Admin::addUser($addUser);
+//
+//            if($id_user){
+//                $denied_lithograph = new UserService($id_user);
+//                $denied_lithograph->addDeniedLithograph();
+//
+//                Admin::addUserMsSql($id_user, $addUser);
+//
+//                foreach ($stocks as $stock_id){
+//                    Admin::addUserStocksMsSql($id_user, $stock_id);
+//                }
+//
+//                //Добавляем пользователя в выбранную группу
+//                $ok_group = GroupModel::addUserGroup(7, $id_user);
+//                if($ok_group){
+//                    // Добавляем юзеру все запрещенные страницы группы
+//                    $user->addDeniedForGroupUser(7, $id_user);
+//                }
+//            }
+//        }
+//
+//        $table = "<table border='1' cellspacing='0'>";
+//        foreach ($usersArray as $userI){
+//            $table .= "<tr>";
+//            $table .= "<td>{$userI['login']}</td>";
+//            $table .= "<td>{$userI['v_password']}</td>";
+//            $table .= "</tr>";
+//        }
+//        $table .= "</table>";
+//
+//        echo $table;
     }
 
 }

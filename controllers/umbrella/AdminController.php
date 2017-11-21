@@ -9,6 +9,7 @@ use Umbrella\app\User;
 use Umbrella\components\Functions;
 use Umbrella\components\Logger;
 use Umbrella\models\Admin;
+use Umbrella\models\api\hr\Auth;
 
 /**
  * Class AdminController
@@ -40,7 +41,7 @@ class AdminController extends AdminBase
                     //Проверка на проплату в GM
                     if($user->getUserBlockedGM() == 'active'){
                         if($user->isActive() == 1){
-                            Admin::auth($userId);
+                            Admin::auth($user);
 
                             //Перенаправляем пользователя в закрытую часть – кабинет
                             $succusse['log'] = $user->getUrlAfterLogin();
@@ -53,7 +54,7 @@ class AdminController extends AdminBase
                             echo json_encode($errors);
                         }
                     } else {
-                        Admin::auth($userId);
+                        Admin::auth($user);
                         $succusse['log'] = '/adm/risks';
                         $succusse['code'] = 2;
                         echo json_encode($succusse);
@@ -95,6 +96,7 @@ class AdminController extends AdminBase
         Session::destroy('user');
         Session::destroy('_token');
         Session::destroy('info_user');
+        Auth::updateToken($userId, null);
 
         Logger::getInstance()->log($userId, 'вышел(а) с кабинета');
         Url::redirect('/');

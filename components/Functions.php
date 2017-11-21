@@ -8,11 +8,11 @@ namespace Umbrella\components;
 class Functions
 {
     // Обрезаем сообщение от пользователя
-    public static function crop_str($string, $limit= '250')
+    public static function crop_str($string, $limit = '50')
     {
-        if(strlen($string) > 50) {
+        if(strlen($string) > $limit) {
             $first = mb_substr($string, 0, $limit, 'UTF-8');
-            return $first . '...';
+            return $first;
         } else {
             return $string;
         }

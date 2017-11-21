@@ -79,9 +79,11 @@ class FormUserController
             $settings = $this->getSettings($userId);
             if($userInfo){
                 $comments = FormUserComment::getCommentsByFormUser($userId);
+                $logs = FormUser::getLogsByFormUserId($userId);
                 $userInfo['settings'] = $settings;
                 $data['user'] =  $userInfo;
                 $data['comments'] =  $comments;
+                $data['history'] =  $logs;
                 Response::responseJson($data, 200, 'OK');
             } else {
                 Response::responseJson(null, 404, 'Form user not found');
@@ -178,6 +180,55 @@ class FormUserController
         } else {
             Response::responseJson(null, 304, 'Not Modified');
         }
+        return true;
+    }
+
+
+    /**
+     * Save apply input value and state
+     */
+    public function actionApplySaveFormUser()
+    {
+        $data = file_get_contents('php://input');
+        $dataDecode = json_decode($data);
+        $formUser = $dataDecode->data;
+
+        $formId = $formUser->form_user_id;
+        $comment = $formUser->comment;
+        $date = $formUser->date;
+        $key = $formUser->key;
+        $user_id = $formUser->user_id;
+
+        // Подтверждаем измененное поле
+        if($key == 'structure'){
+            FormUser::updateAttrFormUser($formId,
+                'structure_state', 'apply',
+                'structure_date', $date);
+        } else {
+            FormUser::updateAttrFormUser($formId,
+                $key .'_state', 'apply',
+                $key .'_date', $date
+            );
+        }
+
+        // Пишем в историю
+        $oldForm = FormUser::getFormUserById($formUser->form_user_id);
+
+        if($key == 'structure'){
+            $options['value_form'] = $oldForm['company'] . ' -> ' . $oldForm['department'] .' -> ' . $oldForm['branch'];
+        } else {
+            $options['value_form'] = $oldForm[$key];
+        }
+
+        $options['form_user_id'] = $formId;
+        $options['user_id'] = $user_id;
+        $options['key_form'] = $key;
+        $options['comment'] = $comment;
+        $options['updated_at'] = $date;
+
+        FormUser::addLog($options);
+
+        Response::responseJson(true, 200, 'OK');
         return true;
     }
 

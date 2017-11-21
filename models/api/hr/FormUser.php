@@ -190,6 +190,7 @@ class FormUser
         return $result->execute();
     }
 
+
     /**
      * Delete form user
      * @param $id
@@ -204,5 +205,58 @@ class FormUser
         $result = $db->prepare($sql);
         $result->bindParam(':id', $id, PDO::PARAM_INT);
         return $result->execute();
+    }
+
+
+    /**
+     * Add ljg change info form user
+     * @param $options
+     * @return int|string
+     */
+    public static function addLog($options)
+    {
+        $db = MySQL::getConnection();
+
+        $sql = 'INSERT INTO gs_hr_users_form_log '
+            . '(form_user_id, user_id, key_form, value_form, comment, updated_at)'
+            . 'VALUES '
+            . '(:form_user_id, :user_id, :key_form, :value_form, :comment, :updated_at)';
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':form_user_id', $options['form_user_id'], PDO::PARAM_INT);
+        $result->bindParam(':user_id', $options['user_id'], PDO::PARAM_INT);
+        $result->bindParam(':key_form', $options['key_form'], PDO::PARAM_STR);
+        $result->bindParam(':value_form', $options['value_form'], PDO::PARAM_STR);
+        $result->bindParam(':comment', $options['comment'], PDO::PARAM_STR);
+        $result->bindParam(':updated_at', $options['updated_at'], PDO::PARAM_STR);
+
+        if ($result->execute()) {
+            return $db->lastInsertId();
+        }
+        return 0;
+    }
+
+
+    /**
+     * History edit user form
+     * @param $id_form
+     * @return array
+     */
+    public static function getLogsByFormUserId($id_form)
+    {
+        $db = MySQL::getConnection();
+
+        $sql = "SELECT
+                 gs_hr_users_form_log.*,
+                 gu.name_partner
+                FROM gs_hr_users_form_log 
+                    INNER JOIN gs_user gu
+                        ON gs_hr_users_form_log.user_id = gu.id_user
+                WHERE form_user_id = :id_form";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id_form', $id_form, PDO::PARAM_INT);
+        $result->execute();
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 }
