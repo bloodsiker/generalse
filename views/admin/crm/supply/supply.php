@@ -62,7 +62,7 @@
                             <th class="sort">Arriving Date</th>
                             <th class="sort">Status</th>
                             <?php if (Umbrella\app\AdminBase::checkDenied('crm.supply.accept', 'view')): ?>
-                                <th class="sort">Checked</th>
+                                <th class="sort hide">Checked</th>
                             <?php endif; ?>
                             <?php if (Umbrella\app\AdminBase::checkDenied('crm.supply.bind-gm', 'view')): ?>
                                 <th class="sort">Bind GM</th>
@@ -83,11 +83,10 @@
                                     <td><?= Umbrella\components\Functions::formatDate($supply['expected_arriving_date'])?></td>
                                     <td class="status-supply <?= Umbrella\models\Supply::getStatusSupply($status)?>"><?=$status?></td>
                                     <?php if (Umbrella\app\AdminBase::checkDenied('crm.supply.accept', 'view')): ?>
-                                        <td class="text-center">
+                                        <td class="text-center hide">
                                             <?php if($status != 'Подтверждена'):?>
                                                 <a href="" class="accept supply-accept" onclick="send(event, <?=$supply['site_id']?>)">Accept</a>
                                             <?php endif;?>
-
                                         </td>
                                     <?php endif; ?>
 
@@ -123,7 +122,7 @@
                             <th class="sort">Arriving Date</th>
                             <th class="sort">Status</th>
                             <?php if (Umbrella\app\AdminBase::checkDenied('crm.supply.accept', 'view')): ?>
-                                <th class="sort">Checked</th>
+                                <th class="sort hide">Checked</th>
                             <?php endif; ?>
                             <?php if (Umbrella\app\AdminBase::checkDenied('crm.supply.bind-gm', 'view')): ?>
                                 <th class="sort">Bind GM</th>
@@ -145,7 +144,7 @@
                                     <td><?= Umbrella\components\Functions::formatDate($supply['expected_arriving_date'])?></td>
                                     <td class="status-supply <?= Umbrella\models\Supply::getStatusSupply($status)?>"><?=$status?></td>
                                     <?php if (Umbrella\app\AdminBase::checkDenied('crm.supply.accept', 'view')): ?>
-                                        <td class="text-center">
+                                        <td class="text-center hide">
                                             <?php if($status != 'Подтверждена'):?>
                                                 <a href="" class="accept supply-accept" onclick="send(event, <?=$supply['site_id']?>)">Accept</a>
                                             <?php endif;?>

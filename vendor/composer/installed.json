@@ -219,73 +219,6 @@
         ]
     },
     {
-        "name": "symfony/translation",
-        "version": "v3.3.10",
-        "version_normalized": "3.3.10.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/translation.git",
-            "reference": "409bf229cd552bf7e3faa8ab7e3980b07672073f"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/translation/zipball/409bf229cd552bf7e3faa8ab7e3980b07672073f",
-            "reference": "409bf229cd552bf7e3faa8ab7e3980b07672073f",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^5.5.9|>=7.0.8",
-            "symfony/polyfill-mbstring": "~1.0"
-        },
-        "conflict": {
-            "symfony/config": "<2.8",
-            "symfony/yaml": "<3.3"
-        },
-        "require-dev": {
-            "psr/log": "~1.0",
-            "symfony/config": "~2.8|~3.0",
-            "symfony/intl": "^2.8.18|^3.2.5",
-            "symfony/yaml": "~3.3"
-        },
-        "suggest": {
-            "psr/log": "To use logging capability in translator",
-            "symfony/config": "",
-            "symfony/yaml": ""
-        },
-        "time": "2017-10-02T06:42:24+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "3.3-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Symfony\\Component\\Translation\\": ""
-            },
-            "exclude-from-classmap": [
-                "/Tests/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "https://symfony.com/contributors"
-            }
-        ],
-        "description": "Symfony Translation Component",
-        "homepage": "https://symfony.com"
-    },
-    {
         "name": "nesbot/carbon",
         "version": "1.22.1",
         "version_normalized": "1.22.1.0",
@@ -342,27 +275,29 @@
     },
     {
         "name": "josantonius/session",
-        "version": "1.1.4",
-        "version_normalized": "1.1.4.0",
+        "version": "1.1.6",
+        "version_normalized": "1.1.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/Josantonius/PHP-Session.git",
-            "reference": "9ae1c603a97125a706b4bcfd0663914f5522be5c"
+            "reference": "f2734820c803e2f0db3d26c2f660cb25e9d299bd"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Josantonius/PHP-Session/zipball/9ae1c603a97125a706b4bcfd0663914f5522be5c",
-            "reference": "9ae1c603a97125a706b4bcfd0663914f5522be5c",
+            "url": "https://api.github.com/repos/Josantonius/PHP-Session/zipball/f2734820c803e2f0db3d26c2f660cb25e9d299bd",
+            "reference": "f2734820c803e2f0db3d26c2f660cb25e9d299bd",
             "shasum": ""
         },
         "require": {
             "php": "^5.6 || ^7.0"
         },
         "require-dev": {
-            "phpunit/phpunit": "5.7.*",
-            "squizlabs/php_codesniffer": "3.*"
+            "friendsofphp/php-cs-fixer": "^2.3 || ^2.8",
+            "phpmd/phpmd": "^2.6",
+            "phpunit/phpunit": "^5.7 || ^6.0",
+            "squizlabs/php_codesniffer": "^3.0"
         },
-        "time": "2017-11-02T22:38:16+00:00",
+        "time": "2017-11-13T21:34:56+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -396,27 +331,29 @@
     },
     {
         "name": "josantonius/url",
-        "version": "1.1.6",
-        "version_normalized": "1.1.6.0",
+        "version": "1.1.8",
+        "version_normalized": "1.1.8.0",
         "source": {
             "type": "git",
             "url": "https://github.com/Josantonius/PHP-Url.git",
-            "reference": "7c4ccbd533132bc8a169412d4224f17488eaa3ae"
+            "reference": "b2b0a4e774f721b9dd7cc171741ab1611db8569e"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Josantonius/PHP-Url/zipball/7c4ccbd533132bc8a169412d4224f17488eaa3ae",
-            "reference": "7c4ccbd533132bc8a169412d4224f17488eaa3ae",
+            "url": "https://api.github.com/repos/Josantonius/PHP-Url/zipball/b2b0a4e774f721b9dd7cc171741ab1611db8569e",
+            "reference": "b2b0a4e774f721b9dd7cc171741ab1611db8569e",
             "shasum": ""
         },
         "require": {
             "php": "^5.6 || ^7.0"
         },
         "require-dev": {
-            "phpunit/phpunit": "5.7.*",
-            "squizlabs/php_codesniffer": "3.*"
+            "friendsofphp/php-cs-fixer": "^2.3 || ^2.8",
+            "phpmd/phpmd": "^2.6",
+            "phpunit/phpunit": "^5.7 || ^6.0",
+            "squizlabs/php_codesniffer": "^3.0"
         },
-        "time": "2017-11-03T01:28:54+00:00",
+        "time": "2017-11-12T01:39:35+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -450,5 +387,72 @@
             "uri",
             "url"
         ]
+    },
+    {
+        "name": "symfony/translation",
+        "version": "v3.3.13",
+        "version_normalized": "3.3.13.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/translation.git",
+            "reference": "373e553477e55cd08f8b86b74db766c75b987fdb"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/translation/zipball/373e553477e55cd08f8b86b74db766c75b987fdb",
+            "reference": "373e553477e55cd08f8b86b74db766c75b987fdb",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.5.9|>=7.0.8",
+            "symfony/polyfill-mbstring": "~1.0"
+        },
+        "conflict": {
+            "symfony/config": "<2.8",
+            "symfony/yaml": "<3.3"
+        },
+        "require-dev": {
+            "psr/log": "~1.0",
+            "symfony/config": "~2.8|~3.0",
+            "symfony/intl": "^2.8.18|^3.2.5",
+            "symfony/yaml": "~3.3"
+        },
+        "suggest": {
+            "psr/log": "To use logging capability in translator",
+            "symfony/config": "",
+            "symfony/yaml": ""
+        },
+        "time": "2017-11-07T14:12:55+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "3.3-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Component\\Translation\\": ""
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony Translation Component",
+        "homepage": "https://symfony.com"
     }
 ]

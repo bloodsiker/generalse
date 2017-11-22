@@ -1272,3 +1272,13 @@ td select {
 .highlight{
   color: red;
 }
+
+#container-sub-type{
+  max-height: 200px;
+  width: 100%;
+  padding: 10px;
+  overflow-y: scroll
+}
+#stock_filter{
+  width: 100%;
+}

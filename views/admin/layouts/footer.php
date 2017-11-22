@@ -1,12 +1,8 @@
 <div id = "toTop" > ^ Back to TOP </div>
-<div id="wait" class="hide">
-    <div id="container-wait">
-        <h1>Please wait</h1>
-        <img src="/template/admin/img/wait.svg" alt="">
-    </div>
-</div>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <script src="/template/admin/js/vendor/jquery.js"></script>
 <script src="/template/admin/js/vendor/js-ui.js"></script>
 <script src="/template/admin/js/calendar-local-eng.js"></script>
@@ -23,7 +19,7 @@
 <?php
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/dashboard')) echo "<script src='/template/admin/js/dashboard.js'></script>";
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/user')) echo "<script src='/template/admin/js/users.js?v.1.9.2'></script>";
-if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/stocks')) echo "<script src='/template/admin/js/stocks.js?v.1.5'></script>";
+if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/stocks')) echo "<script src='/template/admin/js/stocks.js?v.1.6'></script>";
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/returns')) echo "<script src='/template/admin/js/returns.js'></script>";
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/orders')) echo "<script src='/template/admin/js/orders.js?v.1.5'></script>";
 if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/purchase')) echo "<script src='/template/admin/js/purchase.js?v.1.5'></script>";

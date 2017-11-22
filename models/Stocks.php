@@ -92,9 +92,10 @@ class Stocks
      * Возвращаем детали по складам для выбранных партнеров и выбранных складов
      * @param $id_partners
      * @param $stocks
+     * @param string $filters
      * @return array
      */
-    public static function getGoodsInStocksPartners($id_partners, $stocks)
+    public static function getGoodsInStocksPartners($id_partners, $stocks, $filters = '')
     {
         $db = MsSQL::getConnection();
 
@@ -119,7 +120,7 @@ class Stocks
                 INNER JOIN site_gm_users sgu
                     ON sgu.id = tu.site_gs_account_id
                 WHERE sgu.site_account_id IN ({$ids_partner})
-                AND stock_name IN ('{$stock_iconv}')";
+                AND stock_name IN ('{$stock_iconv}') {$filters}";
 
         $result = $db->prepare($sql);
         $result->execute();
@@ -356,42 +357,42 @@ class Stocks
         // БЛИЖАЙШАЯ ПОСТАВКА
         // PEX, Киев\ОК или PEX, Киев\б/у
 
-        foreach ($stocks_group as $stock){
-            $product = self::checkGoodsInStocksPartners($user_id, $stock, $part_number, 'fetch', 'site_gm_stocks_decompiles');
-            if($product){
-                if(trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\OK')
-                    || trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\Квазар')
-                    || trim($product['stock_name']) == Decoder::strToWindows('KVAZAR, Киев\OK')){
-                    if($product['quantity'] > 0){
-                        if(isset($stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ'])){
-                            if($stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ']['quantity'] < $product['quantity']){
-                                $stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ'] = $product;
-                            }
-                        } else {
-                            $product['stock_nam'] = 'БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ';
-                            $stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ'] = $product;
-                        }
-                    }
-                }
-            }
-
-            if($product){
-                if(trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\б/у')
-                    || trim($product['stock_name']) == Decoder::strToWindows('KVAZAR, Киев\б/у')){
-                    if($product['quantity'] > 0){
-                        if(isset($stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ'])){
-                            if($stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ']['quantity'] < $product['quantity']){
-                                $stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ'] = $product;
-                            }
-                        } else {
-                            $product['stock_nam'] = 'БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ';
-                            $stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ'] = $product;
-                        }
-                    }
-                }
-            }
-            $i++;
-        }
+//        foreach ($stocks_group as $stock){
+//            $product = self::checkGoodsInStocksPartners($user_id, $stock, $part_number, 'fetch', 'site_gm_stocks_decompiles');
+//            if($product){
+//                if(trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\OK')
+//                    || trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\Квазар')
+//                    || trim($product['stock_name']) == Decoder::strToWindows('KVAZAR, Киев\OK')){
+//                    if($product['quantity'] > 0){
+//                        if(isset($stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ'])){
+//                            if($stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ']['quantity'] < $product['quantity']){
+//                                $stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ'] = $product;
+//                            }
+//                        } else {
+//                            $product['stock_nam'] = 'БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ';
+//                            $stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ'] = $product;
+//                        }
+//                    }
+//                }
+//            }
+//
+//            if($product){
+//                if(trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\б/у')
+//                    || trim($product['stock_name']) == Decoder::strToWindows('KVAZAR, Киев\б/у')){
+//                    if($product['quantity'] > 0){
+//                        if(isset($stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ'])){
+//                            if($stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ']['quantity'] < $product['quantity']){
+//                                $stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ'] = $product;
+//                            }
+//                        } else {
+//                            $product['stock_nam'] = 'БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ';
+//                            $stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ'] = $product;
+//                        }
+//                    }
+//                }
+//            }
+//            $i++;
+//        }
 
         //return array_reverse($stocks);
         return $stocks;
@@ -520,7 +521,7 @@ class Stocks
     {
         $db = MsSQL::getConnection();
 
-        $sql = "SELECT id, shortName FROM GoodsSubType";
+        $sql = "SELECT id, shortName FROM GoodsSubType ORDER BY shortName";
 
         $result = $db->prepare($sql);
         $result->execute();

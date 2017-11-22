@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/template/admin/css/app.css">
     <link rel="stylesheet" href="/template/admin/css/fonts.css">
     <link rel="stylesheet" href="/template/admin/fonts/foundation-icons/foundation-icons.css">
-    <link rel="stylesheet" href="/template/admin/css/style.css?v.2.0.0">
+    <link rel="stylesheet" href="/template/admin/css/style.css?v.2.0.2">
     <link rel="stylesheet" href="/template/admin/font-awesome/css/font-awesome.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/5.0.0/video-js.min.css" rel="stylesheet">
     <?php
@@ -37,6 +37,12 @@
 
 <body>
 <header>
+    <div id="wait" class="hide">
+        <div id="container-wait">
+            <h1>Please wait</h1>
+            <img src="/template/admin/img/wait.svg" alt="">
+        </div>
+    </div>
     <div class="header-user-menu">
         <div class="row">
             <div class="medium-12 small-12 column text-right">

@@ -8,7 +8,6 @@ use Umbrella\app\Services\UserService;
 use Umbrella\app\User;
 use Umbrella\components\Functions;
 use Umbrella\components\ImportExcel;
-use Umbrella\components\ImportExcel\ImportUsersFromExcel;
 use Umbrella\models\Admin;
 use Umbrella\models\Branch;
 use Umbrella\models\Country;
@@ -16,6 +15,9 @@ use Umbrella\models\DeliveryAddress;
 use Umbrella\models\Denied;
 use Umbrella\models\GroupModel;
 use Umbrella\models\Log;
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 /**
  * Class UserController
@@ -255,7 +257,8 @@ class UserController extends AdminBase
                     if($options['role'] == 2){
                         $options['name_partner'] = $userInfo['name_partner'];
                     } else {
-                        $options['name_partner'] = $_POST['name_partner'];
+                        //$options['name_partner'] = $_POST['name_partner'];
+                        $options['name_partner'] = $userInfo['name_partner'];
                     }
                     $options['id_country'] = $_POST['id_country'];
                     $options['login'] = $_POST['login'];
@@ -514,10 +517,44 @@ class UserController extends AdminBase
 
     public function actionUserTest()
     {
+        //require ROOT . '/vendor/autoload.php';
+
         $excel_file = '/upload/users-Umbrella.xlsx';
-        $usersArray = ImportExcel::importUsers($excel_file);
-        var_dump($usersArray);
-        die();
+        //$usersArray = ImportExcel::importUsers($excel_file);
+//        var_dump($usersArray);
+//        die();
+
+        $mail = new PHPMailer(true);
+        $mail->Host = 'smtp.generalse.com';  // Specify main and backup SMTP servers
+        //$mail->Port = 993;
+        $mail->setFrom('from@example.com', 'First Last');
+        $mail->addAddress('maldini2@ukr.net', 'John Doe');
+        $mail->Subject = 'PHPMailer file sender';
+        $mail->msgHTML("My message body");
+        // Attach uploaded files
+        //$mail->addAttachment($excel_file);
+        $mail->send();
+
+//        try {
+//            $mail->isMail();                                      // Set mailer to use SMTP
+//            $mail->Host = 'mail.generalse.com';  // Specify main and backup SMTP servers
+//            $mail->Port = 993;                                    // TCP port to connect to
+//            //Recipients
+//            $mail->setFrom('maldini2@ukr.net', 'Mailer');
+//            $mail->addAddress('maldini2@ukr.net', 'Joe User');     // Add a recipient
+//
+//            //Content
+//            $mail->isHTML(true);                                  // Set email format to HTML
+//            $mail->Subject = 'Here is the subject';
+//            $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
+//            $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+//
+//            $mail->send();
+//            echo 'Message has been sent';
+//        } catch (Exception $e) {
+//            echo 'Message could not be sent.';
+//            echo 'Mailer Error: ' . $mail->ErrorInfo;
+//        }
 
 //        $user = new User(1);
 //

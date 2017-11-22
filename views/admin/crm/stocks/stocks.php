@@ -1,5 +1,6 @@
 <?php require_once ROOT . '/views/admin/layouts/header.php'; ?>
 
+
 <div class="row">
     <div class="medium-12 small-12 columns">
         <div class="row header-content">
@@ -59,8 +60,13 @@
                         <th>Part Number</th>
                         <th class="sort">Description</th>
                         <th class="sort">Stock name</th>
-                        <th>Quantity</th>
-                        <th>Sub type</th>
+                        <th><span>Quantity</th>
+                        <th>
+                            Sub type
+                            <select style="font-size: 12px;height: 28px;padding: 2px 20px" id="filterSuptype" onchange="filterSubtype(event)">
+                                <option value="">Not selected</option>
+                            </select>
+                        </th>
                         <th>Serial Number</th>
                         <th class="sort">Price</th>
                     </tr>
@@ -74,7 +80,7 @@
                                 <td><?= \Umbrella\components\Decoder::strToUtf($goods['goods_name'])?></td>
                                 <td><?= \Umbrella\models\Stocks::replaceNameStockInResultTable($goods['stock_name'], $user->getRole())?></td>
                                 <td><?=$goods['quantity']?></td>
-                                <td><?= \Umbrella\components\Decoder::strToUtf($goods['subtype_name'])?></td>
+                                <td class="subtype_td"><?= \Umbrella\components\Decoder::strToUtf($goods['subtype_name'])?></td>
                                 <td><?= \Umbrella\components\Decoder::strToUtf($goods['serial_number'])?></td>
                                 <td><?=round($goods['price'], 2)?></td>
                             </tr>
@@ -93,22 +99,45 @@
         <div class="medium-12 small-12 columns">
             <h3>Stock filter</h3>
         </div>
-        <div class="medium-12 small-12 columns">
-            <form action="/adm/crm/stocks/" method="POST" id="stock_filter">
+        <form action="/adm/crm/stocks/" method="POST" id="stock_filter">
+            <div class="row align-top" style="margin-left: 0; margin-right: 0;">
+                <div class="medium-8 small-12 columns">
 
-                <h4 style="color: #fff">Stocks</h4>
-                <div class="row align-bottom" style="background: #323e48; padding-top: 10px; margin-bottom: 10px">
-                    <?php if(is_array($list_stock)):?>
-                        <?php foreach($list_stock as $stock):?>
-                            <div class="medium-4 small-4 columns">
-                                <?php $checked = Umbrella\models\Stocks::checkStocks(isset($_POST['stock']) ? $_POST['stock'] : [], $stock)?>
-                                <input type="checkbox" <?=($checked ? 'checked' : '')?> onclick="checkColor(event)" id="<?=$stock ?>" name="stock[]" value="<?=$stock ?>">
-                                <label for="<?=$stock ?>" style="color: <?= ($checked ? 'green' : '')?>;"><?=$stock ?></label><br>
-                            </div>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
+                    <h4 style="color: #fff">Stocks</h4>
+                    <div class="row align-bottom" style="background: #323e48; padding: 10px 0; margin-right: 0;">
+                        <?php if(is_array($list_stock)):?>
+                            <?php foreach($list_stock as $stock):?>
+                                <div class="medium-4 small-4 columns">
+                                    <?php $checked = Umbrella\models\Stocks::checkStocks(isset($_POST['stock']) ? $_POST['stock'] : [], $stock)?>
+                                    <input type="checkbox" <?=($checked ? 'checked' : '')?> onclick="checkColor(event)" id="<?=$stock ?>" name="stock[]" value="<?=$stock ?>">
+                                    <label for="<?=$stock ?>" style="color: <?= ($checked ? 'green' : '')?>;"><?=$stock ?></label><br>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </div>
                 </div>
 
+                <div class="medium-4 small-12 columns">
+
+                    <h4 style="color: #fff">Sub type</h4>
+                    <div class="row align-bottom" style="background: #323e48; padding: 10px 0; margin-bottom: 10px">
+
+                            <div id="container-sub-type">
+                                <?php if(is_array($listSubType)):?>
+                                    <?php foreach ($listSubType as $type):?>
+                                        <div>
+                                            <input id="type-<?= $type['id']?>" type="checkbox" onclick="checkColor(event)" name="sub_type[]" value="<?= $type['shortName']?>">
+                                            <label for="type-<?= $type['id']?>"><?= $type['shortName']?></label>
+                                        </div>
+                                    <?php endforeach;?>
+                                <?php endif;?>
+                            </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="medium-12 small-12 columns">
                 <h4 style="color: #fff">Partners</h4>
                 <?php if($user->role == 'administrator' || $user->role == 'fin-administrator'):?>
                     <div class="row align-bottom" style="background: #323e48; padding-top: 10px">
@@ -185,8 +214,8 @@
                         <button type="submit" id="apply-stock-filter" class="button primary"><i class="fi-filter"></i> Apply</button>
                     </div>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
     <button class="close-button" data-close aria-label="Close modal" type="button">
         <span aria-hidden="true">&times;</span>

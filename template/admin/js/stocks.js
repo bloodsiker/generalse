@@ -1,5 +1,5 @@
 
-$('table').tablesort();
+//$('table').tablesort();
 
 $(document).on('change', '#stock', function (e) { // склады
     console.log(e.target.value);
@@ -38,4 +38,42 @@ let checkColor = function (event) {
     } else {
         label.css('color', '#fff');
     }
+};
+
+
+$(document).ready(function () {
+    let subtype_td = $('.subtype_td');
+    let subtypes = [];
+    for (let i = 0; i < subtype_td.length; i++) {
+        subtypes.push($(subtype_td[i]).html())
+    }
+    subtypes = _.uniq(subtypes);
+    subtypes.forEach(value => {
+        $('#filterSuptype').append(`<option value="${value}">${value}</option>`)
+    });
+
+    console.log(subtypes);
+});
+let filterSubtype = function (e) {
+    $('#wait').removeClass('hide');
+
+    setTimeout(() => {
+        if (e.target.value) {
+            let subtype_td = $('.subtype_td');
+            for (let i = 0; i < subtype_td.length; i++) {
+                if (subtype_td[i].innerHTML !== e.target.value) {
+                    $(subtype_td[i]).parent('.goods').hide();
+                } else {
+                    $(subtype_td[i]).parent('.goods').show();
+                }
+            }
+        } else {
+            $('.goods').show();
+        }
+        $('#wait').addClass('hide');
+
+    }, 10);
+
+
+
 };
