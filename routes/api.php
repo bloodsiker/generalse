@@ -2,6 +2,8 @@
 
 return [
 
+    'api/form-users/comment/delete([a-z0-9-_?&]+)' => 'api/hr/FormUserComment@deleteComment/$1',
+    'api/form-users/comment/see([a-z0-9-_?&]+)' => 'api/hr/FormUserComment@seeComment/$1',
     'api/form-users/comment/add' => 'api/hr/FormUserComment@addComment',
 
     'api/form-users/upload-photo' => 'api/hr/FormUser@uploadPhoto',

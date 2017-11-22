@@ -4,6 +4,7 @@ namespace Umbrella\controllers\umbrella\crm;
 
 use Umbrella\app\AdminBase;
 use Umbrella\app\User;
+use Umbrella\components\Decoder;
 use Umbrella\models\Admin;
 use Umbrella\models\GroupModel;
 use Umbrella\models\Stocks;
@@ -40,18 +41,26 @@ class StockController extends AdminBase
             $user_ids = $user->controlUsers($user->id_user);
             $partnerList = Admin::getPartnerControlUsers($user_ids);
             $list_stock = $user->renderSelectStocks($user->id_user, 'stocks');
-            $listSubType = Stocks::getListSubType();
+            $listSubType = Decoder::arrayToUtf(Stocks::getListSubType());
             //var_dump($listSubType);
+
+            $filters = '';
+
+            if(isset($_REQUEST['sub_type']) && sizeof($_REQUEST['sub_type']) > 0){
+                $subType = $_REQUEST['sub_type'];
+                $subType = Decoder::strToWindows(implode('\' , \'', $subType));
+                $filters .= " AND subtype_name IN('{$subType}')";
+            }
 
             $stocks =  isset($_REQUEST['stock']) ? $_REQUEST['stock'] : [];
             $stocks = Stocks::replaceNameStockInFilter($stocks, 'back_replace', $user->getRole());
             $id_partners = isset($_REQUEST['id_partner']) ? $_REQUEST['id_partner'] : [];
-            $allGoodsByPartner = Stocks::getGoodsInStocksPartners($id_partners, $stocks);
+            $allGoodsByPartner = Stocks::getGoodsInStocksPartners($id_partners, $stocks, $filters);
 
         } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
 
             $list_stock = $user->renderSelectStocks($user->id_user, 'stocks');
-            $listSubType = Stocks::getListSubType();
+            $listSubType = Decoder::arrayToUtf(Stocks::getListSubType());
             // Параметры для формирование фильтров
             $groupList = GroupModel::getGroupList();
             $userInGroup = [];
@@ -68,11 +77,19 @@ class StockController extends AdminBase
             $userNotGroup[0]['users'] = GroupModel::getUsersWithoutGroup();
             $userInGroup = array_merge($userInGroup, $userNotGroup);
 
+            $filters = '';
+
+            if(isset($_REQUEST['sub_type']) && sizeof($_REQUEST['sub_type']) > 0){
+                $subType = $_REQUEST['sub_type'];
+                $subType = Decoder::strToWindows(implode('\' , \'', $subType));
+                $filters .= " AND subtype_name IN('{$subType}')";
+            }
+
             $stocks =  isset($_REQUEST['stock']) ? $_REQUEST['stock'] : [];
             $stocks = Stocks::replaceNameStockInFilter($stocks, 'back_replace', $user->getRole());
             $id_partners = isset($_REQUEST['id_partner']) ? $_REQUEST['id_partner'] : [];
 
-            $allGoodsByPartner = Stocks::getGoodsInStocksPartners($id_partners, $stocks);
+            $allGoodsByPartner = Stocks::getGoodsInStocksPartners($id_partners, $stocks, $filters);
         }
 
         $this->render('admin/crm/stocks/stocks', compact('user','partnerList',

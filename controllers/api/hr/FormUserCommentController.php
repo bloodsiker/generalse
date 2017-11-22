@@ -47,6 +47,43 @@ class FormUserCommentController
         } else {
             Response::responseJson(null, 400, 'Bad Request');
         }
+        return true;
+    }
+
+
+    /**
+     * See comment for form user
+     */
+    public function actionSeeComment()
+    {
+        $id = isset($_GET['id']) ? (int)$_GET['id'] : false;
+        if($id !== false) {
+            $key = 'see';
+            $value = 1;
+            FormUserComment::actionCommentByFormUser($id, $key, $value);
+            Response::responseJson(true, 200, 'OK');
+        } else {
+            Response::responseJson(null, 400, 'Bad Request');
+        }
+        return true;
+    }
+
+
+    /**
+     * Delete comment for form user
+     */
+    public function actionDeleteComment()
+    {
+        $id = isset($_GET['id']) ? (int)$_GET['id'] : false;
+        if($id !== false) {
+            $key = 'deleted';
+            $value = 1;
+            FormUserComment::actionCommentByFormUser($id, $key, $value);
+            Response::responseJson(true, 200, 'OK');
+        } else {
+            Response::responseJson(null, 400, 'Bad Request');
+        }
+        return true;
     }
 
 }

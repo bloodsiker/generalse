@@ -34,30 +34,48 @@ class FormUserController
     public function actionUsersInStructure()
     {
         $filter = '';
+        $userFire = 0;
         $usersInStructure = [];
         $infoStructure = [];
 
         if(isset($_GET['structure']) && $_GET['structure'] == 'company'){
             $id = (int)$_GET['id'];
-            $filter .= " AND company_id = {$id}";
+            $userFire = (int)$_GET['user_fire'];
+            $filter .= " AND company_id = {$id} AND user_fire = {$userFire}";
             $usersInStructure = FormUser::getFormsUserByDepartment($filter);
             $infoStructure = Structure::getStructureById($id);
         }
 
         if(isset($_GET['structure']) && $_GET['structure'] == 'department'){
             $id = (int)$_GET['id'];
-            $filter .= " AND department_id = {$id} AND branch_id = 0";
+            $userFire = (int)$_GET['user_fire'];
+            $filter .= " AND department_id = {$id} AND branch_id = 0 AND user_fire = {$userFire}";
             $usersInStructure = FormUser::getFormsUserByDepartment($filter);
             $infoStructure = Structure::getStructureById($id);
         }
 
         if(isset($_GET['structure']) && $_GET['structure'] == 'branch'){
             $id = (int)$_GET['id'];
-            $filter .= " AND branch_id = {$id}";
+            $userFire = (int)$_GET['user_fire'];
+            $filter .= " AND branch_id = {$id} AND user_fire = {$userFire}";
             $usersInStructure = FormUser::getFormsUserByDepartment($filter);
             $infoStructure = Structure::getStructureById($id);
             $infoStructure['company_id'] = Structure::getCompanyBranch($id);
         }
+
+        // Проверяем, есть в пользователе изменения
+        $usersInStructure = array_map(function ($user){
+            if($user['band_id_state'] == 'saved'
+                || $user['func_group_state'] == 'saved'
+                || $user['legal_entity_state'] == 'saved'
+                || $user['position_state'] == 'saved'
+                || $user['structure_state'] == 'saved'){
+                $user['saved'] = 1;
+            } else {
+                $user['saved'] = 0;
+            }
+            return $user;
+        }, $usersInStructure);
 
         $data['head'] = $infoStructure;
         $data['users'] = $usersInStructure;
@@ -108,6 +126,7 @@ class FormUserController
         $options['surname'] = $user->surname;
         $options['email'] = $user->email;
         $options['phone'] = $user->phone;
+        $options['phone_2'] = $user->phone_2;
         $options['photo'] = $user->photo;
         $options['company_id'] = $user->company_id;
         $options['legal_entity'] = $user->legal_entity;
@@ -146,6 +165,7 @@ class FormUserController
         $options['surname'] = $user->surname;
         $options['email'] = $user->email;
         $options['phone'] = $user->phone;
+        $options['phone_2'] = $user->phone_2;
         $options['photo'] = $user->photo;
         $settings = $user->settings;
 
@@ -172,6 +192,7 @@ class FormUserController
         $options['position'] = $user->position;
         $options['band_id'] = $user->band_id;
         $options['func_group'] = $user->func_group;
+        $options['user_fire'] = $user->user_fire;
 
         $ok = FormUser::updateFormUser($options);
         if($ok){
@@ -292,6 +313,13 @@ class FormUserController
                 'title' => 'Functional Group',
                 'state' => $userInfo['func_group_state'],
                 'date'  => $userInfo['func_group_date'],
+            ],
+            [
+                'key' => 'user_fire',
+                'value' => $userInfo['user_fire'],
+                'title' => 'Статус',
+                'state' => $userInfo['user_fire_state'],
+                'date'  => $userInfo['user_fire_date'],
             ]
         ];
 

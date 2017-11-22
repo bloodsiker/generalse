@@ -96,9 +96,9 @@ class FormUser
         $db = MySQL::getConnection();
 
         $sql = 'INSERT INTO gs_hr_users_form '
-            . '(name, surname, email, phone, photo, company_id, legal_entity, department_id, branch_id, position, band_id, func_group)'
+            . '(name, surname, email, phone, phone_2, photo, company_id, legal_entity, department_id, branch_id, position, band_id, func_group)'
             . 'VALUES '
-            . '(:name, :surname, :email, :phone, :photo, :company_id, :legal_entity, :department_id, :branch_id, :position, :band_id, :func_group)';
+            . '(:name, :surname, :email, :phone, :phone_2, :photo, :company_id, :legal_entity, :department_id, :branch_id, :position, :band_id, :func_group)';
 
         // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
@@ -106,6 +106,7 @@ class FormUser
         $result->bindParam(':surname', $options['surname'], PDO::PARAM_STR);
         $result->bindParam(':email', $options['email'], PDO::PARAM_STR);
         $result->bindParam(':phone', $options['phone'], PDO::PARAM_STR);
+        $result->bindParam(':phone_2', $options['phone_2'], PDO::PARAM_STR);
         $result->bindParam(':photo', $options['photo'], PDO::PARAM_STR);
         $result->bindParam(':company_id', $options['company_id'], PDO::PARAM_INT);
         $result->bindParam(':legal_entity', $options['legal_entity'], PDO::PARAM_STR);
@@ -137,6 +138,7 @@ class FormUser
                 surname = :surname,
                 email = :email,
                 phone = :phone,
+                phone_2 = :phone_2,
                 photo = :photo,
                 company_id = :company_id,
                 legal_entity = :legal_entity,
@@ -144,7 +146,8 @@ class FormUser
                 branch_id = :branch_id,
                 position = :position,
                 band_id = :band_id,
-                func_group = :func_group
+                func_group = :func_group,
+                user_fire = :user_fire
             WHERE id = :id";
 
         $result = $db->prepare($sql);
@@ -153,6 +156,7 @@ class FormUser
         $result->bindParam(':surname', $options['surname'], PDO::PARAM_STR);
         $result->bindParam(':email', $options['email'], PDO::PARAM_STR);
         $result->bindParam(':phone', $options['phone'], PDO::PARAM_STR);
+        $result->bindParam(':phone_2', $options['phone_2'], PDO::PARAM_STR);
         $result->bindParam(':photo', $options['photo'], PDO::PARAM_STR);
         $result->bindParam(':company_id', $options['company_id'], PDO::PARAM_INT);
         $result->bindParam(':legal_entity', $options['legal_entity'], PDO::PARAM_STR);
@@ -161,6 +165,7 @@ class FormUser
         $result->bindParam(':position', $options['position'], PDO::PARAM_STR);
         $result->bindParam(':band_id', $options['band_id'], PDO::PARAM_INT);
         $result->bindParam(':func_group', $options['func_group'], PDO::PARAM_STR);
+        $result->bindParam(':user_fire', $options['user_fire'], PDO::PARAM_STR);
         return $result->execute();
     }
 
