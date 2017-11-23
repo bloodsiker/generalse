@@ -15,11 +15,8 @@ class Disassembly
 	
 	public static function getAllRequest()
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // tbl_2_StockTraffick.serial_number = 'QB08242887'
-        // Получение и возврат результатов
         $sql = "SELECT 
                     sgd.part_number,
                     sgd.serial_number,
@@ -29,13 +26,9 @@ class Disassembly
                     FROM site_gm_decompiles sgd 
                     INNER JOIN site_gm_decompiles_parts sgdp 
                     ON sgd.decompile_id = sgdp.decompile_id";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
     }
@@ -48,11 +41,8 @@ class Disassembly
      */
     public static function getRequestByPartner($user_id, $serialNumber)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // tbl_2_StockTraffick.serial_number = 'QB08242887'
-        // Получение и возврат результатов
         $sql = "SELECT 
                      tbl_GoodsNames.PartNumber 
                     ,tbl_GoodsNames.mName
@@ -102,15 +92,11 @@ class Disassembly
                 ,ss.stock_id
                 ,ss.goodsNameID
                 HAVING SUM(ss.quantity) > 0))";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $result->bindParam(':serial_number', $serialNumber, PDO::PARAM_STR);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
     }
@@ -123,16 +109,13 @@ class Disassembly
      */
     public static function addDecompilesPartsMsSql($options)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'INSERT INTO dbo.site_gm_decompiles_parts '
             . '(site_id, part_number, stock_name, quantity)'
             . 'VALUES '
             . '(:site_id, :part_number, :stock_name, :quantity)';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $options['site_id'], PDO::PARAM_INT);
         $result->bindParam(':part_number', $options['part_number'], PDO::PARAM_STR);
@@ -316,6 +299,42 @@ class Disassembly
                     ORDER BY gd.id DESC";
 
         $result = $db->prepare($sql);
+        $result->execute();
+        $all = $result->fetchAll(PDO::FETCH_ASSOC);
+        return $all;
+    }
+
+
+    /**
+     * Search in disassemble
+     * @param $search
+     * @param $filter
+     * @return array
+     */
+    public static function getSearchInDisassemble($search, $filter = '')
+    {
+        $db = MySQL::getConnection();
+
+        $sql = "SELECT
+                gd.site_id,
+                gd.part_number,
+                gd.serial_number,
+                gd.dev_name,
+                gd.stockName,
+                gd.date_create,
+                gu.name_partner
+                FROM gm_decompiles gd
+                  INNER JOIN gs_user gu
+                   ON gd.id_user = gu.id_user
+                WHERE 1 = 1 {$filter}
+                AND (gu.name_partner LIKE ?
+                 OR gd.dev_name LIKE ?
+                 OR gd.part_number LIKE ?
+                 OR gd.serial_number LIKE ?)
+                  ORDER BY gd.id DESC";
+
+        $result = $db->prepare($sql);
+        $result->execute(array("%$search%", "%$search%", "%$search%", "%$search%"));
         $result->execute();
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;

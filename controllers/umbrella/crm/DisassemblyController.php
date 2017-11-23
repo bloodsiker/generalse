@@ -74,10 +74,7 @@ class DisassemblyController extends AdminBase
                 $interval = "";
             }
             $filter .= $interval;
-            $listDisassembly = Disassembly::getDisassemblyByPartner($user->controlUsers($user->id_user), $filter);
-
-            $this->render('admin/crm/disassemble/disassemble_result_partner',
-                compact('user', 'partnerList', 'listDisassembly'));
+            $listDisassembly = Disassembly::getDisassemblyByPartner($user->controlUsers($user->getId()), $filter);
 
         } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
 
@@ -103,11 +100,41 @@ class DisassemblyController extends AdminBase
             }
             $filter .= $interval;
             $listDisassembly = Disassembly::getAllDisassembly($filter);
-
-            $this->render('admin/crm/disassemble/disassemble_result_admin',
-                compact('user', 'partnerList', 'listDisassembly'));
         }
 
+        $this->render('admin/crm/disassemble/disassemble_result',
+            compact('user', 'partnerList', 'listDisassembly'));
+        return true;
+    }
+
+
+    /**
+     * search disassemble
+     * @return bool
+     */
+    public function actionSearch()
+    {
+        $user = $this->user;
+
+        if($user->role == 'partner'){
+            $search = iconv('UTF-8', 'WINDOWS-1251', trim($_REQUEST['search']));
+
+            $user_ids = $user->controlUsers($user->getId());
+            $partnerList = Admin::getPartnerControlUsers($user_ids);
+
+            $idS = implode(',', $user_ids);
+            $filter = " AND gd.id_user IN({$idS})";
+            $listDisassembly = Disassembly::getSearchInDisassemble($search, $filter);
+
+        } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
+
+            $search = iconv('UTF-8', 'WINDOWS-1251', trim($_REQUEST['search']));
+
+            $listDisassembly = Disassembly::getSearchInDisassemble($search);
+        }
+
+        $this->render('admin/crm/disassemble/disassemble_search',
+            compact('user', 'partnerList', 'listDisassembly', 'search'));
         return true;
     }
 
@@ -165,7 +192,7 @@ class DisassemblyController extends AdminBase
             // Кол-во обьектов в массиве должно быть равным кол-ву успешных записей в бд
             if($count == $i){
                 Disassembly::decompileIsReady($idDecompile, 1);
-                Logger::getInstance()->log($user->id_user, 'произвел разборку устройства, SN ' . $options['serial_number']);
+                Logger::getInstance()->log($user->getId(), 'произвел разборку устройства, SN ' . $options['serial_number']);
                 echo 1;
             } else {
                 echo 0;
@@ -263,7 +290,7 @@ class DisassemblyController extends AdminBase
                 $end = $_GET['end'] . ' 23:59';
             }
 
-            $listExport = Disassembly::getExportDisassemblyByPartner($user->controlUsers($user->id_user), $start, $end);
+            $listExport = Disassembly::getExportDisassemblyByPartner($user->controlUsers($user->getId()), $start, $end);
 
         } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager' ){
 

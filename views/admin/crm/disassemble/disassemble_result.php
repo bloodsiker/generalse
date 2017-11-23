@@ -15,8 +15,11 @@
                     <div class="medium-12 small-12 columns">
                         <div class="row align-bottom">
 
-                            <div class="medium-4 medium-offset-8 small-12 columns">
-                                <input type="text" id="goods_search" class="search-input" placeholder="Search..." name="search">
+                            <div class="medium-3 medium-offset-9 small-12 columns">
+                                <form action="/adm/crm/disassembly/s/" method="get" class="form" data-abide novalidate>
+                                    <input type="text" class="required search-input" placeholder="Search..." name="search" required>
+                                    <button class="search-button button primary"><i class="fi-magnifying-glass"></i></button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -60,7 +63,7 @@
         <!-- body -->
         <div class="body-content checkout">
             <div class="row">
-                <table class="umbrella-table" id="goods_data">
+                <table class="umbrella-table">
                     <caption>Last recording on
                         <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-30 days') ?> &mdash;
                         <?= (isset($_GET['end']) && !empty($_GET['end'])) ? $_GET['end'] : date('Y-m-d') ?>
@@ -76,8 +79,10 @@
                         <th>Stock</th>
                         <th>Status</th>
                         <th>Date create</th>
-                        <th class="text-center">Action</th>
-                        <th class="text-center">Delete</th>
+                        <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+                            <th class="text-center">Action</th>
+                            <th class="text-center">Delete</th>
+                        <?php endif; ?>
                     </tr>
                     </thead>
                     <tbody>
@@ -99,13 +104,15 @@
                                     <?= ($status == NULL) ? 'Expect' : $status ?>
                                 </td>
                                 <td><?= Umbrella\components\Functions::formatDate($dis['date_create'])?></td>
-                                <td class="action-control">
-                                    <?php if($status == 'Предварительная'):?>
-                                        <a href="" class="accept disassemble-accept"><i class="fi-check"></i></a>
-                                        <a href="" class="dismiss disassemble-dismiss"><i class="fi-x"></i></a>
-                                    <?php endif;?>
-                                </td>
-                                <td class="text-center"><a href="" onclick="return confirm('Вы уверены что хотите удалить?') ? true : false;" class="delete disassemble-delete"><i class="fi-x-circle"></i></a></td>
+                                <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+                                    <td class="action-control">
+                                        <?php if($status == 'Предварительная'):?>
+                                            <a href="" class="accept disassemble-accept"><i class="fi-check"></i></a>
+                                            <a href="" class="dismiss disassemble-dismiss"><i class="fi-x"></i></a>
+                                        <?php endif;?>
+                                    </td>
+                                    <td class="text-center"><a href="" onclick="return confirm('Вы уверены что хотите удалить?') ? true : false;" class="delete disassemble-delete"><i class="fi-x-circle"></i></a></td>
+                                <?php endif; ?>
                             </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>

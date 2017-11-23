@@ -186,6 +186,7 @@ return [
     'adm/crm/disassembly_ajax' => 'umbrella/crm/Disassembly@disassemblyAjax',
     'adm/crm/disassembly_list/([a-z0-9-_?&]+)' => 'umbrella/crm/Disassembly@disassemblyResult/$1',
     'adm/crm/disassembly_list' => 'umbrella/crm/Disassembly@disassemblyResult',
+    'adm/crm/disassembly/s/([a-z0-9-_?&]+)' => 'umbrella/crm/Disassembly@search/$1',
     'adm/crm/disassembly' => 'umbrella/crm/Disassembly@disassembly',
 
 
