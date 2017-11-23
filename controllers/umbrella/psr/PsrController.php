@@ -122,6 +122,33 @@ class PsrController extends AdminBase
 
 
     /**
+     * Search in Psr
+     * @return bool
+     */
+    public function actionSearch()
+    {
+        $user = $this->user;
+
+        if($user->role == 'partner' || $user->role == 'manager'){
+            $search = $_REQUEST['search'];
+
+            $user_ids = $user->controlUsers($user->id_user);
+            $idS = implode(',', $user_ids);
+            $filter = " AND gp.id_user ($idS)";
+
+            $listPsr = Psr::getSearchInPsr($search, $filter);
+        } elseif($user->role == 'administrator' || $user->role == 'administrator-fin'){
+            $search = trim($_REQUEST['search']);
+
+            $listPsr = Psr::getSearchInPsr($search);
+        }
+
+        $this->render('admin/psr/psr_ua/result_search', compact('user', 'listPsr', 'search'));
+        return true;
+    }
+
+
+    /**
      * @return bool
      */
     public function actionPsrAjax()

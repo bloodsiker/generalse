@@ -79,6 +79,7 @@ return [
 
     'adm/psr/show_upload_file' => 'umbrella/psr/Psr@showUploadFile',
     'adm/psr/psr_ajax' => 'umbrella/psr/Psr@psrAjax',
+    'adm/psr/s/([a-z0-9-_?&]+)' => 'umbrella/psr/Psr@search/$1',
     'adm/psr/ua' => 'umbrella/psr/Psr@index',
 
 

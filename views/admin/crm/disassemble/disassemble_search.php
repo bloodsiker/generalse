@@ -26,18 +26,6 @@
                     <div class="medium-12 small-12 columns">
                         <form action="/adm/crm/disassembly_list/" method="get">
                         <div class="row align-bottom">
-                            <div class="medium-2 small-12 columns">
-                                <label><i class="fi-list"></i> Partner
-                                    <select name="id_partner">
-                                        <option value=""></option>
-                                        <?php if(is_array($partnerList)):?>
-                                            <?php foreach($partnerList as $partner):?>
-                                                <option <?php echo (isset($id_partner) && $id_partner == $partner['id_user']) ? 'selected' : '' ?> value="<?=$partner['id_user']?>"><?=$partner['name_partner']?></option>
-                                            <?php endforeach;?>
-                                        <?php endif;?>
-                                    </select>
-                                </label>
-                            </div>
                             <div class="medium-2 text-left small-12 columns">
                                 <label for="right-label"><i class="fi-calendar"></i> From date</label>
                                 <input type="text" id="date-start" name="start" value="<?=(isset($_GET['start']) && $_GET['start'] != '') ? $_GET['start'] : ''?>">
@@ -49,7 +37,7 @@
                             <div class="medium-1 small-12 columns">
                                 <button type="submit" class="button primary"><i class="fi-eye"></i> Show</button>
                             </div>
-                            <div class="medium-5 small-12 columns text-right">
+                            <div class="medium-5 small-12 medium-offset-2 columns text-right">
                                 <a class="button primary tool" id="export-button"><i class="fi-page-export"></i> Export to Excel</a>
                                 <a href="/adm/crm/disassembly" class="button primary tool">send request</a>
                                 <a href="/adm/crm/disassembly_list" class="button primary tool active-req">list disassembly</a>

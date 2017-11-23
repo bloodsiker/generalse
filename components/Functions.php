@@ -219,6 +219,18 @@ class Functions
 
 
     /**
+     * Совпадение по поисковой строке - подсвечиваем
+     * @param $search
+     * @param $result
+     * @return mixed
+     */
+    public static function replaceSearchResultUtf($search, $result)
+    {
+        return preg_replace("/".$search."/i", "<b class='highlight'>".$search."</b>", $result);
+    }
+
+
+    /**
      * Из ассоциатиного массива удаляем елементы по повторяющихся ключах
      * @param $key
      * @param $array

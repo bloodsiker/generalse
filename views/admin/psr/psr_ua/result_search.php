@@ -71,10 +71,10 @@
                              <?php foreach ($listPsr as $psr):?>
                                  <tr class="goods" data-id="<?= $psr['id']?>">
                                      <td><?= $psr['id']?></td>
-                                     <td><?= $psr['name_partner']?></td>
-                                     <td><?= $psr['serial_number']?></td>
-                                     <td><?= $psr['part_number']?></td>
-                                     <td><?= $psr['device_name']?></td>
+                                     <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $psr['name_partner'])?></td>
+                                     <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $psr['serial_number'])?></td>
+                                     <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $psr['part_number'])?></td>
+                                     <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $psr['device_name'])?></td>
                                      <td><?= $psr['manufacture_date']?></td>
                                      <td><?= $psr['purchase_date']?></td>
                                      <td><?= $psr['defect_description']?></td>
@@ -101,7 +101,7 @@
                                          <table style="margin-bottom: 0">
                                              <tr>
                                                  <td style="border-width: 0 0 1px 0">
-                                                     <span class="psr-dec-number"><?= $psr['declaration_number']?></span>
+                                                     <span class="psr-dec-number"><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $psr['declaration_number'])?></span>
                                                      <?php if (Umbrella\app\AdminBase::checkDenied('adm.psr.add_declaration', 'view')): ?>
                                                         <a href="" class="button button-hover edit-dec delete"><i class="fi-pencil"></i></a>
                                                      <?php endif; ?>
@@ -109,7 +109,7 @@
                                              </tr>
                                              <tr>
                                                  <td style="border-width: 0 0 0 0">
-                                                     <span class="psr-dec-number-return"><?= $psr['declaration_number_return']?></span>
+                                                     <span class="psr-dec-number-return"><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $psr['declaration_number_return'])?></span>
                                                      <?php if (Umbrella\app\AdminBase::checkDenied('adm.psr.add_return_declaration', 'view')): ?>
                                                         <a href="" class="button button-hover edit-dec-return delete"><i class="fi-pencil"></i></a>
                                                      <?php endif?>

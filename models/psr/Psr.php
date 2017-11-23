@@ -96,6 +96,43 @@ class Psr
 
 
     /**
+     * Search by Psr
+     * @param $search
+     * @param string $filter
+     * @return array
+     */
+    public static function getSearchInPsr($search, $filter = '')
+    {
+        $db = MySQL::getConnection();
+
+        $sql = "SELECT
+                 gp.*,
+                 gu.name_partner,
+                 (SELECT 
+                     count(gpd.id) 
+                 FROM gm_psr_documents gpd
+                 WHERE gpd.id_psr = gp.id) as count_file
+             FROM gm_psr gp
+             INNER JOIN gs_user gu
+               ON gp.id_user = gu.id_user
+             WHERE 1 = 1 {$filter}
+             AND(gp.serial_number LIKE ?
+             OR gp.part_number LIKE ?
+             OR gp.device_name LIKE ?
+             OR gp.declaration_number LIKE ?
+             OR gp.declaration_number_return LIKE ?
+             OR gu.name_partner LIKE ?)
+             ORDER BY gp.id DESC";
+
+        $result = $db->prepare($sql);
+        $result->execute(array("%$search%", "%$search%", "%$search%", "%$search%", "%$search%", "%$search%"));
+        $result->execute();
+        $all = $result->fetchAll(PDO::FETCH_ASSOC);
+        return $all;
+    }
+
+
+    /**
      * Список всех заявок на регистрацию ПСР
      * @return array
      */
