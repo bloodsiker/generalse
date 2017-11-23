@@ -158,7 +158,7 @@ $('[name="part_number"]').keyup(function(e) {
 });
 
 function hideAllInput() {
-    $('[name="service_order"], [name="part_number"], [name="quantity"], [name="note"]')
+    $('[name="service_order"], [name="part_number"], [name="quantity"], [name="note"], [name="order_type_id"]')
         .removeAttr('required')
         .parent().hide();
     $('.name-product').text('');
@@ -176,42 +176,42 @@ $('#stock').change(function(e) {
     switch (e.target.value) {
         case 'OK (Выборгская, 104)':
             hideAllInput();
-            $('[name="service_order"], [name="part_number"]')
+            $('[name="service_order"], [name="part_number"], [name="order_type_id"]')
                 .attr('required', '')
                 .parent().show();
             $('[name="note"]').parent().show();
             break;
         case 'OK':
             hideAllInput();
-            $('[name="service_order"], [name="part_number"]')
+            $('[name="service_order"], [name="part_number"], [name="order_type_id"]')
                 .attr('required', '')
                 .parent().show();
             $('[name="note"]').parent().show();
             break;
         case 'BAD':
             hideAllInput();
-            $('[name="part_number"], [name="quantity"]')
+            $('[name="part_number"], [name="quantity"], [name="order_type_id"]')
                 .attr('required', '')
                 .parent().show();
             $('[name="note"]').parent().show();
             break;
         case 'Not Used':
             hideAllInput();
-            $('[name="service_order"], [name="part_number"]')
+            $('[name="service_order"], [name="part_number"], [name="order_type_id"]')
                 .attr('required', '')
                 .parent().show();
             $('[name="note"]').parent().show();
             break;
         case 'Restored':
             hideAllInput();
-            $('[name="service_order"], [name="part_number"]')
+            $('[name="service_order"], [name="part_number"], [name="order_type_id"]')
                 .attr('required', '')
                 .parent().show();
             $('[name="note"]').parent().show();
             break;
         case 'Dismantling':
             hideAllInput();
-            $('[name="service_order"], [name="part_number"]')
+            $('[name="service_order"], [name="part_number"], [name="order_type_id"]')
                 .attr('required', '')
                 .parent().show();
             $('[name="note"]').parent().show();
@@ -281,19 +281,20 @@ $(document).on('dblclick', '.checkout tbody tr', function(e) {
     return false;
 });
 
-// Показываем форму для отправки файла
-$('#add-order-file').click(function(){
-    $('.purchase-file-send').slideToggle();
-});
+
 
 // Запрещаем повторно отправлять заявку
 $('#orders-excel-send').submit(function(e) {
     e.preventDefault();
-    $('#orders-excel-send').find('button').prop('disabled', true);
-    $('#wait').removeClass('hide');
-    setTimeout(function () {
-        e.target.submit()
-    }, 3000);
+    if ($('#orders-excel-send input').hasClass('is-invalid-input') || $('#orders-excel-send select').hasClass('is-invalid-input')) { // проверка на валидность
+        return false;
+    } else {
+        $('#orders-excel-send').find('button').prop('disabled', true);
+        $('#wait').removeClass('hide');
+        setTimeout(function () {
+            e.target.submit()
+        }, 3000);
+    }
 });
 
 $('table').tablesort();

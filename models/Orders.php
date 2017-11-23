@@ -68,9 +68,9 @@ class Orders
         $db = MsSQL::getConnection();
 
         $sql = 'INSERT INTO site_gm_orders '
-            . '(site_id, site_account_id, so_number, ready, note)'
+            . '(site_id, site_account_id, so_number, ready, note, order_type_id)'
             . 'VALUES '
-            . '(:site_id, :site_account_id, :so_number, :ready, :note)';
+            . '(:site_id, :site_account_id, :so_number, :ready, :note, :order_type_id)';
 
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $options['site_id'], PDO::PARAM_INT);
@@ -78,6 +78,7 @@ class Orders
         $result->bindParam(':so_number', $options['so_number'], PDO::PARAM_STR);
         $result->bindParam(':ready', $options['ready'], PDO::PARAM_INT);
         $result->bindParam(':note', $options['note'], PDO::PARAM_STR);
+        $result->bindParam(':order_type_id', $options['order_type_id'], PDO::PARAM_INT);
 
         return $result->execute();
     }

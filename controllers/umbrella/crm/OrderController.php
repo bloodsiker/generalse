@@ -5,6 +5,7 @@ use Josantonius\Session\Session;
 use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
 use Umbrella\app\User;
+use Umbrella\components\Decoder;
 use Umbrella\components\ImportExcel;
 use Umbrella\components\Logger;
 use Umbrella\models\Admin;
@@ -41,6 +42,7 @@ class OrderController extends AdminBase
         $user = $this->user;
 
         $delivery_address = $user->getDeliveryAddress();
+        $order_type = Decoder::arrayToUtf(Orders::getAllOrderTypes());
 
         Session::destroy('error_orders');
         Session::destroy('error_orders_text');
@@ -128,6 +130,7 @@ class OrderController extends AdminBase
                                 $options['id_user'] = $insert['id_user'];
                                 $options['so_number'] = iconv('UTF-8', 'WINDOWS-1251', $insert['so_number']);
                                 $options['note'] = $note;
+                                $options['order_type_id'] = $_REQUEST['order_type_id'];
                                 $options['note_mysql'] = $note_mysql;
                                 $options['ready'] = 1;
                                 Orders::addOrdersMsSQL($options);
@@ -218,10 +221,12 @@ class OrderController extends AdminBase
             $userNotGroup[0]['group_id'] = 'without_group';
             $userNotGroup[0]['users'] = GroupModel::getUsersWithoutGroup();
             $userInGroup = array_merge($userInGroup, $userNotGroup);
+
+            $partnerList = Admin::getAllPartner();
         }
 
-        $this->render('admin/crm/orders/orders', compact('partnerList', 'partnerList', 'allOrders',
-            'delivery_address', 'user', 'userInGroup'));
+        $this->render('admin/crm/orders/orders', compact('partnerList', 'allOrders',
+            'delivery_address', 'user', 'userInGroup', 'order_type'));
         return true;
     }
 
@@ -235,6 +240,7 @@ class OrderController extends AdminBase
 
         $arr_error_pn = Session::pull('error_orders');
         $arr_error_text = Session::pull('error_orders_text');
+        $order_type = Decoder::arrayToUtf(Orders::getAllOrderTypes());
 
         if($user->role == 'partner' || $user->role == 'manager') {
 
@@ -300,10 +306,11 @@ class OrderController extends AdminBase
             $userNotGroup[0]['group_id'] = 'without_group';
             $userNotGroup[0]['users'] = GroupModel::getUsersWithoutGroup();
             $userInGroup = array_merge($userInGroup, $userNotGroup);
+            $partnerList = Admin::getAllPartner();
         }
 
         $this->render('admin/crm/orders/orders', compact('userInGroup', 'partnerList', 'allOrders',
-            'delivery_address', 'user', 'arr_error_pn', 'arr_error_text'));
+            'delivery_address', 'user', 'arr_error_pn', 'arr_error_text', 'order_type'));
         return true;
     }
 
@@ -357,6 +364,7 @@ class OrderController extends AdminBase
         $options['id_user'] = $data_json['id_partner'];
         $options['so_number'] = iconv('UTF-8', 'WINDOWS-1251', $data_json['service_order']);
         $options['note'] = $note;
+        $options['order_type_id'] = $data_json['order_type_id'];;
         $options['note_mysql'] = $note_mysql;
         $options['ready'] = 1;
 
