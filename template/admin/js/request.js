@@ -146,28 +146,7 @@ $('[name="part_number"]').keyup(function(e) {
                 } else {
                     $(".group-stocks").addClass('hide');
                 }
-
-                if(obj.is_available == 1){
-                    $('.pn-analog').text(obj.comment);
-                    $("[name='part_number']").addClass('error_part');
-                } else {
-                    $('.pn-analog').text('');
-                    $("[name='part_number']").removeClass('error_part');
-
-                    if(obj.is_analog == 1){
-                        $('.pn-analog').text(obj.message + obj.analog);
-                        $("[name='part-analog']").val(obj.analog);
-                        $("[name='analog-price']").val(obj.analog_price);
-                        $('.group-analog').removeClass('hide');
-                    } else {
-                        $('.pn-analog').text('');
-                        $("[name='part-analog']").val('');
-                        $("[name='analog-price']").val('');
-                        $(".group-analog").addClass('hide');
-                    }
-                }
             } else {
-                $("[name='part_number']").removeClass('error_part');
                 $('.name-product').text('not found').css('color', 'red');
                 $("[name='price']").val('0');
                 $(".group-stocks").addClass('hide');
@@ -177,6 +156,26 @@ $('[name="part_number"]').keyup(function(e) {
                 $("[name='part-analog']").val('');
                 $("[name='analog-price']").val('');
                 $(".group-analog").addClass('hide');
+            }
+
+            if(obj.is_available == 1){
+                $('.pn-analog').text(obj.comment);
+                $("[name='part_number']").addClass('error_part');
+            } else {
+                $('.pn-analog').text('');
+                $("[name='part_number']").removeClass('error_part');
+
+                if(obj.is_analog == 1){
+                    $('.pn-analog').text(obj.message + obj.analog);
+                    $("[name='part-analog']").val(obj.analog);
+                    $("[name='analog-price']").val(obj.analog_price);
+                    $('.group-analog').removeClass('hide');
+                } else {
+                    $('.pn-analog').text('');
+                    $("[name='part-analog']").val('');
+                    $("[name='analog-price']").val('');
+                    $(".group-analog").addClass('hide');
+                }
             }
         }
     });
@@ -687,8 +686,10 @@ $('#goods_data').on('click', '.edit-analog', function(e) {
     $('#edit-analog').foundation('open');
     var r_pn = $(this).parent('td').parent('tr').find('.r_part').text();
     var r_analog = $(this).parent('td').parent('tr').find('.r_analog').text();
+    var r_comment = $(this).parent('td').parent('tr').find('.r_comment').text();
     $("#r_pn").val(r_pn.trim());
     $("#r_analog").val(r_analog.trim());
+    $("#r_comment").val(r_comment.trim());
     id_record = $(this).parent('td').parent('tr').data('id');
     console.log(r_pn);
 });
@@ -697,7 +698,8 @@ $(document).on('click', '#send-pn-analog', function(e) {
     e.preventDefault();
     var r_pn = $("#r_pn").val();
     var r_analog = $("#r_analog").val();
-    var data = "action=edit_pn_analog&id_record=" + id_record + "&part_number=" + r_pn + "&part_analog=" + r_analog;
+    var r_comment = $("#r_comment").val();
+    var data = "action=edit_pn_analog&id_record=" + id_record + "&part_number=" + r_pn + "&part_analog=" + r_analog + "&r_comment=" + r_comment;
 
     $.ajax({
         url: "/adm/crm/request/request_ajax",
@@ -708,6 +710,7 @@ $(document).on('click', '#send-pn-analog', function(e) {
             if(response == 200){
                 $('[data-id="' + id_record + '"]').find('.r_part').text(r_pn).css('color', 'green');
                 $('[data-id="' + id_record + '"]').find('.r_analog').text(r_analog).css('color', 'green');
+                $('[data-id="' + id_record + '"]').find('.r_comment').text(r_comment).css('color', 'green');
                 $('#edit-analog form')[0].reset();
                 $('#edit-analog').foundation('close');
             } else {

@@ -34,21 +34,21 @@ class PartAnalog
 
     /**
      * Получаем список парт номеров и аналогов
-     * @param $type_part
+     * @param $filter
      * @return array
      */
-    public static function getListPartAnalog($type_part)
+    public static function getListPartAnalog($filter = '')
     {
         $db = MySQL::getConnection();
 
         $sql = "SELECT
                  *
                  FROM gm_part_analog
-                 WHERE type_part = :type_part
+                 WHERE 1 =1 {$filter}
                  ORDER BY id DESC";
 
         $result = $db->prepare($sql);
-        $result->bindParam(':type_part', $type_part, PDO::PARAM_STR);
+        //$result->bindParam(':type_part', $type_part, PDO::PARAM_STR);
         $result->execute();
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
@@ -86,22 +86,25 @@ class PartAnalog
      * @param $id_record
      * @param $part_number
      * @param $part_analog
+     * @param $r_comment
      * @return bool
      */
-    public static function updatePartNumberAndAnalog($id_record, $part_number, $part_analog)
+    public static function updatePartNumberAndAnalog($id_record, $part_number, $part_analog, $r_comment)
     {
         $db = MySQL::getConnection();
 
         $sql = "UPDATE gm_part_analog
             SET
                 part_number = :part_number,
-                part_analog = :part_analog
+                part_analog = :part_analog,
+                comment = :comment
             WHERE id = :id";
 
         $result = $db->prepare($sql);
         $result->bindParam(':id', $id_record, PDO::PARAM_INT);
         $result->bindParam(':part_number', $part_number, PDO::PARAM_STR);
         $result->bindParam(':part_analog', $part_analog, PDO::PARAM_STR);
+        $result->bindParam(':comment', $r_comment, PDO::PARAM_STR);
         return $result->execute();
     }
 }

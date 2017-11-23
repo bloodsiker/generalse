@@ -17,7 +17,7 @@
                     </div>
                     <div class="medium-12 small-12 columns">
                         <div class="row align-bottom">
-                            <div class="medium-9 small-12 columns">
+                            <div class="medium-7 small-12 columns">
 
                                 <a href="/adm/crm/request" class="button primary tool"><i class="fi-arrow-left"></i> Back to request</a>
 
@@ -28,7 +28,17 @@
                                 <button class="button primary tool" data-open="import-analog-modal"><i class="fi-plus"></i> Import analog</button>
 
                                 <button class="button primary tool" onclick="tableToExcel('goods_data', 'Request Table')" style="width: inherit;"><i class="fi-page-export"></i> Export to Excel</button>
+                            </div>
 
+                            <div class="medium-2 small-3 columns">
+                                <form action="/adm/crm/request/list_analog" method="post" class="form">
+                                    <label>Filter</label>
+                                    <select name="type_filter" onchange="this.form.submit()">
+                                        <option value="all">Все</option>
+                                        <option <?= isset($_REQUEST['type_filter']) && $_REQUEST['type_filter'] == 'analog' ? 'selected' : null ?> value="analog">Аналоги</option>
+                                        <option <?= isset($_REQUEST['type_filter']) && $_REQUEST['type_filter'] == 'available' ? 'selected' : null ?> value="available">Не возможны к заказу</option>
+                                    </select>
+                                </form>
                             </div>
 
                             <div class="medium-3 small-12 columns form">
@@ -48,6 +58,7 @@
                     <tr>
                         <th>Part number</th>
                         <th>Part analog</th>
+                        <th>Comment</th>
                         <th width="50"></th>
                         <th width="50"></th>
                     </tr>
@@ -58,6 +69,7 @@
                             <tr class="goods" data-id="<?= $part['id']?>">
                                 <td><span class="r_part"><?= $part['part_number']?></span></td>
                                 <td><span class="r_analog"><?= $part['part_analog']?></span></td>
+                                <td><span class="r_comment"><?= $part['comment']?></span></td>
                                 <td><a href="" class="button no-margin small edit-analog"><i class="fi-pencil"></i></a></td>
                                 <td><a href="" class="button no-margin small delete-analog hide"><i class="fi-x"></i></a></td>
                             </tr>
@@ -93,6 +105,15 @@
                     <div class="medium-12 small-12 columns">
                         <label>Part analog </label>
                         <input type="text" id="r_analog" class="required" required autocomplete="off">
+                    </div>
+                </div>
+            </div>
+
+            <div class="medium-12 small-12 columns">
+                <div class="row">
+                    <div class="medium-12 small-12 columns">
+                        <label>Comment</label>
+                        <textarea name="" id="r_comment" cols="30" rows="3"></textarea>
                     </div>
                 </div>
             </div>

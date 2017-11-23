@@ -57,7 +57,7 @@ class RequestController extends AdminBase
         $order_type = Orders::getAllOrderTypes();
         $delivery_address = $user->getDeliveryAddress();
 
-        $arrayPartNumber = array_column(PartAnalog::getListPartAnalog('analog'), 'part_number');
+        $arrayPartNumber = array_column(PartAnalog::getListPartAnalog(" AND type_part = 'analog' "), 'part_number');
 
         if(isset($_POST['add_request']) && $_POST['add_request'] == 'true'){
 
@@ -77,7 +77,7 @@ class RequestController extends AdminBase
 
             $partAnalog = PartAnalog::getAnalogByPartNumber($_POST['part_number']);
             //если имееться аналог парт номера, заменяем его
-            if($partAnalog){
+            if($partAnalog && $partAnalog['type_part']== 'analog'){
                 $options['part_number'] = Decoder::strToWindows($partAnalog['part_analog']);
                 Session::set('replace_by_analog', "Part number {$_POST['part_number']} is replaced by an analog {$partAnalog['part_analog']}");
             } else {
@@ -253,7 +253,7 @@ class RequestController extends AdminBase
 
                             $partAnalog = PartAnalog::getAnalogByPartNumber($import['part_number']);
                             //если имееться аналог парт номера, заменяем его
-                            if($partAnalog){
+                            if($partAnalog && $partAnalog['type_part']== 'analog'){
                                 $options['part_number'] = iconv('UTF-8', 'WINDOWS-1251', $partAnalog['part_analog']);
                                 array_push($arrayReplaceAnalog, "[{$import['part_number']}] => [{$partAnalog['part_analog']}]");
                             } else {
@@ -349,10 +349,22 @@ class RequestController extends AdminBase
             $partInStock = Stocks::checkGoodsInStocksPartners($user->getId(), $stocks_group, $part_number);
             $partNumberAnalog = PartAnalog::getAnalogByPartNumber($part_number);
 
+            if($partNumberAnalog['type_part'] == 'available'){
+                $data['is_available'] = 1;
+                $data['comment'] = 'Парт номер не доступен к заказу: ' . $partNumberAnalog['comment'];
+            } else {
+                if($partNumberAnalog['type_part'] == 'analog'){
+                    $price = Products::getPricePartNumber($partNumberAnalog['part_analog'], $user->id_user);
+                    $data['is_analog'] = 1;
+                    $data['message'] = 'Парт номер будет заменен на аналог ';
+                    $data['analog'] = $partNumberAnalog['part_analog'];
+                    $data['analog_price'] = round($price['price'], 2);
+                }
+            }
+
             if($result == 0){
                 $data['result'] = 0;
                 $data['action'] = 'not_found';
-                print_r(json_encode($data));
             } else {
                 $data['result'] = 1;
                 $data['action'] = 'purchase';
@@ -363,21 +375,8 @@ class RequestController extends AdminBase
                     $data['stock'] = iconv('WINDOWS-1251', 'UTF-8', $partInStock['stock_name']);
                     $data['quantity'] = $partInStock['quantity'] . ' Units';
                 }
-
-                if($partNumberAnalog['type_part'] == 'available'){
-                    $data['is_available'] = 1;
-                    $data['comment'] = 'Парт номер не доступен к заказу: ' . $partNumberAnalog['comment'];
-                } else {
-                    if($partNumberAnalog['type_part'] == 'analog'){
-                        $price = Products::getPricePartNumber($partNumberAnalog['part_analog'], $user->id_user);
-                        $data['is_analog'] = 1;
-                        $data['message'] = 'Парт номер будет заменен на аналог ';
-                        $data['analog'] = $partNumberAnalog['part_analog'];
-                        $data['analog_price'] = round($price['price'], 2);
-                    }
-                }
-                print_r(json_encode($data));
             }
+            print_r(json_encode($data));
         }
 
         // Для партнеров Lenovo
@@ -481,8 +480,9 @@ class RequestController extends AdminBase
             $id_record = $_REQUEST['id_record'];
             $part_number = $_REQUEST['part_number'];
             $part_analog = $_REQUEST['part_analog'];
+            $r_comment = $_REQUEST['r_comment'];
 
-            $ok = PartAnalog::updatePartNumberAndAnalog($id_record, $part_number, $part_analog);
+            $ok = PartAnalog::updatePartNumberAndAnalog($id_record, $part_number, $part_analog, $r_comment);
             if($ok){
                 Logger::getInstance()->log($user->id_user, ' изменил(а) запись в аналогах с id #' . $id_record);
                 print_r(200);
@@ -731,7 +731,14 @@ class RequestController extends AdminBase
     {
         $user = $this->user;
 
-        $listPartAnalog = PartAnalog::getListPartAnalog('analog');
+        $filter = '';
+        if(isset($_REQUEST['type_filter'])){
+            if($_REQUEST['type_filter'] != 'all'){
+                $filter .= " AND type_part = '{$_REQUEST['type_filter']}'";
+            }
+        }
+
+        $listPartAnalog = PartAnalog::getListPartAnalog($filter);
 
         if(isset($_POST['add-analog']) && $_POST['add-analog'] == 'true'){
             $options['part_number'] = $_POST['r_part_number'];
