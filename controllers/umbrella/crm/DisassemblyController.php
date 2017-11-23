@@ -93,11 +93,11 @@ class DisassemblyController extends AdminBase
                 $interval = "";
             }
 
-            if(!empty($_GET['id_partner'])){
-                $id_partner = $_GET['id_partner'];
-                $filter .= " AND gd.id_user = " .(int)$id_partner;
-                $interval = "";
-            }
+//            if(!empty($_GET['id_partner'])){
+//                $id_partner = $_GET['id_partner'];
+//                $filter .= " AND gd.id_user = " .(int)$id_partner;
+//                $interval = "";
+//            }
             $filter .= $interval;
             $listDisassembly = Disassembly::getAllDisassembly($filter);
         }
