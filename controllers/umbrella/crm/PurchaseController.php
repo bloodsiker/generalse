@@ -5,6 +5,7 @@ use Josantonius\Session\Session;
 use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
 use Umbrella\app\User;
+use Umbrella\components\Decoder;
 use Umbrella\components\ImportExcel;
 use Umbrella\components\Logger;
 use Umbrella\models\Admin;
@@ -414,7 +415,7 @@ class PurchaseController extends AdminBase
             $html .= "<tr>";
             $html .= "<td>" . $item['part_number'] . "</td>";
             $html .= "<td>" . $item['so_number'] . "</td>";
-            $html .= "<td>" . iconv('WINDOWS-1251', 'UTF-8', $item['goods_name']) . "</td>";
+            $html .= "<td>" . Decoder::strToUtf($item['goods_name']) . "</td>";
             $html .= "<td>" . $item['quantity'] . "</td>";
             $html .= "<td>" . round($item['price'], 2) . "</td>";
             $html .= "</tr>";

@@ -143,14 +143,9 @@ $('#add-checkout-form').submit(function(e) {
         return false;
     } else {
         var newCheckout = $(this).serializeObject(); // получение данных в объекте
-        //newCheckout.status = 'not accepted';
-        //newCheckout.date = new Date().getDate().toString() + '-' + (new Date().getMonth() + 1).toString() + '-' + new Date().getFullYear().toString();
-        //newCheckout.author = 'parse in session';
-        //newCheckout.purchase_number = '11111';
         newCheckout.goods_name = $('.name-product').text();
         //CHECKOUTS.push(newCheckout); // TEST
         var json = JSON.stringify(newCheckout); // json
-        console.log(json); // send to server json AJAX
         $.ajax({
             url: "/adm/crm/purchase_ajax",
             type: "POST",
@@ -212,7 +207,6 @@ $(document).on('dblclick', '.checkout tbody tr', function(e) {
         data: {site_id : site_id},
         cache: false,
         success: function (response) {
-            //alert(response);
             $('#show-details').foundation('open');
             $('#container-details').html(response);
         }
