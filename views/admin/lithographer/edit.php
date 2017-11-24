@@ -37,12 +37,14 @@
                             <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
                                 <div class="medium-12 small-12 columns">
                                     <label style="color: #3C3C3C;">Who not sees</label>
-                                    <select style="border: 1px solid #cacaca; color: #0a0a0a;" size="6" multiple name="privilege[]">
-                                        <option value=""></option>
+                                    <div class="litographer-not-see" style="border: 1px solid #cacaca;">
                                         <?php foreach ($listUsers as $partner):?>
-                                            <option <?= (in_array($partner['id_user'], $listUserCloseView)) ? 'selected' : ''?> value="<?=$partner['id_user']?>"><?=$partner['name_partner']?></option>
+                                            <div>
+                                                <input type="checkbox" <?= (in_array($partner['id_user'], $listUserCloseView)) ? 'checked' : ''?> id="user-<?=$partner['id_user']?>" name="privilege[]" value="<?=$partner['id_user']?>">
+                                                <label style="color: #0a0a0a;" for="user-<?=$partner['id_user']?>"><?=$partner['name_partner']?></label>
+                                            </div>
                                         <?php endforeach;?>
-                                    </select>
+                                    </div>
                                 </div>
                                 <div class="medium-12 small-12 columns">
                                     <label style="color: #3C3C3C;">Published</label>

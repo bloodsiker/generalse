@@ -17,6 +17,9 @@ hr{
 .tooltip {
   max-width: 16rem !important;
 }
+.reveal{
+  overflow: hidden;!important;
+}
 #wait{
   position: fixed;
   top: 0;
@@ -1281,4 +1284,11 @@ td select {
 }
 #stock_filter{
   width: 100%;
+}
+.litographer-not-see{
+  max-height: 200px;
+  overflow-y: scroll;
+  background-color: rgba(255, 255, 255, 0.3);
+  padding-left: 10px;
+  padding-top: 10px
 }

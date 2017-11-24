@@ -38,7 +38,7 @@ class LithographerController extends AdminBase
         $listUsers = Admin::getAllUsers();
 
         // список закрытых статей для пользователя
-        $listArticlesCloseViewUser = array_column(Lithographer::getArticleCloseViewByIdUser($user->id_user),'id_lithographer');
+        $listArticlesCloseViewUser = array_column(Lithographer::getArticleCloseViewByIdUser($user->getId()),'id_lithographer');
 
         if($user->getRole() == 'partner'){
 
@@ -285,7 +285,7 @@ class LithographerController extends AdminBase
 
         //Если партнер откроет для редактирование не свою статью, закрываем доступ
         if($user->getRole() == 'partner') {
-            if($article['id_author'] == $user->id_user && $article['published'] == 0) {
+            if($article['id_author'] == $user->getId() && $article['published'] == 0) {
 
             } else {
                Url::redirect('/adm/access_denied');
@@ -332,7 +332,7 @@ class LithographerController extends AdminBase
 
         $listUsers = Admin::getAllUsers();
         // список закрытых статей для пользователя
-        $listArticlesCloseViewUser = array_column(Lithographer::getArticleCloseViewByIdUser($user->id_user),'id_lithographer');
+        $listArticlesCloseViewUser = array_column(Lithographer::getArticleCloseViewByIdUser($user->getId()),'id_lithographer');
 
         if(isset($_GET['search']) && !empty($_GET['search'])){
             $search_item = $_GET['search'];
@@ -363,7 +363,7 @@ class LithographerController extends AdminBase
 
         } elseif ($user->getRole() == 'partner') {
 
-            if ($article['id_author'] == $user->id_user && $article['published'] == 0) {
+            if ($article['id_author'] == $user->getId() && $article['published'] == 0) {
                 Lithographer::deleteArticleById($id);
                 Url::redirect('/adm/lithographer/list');
             } else {

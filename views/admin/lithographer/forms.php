@@ -9,14 +9,16 @@
     <div class="tabs-panel is-active" id="video-manuals">
         <form action="/adm/lithographer/forms" method="post" enctype="multipart/form-data">
             <div class="row align-bottom ">
-                <div class="medium-12 small-12 columns">
+                <div class="medium-12 small-12 columns" >
                     <label>Who not sees</label>
-                    <select size="6" multiple name="privilege[]">
-                        <option value=""></option>
+                    <div class="litographer-not-see">
                         <?php foreach ($listUsers as $partner):?>
-                            <option value="<?=$partner['id_user']?>"><?=$partner['name_partner']?></option>
+                            <div>
+                                <input type="checkbox" id="v-user-<?=$partner['id_user']?>" name="privilege[]" value="<?=$partner['id_user']?>">
+                                <label for="v-user-<?=$partner['id_user']?>"><?=$partner['name_partner']?></label>
+                            </div>
                         <?php endforeach;?>
-                    </select>
+                    </div>
                 </div>
                 <div class="medium-12 small-12 columns">
                     <label>Published</label>
@@ -44,12 +46,14 @@
             <div class="row align-bottom ">
                 <div class="medium-12 small-12 columns">
                     <label>Who not sees</label>
-                    <select size="6" multiple name="privilege[]">
-                        <option value=""></option>
+                    <div class="litographer-not-see">
                         <?php foreach ($listUsers as $partner):?>
-                            <option value="<?=$partner['id_user']?>"><?=$partner['name_partner']?></option>
+                            <div>
+                                <input type="checkbox" id="t-user-<?=$partner['id_user']?>" name="privilege[]" value="<?=$partner['id_user']?>">
+                                <label for="t-user-<?=$partner['id_user']?>"><?=$partner['name_partner']?></label>
+                            </div>
                         <?php endforeach;?>
-                    </select>
+                    </div>
                 </div>
                 <div class="medium-12 small-12 columns">
                     <label>Published</label>
@@ -84,12 +88,14 @@
             <div class="row align-bottom ">
                 <div class="medium-12 small-12 columns">
                     <label>Who not sees</label>
-                    <select size="6" multiple name="privilege[]">
-                        <option value=""></option>
+                    <div class="litographer-not-see">
                         <?php foreach ($listUsers as $partner):?>
-                            <option value="<?=$partner['id_user']?>"><?=$partner['name_partner']?></option>
+                            <div>
+                                <input type="checkbox" id="r-user-<?=$partner['id_user']?>" name="privilege[]" value="<?=$partner['id_user']?>">
+                                <label for="r-user-<?=$partner['id_user']?>"><?=$partner['name_partner']?></label>
+                            </div>
                         <?php endforeach;?>
-                    </select>
+                    </div>
                 </div>
                 <div class="medium-12 small-12 columns">
                     <label>Published</label>
