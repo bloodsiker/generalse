@@ -487,7 +487,7 @@ class OrderController extends AdminBase
             $filter .= " AND sgo.status_name = '$status'";
         }
         $id_partners = isset($_POST['id_partner']) ? $_POST['id_partner'] : [];
-        $listExport = Orders::getExportOrdersByPartner($id_partners, $start, $end, $filter);
+        $listExport = Decoder::arrayToUtf(Orders::getExportOrdersByPartner($id_partners, $start, $end, $filter));
 
         $this->render('admin/crm/export/orders', compact('user', 'listExport'));
         return true;

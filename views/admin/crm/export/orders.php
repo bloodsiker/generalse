@@ -68,21 +68,20 @@
         <?php if(isset($listExport) && is_array($listExport)):?>
             <?php foreach ($listExport as $export):?>
                 <tr>
-                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $export['site_client_name'])?></td>
-                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $export['site_client_status'])?></td>
+                    <td><?= $export['site_client_name']?></td>
+                    <td><?= $export['site_client_status']?></td>
                     <td style="text-align: center;"><?=$export['order_number']?></td>
-                    <td><?=iconv('WINDOWS-1251', 'UTF-8',$export['so_number'])?></td>
+                    <td><?= $export['so_number']?></td>
                     <td><?=$export['part_number']?></td>
-                    <td><?=iconv('WINDOWS-1251', 'UTF-8',$export['goods_name'])?></td>
-                    <td style="text-align: center;"><?=iconv('WINDOWS-1251', 'UTF-8',$export['stock_name'])?></td>
+                    <td><?= $export['goods_name']?></td>
+                    <td style="text-align: center;"><?= $export['stock_name']?></td>
                     <td style="text-align: center;"><?=$export['quantity']?></td>
                     <td style="text-align: center;"><?= round($export['price'], 2)?></td>
-                    <td style="text-align: center;"><?=iconv('WINDOWS-1251', 'UTF-8',$export['type_name'])?></td>
-                    <td style="text-align: center;"><?=iconv('WINDOWS-1251', 'UTF-8',$export['note1'])?></td>
-                    <?php $status_name = iconv('WINDOWS-1251', 'UTF-8', $export['status_name'])?>
+                    <td style="text-align: center;"><?= $export['type_name']?></td>
+                    <td style="text-align: center;"><?= $export['note1']?></td>
                     <td style="text-align: center;">
-                        <?= $status_name?>
-                        <?php if($user->group_name == 'Electrolux' && $status_name == 'Выдан'):?>
+                        <?= $export['status_name'] ?>
+                        <?php if($user->group_name == 'Electrolux' && $export['status_name'] == 'Выдан'):?>
                             <br>
                             <?= Umbrella\components\Functions::formatDate($export['shipped_on'])?>
                         <?php endif;?>
