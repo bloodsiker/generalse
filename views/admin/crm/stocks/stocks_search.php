@@ -41,7 +41,7 @@
             <div class="row">
                 <table class="umbrella-table" id="table-to-excel">
                     <caption>
-                        Search result for <?= iconv('WINDOWS-1251', 'UTF-8', $search)?>
+                        Search result for <?= $search = iconv('WINDOWS-1251', 'UTF-8', $search)?>
                         <span id="count_refund" class="text-green">
                             (<?php if (isset($allGoodsByPartner)) echo count($allGoodsByPartner) ?>)
                         </span>
@@ -63,13 +63,13 @@
                     <?php if (isset($allGoodsByPartner)): ?>
                         <?php foreach ($allGoodsByPartner as $goods): ?>
                             <tr class="goods">
-                                <td><?= \Umbrella\components\Functions::replaceSearchResult($search, $goods['site_client_name'])?></td>
-                                <td><?= \Umbrella\components\Functions::replaceSearchResult($search, $goods['part_number'])?></td>
-                                <td><?= \Umbrella\components\Functions::replaceSearchResult($search, $goods['goods_name'])?></td>
-                                <td><?=iconv('WINDOWS-1251', 'UTF-8', $goods['stock_name'])?></td>
-                                <td><?=$goods['quantity']?></td>
-                                <td><?=iconv('WINDOWS-1251', 'UTF-8', $goods['subtype_name'])?></td>
-                                <td><?= \Umbrella\components\Functions::replaceSearchResult($search, $goods['serial_number'])?></td>
+                                <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $goods['site_client_name'])?></td>
+                                <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $goods['part_number'])?></td>
+                                <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $goods['goods_name'])?></td>
+                                <td><?= $goods['stock_name'] ?></td>
+                                <td><?= $goods['quantity']?></td>
+                                <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $goods['subtype_name'])?></td>
+                                <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $goods['serial_number'])?></td>
                                 <td><?=round($goods['price'], 2)?></td>
                             </tr>
                         <?php endforeach; ?>

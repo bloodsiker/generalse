@@ -75,14 +75,14 @@
                     <?php if (isset($allGoodsByPartner)): ?>
                         <?php foreach ($allGoodsByPartner as $goods): ?>
                             <tr class="goods">
-                                <td><?= \Umbrella\components\Decoder::strToUtf($goods['site_client_name'])?></td>
+                                <td><?= $goods['site_client_name']?></td>
                                 <td><?= $goods['part_number']?></td>
-                                <td><?= \Umbrella\components\Decoder::strToUtf($goods['goods_name'])?></td>
-                                <td><?= \Umbrella\models\Stocks::replaceNameStockInResultTable($goods['stock_name'], $user->getRole())?></td>
+                                <td><?= $goods['goods_name']?></td>
+                                <td><?= $goods['stock_name']?></td>
                                 <td><?=$goods['quantity']?></td>
-                                <td class="subtype_td"><?= \Umbrella\components\Decoder::strToUtf($goods['subtype_name'])?></td>
-                                <td><?= \Umbrella\components\Decoder::strToUtf($goods['serial_number'])?></td>
-                                <td><?=round($goods['price'], 2)?></td>
+                                <td class="subtype_td"><?= $goods['subtype_name']?></td>
+                                <td><?= $goods['serial_number']?></td>
+                                <td><?= $goods['price']?></td>
                             </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>

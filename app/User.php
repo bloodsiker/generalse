@@ -3,6 +3,7 @@
 namespace Umbrella\app;
 
 use Josantonius\Session\Session;
+use Umbrella\app\Services\crm\StockService;
 use Umbrella\components\Decoder;
 use Umbrella\models\Admin;
 use Umbrella\models\DeliveryAddress;
@@ -96,6 +97,45 @@ class User
     public function getRole()
     {
         return $this->infoUser['role'];
+    }
+
+    /**
+     *
+     * Role Administrator
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        if($this->getRole() == 'administrator' || $this->getRole() == 'administrator-fin'){
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * Role Manager
+     * @return bool
+     */
+    public function isManager()
+    {
+        if($this->getRole() == 'manager'){
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * Role Partner
+     * @return bool
+     */
+    public function isPartner()
+    {
+        if($this->getRole() == 'partner'){
+            return true;
+        }
+        return false;
     }
 
 
@@ -328,8 +368,9 @@ class User
     {
         $id_group = $this->idGroupUser($id_user);
         $group = new Group();
+        $stockService = new StockService();
         $array_stock = $group->stocksFromGroup($id_group, 'name', $section);
-        return Stocks::replaceNameStockInFilter($array_stock, 'replace', $this->getRole());
+        return $stockService->replaceNameStockInFilter($array_stock, 'replace', $this->getRole());
     }
 
 

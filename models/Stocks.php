@@ -100,7 +100,7 @@ class Stocks
         $db = MsSQL::getConnection();
 
         $stocks_name = implode('\' , \'', $stocks);
-        $stock_iconv = iconv('UTF-8', 'WINDOWS-1251', $stocks_name);
+        $stock_iconv = Decoder::strToWindows($stocks_name);
         $ids_partner = implode(',', $id_partners);
 
         $sql = "SELECT
@@ -277,10 +277,11 @@ class Stocks
                 AND (sgu.site_client_name LIKE ?
                 OR sgt.goods_name LIKE ?
                 OR sgt.part_number LIKE ?
+                OR sgt.subtype_name LIKE ?
                 OR sgt.serial_number LIKE ?)";
 
         $result = $db->prepare($sql);
-        $result->execute(array("%$search%", "%$search%", "%$search%", "%$search%"));
+        $result->execute(array("%$search%", "%$search%", "%$search%", "%$search%", "%$search%"));
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
     }
@@ -400,67 +401,12 @@ class Stocks
 
 
     /**
-     * Подмена названий складов в фильтрации
-     * @param $arrayStocks
-     * @param string $replace  replace || back_replace
-     * @param string $role
-     * @return array
-     */
-    public static function replaceNameStockInFilter($arrayStocks, $replace = 'replace', $role = 'administrator')
-    {
-        $newArrayStocks = [];
-
-        if($role != 'administrator') {
-            if($replace == 'replace'){
-                if(is_array($arrayStocks)){
-                    foreach ($arrayStocks as $stock){
-                        if($stock == 'KVAZAR, Киев\OK'
-                            || $stock == 'PEX, Киев\OK'
-                            || $stock == 'PEX, Киев\Квазар'){
-                            $newArrayStocks[] = 'НОВЫЙ';
-                        } elseif($stock == 'KVAZAR, Киев\б/у'
-                            || $stock == 'PEX, Киев\б/у') {
-                            $newArrayStocks[] = 'БУ';
-                        } else {
-                            $newArrayStocks[] = $stock;
-                        }
-                    }
-                }
-            } elseif ($replace == 'back_replace'){
-                if(is_array($arrayStocks)){
-                    foreach ($arrayStocks as $stock){
-                        if($stock == 'НОВЫЙ'){
-                            $newArrayStocks[] = 'KVAZAR, Киев\OK';
-                            $newArrayStocks[] = 'PEX, Киев\OK';
-                            $newArrayStocks[] = 'PEX, Киев\Квазар';
-                        } elseif($stock == 'БУ') {
-                            $newArrayStocks[] = 'KVAZAR, Киев\б/у';
-                            $newArrayStocks[] = 'PEX, Киев\б/у';
-                        } else {
-                            $newArrayStocks[] = $stock;
-                        }
-                    }
-                }
-            }
-
-        } else {
-            $newArrayStocks = $arrayStocks;
-        }
-        return array_unique($newArrayStocks);
-    }
-
-
-    /**
-     * Подмена названий складов в результатирующей таблице
      * @param $stockName
      * @param string $role
-     * @return null|string
+     * @return string
      */
     public static function replaceNameStockInResultTable($stockName, $role = 'administrator')
     {
-        $stockReplace = null;
-
-        $stockName = Decoder::strToUtf($stockName);
         if($role != 'administrator'){
             if($stockName == 'KVAZAR, Киев\OK'
                 || $stockName == 'PEX, Киев\OK'

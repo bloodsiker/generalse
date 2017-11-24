@@ -3,6 +3,7 @@
 namespace Umbrella\controllers\umbrella\crm;
 
 use Umbrella\app\AdminBase;
+use Umbrella\app\Services\crm\StockService;
 use Umbrella\app\User;
 use Umbrella\components\Decoder;
 use Umbrella\models\Admin;
@@ -19,6 +20,8 @@ class StockController extends AdminBase
      */
     private $user;
 
+    private $stockService;
+
     /**
      * StockController constructor.
      */
@@ -27,6 +30,7 @@ class StockController extends AdminBase
         parent::__construct();
         self::checkDenied('crm.stocks', 'controller');
         $this->user = new User(Admin::CheckLogged());
+        $this->stockService = new StockService();
     }
 
     /**
@@ -36,31 +40,18 @@ class StockController extends AdminBase
     {
         $user = $this->user;
 
-        if($user->role == 'partner' || $user->role == 'manager') {
+        $listSubType = Decoder::arrayToUtf(Stocks::getListSubType());
 
-            $user_ids = $user->controlUsers($user->id_user);
+        if($user->isPartner() || $user->isManager()) {
+
+            $user_ids = $user->controlUsers($user->getId());
             $partnerList = Admin::getPartnerControlUsers($user_ids);
-            $list_stock = $user->renderSelectStocks($user->id_user, 'stocks');
-            $listSubType = Decoder::arrayToUtf(Stocks::getListSubType());
-            //var_dump($listSubType);
+            $list_stock = $user->renderSelectStocks($user->getId(), 'stocks');
 
-            $filters = '';
+        } else if($user->isAdmin()){
 
-            if(isset($_REQUEST['sub_type']) && sizeof($_REQUEST['sub_type']) > 0){
-                $subType = $_REQUEST['sub_type'];
-                $subType = Decoder::strToWindows(implode('\' , \'', $subType));
-                $filters .= " AND subtype_name IN('{$subType}')";
-            }
+            $list_stock = $user->renderSelectStocks($user->getId(), 'stocks');
 
-            $stocks =  isset($_REQUEST['stock']) ? $_REQUEST['stock'] : [];
-            $stocks = Stocks::replaceNameStockInFilter($stocks, 'back_replace', $user->getRole());
-            $id_partners = isset($_REQUEST['id_partner']) ? $_REQUEST['id_partner'] : [];
-            $allGoodsByPartner = Stocks::getGoodsInStocksPartners($id_partners, $stocks, $filters);
-
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
-
-            $list_stock = $user->renderSelectStocks($user->id_user, 'stocks');
-            $listSubType = Decoder::arrayToUtf(Stocks::getListSubType());
             // Параметры для формирование фильтров
             $groupList = GroupModel::getGroupList();
             $userInGroup = [];
@@ -76,21 +67,9 @@ class StockController extends AdminBase
             $userNotGroup[0]['group_id'] = 'without_group';
             $userNotGroup[0]['users'] = GroupModel::getUsersWithoutGroup();
             $userInGroup = array_merge($userInGroup, $userNotGroup);
-
-            $filters = '';
-
-            if(isset($_REQUEST['sub_type']) && sizeof($_REQUEST['sub_type']) > 0){
-                $subType = $_REQUEST['sub_type'];
-                $subType = Decoder::strToWindows(implode('\' , \'', $subType));
-                $filters .= " AND subtype_name IN('{$subType}')";
-            }
-
-            $stocks =  isset($_REQUEST['stock']) ? $_REQUEST['stock'] : [];
-            $stocks = Stocks::replaceNameStockInFilter($stocks, 'back_replace', $user->getRole());
-            $id_partners = isset($_REQUEST['id_partner']) ? $_REQUEST['id_partner'] : [];
-
-            $allGoodsByPartner = Stocks::getGoodsInStocksPartners($id_partners, $stocks, $filters);
         }
+
+        $allGoodsByPartner = $this->stockService->allGoodsByClient($_REQUEST);
 
         $this->render('admin/crm/stocks/stocks', compact('user','partnerList',
             'allGoodsByPartner', 'userInGroup', 'list_stock', 'listSubType'));
@@ -98,28 +77,38 @@ class StockController extends AdminBase
     }
 
 
-
+    /**
+     * Search product in stocks
+     * @return bool
+     */
     public function actionSearch()
     {
         $user = $this->user;
 
-        if($user->role == 'partner' || $user->role == 'manager') {
+        if($user->isPartner() || $user->isManager()) {
 
             $search = iconv('UTF-8', 'WINDOWS-1251', trim($_REQUEST['search']));
 
-            $user_ids = $user->controlUsers($user->id_user);
+            $user_ids = $user->controlUsers($user->getId());
             $partnerList = Admin::getPartnerControlUsers($user_ids);
-            $list_stock = $user->renderSelectStocks($user->id_user, 'stocks');
+            $list_stock = $user->renderSelectStocks($user->getId(), 'stocks');
+
+            $list_stock = $this->stockService->replaceNameStockInFilter($list_stock, 'back_replace', $user->getRole());
+
+            $stocks_name = implode('\' , \'', $list_stock);
+            $stock_iconv = Decoder::strToWindows($stocks_name);
+            $filter = " AND stock_name IN ('$stock_iconv')";
 
             $idS = implode(',', $user_ids);
-            $filter = " AND sgu.site_account_id IN ($idS)";
-            $allGoodsByPartner = Stocks::getSearchInStocks($search, $filter);
+            $filter .= " AND sgu.site_account_id IN ($idS)";
+            $allGoodsByPartner = Decoder::arrayToUtf(Stocks::getSearchInStocks($search, $filter));
+            $allGoodsByPartner = $this->stockService->replaceInfoProduct($allGoodsByPartner);
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
+        } else if($user->isAdmin()){
 
             $search = iconv('UTF-8', 'WINDOWS-1251', trim($_REQUEST['search']));
 
-            $list_stock = $user->renderSelectStocks($user->id_user, 'stocks');
+            $list_stock = $user->renderSelectStocks($user->getId(), 'stocks');
 
             // Параметры для формирование фильтров
             $groupList = GroupModel::getGroupList();
@@ -137,7 +126,8 @@ class StockController extends AdminBase
             $userNotGroup[0]['users'] = GroupModel::getUsersWithoutGroup();
             $userInGroup = array_merge($userInGroup, $userNotGroup);
 
-            $allGoodsByPartner = Stocks::getSearchInStocks($search);
+            $allGoodsByPartner = Decoder::arrayToUtf(Stocks::getSearchInStocks($search));
+            $allGoodsByPartner = $this->stockService->replaceInfoProduct($allGoodsByPartner);
         }
 
         $this->render('admin/crm/stocks/stocks_search', compact('user','partnerList',
