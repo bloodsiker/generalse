@@ -12,6 +12,7 @@ use Umbrella\models\Admin;
 use Umbrella\models\GroupModel;
 use Umbrella\models\Orders;
 use Umbrella\models\Products;
+use Umbrella\models\Stocks;
 
 /**
  * Class OrderController
@@ -156,17 +157,17 @@ class OrderController extends AdminBase
         }
 
 
-        if($user->role == 'partner' || $user->role == 'manager') {
+        if($user->isPartner() || $user->isManager()) {
 
             $filter = "";
             $status = "";
             $interval = "";
 
-            if($user->role == 'partner'){
+            if($user->isPartner()){
                 $interval = " AND sgo.created_on >= DATEADD(day, -14, GETDATE())";
             }
 
-            if($user->role == 'manager'){
+            if($user->isManager()){
                 $status_1 = iconv('UTF-8', 'WINDOWS-1251', 'Предварительный');
                 $status_2 = iconv('UTF-8', 'WINDOWS-1251', 'В обработке');
                 $status_3 = iconv('UTF-8', 'WINDOWS-1251', 'Резерв');
@@ -189,7 +190,7 @@ class OrderController extends AdminBase
             $user_ids = $user->controlUsers($user->id_user);
             $partnerList = Admin::getPartnerControlUsers($user_ids);
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
+        } else if($user->isAdmin()){
 
             $filter = "";
             $status_1 = iconv('UTF-8', 'WINDOWS-1251', 'Предварительный');
@@ -242,17 +243,17 @@ class OrderController extends AdminBase
         $arr_error_text = Session::pull('error_orders_text');
         $order_type = Decoder::arrayToUtf(Orders::getAllOrderTypes());
 
-        if($user->role == 'partner' || $user->role == 'manager') {
+        if($user->isPartner() || $user->isManager()) {
 
             $filter = "";
             $status = "";
             $interval = "";
 
-            if($user->role == 'partner'){
+            if($user->isPartner()){
                 $interval = " AND sgo.created_on >= DATEADD(day, -14, GETDATE())";
             }
 
-            if($user->role == 'manager'){
+            if($user->isManager()){
                 $status_1 = iconv('UTF-8', 'WINDOWS-1251', 'Предварительный');
                 $status_2 = iconv('UTF-8', 'WINDOWS-1251', 'В обработке');
                 $status_3 = iconv('UTF-8', 'WINDOWS-1251', 'Резерв');
@@ -275,7 +276,7 @@ class OrderController extends AdminBase
             $user_ids = $user->controlUsers($user->id_user);
             $partnerList = Admin::getPartnerControlUsers($user_ids);
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
+        } else if($user->isAdmin()){
 
             $filter = "";
             $status_1 = iconv('UTF-8', 'WINDOWS-1251', 'Предварительный');
@@ -328,7 +329,6 @@ class OrderController extends AdminBase
         if($result == 0){
             print_r($result);
         } else {
-            //print_r($result['quantity']);
             print_r(json_encode($result));
         }
         return true;
@@ -454,14 +454,14 @@ class OrderController extends AdminBase
     public function actionShowDetailOrders()
     {
         $order_id = $_REQUEST['order_id'];
-        $data = Orders::getShowDetailsOrdersMsSql($order_id);
+        $data = Decoder::arrayToUtf(Orders::getShowDetailsOrdersMsSql($order_id));
         $html = "";
         foreach($data as $item){
             $html .= "<tr>";
             $html .= "<td>" . $item['part_number'] . "</td>";
-            $html .= "<td>" . iconv('WINDOWS-1251', 'UTF-8', $item['goods_name']) . "</td>";
-            $html .= "<td>" . iconv('WINDOWS-1251', 'UTF-8', $item['so_number']) . "</td>";
-            $html .= "<td>" . iconv('WINDOWS-1251', 'UTF-8', $item['stock_name']) . "</td>";
+            $html .= "<td>" . $item['goods_name'] . "</td>";
+            $html .= "<td>" . $item['so_number'] . "</td>";
+            $html .= "<td>" . Stocks::replaceNameStockInResultTable($item['stock_name'], $this->user->getRole()) . "</td>";
             $html .= "<td>" . $item['quantity'] . "</td>";
             $html .= "<td>" . round($item['price'], 2) . "</td>";
             $html .= "</tr>";
@@ -499,7 +499,7 @@ class OrderController extends AdminBase
     {
         $user = $this->user;
 
-        if($user->role == 'partner' || $user->role == 'manager') {
+        if($user->isPartner() || $user->isManager()) {
 
             $search = iconv('UTF-8', 'WINDOWS-1251', trim($_REQUEST['search']));
 
@@ -511,7 +511,7 @@ class OrderController extends AdminBase
             $user_ids = $user->controlUsers($user->id_user);
             $partnerList = Admin::getPartnerControlUsers($user_ids);
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
+        } else if($user->isAdmin()){
 
             $search = iconv('UTF-8', 'WINDOWS-1251', trim($_REQUEST['search']));
 
