@@ -106,10 +106,10 @@ class StockService
             if($stockName == 'KVAZAR, Киев\OK'
                 || $stockName == 'PEX, Киев\OK'
                 || $stockName == 'PEX, Киев\Квазар'){
-                $stockReplace = 'НОВЫЙ';
+                $stockReplace = 'НОВЫЙ(UA)';
             } elseif($stockName == 'KVAZAR, Киев\б/у'
                 || $stockName == 'PEX, Киев\б/у') {
-                $stockReplace = 'БУ';
+                $stockReplace = 'БУ(UA)';
             } else {
                 $stockReplace = $stockName;
             }
@@ -139,10 +139,10 @@ class StockService
                         if($stock == 'KVAZAR, Киев\OK'
                             || $stock == 'PEX, Киев\OK'
                             || $stock == 'PEX, Киев\Квазар'){
-                            $newArrayStocks[] = 'НОВЫЙ';
+                            $newArrayStocks[] = 'НОВЫЙ(UA)';
                         } elseif($stock == 'KVAZAR, Киев\б/у'
                             || $stock == 'PEX, Киев\б/у') {
-                            $newArrayStocks[] = 'БУ';
+                            $newArrayStocks[] = 'БУ(UA)';
                         } else {
                             $newArrayStocks[] = $stock;
                         }
@@ -151,11 +151,11 @@ class StockService
             } elseif ($replace == 'back_replace'){
                 if(is_array($arrayStocks)){
                     foreach ($arrayStocks as $stock){
-                        if($stock == 'НОВЫЙ'){
+                        if($stock == 'НОВЫЙ(UA)'){
                             $newArrayStocks[] = 'KVAZAR, Киев\OK';
                             $newArrayStocks[] = 'PEX, Киев\OK';
                             $newArrayStocks[] = 'PEX, Киев\Квазар';
-                        } elseif($stock == 'БУ') {
+                        } elseif($stock == 'БУ(UA)') {
                             $newArrayStocks[] = 'KVAZAR, Киев\б/у';
                             $newArrayStocks[] = 'PEX, Киев\б/у';
                         } else {

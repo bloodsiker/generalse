@@ -46,6 +46,40 @@ class Psr
     }
 
 
+    public static function addPsrMsSQL($options)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = 'INSERT INTO site_gm_psr '
+            . '(id, id_user, serial_number, part_number, device_name, manufacture_date, purchase_date, defect_description, device_condition, 
+                complectation, note, declaration_number, status_name, ready)'
+            . 'VALUES '
+            . '(:id, :id_user, :serial_number, :part_number, :device_name, :manufacture_date, :purchase_date, :defect_description, :device_condition, 
+                :complectation, :note, :declaration_number, :status_name, :ready)';
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $options['id'], PDO::PARAM_INT);
+        $result->bindParam(':id_user', $options['id_user'], PDO::PARAM_INT);
+        $result->bindParam(':serial_number', $options['serial_number'], PDO::PARAM_STR);
+        $result->bindParam(':part_number', $options['part_number'], PDO::PARAM_STR);
+        $result->bindParam(':device_name', $options['device_name'], PDO::PARAM_STR);
+        $result->bindParam(':manufacture_date', $options['manufacture_date'], PDO::PARAM_STR);
+        $result->bindParam(':purchase_date', $options['purchase_date'], PDO::PARAM_STR);
+        $result->bindParam(':defect_description', $options['defect_description'], PDO::PARAM_STR);
+        $result->bindParam(':device_condition', $options['device_condition'], PDO::PARAM_STR);
+        $result->bindParam(':complectation', $options['complectation'], PDO::PARAM_STR);
+        $result->bindParam(':note', $options['note'], PDO::PARAM_STR);
+        $result->bindParam(':declaration_number', $options['declaration_number'], PDO::PARAM_STR);
+        $result->bindParam(':status_name', $options['status_name'], PDO::PARAM_STR);
+        $result->bindParam(':ready', $options['ready'], PDO::PARAM_INT);
+
+        if ($result->execute()) {
+            return $db->lastInsertId();
+        }
+        return 0;
+    }
+
+
 
     /**
      * Получаем последний id_site
@@ -151,6 +185,21 @@ class Psr
                  INNER JOIN gs_user gu
                     ON gp.id_user = gu.id_user
                  ORDER BY gp.id DESC";
+
+        $result = $db->prepare($sql);
+        $result->execute();
+        $all = $result->fetchAll(PDO::FETCH_ASSOC);
+        return $all;
+    }
+
+    public static function getAllPsrMsSQL()
+    {
+        $db = MySQL::getConnection();
+
+        $sql = "SELECT
+                  *
+                 FROM gm_psr gp
+                 ORDER BY gp.id DESC LIMIT 2";
 
         $result = $db->prepare($sql);
         $result->execute();
@@ -275,6 +324,32 @@ class Psr
     }
 
 
+
+    /**
+     * @param $id_psr
+     * @param $file_path
+     * @param $file_name
+     * @param $ready
+     * @return bool
+     */
+    public static function addDocumentInPsrMsSQL($id_psr, $file_path, $file_name, $ready)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = 'INSERT INTO site_gm_psr_documents '
+            . '(id_psr, file_path, file_name, ready)'
+            . 'VALUES '
+            . '(:id_psr, :file_path, :file_name, :ready)';
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id_psr', $id_psr, PDO::PARAM_INT);
+        $result->bindParam(':file_path', $file_path, PDO::PARAM_STR);
+        $result->bindParam(':file_name', $file_name, PDO::PARAM_STR);
+        $result->bindParam(':ready', $ready, PDO::PARAM_INT);
+        return $result->execute();
+    }
+
+
     /**
      * Получаем список файлов прикрепленных к данному ПСР
      * @param $psr_id
@@ -292,6 +367,21 @@ class Psr
 
         $result = $db->prepare($sql);
         $result->bindParam(':psr_id', $psr_id, PDO::PARAM_INT);
+        $result->execute();
+        $all = $result->fetchAll(PDO::FETCH_ASSOC);
+        return $all;
+    }
+
+    public static function getAllDocuments()
+    {
+        $db = MySQL::getConnection();
+
+        $sql = "SELECT 
+                  * 
+                FROM gm_psr_documents
+                ORDER BY id DESC LIMIT 2";
+
+        $result = $db->prepare($sql);
         $result->execute();
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;

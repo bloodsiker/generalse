@@ -7,6 +7,7 @@ use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
 use Umbrella\app\Mail\PsrMail;
 use Umbrella\app\User;
+use Umbrella\components\Decoder;
 use Umbrella\components\Functions;
 use Umbrella\components\Logger;
 use Umbrella\models\Admin;
@@ -53,7 +54,7 @@ class PsrController extends AdminBase
             $options['serial_number'] = $_REQUEST['serial_number'];
             $options['part_number'] = $_REQUEST['mtm'];
             $device = Products::checkPartNumberInGM($_REQUEST['mtm']);
-            $options['device_name'] = iconv('WINDOWS-1251', 'UTF-8', $device['mName']);
+            $options['device_name'] = Decoder::strToUtf($device['mName']);
             $options['manufacture_date'] = $_REQUEST['manufacture_date'];
             $options['purchase_date'] = $_REQUEST['purchase_date'];
             $options['defect_description'] = $_REQUEST['defect_description'];
@@ -62,8 +63,11 @@ class PsrController extends AdminBase
             $options['note'] = $_REQUEST['note'];
             $options['declaration_number'] = $_REQUEST['declaration_number'];
             $options['status_name'] = 'Зарегистрирован';
+            $options['ready'] = 1;
 
             $id = Psr::addPsr($options);
+            $options['id'] = $id;
+            Psr::addPsrMsSQL(Decoder::arrayToWindows($options));
             if($id){
                 PsrMail::getInstance()->sendEmailWithNewPsr($id, $user->name_partner, $options);
                 Logger::getInstance()->log($user->getId(), "Зарегистрировал ПСР MTM {$options['part_number']}, SN {$options['serial_number']}");
@@ -83,6 +87,7 @@ class PsrController extends AdminBase
                 $handle->process(ROOT . self::UPLOAD_PATH_PSR);
                 if ($handle->processed) {
                     Psr::addDocumentInPsr($_REQUEST['psr_id'], self::UPLOAD_PATH_PSR, $file_name);
+                    Psr::addDocumentInPsrMsSQL($_REQUEST['psr_id'], 'http://generalse.com' . self::UPLOAD_PATH_PSR, $file_name, 1);
                     Logger::getInstance()->log($user->getId(),"Загрузил квитанцию к ПСР # {$_REQUEST['psr_id']}");
                     $handle->clean();
                     Session::set('psr_success', 'The warranty card is attached');
@@ -129,7 +134,7 @@ class PsrController extends AdminBase
     {
         $user = $this->user;
 
-        if($user->role == 'partner' || $user->role == 'manager'){
+        if($user->isPartner() || $user->isManager()){
             $search = $_REQUEST['search'];
 
             $user_ids = $user->controlUsers($user->id_user);
@@ -137,7 +142,7 @@ class PsrController extends AdminBase
             $filter = " AND gp.id_user ($idS)";
 
             $listPsr = Psr::getSearchInPsr($search, $filter);
-        } elseif($user->role == 'administrator' || $user->role == 'administrator-fin'){
+        } elseif($user->isAdmin()){
             $search = trim($_REQUEST['search']);
 
             $listPsr = Psr::getSearchInPsr($search);
@@ -235,6 +240,40 @@ class PsrController extends AdminBase
         $listDocuments = Psr::getAllDocumentsInPsr($psr_id);
 
         $this->render('admin/psr/psr_ua/show_upload_file', compact('listDocuments'));
+        return true;
+    }
+
+
+    public function actionTest()
+    {
+
+        $list = $listPsr = Psr::getAllPsrMsSQL();
+
+        $new_psr = [];
+        $i = 0;
+        foreach ($list as $iconv){
+            $new_psr[$i] = Decoder::arrayToWindows($iconv);
+            $new_psr[$i]['ready'] = 0;
+            $i++;
+        }
+        //var_dump($new_psr);
+
+//        foreach ($new_psr as $psr){
+//            Psr::addPsrMsSQL($psr);
+//        }
+
+        $allDocument = Psr::getAllDocuments();
+        $allDocument = array_map(function ($value) {
+            $value['file_path'] = 'http://generalse.com' . $value['file_path'];
+            $value['ready'] = 0;
+            return $value;
+        },$allDocument);
+        //var_dump($allDocument);
+
+//        foreach ($allDocument as $psr) {
+//            Psr::addDocumentInPsrMsSQL($psr['id_psr'], $psr['file_path'], $psr['file_name'], $psr['ready']);
+//        }
+
         return true;
     }
 }

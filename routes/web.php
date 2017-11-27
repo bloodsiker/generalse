@@ -77,6 +77,7 @@ return [
     /*********** PSR  ***********/
     'adm/psr/activity' => 'umbrella/psr/PsrActivity@index',
 
+    'adm/psr/test' => 'umbrella/psr/Psr@test',
     'adm/psr/show_upload_file' => 'umbrella/psr/Psr@showUploadFile',
     'adm/psr/psr_ajax' => 'umbrella/psr/Psr@psrAjax',
     'adm/psr/s/([a-z0-9-_?&]+)' => 'umbrella/psr/Psr@search/$1',

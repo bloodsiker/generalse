@@ -37,6 +37,9 @@
         <!-- body -->
         <div class="body-content checkout">
              <div class="row">
+                 <div class="medium-12 small-12 columns hide" style="text-align: center">
+                     <div class="green" style="margin: 0px auto 10px;">Извините, на данный момент зарегистрировать ПСР не возможно. Ведутся технические работы</div>
+                 </div>
                  <?php if(isset($message_success) && !empty($message_success)):?>
                      <div class="medium-12 small-12 columns" style="text-align: center">
                          <div class="<?= $class ?>" style="margin: 0px auto 10px;"><?= $message_success ?></div>
@@ -67,6 +70,7 @@
                          </tr>
                          </thead>
                          <tbody>
+                         <?php //$listPsr = [];?>
                          <?php if(is_array($listPsr)):?>
                              <?php foreach ($listPsr as $psr):?>
                                  <tr class="goods" data-id="<?= $psr['id']?>">

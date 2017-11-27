@@ -318,15 +318,30 @@ class Stocks
                     || trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\Квазар')
                     || trim($product['stock_name']) == Decoder::strToWindows('KVAZAR, Киев\OK')){
                     if($product['quantity'] > 0){
-                        if(isset($stocks['НОВЫЕ'])){
-                            if($stocks['НОВЫЕ']['quantity'] < $product['quantity']){
-                                $stocks['НОВЫЕ'] = $product;
+                        if(isset($stocks['НОВЫЕ(UA)'])){
+                            if($stocks['НОВЫЕ(UA)']['quantity'] < $product['quantity']){
+                                $stocks['НОВЫЕ(UA)'] = $product;
                             }
                         } else {
-                            $product['stock_nam'] = 'НОВЫЕ';
-                            $stocks['НОВЫЕ'] = $product;
+                            $product['stock_nam'] = "НОВЫЕ(UA)";
+                            $stocks['НОВЫЕ(UA)'] = $product;
                         }
                     }
+                } elseif (trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\б/у')
+                    || trim($product['stock_name']) == Decoder::strToWindows('KVAZAR, Киев\б/у')){
+                    if($product['quantity'] > 0){
+                        if(isset($stocks['БУ(UA)'])){
+                            if($stocks['БУ(UA)']['quantity'] < $product['quantity']){
+                                $stocks['БУ(UA)'] = $product;
+                            }
+                        } else {
+                            $product['stock_nam'] = 'БУ(UA)';
+                            $stocks['БУ(UA)'] = $product;
+                        }
+                    }
+                } else {
+                    $product['stock_nam'] = $stock;
+                    $stocks[$stock] = $product;
                 }
             }
             $i++;
@@ -334,26 +349,26 @@ class Stocks
 
 
         // БУ Склад //PEX, Киев\б/у
-        foreach ($stocks_group as $stock){
-            $product = self::checkGoodsInStocksPartners($user_id, $stock, $part_number, 'fetch', 'site_gm_stocks');
-            // PEX, Киев\ОК или PEX, Киев\Квазар
-            if($product){
-                if(trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\б/у')
-                    || trim($product['stock_name']) == Decoder::strToWindows('KVAZAR, Киев\б/у')){
-                    if($product['quantity'] > 0){
-                        if(isset($stocks['БУ'])){
-                            if($stocks['БУ']['quantity'] < $product['quantity']){
-                                $stocks['БУ'] = $product;
-                            }
-                        } else {
-                            $product['stock_nam'] = 'БУ';
-                            $stocks['БУ'] = $product;
-                        }
-                    }
-                }
-            }
-            $i++;
-        }
+//        foreach ($stocks_group as $stock){
+//            $product = self::checkGoodsInStocksPartners($user_id, $stock, $part_number, 'fetch', 'site_gm_stocks');
+//            // PEX, Киев\ОК или PEX, Киев\Квазар
+//            if($product){
+//                if(trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\б/у')
+//                    || trim($product['stock_name']) == Decoder::strToWindows('KVAZAR, Киев\б/у')){
+//                    if($product['quantity'] > 0){
+//                        if(isset($stocks['БУ'])){
+//                            if($stocks['БУ']['quantity'] < $product['quantity']){
+//                                $stocks['БУ'] = $product;
+//                            }
+//                        } else {
+//                            $product['stock_nam'] = 'БУ';
+//                            $stocks['БУ'] = $product;
+//                        }
+//                    }
+//                }
+//            }
+//            $i++;
+//        }
 
         // БЛИЖАЙШАЯ ПОСТАВКА
         // PEX, Киев\ОК или PEX, Киев\б/у
@@ -411,10 +426,10 @@ class Stocks
             if($stockName == 'KVAZAR, Киев\OK'
                 || $stockName == 'PEX, Киев\OK'
                 || $stockName == 'PEX, Киев\Квазар'){
-                $stockReplace = 'НОВЫЙ';
+                $stockReplace = 'НОВЫЙ(UA)';
             } elseif($stockName == 'KVAZAR, Киев\б/у'
                 || $stockName == 'PEX, Киев\б/у') {
-                $stockReplace = 'БУ';
+                $stockReplace = 'БУ(UA)';
             } else {
                 $stockReplace = $stockName;
             }
@@ -442,10 +457,10 @@ class Stocks
                     if($stock == 'KVAZAR, Киев\OK'
                         || $stock == 'PEX, Киев\OK'
                         || $stock == 'PEX, Киев\Квазар'){
-                        $stockReplace[] = 'НОВЫЙ';
+                        $stockReplace[] = 'НОВЫЙ(UA)';
                     } elseif($stock == 'KVAZAR, Киев\б/у'
                         || $stock == 'PEX, Киев\б/у') {
-                        $stockReplace[] = 'БУ';
+                        $stockReplace[] = 'БУ(UA)';
                     } else {
                         $stockReplace[] = $stock;
                     }
