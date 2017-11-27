@@ -2,9 +2,14 @@
 
 return [
 
+    'api/form-users/achievements/add' => 'api/hr/FormUserAchievements@addAchievements',
+
     'api/form-users/comment/delete([a-z0-9-_?&]+)' => 'api/hr/FormUserComment@deleteComment/$1',
     'api/form-users/comment/see([a-z0-9-_?&]+)' => 'api/hr/FormUserComment@seeComment/$1',
     'api/form-users/comment/add' => 'api/hr/FormUserComment@addComment',
+
+    'api/form-users/upload-file' => 'api/hr/File@uploadFile',
+    'api/form-users/delete-file([a-z0-9-_?&]+)' => 'api/hr/File@deleteFile/$1',
 
     'api/form-users/upload-photo' => 'api/hr/FormUser@uploadPhoto',
     'api/form-users/delete([a-z0-9-_?&]+)' => 'api/hr/FormUser@deleteFormUser/$1',

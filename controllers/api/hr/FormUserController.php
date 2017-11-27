@@ -4,7 +4,9 @@ namespace Umbrella\controllers\api\hr;
 use Umbrella\app\Api\Middleware\VerifyToken;
 use Umbrella\app\Api\Response;
 use Umbrella\components\Functions;
+use Umbrella\models\api\hr\File;
 use Umbrella\models\api\hr\FormUser;
+use Umbrella\models\api\hr\FormUserAchievements;
 use Umbrella\models\api\hr\FormUserComment;
 use Umbrella\models\api\hr\Structure;
 use upload as FileUpload;
@@ -98,10 +100,14 @@ class FormUserController
             if($userInfo){
                 $comments = FormUserComment::getCommentsByFormUser($userId);
                 $logs = FormUser::getLogsByFormUserId($userId);
+                $achievements = FormUserAchievements::getAchievementsByFormUser($userId);
                 $userInfo['settings'] = $settings;
+                $userInfo['trigger_action_file'] = File::getFileByFormUserLabel($userId, 'trigger_action_file')['file_name'];
+                $userInfo['language_lvl_file'] = File::getFileByFormUserLabel($userId, 'language_lvl_file')['file_name'];
                 $data['user'] =  $userInfo;
                 $data['comments'] =  $comments;
                 $data['history'] =  $logs;
+                $data['achievements'] =  $achievements;
                 Response::responseJson($data, 200, 'OK');
             } else {
                 Response::responseJson(null, 404, 'Form user not found');
