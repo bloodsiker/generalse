@@ -468,6 +468,8 @@ class Stocks
             } elseif($stockName == 'KVAZAR, Киев\б/у'
                 || $stockName == 'PEX, Киев\б/у') {
                 $stockReplace = 'БУ(UA)';
+            } elseif ($stockName == 'OK (Выборгская, 104)'){
+                $stockReplace = 'Electrolux';
             } else {
                 $stockReplace = $stockName;
             }
@@ -499,6 +501,8 @@ class Stocks
                     } elseif($stock == 'KVAZAR, Киев\б/у'
                         || $stock == 'PEX, Киев\б/у') {
                         $stockReplace[] = 'БУ(UA)';
+                    } elseif ($stockName == 'OK (Выборгская, 104)'){
+                        $stockReplace[] = 'Electrolux';
                     } else {
                         $stockReplace[] = $stock;
                     }

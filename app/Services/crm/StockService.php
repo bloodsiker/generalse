@@ -52,6 +52,11 @@ class StockService
     }
 
 
+    /**
+     * Список продуктов на складах
+     * @param $request
+     * @return array
+     */
     public function allGoodsByClient($request)
     {
         $filters = '';
@@ -110,6 +115,8 @@ class StockService
             } elseif($stockName == 'KVAZAR, Киев\б/у'
                 || $stockName == 'PEX, Киев\б/у') {
                 $stockReplace = 'БУ(UA)';
+            } elseif ($stockName == 'OK (Выборгская, 104)'){
+                $stockReplace = 'Electrolux';
             } else {
                 $stockReplace = $stockName;
             }
@@ -143,6 +150,8 @@ class StockService
                         } elseif($stock == 'KVAZAR, Киев\б/у'
                             || $stock == 'PEX, Киев\б/у') {
                             $newArrayStocks[] = 'БУ(UA)';
+                        } elseif ($stock == 'OK (Выборгская, 104)'){
+                            $newArrayStocks[] = 'Electrolux';
                         } else {
                             $newArrayStocks[] = $stock;
                         }
@@ -158,6 +167,8 @@ class StockService
                         } elseif($stock == 'БУ(UA)') {
                             $newArrayStocks[] = 'KVAZAR, Киев\б/у';
                             $newArrayStocks[] = 'PEX, Киев\б/у';
+                        } elseif ($stock == 'Electrolux'){
+                            $newArrayStocks[] = 'OK (Выборгская, 104)';
                         } else {
                             $newArrayStocks[] = $stock;
                         }

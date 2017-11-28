@@ -67,7 +67,7 @@ class PsrController extends AdminBase
 
             $id = Psr::addPsr($options);
             $options['id'] = $id;
-            Psr::addPsrMsSQL(Decoder::arrayToWindows($options));
+            //Psr::addPsrMsSQL(Decoder::arrayToWindows($options));
             if($id){
                 PsrMail::getInstance()->sendEmailWithNewPsr($id, $user->name_partner, $options);
                 Logger::getInstance()->log($user->getId(), "Зарегистрировал ПСР MTM {$options['part_number']}, SN {$options['serial_number']}");
@@ -87,7 +87,7 @@ class PsrController extends AdminBase
                 $handle->process(ROOT . self::UPLOAD_PATH_PSR);
                 if ($handle->processed) {
                     Psr::addDocumentInPsr($_REQUEST['psr_id'], self::UPLOAD_PATH_PSR, $file_name);
-                    Psr::addDocumentInPsrMsSQL($_REQUEST['psr_id'], 'http://generalse.com' . self::UPLOAD_PATH_PSR, $file_name, 1);
+                    //Psr::addDocumentInPsrMsSQL($_REQUEST['psr_id'], 'http://generalse.com' . self::UPLOAD_PATH_PSR, $file_name, 1);
                     Logger::getInstance()->log($user->getId(),"Загрузил квитанцию к ПСР # {$_REQUEST['psr_id']}");
                     $handle->clean();
                     Session::set('psr_success', 'The warranty card is attached');
