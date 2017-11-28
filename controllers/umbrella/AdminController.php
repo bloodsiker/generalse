@@ -26,8 +26,8 @@ class AdminController extends AdminBase
             $login = $_REQUEST['login'];
             $password = Functions::hashPass($_REQUEST['password']);
 
-            $server = 'up'; // down || up
-            if($server == 'up'){
+            //$server = 'down'; // down || up
+            if(config('app')['server'] == 'up'){
                 //Проверяем существует ли пользователь
                 $userId = Admin::checkAdminData($login, $password);
 
@@ -61,7 +61,7 @@ class AdminController extends AdminBase
                     }
                 }
             } else {
-                $errors['log'] = 'Извините, Umbrella на техническом облуживании!<br> Сервис будет доступен в 08.11.2017 в 09:20 по Киеву';
+                $errors['log'] = config('app')['notification'];
                 $errors['code'] = 3;
                 echo json_encode($errors);
             }

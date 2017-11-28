@@ -3,6 +3,7 @@
 .env.local
 upload/
 vendor/verot
+vendor/composer/installed.json
 vendor/composer
 vendor/josegonzalez
 vendor/josantonius

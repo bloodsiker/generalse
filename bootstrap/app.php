@@ -1,7 +1,9 @@
 <?php
 
+// Include helpers functions
+require_once (ROOT . '/components/helpers.php');
 // Main config
-$config = require_once (ROOT . '/config/app.php');
+$config = config('app');
 
 if($config['debug'] == true) {
     ini_set('display_errors', 1);
@@ -17,12 +19,8 @@ ini_set('max_file_uploads', "10");
 // Include file system
 require_once(ROOT . '/vendor/autoload.php');
 
-// Include helpers functions
-require_once (ROOT . '/components/helpers.php');
-
 // Start session
 Josantonius\Session\Session::init();
-
 
 //Static Environment Definition
 if($config['env'] == 'local') {
@@ -37,6 +35,6 @@ josegonzalez\Dotenv\Loader::load([
 ]);
 
 //Router run
-require_once(ROOT . '/components/Router.php');
+require_once(components_path('Router.php'));
 $router = new Umbrella\components\Router();
 $router->run();

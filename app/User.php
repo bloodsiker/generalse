@@ -3,6 +3,7 @@
 namespace Umbrella\app;
 
 use Josantonius\Session\Session;
+use Josantonius\Url\Url;
 use Umbrella\app\Services\crm\StockService;
 use Umbrella\components\Decoder;
 use Umbrella\models\Admin;
@@ -483,5 +484,18 @@ class User
         $infoFile = $this->infoFilePriceForUser($id_group, $partner_status);
 
         return $infoFile['created_at'];
+    }
+
+
+    /**
+     * User logout
+     */
+    public function logout()
+    {
+        Session::destroy('user');
+        Session::destroy('_token');
+        Session::destroy('info_user');
+        $this->setToken(null);
+        Url::redirect('/');
     }
 }

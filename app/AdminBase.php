@@ -4,9 +4,9 @@ namespace Umbrella\app;
 
 use Josantonius\Session\Session;
 use Josantonius\Url\Url;
+use Umbrella\app\Middleware\IsActiveUserMiddleware;
+use Umbrella\app\Middleware\PartnerRisksMiddleware;
 use Umbrella\models\Admin;
-use Umbrella\app\UserDenied;
-use Umbrella\app\User;
 use Umbrella\vendor\controller\Controller;
 
 /**
@@ -27,16 +27,6 @@ abstract class AdminBase extends Controller
         // Получаем информацию о текущем пользователе
         $admin = Admin::getAdminById($adminId);
 
-//        if($admin['name_partner'] != 'Dima Ovsijchuk'){
-//            unset($_SESSION['user']);
-//            header('Location: /');
-//        }
-
-        // Если роль текущего пользователя "admin", пускаем его в админпанель
-//        if ($admin['role'] == 'admin' || $admin['role'] == 'moderator') {
-//            return true;
-//        }
-
         // Иначе завершаем работу с сообщением об закрытом доступе
         //die('Доступ закрыт');
     }
@@ -50,25 +40,17 @@ abstract class AdminBase extends Controller
      */
     public static function checkDenied($section, $param = 'view')
     {
-        $adminId = Admin::checkLogged();
-        $user = new User($adminId);
+        $user = new User(Admin::checkLogged());
+
+        if(config('app')['server'] == 'down'){
+            $user->logout();
+        }
 
         // Проверка на оплаченные счета
-        if(Url::getUri() != '/adm/risks'){
-            if($user->getUserBlockedGM() != 'active'){
-                if($user->getUserBlockedGM() == 'tomorrow'){
-
-                } else {
-                    Url::redirect('/adm/risks');
-                }
-            }
-        }
+        new PartnerRisksMiddleware($user);
 
         //Проверка на доступ к кабинету
-        if($user->isActive() == 0) {
-            Session::destroy('user');
-            Url::redirect('/');
-        }
+        new IsActiveUserMiddleware($user);
 
         // Проверка на доступы к разделам и действиям
         $denied = new UserDenied($user);
