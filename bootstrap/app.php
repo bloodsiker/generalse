@@ -17,8 +17,10 @@ ini_set('max_file_uploads', "10");
 // Include file system
 require_once(ROOT . '/vendor/autoload.php');
 
+// Include helpers functions
+require_once (ROOT . '/components/helpers.php');
+
 // Start session
-//session_start();
 Josantonius\Session\Session::init();
 
 

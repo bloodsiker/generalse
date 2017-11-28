@@ -141,9 +141,9 @@ class RequestController extends AdminBase
 
         } elseif($user->role == 'administrator' || $user->role == 'administrator-fin'){
 
-            $listCheckOrders = Request::getAllReserveOrdersMsSQL(0, 1);
-            $listCheckOrders = Functions::getUniqueArray('number', $listCheckOrders);
-            //$listCheckOrders = [];
+            //$listCheckOrders = Request::getAllReserveOrdersMsSQL(0, 1);
+            //$listCheckOrders = Functions::getUniqueArray('number', $listCheckOrders);
+            $listCheckOrders = [];
             $listRemovedRequest = Decoder::arrayToUtf(Request::getAllReserveOrdersMsSQL(0, 0));
             //$listRemovedRequest = [];
 
