@@ -246,6 +246,21 @@
                             </div>
                         </div>
 
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <label>Склады
+                                    <?php if (is_array($stocksToPartners)): ?>
+                                        <?php foreach ($stocksToPartners as $stockPartner): ?>
+                                            <div>
+                                                <input id="stock-<?= $stockPartner['stock_id']?>" type="checkbox" name="stocks_partner[]" value="<?= $stockPartner['stock_id']?>">
+                                                <label for="stock-<?= $stockPartner['stock_id']?>"><?= $stockPartner['stock_name']?></label>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </label>
+                            </div>
+                        </div>
+
 
                         <div class="row">
                             <div class="large-12 columns">

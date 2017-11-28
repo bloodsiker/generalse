@@ -304,6 +304,44 @@ class Stocks
     }
 
 
+    /**
+     * Получаем из GM список складов к привязанных к метсорасположению
+     * @return array
+     */
+    public static function getAllStocksToPartner()
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "SELECT * FROM site_stocks_to_partners";
+        $result = $db->prepare($sql);
+        $result->execute();
+        $all = $result->fetchAll(PDO::FETCH_ASSOC);
+        return $all;
+    }
+
+
+    /**
+     * Добавляем связь склад - пользователь
+     * @param $user_id
+     * @param $stock_id
+     * @return bool
+     */
+    public static function addStockToPartner($user_id, $stock_id)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = 'INSERT INTO site_gm_users_stocks '
+            . '(site_account_id, stock_id)'
+            . 'VALUES '
+            . '(:site_account_id, :stock_id)';
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':site_account_id', $user_id, PDO::PARAM_INT);
+        $result->bindParam(':stock_id', $stock_id, PDO::PARAM_INT);
+        return $result->execute();
+    }
+
+
 
     public static function checkInStockAndReplaceName($user_id, $stocks_group, $part_number)
     {

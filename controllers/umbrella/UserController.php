@@ -6,8 +6,8 @@ use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
 use Umbrella\app\Services\UserService;
 use Umbrella\app\User;
+use Umbrella\components\Decoder;
 use Umbrella\components\Functions;
-use Umbrella\components\ImportExcel;
 use Umbrella\models\Admin;
 use Umbrella\models\Branch;
 use Umbrella\models\Country;
@@ -15,9 +15,7 @@ use Umbrella\models\DeliveryAddress;
 use Umbrella\models\Denied;
 use Umbrella\models\GroupModel;
 use Umbrella\models\Log;
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+use Umbrella\models\Stocks;
 
 /**
  * Class UserController
@@ -140,15 +138,16 @@ class UserController extends AdminBase
         $staffList = Admin::getStaffList();
         $stockPlaceList = Admin::getStockPlaceList();
         $regionList = Admin::getRegionsList();
+        $stocksToPartners = Decoder::arrayToUtf(Stocks::getAllStocksToPartner());
 
         $countryList = Country::getAllCountry();
         $groupList = GroupModel::getGroupList();
 
-        if($user->getRole() == 'partner' || $user->getRole() == 'manager'){
+        if($user->isPartner() || $user->isManager()){
 
             Url::redirect('/adm/access_denied');
 
-        } else if($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin'){
+        } else if($user->isAdmin()){
 
             // Обработка формы
             if (isset($_POST['add_user']) && $_POST['add_user'] == 'true') {
@@ -184,7 +183,17 @@ class UserController extends AdminBase
                         $options['phone'] = !empty($_POST['phone']) ? iconv('UTF-8', 'WINDOWS-1251', $_POST['phone']) : null;
                         $options['gm_email'] = !empty($_POST['gm_email']) ? iconv('UTF-8', 'WINDOWS-1251', $_POST['gm_email']) : null;
                         $options['region_id'] = $_POST['region_id'];
-                        Admin::addUserMsSql($id_user, $options);
+                        $okMsSQL = Admin::addUserMsSql($id_user, $options);
+                        if($okMsSQL){
+                            if(isset($_POST['stocks_partner']) && !empty($_POST['stocks_partner'])){
+                                $arrayStocks = $_POST['stocks_partner'];
+                                if(is_array($arrayStocks)){
+                                    foreach ($arrayStocks as $stock){
+                                        Stocks::addStockToPartner($id_user, $stock);
+                                    }
+                                }
+                            }
+                        }
                     }
                     if($id_user){
                         if(!empty($_REQUEST['id_group'])){
@@ -203,7 +212,7 @@ class UserController extends AdminBase
                 }
             }
             $this->render('admin/users/create', compact('user', 'roleList', 'countryList', 'groupList',
-                'currencyList', 'ADBCPriceList', 'staffList', 'stockPlaceList', 'regionList'));
+                'currencyList', 'ADBCPriceList', 'staffList', 'stockPlaceList', 'regionList', 'stocksToPartners'));
         }
         return true;
     }
@@ -517,82 +526,18 @@ class UserController extends AdminBase
 
     public function actionUserTest()
     {
-        //require ROOT . '/vendor/autoload.php';
+        $stocksToPartners = Decoder::arrayToUtf(Stocks::getAllStocksToPartner());
+        if(isset($_POST['stocks_partner']) && !empty($_POST['stocks_partner'])){
+            $arrayStocks = $_POST['stocks_partner'];
+            if(is_array($arrayStocks)){
+                foreach ($arrayStocks as $stock){
+                    //Stocks::addStockToPartner(1, $stock);
+                }
+            }
+        }
 
-        $excel_file = '/upload/users-Umbrella.xlsx';
-        //$usersArray = ImportExcel::importUsers($excel_file);
-//        var_dump($usersArray);
-//        die();
-
-        $mail = new PHPMailer(true);
-        $mail->Host = 'smtp.generalse.com';  // Specify main and backup SMTP servers
-        //$mail->Port = 993;
-        $mail->setFrom('from@example.com', 'First Last');
-        $mail->addAddress('maldini2@ukr.net', 'John Doe');
-        $mail->Subject = 'PHPMailer file sender';
-        $mail->msgHTML("My message body");
-        // Attach uploaded files
-        //$mail->addAttachment($excel_file);
-        $mail->send();
-
-//        try {
-//            $mail->isMail();                                      // Set mailer to use SMTP
-//            $mail->Host = 'mail.generalse.com';  // Specify main and backup SMTP servers
-//            $mail->Port = 993;                                    // TCP port to connect to
-//            //Recipients
-//            $mail->setFrom('maldini2@ukr.net', 'Mailer');
-//            $mail->addAddress('maldini2@ukr.net', 'Joe User');     // Add a recipient
-//
-//            //Content
-//            $mail->isHTML(true);                                  // Set email format to HTML
-//            $mail->Subject = 'Here is the subject';
-//            $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
-//            $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
-//
-//            $mail->send();
-//            echo 'Message has been sent';
-//        } catch (Exception $e) {
-//            echo 'Message could not be sent.';
-//            echo 'Mailer Error: ' . $mail->ErrorInfo;
-//        }
-
-//        $user = new User(1);
-//
-//        $stocks = [2871, 3139, 3140, 3143, 3959, 3960];
-//
-//        foreach ($usersArray as $addUser){
-//            //var_dump($addUser);
-//            $id_user = Admin::addUser($addUser);
-//
-//            if($id_user){
-//                $denied_lithograph = new UserService($id_user);
-//                $denied_lithograph->addDeniedLithograph();
-//
-//                Admin::addUserMsSql($id_user, $addUser);
-//
-//                foreach ($stocks as $stock_id){
-//                    Admin::addUserStocksMsSql($id_user, $stock_id);
-//                }
-//
-//                //Добавляем пользователя в выбранную группу
-//                $ok_group = GroupModel::addUserGroup(7, $id_user);
-//                if($ok_group){
-//                    // Добавляем юзеру все запрещенные страницы группы
-//                    $user->addDeniedForGroupUser(7, $id_user);
-//                }
-//            }
-//        }
-//
-//        $table = "<table border='1' cellspacing='0'>";
-//        foreach ($usersArray as $userI){
-//            $table .= "<tr>";
-//            $table .= "<td>{$userI['login']}</td>";
-//            $table .= "<td>{$userI['v_password']}</td>";
-//            $table .= "</tr>";
-//        }
-//        $table .= "</table>";
-//
-//        echo $table;
+        $this->render('admin/users/test', compact('user', 'stocksToPartners', 'id_user'));
+        return true;
     }
 
 }
