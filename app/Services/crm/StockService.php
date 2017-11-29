@@ -30,12 +30,16 @@ class StockService
     {
         $user = $this->user;
 
+        $stocksNoReplaceQuantity = ['BAD', 'Not Used', 'Restored', 'Restored', 'Dismantling', 'Local Source', 'SWAP'];
+
         if($user->isPartner()){
-            return $arrayProducts = array_map(function ($value) use($user) {
-                if ($value['quantity'] <= 5) {
-                    $value['quantity'] = 'Заканчивается';
-                } else {
-                    $value['quantity'] = 'На складе';
+            return $arrayProducts = array_map(function ($value) use($user, $stocksNoReplaceQuantity) {
+                if(!in_array($value['stock_name'], $stocksNoReplaceQuantity)){
+                    if ($value['quantity'] <= 5) {
+                        $value['quantity'] = 'Заканчивается';
+                    } else {
+                        $value['quantity'] = 'На складе';
+                    }
                 }
                 $value['stock_name'] = $this->replaceNameStockInResultTable($value['stock_name'], $user->getRole());
                 $value['price'] = round($value['price'], 2);
