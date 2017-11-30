@@ -924,9 +924,6 @@ td select {
 .button-hover{display: none;}
 .block-container:hover .button-hover {display: inline;}
 
-.edit-psr-status{
-  cursor: pointer;
-}
 .modal_comment{
   background: #fff;
   padding: 10px;
@@ -1291,4 +1288,13 @@ td select {
   background-color: rgba(255, 255, 255, 0.3);
   padding-left: 10px;
   padding-top: 10px
+}
+
+/**********************/
+.bootstrap-select {
+  width: 100%!important;
+}
+
+.bs-searchbox .form-control {
+  color: #000000 !important;
 }

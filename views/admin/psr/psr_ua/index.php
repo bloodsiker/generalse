@@ -18,10 +18,6 @@
                                 <?php if (Umbrella\app\AdminBase::checkDenied('adm.psr.create', 'view')): ?>
                                     <button class="button primary tool" id="add-psr"><i class="fi-plus"></i> Create</button>
                                 <?php endif;?>
-
-                                <?php if (Umbrella\app\AdminBase::checkDenied('adm.psr.add_declaration', 'view')): ?>
-                                    <button class="button primary tool hide" id="add-psr-dec"><i class="fi-plus"></i> Add declaration number</button>
-                                <?php endif;?>
                             </div>
                             <div class="medium-3 small-12 columns">
                                 <form action="/adm/psr/s/" method="get" class="form" data-abide novalidate>
@@ -62,11 +58,11 @@
                              <th>Attach</th>
                              <th>Status</th>
                              <th>Declaration number</th>
-                             <?php if($user->role == 'administrator'
-                                 || $user->role == 'administrator-fin'
-                                 || $user->role == 'manager'):?>
+                             <?php if($user->isAdmin()
+                                 || $user->isManager()):?>
                                 <th>SO number</th>
                              <?php endif;?>
+                             <td>Date</td>
                          </tr>
                          </thead>
                          <tbody>
@@ -75,7 +71,7 @@
                              <?php foreach ($listPsr as $psr):?>
                                  <tr class="goods" data-id="<?= $psr['id']?>">
                                      <td><?= $psr['id']?></td>
-                                     <td><?= $psr['name_partner']?></td>
+                                     <td><?= $psr['site_client_name']?></td>
                                      <td><?= $psr['serial_number']?></td>
                                      <td><?= $psr['part_number']?></td>
                                      <td><?= $psr['device_name']?></td>
@@ -99,7 +95,7 @@
                                          </button>
                                      </td>
                                      <td class="edit-psr-status <?= \Umbrella\models\psr\Psr::getStatusRequest($psr['status_name'])?>">
-                                         <span class="psr_status"><?= $psr['status_name']?></span>
+                                         <?= $psr['status_name']?>
                                      </td>
                                      <td style="padding: 0!important;" class="block-container">
                                          <table style="margin-bottom: 0">
@@ -121,14 +117,11 @@
                                              </tr>
                                          </table>
                                      </td>
-                                     <?php if($user->role == 'administrator'
-                                     || $user->role == 'administrator-fin'
-                                     || $user->role == 'manager'):?>
-                                         <td class="order-tr-so">
-                                             <span class="psr_so"><?= $psr['so_number']?></span>
-                                             <a href="" class="button edit-so delete"><i class="fi-pencil"></i></a>
-                                         </td>
+                                     <?php if($user->isAdmin()
+                                     || $user->isManager()):?>
+                                         <td class="order-tr-so"><?= $psr['so']?></td>
                                      <?php endif;?>
+                                     <td><?= \Carbon\Carbon::parse($psr['created_at'])->format('Y-m-d')?></td>
                                  </tr>
                              <?php endforeach;?>
                          </tbody>
@@ -223,60 +216,6 @@
 <?php endif; ?>
 
 
-<?php if (Umbrella\app\AdminBase::checkDenied('adm.psr.add_declaration', 'view')): ?>
-    <div class="reveal" id="add-dec-number-modal" data-reveal>
-        <form action="#" id="add-dec-number-form" method="post" class="form" data-abide novalidate>
-            <div class="row align-bottom">
-                <div class="medium-12 small-12 columns">
-                    <h3>Add declaration number</h3>
-                </div>
-                <div class="medium-12 small-12 columns">
-                    <div class="row">
-                        <div class="medium-12 small-12 columns">
-                            <div class="row align-bottom ">
-                                <div class="medium-12 small-12 columns">
-                                    <label>ID PSR</label>
-                                    <input type="text" name="psr_id" class="required" required>
-                                </div>
-                                <div class="medium-12 small-12 columns">
-                                    <label>Serial Number</label>
-                                    <input type="text" name="serial_number" disabled>
-                                </div>
-                                <div class="medium-12 small-12 columns">
-                                    <label>MTM</label>
-                                    <input type="text" name="mtm" disabled>
-                                </div>
-                                <div class="medium-12 small-12 columns">
-                                    <label>Device</label>
-                                    <input type="text" name="device_name" disabled>
-                                </div>
-
-                                <div class="medium-12 small-12 columns">
-                                    <label>Declaration number</label>
-                                    <input type="text" class="required" name="declaration_number" required>
-                                </div>
-
-                                <input type="hidden" name="add_psr_dec" value="true">
-                            </div>
-                        </div>
-
-                        <div class="medium-12 small-12 columns">
-                            <div class="row">
-                                <div class="medium-12 small-12 columns">
-                                    <button type="submit" class="button primary">Send</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-        </form>
-        <button class="close-button" data-close aria-label="Close modal" type="button">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-<?php endif;?>
-
-
 <div class="reveal" id="open-upload-psr" data-reveal>
     <form action="" id="psr-upload" method="post" class="form" enctype="multipart/form-data" data-abide
           novalidate>
@@ -314,31 +253,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </form>
-    <button class="close-button" data-close aria-label="Close modal" type="button">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-
-
-<div class="reveal" id="edit-so" data-reveal>
-    <form action="#" method="post" class="form" novalidate="">
-        <div class="row align-bottom">
-            <div class="medium-12 small-12 columns">
-                <h3>Edit SO number</h3>
-            </div>
-            <div class="medium-12 small-12 columns">
-                <div class="row">
-                    <div class="medium-12 small-12 columns">
-                        <label>SO number</label>
-                        <input type="text" id="psr_so" name="order_so" autocomplete="off">
-                    </div>
-                </div>
-            </div>
-            <div class="medium-12 small-12 columns">
-                <button type="button" id="send-psr-so" class="button primary">Edit</button>
             </div>
         </div>
     </form>
@@ -399,33 +313,5 @@
         </button>
     </div>
 <?php endif; ?>
-
-<div class="reveal" id="edit-status" data-reveal>
-    <form action="#" method="post" class="form" novalidate="">
-        <div class="row align-bottom">
-            <div class="medium-12 small-12 columns">
-                <h3>Edit status</h3>
-            </div>
-            <div class="medium-12 small-12 columns">
-                <div class="row">
-                    <div class="medium-12 small-12 columns">
-                        <label>Status</label>
-                        <select name="psr_status" id="psr_status">
-                            <option value="Зарегистрирован">Зарегистрирован</option>
-                            <option value="Принято, в обработке">Принято, в обработке</option>
-                            <option value="Выдан">Выдан</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="medium-12 small-12 columns">
-                <button type="button" id="send-psr-status" class="button primary">Apply</button>
-            </div>
-        </div>
-    </form>
-    <button class="close-button" data-close aria-label="Close modal" type="button">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
 
 <?php require_once ROOT . '/views/admin/layouts/footer.php'; ?>

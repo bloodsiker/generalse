@@ -18,10 +18,6 @@
                                 <?php if (Umbrella\app\AdminBase::checkDenied('adm.psr.create', 'view')): ?>
                                     <button class="button primary tool" id="add-psr"><i class="fi-plus"></i> Create</button>
                                 <?php endif;?>
-
-                                <?php if (Umbrella\app\AdminBase::checkDenied('adm.psr.add_declaration', 'view')): ?>
-                                    <button class="button primary tool hide" id="add-psr-dec"><i class="fi-plus"></i> Add declaration number</button>
-                                <?php endif;?>
                             </div>
                             <div class="medium-3 small-12 columns">
                                 <form action="/adm/psr/s/" method="get" class="form" data-abide novalidate>
@@ -59,9 +55,8 @@
                              <th>Attach</th>
                              <th>Status</th>
                              <th>Declaration number</th>
-                             <?php if($user->role == 'administrator'
-                                 || $user->role == 'administrator-fin'
-                                 || $user->role == 'manager'):?>
+                             <?php if($user->isAdmin()
+                                 || $user->isManager()):?>
                                 <th>SO number</th>
                              <?php endif;?>
                          </tr>
@@ -71,7 +66,7 @@
                              <?php foreach ($listPsr as $psr):?>
                                  <tr class="goods" data-id="<?= $psr['id']?>">
                                      <td><?= $psr['id']?></td>
-                                     <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $psr['name_partner'])?></td>
+                                     <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $psr['site_client_name'])?></td>
                                      <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $psr['serial_number'])?></td>
                                      <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $psr['part_number'])?></td>
                                      <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $psr['device_name'])?></td>
@@ -95,7 +90,7 @@
                                          </button>
                                      </td>
                                      <td class="edit-psr-status <?= \Umbrella\models\psr\Psr::getStatusRequest($psr['status_name'])?>">
-                                         <span class="psr_status"><?= $psr['status_name']?></span>
+                                         <?= $psr['status_name']?>
                                      </td>
                                      <td style="padding: 0!important;" class="block-container">
                                          <table style="margin-bottom: 0">
@@ -117,12 +112,10 @@
                                              </tr>
                                          </table>
                                      </td>
-                                     <?php if($user->role == 'administrator'
-                                     || $user->role == 'administrator-fin'
-                                     || $user->role == 'manager'):?>
+                                     <?php if($user->isAdmin()
+                                     || $user->isManager()):?>
                                          <td class="order-tr-so">
-                                             <span class="psr_so"><?= $psr['so_number']?></span>
-                                             <a href="" class="button edit-so delete"><i class="fi-pencil"></i></a>
+                                             <?= $psr['so']?>
                                          </td>
                                      <?php endif;?>
                                  </tr>

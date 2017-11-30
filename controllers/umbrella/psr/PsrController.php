@@ -2,6 +2,7 @@
 
 namespace Umbrella\controllers\umbrella\psr;
 
+use Carbon\Carbon;
 use Josantonius\Session\Session;
 use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
@@ -50,6 +51,10 @@ class PsrController extends AdminBase
 
 
         if(isset($_REQUEST['add_psr']) && $_REQUEST['add_psr'] == 'true') {
+            $lastPsrId = Psr::getLasId();
+            $lastPsrId++;
+            $options['id'] = $lastPsrId;
+
             $options['id_user'] = $user->getId();
             $options['serial_number'] = $_REQUEST['serial_number'];
             $options['part_number'] = $_REQUEST['mtm'];
@@ -64,10 +69,11 @@ class PsrController extends AdminBase
             $options['declaration_number'] = $_REQUEST['declaration_number'];
             $options['status_name'] = 'Зарегистрирован';
             $options['ready'] = 1;
+            $options['created_at'] = date('Y-m-d');
 
-            $id = Psr::addPsr($options);
-            $options['id'] = $id;
-            //Psr::addPsrMsSQL(Decoder::arrayToWindows($options));
+            Psr::addPsr($options);
+
+            $id = Psr::addPsrMsSQL(Decoder::arrayToWindows($options));
             if($id){
                 PsrMail::getInstance()->sendEmailWithNewPsr($id, $user->name_partner, $options);
                 Logger::getInstance()->log($user->getId(), "Зарегистрировал ПСР MTM {$options['part_number']}, SN {$options['serial_number']}");
@@ -86,8 +92,7 @@ class PsrController extends AdminBase
                 $file_name = $handle->file_new_name_body . $handle->file_name_body_add . '.' . $handle->file_src_name_ext;
                 $handle->process(ROOT . self::UPLOAD_PATH_PSR);
                 if ($handle->processed) {
-                    Psr::addDocumentInPsr($_REQUEST['psr_id'], self::UPLOAD_PATH_PSR, $file_name);
-                    //Psr::addDocumentInPsrMsSQL($_REQUEST['psr_id'], 'http://generalse.com' . self::UPLOAD_PATH_PSR, $file_name, 1);
+                    Psr::addDocumentInPsrMsSQL($_REQUEST['psr_id'], 'http://generalse.com' . self::UPLOAD_PATH_PSR, $file_name, 1);
                     Logger::getInstance()->log($user->getId(),"Загрузил квитанцию к ПСР # {$_REQUEST['psr_id']}");
                     $handle->clean();
                     Session::set('psr_success', 'The warranty card is attached');
@@ -101,24 +106,10 @@ class PsrController extends AdminBase
             }
         }
 
-        //Добавляем нномер декларации к ПСР
-        if(isset($_REQUEST['add_psr_dec']) && $_REQUEST['add_psr_dec'] == 'true'){
-            $psr_id = $_REQUEST['psr_id'];
-            $declaration_number = $_REQUEST['declaration_number'];
-            $ok = Psr::addNumberDeclarationByPsr($psr_id, $declaration_number, 'declaration_number');
-            if($ok){
-                Session::set('psr_success', 'Declaration number added');
-                Session::set('class', 'alert-success');
-            }else {
-                Session::set('psr_success', 'Error : Could not add declaration number');
-                Session::set('class', 'alert-danger');
-            }
-        }
-
-        if($user->role == 'partner'){
-            $listPsr = Psr::getPsrByPartner($user->controlUsers($user->id_user));
-        } elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
-            $listPsr = Psr::getAllPsr();
+        if($user->isPartner()){
+            $listPsr = Decoder::arrayToUtf(Psr::getPsrByPartnerMsSQL($user->controlUsers($user->id_user)), ['manufacture_date', 'purchase_date']);
+        } elseif($user->isAdmin() || $user->isManager()){
+            $listPsr = Decoder::arrayToUtf(Psr::getAllPsrMsSQL(), ['manufacture_date', 'purchase_date']);
         }
 
         $this->render('admin/psr/psr_ua/index', compact('user', 'listPsr', 'message_success', 'class'));
@@ -135,18 +126,22 @@ class PsrController extends AdminBase
         $user = $this->user;
 
         if($user->isPartner() || $user->isManager()){
-            $search = $_REQUEST['search'];
+            $search = Decoder::strToWindows(trim($_REQUEST['search']));
 
             $user_ids = $user->controlUsers($user->id_user);
             $idS = implode(',', $user_ids);
             $filter = " AND gp.id_user ($idS)";
 
             $listPsr = Psr::getSearchInPsr($search, $filter);
+            $listPsr = Decoder::arrayToUtf($listPsr);
         } elseif($user->isAdmin()){
-            $search = trim($_REQUEST['search']);
+            $search = Decoder::strToWindows(trim($_REQUEST['search']));
 
             $listPsr = Psr::getSearchInPsr($search);
+            $listPsr = Decoder::arrayToUtf($listPsr);
         }
+
+        $search = isset($search) ? Decoder::strToUtf($search) : null;
 
         $this->render('admin/psr/psr_ua/result_search', compact('user', 'listPsr', 'search'));
         return true;
@@ -175,29 +170,11 @@ class PsrController extends AdminBase
             }
         }
 
-        // Поиск ПСР по ID
-        if($_REQUEST['action'] == 'add_psr_dec') {
-            $id = $_REQUEST['id_psr'];
-            $id_user = $this->user->id_user;
-            $psr = Psr::getPsrById($id, $id_user);
-            print_r(json_encode($psr));
-        }
-
-        // Редактируем SO
-        if($_REQUEST['action'] == 'edit_so') {
-            $id = $_REQUEST['id_psr'];
-            $psr_so =  $_REQUEST['psr_so'];
-            $ok = Psr::editSoNumberByPsr($id, $psr_so);
-            if($ok){
-                print_r(200);
-            }
-        }
-
         // Редактируем Declaration number
         if($_REQUEST['action'] == 'edit_dec') {
             $id = $_REQUEST['id_psr'];
-            $psr_dec =  $_REQUEST['psr_dec'];
-            $ok = Psr::addNumberDeclarationByPsr($id, $psr_dec, 'declaration_number');
+            $psr_dec =  Decoder::strToWindows($_REQUEST['psr_dec']);
+            $ok = Psr::addNumberDeclarationByPsr($id, $psr_dec, 'declaration_number', 1);
             if($ok){
                 print_r(200);
             }
@@ -206,25 +183,12 @@ class PsrController extends AdminBase
         // Редактируем Declaration number return
         if($_REQUEST['action'] == 'edit_dec_return') {
             $id = $_REQUEST['id_psr'];
-            $psr_dec_return =  $_REQUEST['psr_dec'];
-            $ok = Psr::addNumberDeclarationByPsr($id, $psr_dec_return, 'declaration_number_return');
+            $psr_dec_return =  Decoder::strToWindows($_REQUEST['psr_dec']);
+            $ok = Psr::addNumberDeclarationByPsr($id, $psr_dec_return, 'declaration_number_return', 1);
             if($ok){
                 print_r(200);
             }
         }
-
-        // Редактируем статус
-        if($_REQUEST['action'] == 'edit_status') {
-            $id = $_REQUEST['id_psr'];
-            $status =  $_REQUEST['psr_status'];
-            $ok = Psr::editStatusByPsr($id, $status);
-            if($ok){
-                $response['status'] = 200;
-                $response['class'] = Psr::getStatusRequest($status);
-                print_r(json_encode($response));
-            }
-        }
-
         return true;
     }
 
@@ -247,28 +211,28 @@ class PsrController extends AdminBase
     public function actionTest()
     {
 
-        $list = $listPsr = Psr::getAllPsrMsSQL();
-
-        $new_psr = [];
-        $i = 0;
-        foreach ($list as $iconv){
-            $new_psr[$i] = Decoder::arrayToWindows($iconv);
-            $new_psr[$i]['ready'] = 0;
-            $i++;
-        }
+//        $list = $listPsr = Psr::getAllPsrMsSQL();
+//
+//        $new_psr = [];
+//        $i = 0;
+//        foreach ($list as $iconv){
+//            $new_psr[$i] = Decoder::arrayToWindows($iconv);
+//            $new_psr[$i]['ready'] = 0;
+//            $i++;
+//        }
         //var_dump($new_psr);
 
 //        foreach ($new_psr as $psr){
 //            Psr::addPsrMsSQL($psr);
 //        }
 
-        $allDocument = Psr::getAllDocuments();
-        $allDocument = array_map(function ($value) {
-            $value['file_path'] = 'http://generalse.com' . $value['file_path'];
-            $value['ready'] = 0;
-            return $value;
-        },$allDocument);
-        //var_dump($allDocument);
+//        $allDocument = Psr::getAllDocumentsInPsr();
+//        $allDocument = array_map(function ($value) {
+//            $value['file_path'] = 'http://generalse.com' . $value['file_path'];
+//            $value['ready'] = 0;
+//            return $value;
+//        },$allDocument);
+//        var_dump($allDocument);
 
 //        foreach ($allDocument as $psr) {
 //            Psr::addDocumentInPsrMsSQL($psr['id_psr'], $psr['file_path'], $psr['file_name'], $psr['ready']);

@@ -23,18 +23,23 @@ class Decoder
 
     /**
      * Iconv array from (WINDOWS-1251/CP-1251) to UTF
-     * @param $array
+     *
+     * @param array $array
+     * @param array $array_key
+     *
      * @return array
      * @throws \Exception
      */
-    public static function arrayToUtf(array $array)
+    public static function arrayToUtf(array $array, array $array_key = [])
     {
         if(!is_array($array)){
             throw new \Exception("{$array} is not an array");
         }
         if(sizeof($array) > 0) {
-            array_walk_recursive($array, function(&$value,$key){
-                $value = self::strToUtf($value);
+            array_walk_recursive($array, function(&$value,$key) use ($array_key){
+                if(!in_array($key, $array_key)){
+                    $value = self::strToUtf($value);
+                }
             });
             return $array;
         }
@@ -60,19 +65,24 @@ class Decoder
 
     /**
      * Iconv array from UTF-8( to WINDOWS-1251/CP-1251)
-     * @param $array
+     *
+     * @param array $array
+     * @param array $array_key
+     *
      * @return array
      * @throws \Exception
      */
-    public static function arrayToWindows(array $array)
+    public static function arrayToWindows(array $array, array $array_key = [])
     {
         if(!is_array($array)){
             throw new \Exception("{$array} is not an array");
         }
 
         if(sizeof($array) > 0) {
-            array_walk_recursive($array, function(&$value,$key){
-                $value = self::strToWindows($value);
+            array_walk_recursive($array, function(&$value,$key) use ($array_key){
+                if(!in_array($key, $array_key)){
+                    $value = self::strToWindows($value);
+                }
             });
             return $array;
         }

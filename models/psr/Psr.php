@@ -50,12 +50,14 @@ class Psr
     {
         $db = MsSQL::getConnection();
 
+        $options['ready'] = 1;
+
         $sql = 'INSERT INTO site_gm_psr '
             . '(id, id_user, serial_number, part_number, device_name, manufacture_date, purchase_date, defect_description, device_condition, 
-                complectation, note, declaration_number, status_name, ready)'
+                complectation, note, declaration_number, status_name, ready, created_at)'
             . 'VALUES '
             . '(:id, :id_user, :serial_number, :part_number, :device_name, :manufacture_date, :purchase_date, :defect_description, :device_condition, 
-                :complectation, :note, :declaration_number, :status_name, :ready)';
+                :complectation, :note, :declaration_number, :status_name, :ready, :created_at)';
 
         $result = $db->prepare($sql);
         $result->bindParam(':id', $options['id'], PDO::PARAM_INT);
@@ -72,6 +74,7 @@ class Psr
         $result->bindParam(':declaration_number', $options['declaration_number'], PDO::PARAM_STR);
         $result->bindParam(':status_name', $options['status_name'], PDO::PARAM_STR);
         $result->bindParam(':ready', $options['ready'], PDO::PARAM_INT);
+        $result->bindParam(':created_at', $options['created_at'], PDO::PARAM_STR);
 
         if ($result->execute()) {
             return $db->lastInsertId();
@@ -85,15 +88,15 @@ class Psr
      * Получаем последний id_site
      * @return mixed
      */
-    public static function getLastMotoId()
+    public static function getLasId()
     {
         $db = MsSQL::getConnection();
 
-        $sql = "SELECT TOP 1 site_id FROM site_gm_service_objects ORDER BY site_id DESC";
+        $sql = "SELECT TOP 1 id FROM site_gm_psr ORDER BY id DESC";
         $result = $db->prepare($sql);
         $result->execute();
         $row = $result->fetch();
-        return $row['site_id'];
+        return $row['id'];
     }
 
 
@@ -102,24 +105,24 @@ class Psr
      * @param $array_id
      * @return array
      */
-    public static function getPsrByPartner($array_id)
+    public static function getPsrByPartnerMsSQL($array_id)
     {
-        $db = MySQL::getConnection();
+        $db = MsSQL::getConnection();
 
         $idS = implode(',', $array_id);
 
         $sql = "SELECT
-                    gp.*,
-                    gu.name_partner,
-                    (SELECT 
-                        count(gpd.id) 
-                    FROM gm_psr_documents gpd
-                    WHERE gpd.id_psr = gp.id) as count_file
-                FROM gm_psr gp
-                INNER JOIN gs_user gu
-                  ON gp.id_user = gu.id_user
-                WHERE gp.id_user IN({$idS})
-                ORDER BY gp.id DESC";
+                 sgp.*,
+                 sgu.site_client_name,
+                 (SELECT 
+                    count(sgpd.id) 
+                 FROM site_gm_psr_documents sgpd
+                 WHERE sgpd.id_psr = sgp.id) as count_file
+                FROM site_gm_psr sgp
+                INNER JOIN site_gm_users sgu
+                    ON sgp.id_user = sgu.site_account_id
+                WHERE sgp.id_user IN({$idS})
+                ORDER BY sgp.id DESC";
 
         $result = $db->prepare($sql);
         //$result->bindParam(':id_user', $id_user, PDO::PARAM_INT);
@@ -137,26 +140,26 @@ class Psr
      */
     public static function getSearchInPsr($search, $filter = '')
     {
-        $db = MySQL::getConnection();
+        $db = MsSQL::getConnection();
 
         $sql = "SELECT
-                 gp.*,
-                 gu.name_partner,
+                 sgp.*,
+                 sgu.site_client_name,
                  (SELECT 
-                     count(gpd.id) 
-                 FROM gm_psr_documents gpd
-                 WHERE gpd.id_psr = gp.id) as count_file
-             FROM gm_psr gp
-             INNER JOIN gs_user gu
-               ON gp.id_user = gu.id_user
+                    count(sgpd.id) 
+                 FROM site_gm_psr_documents sgpd
+                 WHERE sgpd.id_psr = sgp.id) as count_file
+             FROM site_gm_psr sgp
+                 INNER JOIN site_gm_users sgu
+                    ON sgp.id_user = sgu.site_account_id
              WHERE 1 = 1 {$filter}
-             AND(gp.serial_number LIKE ?
-             OR gp.part_number LIKE ?
-             OR gp.device_name LIKE ?
-             OR gp.declaration_number LIKE ?
-             OR gp.declaration_number_return LIKE ?
-             OR gu.name_partner LIKE ?)
-             ORDER BY gp.id DESC";
+             AND(sgp.serial_number LIKE ?
+             OR sgp.part_number LIKE ?
+             OR sgp.device_name LIKE ?
+             OR sgp.declaration_number LIKE ?
+             OR sgp.declaration_number_return LIKE ?
+             OR sgu.site_client_name LIKE ?)
+             ORDER BY sgp.id DESC";
 
         $result = $db->prepare($sql);
         $result->execute(array("%$search%", "%$search%", "%$search%", "%$search%", "%$search%", "%$search%"));
@@ -166,70 +169,26 @@ class Psr
     }
 
 
-    /**
-     * Список всех заявок на регистрацию ПСР
-     * @return array
-     */
-    public static function getAllPsr()
-    {
-        $db = MySQL::getConnection();
-
-        $sql = "SELECT
-                  gp.*,
-                  gu.name_partner,
-                  (SELECT 
-                        count(gpd.id) 
-                    FROM gm_psr_documents gpd
-                    WHERE gpd.id_psr = gp.id) as count_file
-                 FROM gm_psr gp
-                 INNER JOIN gs_user gu
-                    ON gp.id_user = gu.id_user
-                 ORDER BY gp.id DESC";
-
-        $result = $db->prepare($sql);
-        $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
-    }
-
     public static function getAllPsrMsSQL()
     {
-        $db = MySQL::getConnection();
+        $db = MsSQL::getConnection();
 
         $sql = "SELECT
-                  *
-                 FROM gm_psr gp
-                 ORDER BY gp.id DESC LIMIT 2";
+                  sgp.*,
+                  sgu.site_client_name,
+                  (SELECT 
+                        count(sgpd.id) 
+                    FROM site_gm_psr_documents sgpd
+                    WHERE sgpd.id_psr = sgp.id) as count_file
+                 FROM site_gm_psr sgp
+                 INNER JOIN site_gm_users sgu
+                    ON sgp.id_user = sgu.site_account_id
+                 ORDER BY sgp.id DESC";
 
         $result = $db->prepare($sql);
         $result->execute();
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
-    }
-
-
-    /**
-     * Поиск ПСР по ID
-     * @param $psr_id
-     * @param $id_user
-     * @return mixed
-     */
-    public static function getPsrById($psr_id, $id_user)
-    {
-        $db = MySQL::getConnection();
-
-        $sql = "SELECT
-                  *
-                 FROM gm_psr
-                 WHERE id = :id
-                 AND id_user = :id_user";
-
-        $result = $db->prepare($sql);
-        $result->bindParam(':id', $psr_id, PDO::PARAM_INT);
-        $result->bindParam(':id_user', $id_user, PDO::PARAM_INT);
-        $result->execute();
-        $find = $result->fetch(PDO::FETCH_ASSOC);
-        return $find;
     }
 
 
@@ -240,89 +199,22 @@ class Psr
      * @param $name_column
      * @return bool
      */
-    public static function addNumberDeclarationByPsr($id_psr, $declaration_number, $name_column)
+    public static function addNumberDeclarationByPsr($id_psr, $declaration_number, $name_column, $ready)
     {
-        $db = MySQL::getConnection();
+        $db = MsSQL::getConnection();
 
-        $sql = "UPDATE gm_psr
+        $sql = "UPDATE site_gm_psr
             SET
-                {$name_column} = :declaration_number
+                {$name_column} = :declaration_number,
+                ready = :ready
             WHERE id = :id";
 
         $result = $db->prepare($sql);
         $result->bindParam(':id', $id_psr, PDO::PARAM_INT);
         $result->bindParam(':declaration_number', $declaration_number, PDO::PARAM_STR);
+        $result->bindParam(':ready', $ready, PDO::PARAM_INPUT_OUTPUT);
         return $result->execute();
     }
-
-
-    /**
-     * Оновялем SO Number
-     * @param $id_psr
-     * @param $so_number
-     * @return bool
-     */
-    public static function editSoNumberByPsr($id_psr, $so_number)
-    {
-        $db = MySQL::getConnection();
-
-        $sql = "UPDATE gm_psr
-            SET
-                so_number = :so_number
-            WHERE id = :id";
-
-        $result = $db->prepare($sql);
-        $result->bindParam(':id', $id_psr, PDO::PARAM_INT);
-        $result->bindParam(':so_number', $so_number, PDO::PARAM_STR);
-        return $result->execute();
-    }
-
-
-
-    /**
-     * Изменяем Status в ПСР
-     * @param $id_psr
-     * @param $status
-     * @return bool
-     */
-    public static function editStatusByPsr($id_psr, $status)
-    {
-        $db = MySQL::getConnection();
-
-        $sql = "UPDATE gm_psr
-            SET
-                status_name = :status_name
-            WHERE id = :id";
-
-        $result = $db->prepare($sql);
-        $result->bindParam(':id', $id_psr, PDO::PARAM_INT);
-        $result->bindParam(':status_name', $status, PDO::PARAM_STR);
-        return $result->execute();
-    }
-
-
-    /**
-     * @param $id_psr
-     * @param $file_name
-     * @param $file_path
-     * @return bool
-     */
-    public static function addDocumentInPsr($id_psr, $file_path, $file_name)
-    {
-        $db = MySQL::getConnection();
-
-        $sql = 'INSERT INTO gm_psr_documents '
-            . '(id_psr, file_path, file_name)'
-            . 'VALUES '
-            . '(:id_psr, :file_path, :file_name)';
-
-        $result = $db->prepare($sql);
-        $result->bindParam(':id_psr', $id_psr, PDO::PARAM_INT);
-        $result->bindParam(':file_path', $file_path, PDO::PARAM_STR);
-        $result->bindParam(':file_name', $file_name, PDO::PARAM_STR);
-        return $result->execute();
-    }
-
 
 
     /**
@@ -357,31 +249,16 @@ class Psr
      */
     public static function getAllDocumentsInPsr($psr_id)
     {
-        $db = MySQL::getConnection();
+        $db = MsSQL::getConnection();
 
         $sql = "SELECT 
                   * 
-                FROM gm_psr_documents
+                FROM site_gm_psr_documents
                 WHERE id_psr = :psr_id
                 ORDER BY id DESC";
 
         $result = $db->prepare($sql);
         $result->bindParam(':psr_id', $psr_id, PDO::PARAM_INT);
-        $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
-    }
-
-    public static function getAllDocuments()
-    {
-        $db = MySQL::getConnection();
-
-        $sql = "SELECT 
-                  * 
-                FROM gm_psr_documents
-                ORDER BY id DESC LIMIT 2";
-
-        $result = $db->prepare($sql);
         $result->execute();
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
