@@ -75,11 +75,11 @@ class OrderController extends AdminBase
                         $options['id_user'] = $_REQUEST['id_partner'];
 
                         // Выбранный сток
-                        $stock = iconv('UTF-8', 'WINDOWS-1251', $_REQUEST['stock']);
+                        $stock = Decoder::strToWindows($_REQUEST['stock']);
                         $note = '';
                         $note_mysql = '';
                         if(isset($_REQUEST['notes'])){
-                            $note = iconv('UTF-8', 'WINDOWS-1251', $_REQUEST['notes']);
+                            $note = Decoder::strToWindows($_REQUEST['notes']);
                             $note_mysql = $_REQUEST['notes'];
                         }
 
@@ -129,7 +129,7 @@ class OrderController extends AdminBase
                             foreach ($insertArray as $insert){
                                 $options['site_id'] = $insert['site_id'];
                                 $options['id_user'] = $insert['id_user'];
-                                $options['so_number'] = iconv('UTF-8', 'WINDOWS-1251', $insert['so_number']);
+                                $options['so_number'] = Decoder::strToWindows($insert['so_number']);
                                 $options['note'] = $note;
                                 $options['order_type_id'] = $_REQUEST['order_type_id'];
                                 $options['note_mysql'] = $note_mysql;
@@ -139,7 +139,7 @@ class OrderController extends AdminBase
 
                                 $options['part_number'] = $insert['part_number'];
                                 $options['goods_mysql_name'] = $insert['goods_name'];
-                                $options['goods_name'] = iconv('UTF-8', 'WINDOWS-1251', $insert['goods_name']);
+                                $options['goods_name'] = Decoder::strToWindows($insert['goods_name']);
                                 $options['stock_name'] = $stock;
                                 $options['quantity'] = $insert['quantity'];
                                 Orders::addOrdersElementsMsSql($options);
@@ -168,9 +168,9 @@ class OrderController extends AdminBase
             }
 
             if($user->isManager()){
-                $status_1 = iconv('UTF-8', 'WINDOWS-1251', 'Предварительный');
-                $status_2 = iconv('UTF-8', 'WINDOWS-1251', 'В обработке');
-                $status_3 = iconv('UTF-8', 'WINDOWS-1251', 'Резерв');
+                $status_1 = Decoder::strToWindows( 'Предварительный');
+                $status_2 = Decoder::strToWindows( 'В обработке');
+                $status_3 = Decoder::strToWindows('Резерв');
                 $status = " AND (sgo.status_name = '$status_1' OR sgo.status_name = '$status_2' OR sgo.status_name = '$status_3')";
             }
 
@@ -193,9 +193,9 @@ class OrderController extends AdminBase
         } else if($user->isAdmin()){
 
             $filter = "";
-            $status_1 = iconv('UTF-8', 'WINDOWS-1251', 'Предварительный');
-            $status_2 = iconv('UTF-8', 'WINDOWS-1251', 'В обработке');
-            $status_3 = iconv('UTF-8', 'WINDOWS-1251', 'Резерв');
+            $status_1 = Decoder::strToWindows( 'Предварительный');
+            $status_2 = Decoder::strToWindows('В обработке');
+            $status_3 = Decoder::strToWindows('Резерв');
             $interval = " AND (sgo.status_name = '$status_1' OR sgo.status_name = '$status_2' OR sgo.status_name = '$status_3')";
 
             if(!empty($_GET['end']) && !empty($_GET['start'])){
@@ -254,9 +254,9 @@ class OrderController extends AdminBase
             }
 
             if($user->isManager()){
-                $status_1 = iconv('UTF-8', 'WINDOWS-1251', 'Предварительный');
-                $status_2 = iconv('UTF-8', 'WINDOWS-1251', 'В обработке');
-                $status_3 = iconv('UTF-8', 'WINDOWS-1251', 'Резерв');
+                $status_1 = Decoder::strToWindows( 'Предварительный');
+                $status_2 = Decoder::strToWindows('В обработке');
+                $status_3 = Decoder::strToWindows('Резерв');
                 $status = " AND (sgo.status_name = '$status_1' OR sgo.status_name = '$status_2' OR sgo.status_name = '$status_3')";
             }
 
@@ -279,8 +279,8 @@ class OrderController extends AdminBase
         } else if($user->isAdmin()){
 
             $filter = "";
-            $status_1 = iconv('UTF-8', 'WINDOWS-1251', 'Предварительный');
-            $status_2 = iconv('UTF-8', 'WINDOWS-1251', 'В обработке');
+            $status_1 = Decoder::strToWindows('Предварительный');
+            $status_2 = Decoder::strToWindows('В обработке');
             $interval = " AND (sgo.status_name = '$status_1' OR sgo.status_name = '$status_2')";
 
             if(!empty($_GET['end']) && !empty($_GET['start'])){
@@ -323,7 +323,7 @@ class OrderController extends AdminBase
     public function actionOrdersPartNumAjax()
     {
         $part_number = $_REQUEST['part_number'];
-        $stock = iconv('UTF-8', 'WINDOWS-1251', $_REQUEST['stock']);
+        $stock = Decoder::strToWindows($_REQUEST['stock']);
         $id_partner = $_REQUEST['id_partner'];
         $result = Products::checkOrdersPartNumberMsSql($id_partner, $part_number, $stock);
         if($result == 0){
@@ -356,13 +356,13 @@ class OrderController extends AdminBase
         $note = null;
         $note_mysql = null;
         if(isset($data_json['note'])){
-            $note = iconv('UTF-8', 'WINDOWS-1251', $data_json['note']);
+            $note = Decoder::strToWindows($data_json['note']);
             $note_mysql = $data_json['note'];
         }
 
         $options['site_id'] = $lastId;
         $options['id_user'] = $data_json['id_partner'];
-        $options['so_number'] = iconv('UTF-8', 'WINDOWS-1251', $data_json['service_order']);
+        $options['so_number'] = Decoder::strToWindows($data_json['service_order']);
         $options['note'] = $note;
         $options['order_type_id'] = $data_json['order_type_id'];;
         $options['note_mysql'] = $note_mysql;
@@ -372,11 +372,11 @@ class OrderController extends AdminBase
         Orders::addOrders($options);
 
         if($ok){
-            $options['stock_name'] = iconv('UTF-8', 'WINDOWS-1251', $data_json['stock']);
+            $options['stock_name'] = Decoder::strToWindows($data_json['stock']);
             $options['goods_mysql_name'] = $data_json['goods_name'];
-            $options['goods_name'] = iconv('UTF-8', 'WINDOWS-1251', $data_json['goods_name']);
+            $options['goods_name'] = Decoder::strToWindows($data_json['goods_name']);
             $options['part_number'] = $data_json['part_number'];
-            $options['so_number'] = iconv('UTF-8', 'WINDOWS-1251', $data_json['service_order']);
+            $options['so_number'] = Decoder::strToWindows($data_json['service_order']);
             if($data_json['quantity'] == ''){
                 $options['quantity'] = 1;
             } else {
@@ -416,7 +416,7 @@ class OrderController extends AdminBase
 
         if($_REQUEST['action'] == 'dismiss'){
             $order_id = $_REQUEST['order_id'];
-            $comment = iconv('UTF-8', 'WINDOWS-1251', $_REQUEST['comment']);
+            $comment = Decoder::strToWindows($_REQUEST['comment']);
             $ok = Orders::updateStatusOrders($order_id, 2, $comment);
             if($ok){
                 $status['ok'] = 1;
@@ -483,8 +483,12 @@ class OrderController extends AdminBase
         $start =  isset($_POST['start']) ? $_POST['start'] .' 00:00' : '';
         $end =  isset($_POST['end']) ? $_POST['end'] .' 23:59' : '';
         if(!empty($_POST['status_name'])){
-            $status = iconv('UTF-8', 'WINDOWS-1251', trim($_POST['status_name']));
+            $status = Decoder::strToWindows(trim($_POST['status_name']));
             $filter .= " AND sgo.status_name = '$status'";
+        }
+        if(!empty($_POST['order_type_id'])){
+            $type_repair = Decoder::strToWindows((int)$_POST['order_type_id']);
+            $filter .= " AND sgo.order_type_id = '$type_repair'";
         }
         $id_partners = isset($_POST['id_partner']) ? $_POST['id_partner'] : [];
         $listExport = Decoder::arrayToUtf(Orders::getExportOrdersByPartner($id_partners, $start, $end, $filter));

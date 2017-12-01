@@ -374,7 +374,7 @@
 
                 <h4 style="color: #fff">Between date</h4>
                 <div class="row align-bottom" style="background: #323e48; padding-top: 10px; margin-bottom: 10px">
-                    <div class="medium-8 small-8 columns">
+                    <div class="medium-6 small-6 columns">
                         <div class="row">
                             <div class="medium-6 small-12 columns">
                                 <label>From Date</label>
@@ -386,7 +386,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="medium-4 small-4 columns">
+                    <div class="medium-3 small-3 columns">
                         <label>Status</label>
                         <select name="status_name" id="status_name">
                             <option value="">none</option>
@@ -395,6 +395,14 @@
                             <option value="Отказано">Отказано</option>
                             <option value="Выдан">Выдан</option>
                             <option value="Резерв">Резерв</option>
+                        </select>
+                    </div>
+                    <div class="medium-3 small-3 columns">
+                        <label>Type</label>
+                        <select name="order_type_id">
+                            <option value="">none</option>
+                            <option value="1">Гарантия</option>
+                            <option value="2">Негарантия</option>
                         </select>
                     </div>
                 </div>
