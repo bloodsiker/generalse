@@ -3,6 +3,7 @@
 namespace Umbrella\models;
 
 use PDO;
+use Umbrella\app\User;
 use Umbrella\components\Db\MySQL;
 use Umbrella\components\Db\MsSQL;
 use Umbrella\components\Decoder;
@@ -343,70 +344,59 @@ class Stocks
 
 
 
-    public static function checkInStockAndReplaceName($user_id, $stocks_group, $part_number)
+    public static function checkInStockAndReplaceName($user_id, $stocks_group, $part_number, User $user)
     {
         $stocks = [];
         $i = 0;
 
         foreach ($stocks_group as $stock){
-            $product = self::checkGoodsInStocksPartners($user_id, $stock, $part_number, 'fetch', 'site_gm_stocks');
-            // PEX, Киев\ОК или PEX, Киев\Квазар
-            if($product){
-                if(trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\OK')
-                    || trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\Квазар')
-                    || trim($product['stock_name']) == Decoder::strToWindows('KVAZAR, Киев\OK')){
-                    if($product['quantity'] > 0){
-                        if(isset($stocks['НОВЫЕ(UA)'])){
-                            if($stocks['НОВЫЕ(UA)']['quantity'] < $product['quantity']){
+            if(!$user->isPartner()){
+                $product = self::checkGoodsInStocksPartners($user_id, $stock, $part_number, 'fetchAll', 'site_gm_stocks');
+                if(is_array($product)){
+                    foreach ($product as $prodStock){
+                        $stock = Decoder::strToUtf($prodStock['stock_name']);
+                        $stocks[$stock] = $prodStock;
+                    }
+                }
+            } else {
+                $product = self::checkGoodsInStocksPartners($user_id, $stock, $part_number, 'fetch', 'site_gm_stocks');
+                // PEX, Киев\ОК или PEX, Киев\Квазар
+                if($product){
+                    if(trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\OK')
+                        || trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\Квазар')
+                        || trim($product['stock_name']) == Decoder::strToWindows('KVAZAR, Киев\OK')){
+                        if($product['quantity'] > 0){
+                            if(isset($stocks['НОВЫЕ(UA)'])){
+                                if($stocks['НОВЫЕ(UA)']['quantity'] < $product['quantity']){
+                                    $stocks['НОВЫЕ(UA)'] = $product;
+                                }
+                            } else {
+                                //$product['stock_nam'] = "НОВЫЕ(UA)";
                                 $stocks['НОВЫЕ(UA)'] = $product;
                             }
-                        } else {
-                            $product['stock_nam'] = "НОВЫЕ(UA)";
-                            $stocks['НОВЫЕ(UA)'] = $product;
                         }
-                    }
-                } elseif (trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\б/у')
-                    || trim($product['stock_name']) == Decoder::strToWindows('KVAZAR, Киев\б/у')){
-                    if($product['quantity'] > 0){
-                        if(isset($stocks['БУ(UA)'])){
-                            if($stocks['БУ(UA)']['quantity'] < $product['quantity']){
+                    } elseif (trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\б/у')
+                        || trim($product['stock_name']) == Decoder::strToWindows('KVAZAR, Киев\б/у')){
+                        if($product['quantity'] > 0){
+                            if(isset($stocks['БУ(UA)'])){
+                                if($stocks['БУ(UA)']['quantity'] < $product['quantity']){
+                                    $stocks['БУ(UA)'] = $product;
+                                }
+                            } else {
+                                //$product['stock_nam'] = 'БУ(UA)';
                                 $stocks['БУ(UA)'] = $product;
                             }
-                        } else {
-                            $product['stock_nam'] = 'БУ(UA)';
-                            $stocks['БУ(UA)'] = $product;
                         }
+                    } else {
+                        //$product['stock_nam'] = $stock;
+                        $stocks[$stock] = $product;
                     }
-                } else {
-                    $product['stock_nam'] = $stock;
-                    $stocks[$stock] = $product;
                 }
             }
+
             $i++;
         }
 
-
-        // БУ Склад //PEX, Киев\б/у
-//        foreach ($stocks_group as $stock){
-//            $product = self::checkGoodsInStocksPartners($user_id, $stock, $part_number, 'fetch', 'site_gm_stocks');
-//            // PEX, Киев\ОК или PEX, Киев\Квазар
-//            if($product){
-//                if(trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\б/у')
-//                    || trim($product['stock_name']) == Decoder::strToWindows('KVAZAR, Киев\б/у')){
-//                    if($product['quantity'] > 0){
-//                        if(isset($stocks['БУ'])){
-//                            if($stocks['БУ']['quantity'] < $product['quantity']){
-//                                $stocks['БУ'] = $product;
-//                            }
-//                        } else {
-//                            $product['stock_nam'] = 'БУ';
-//                            $stocks['БУ'] = $product;
-//                        }
-//                    }
-//                }
-//            }
-//            $i++;
-//        }
 
         // БЛИЖАЙШАЯ ПОСТАВКА
         // PEX, Киев\ОК или PEX, Киев\б/у
@@ -468,7 +458,7 @@ class Stocks
             } elseif($stockName == 'KVAZAR, Киев\б/у'
                 || $stockName == 'PEX, Киев\б/у') {
                 $stockReplace = 'БУ(UA)';
-            } elseif ($stockName == 'OK (Выборгская, 104)'){
+            } elseif ($stockName == 'OK (Выборгская, 104)' || $stockName == 'OK (KVAZAR)'){
                 $stockReplace = 'Electrolux';
             } else {
                 $stockReplace = $stockName;
@@ -501,7 +491,7 @@ class Stocks
                     } elseif($stock == 'KVAZAR, Киев\б/у'
                         || $stock == 'PEX, Киев\б/у') {
                         $stockReplace[] = 'БУ(UA)';
-                    } elseif ($stockName == 'OK (Выборгская, 104)'){
+                    } elseif ($stockName == 'OK (Выборгская, 104)' ||  $stockName == 'OK (KVAZAR)'){
                         $stockReplace[] = 'Electrolux';
                     } else {
                         $stockReplace[] = $stock;

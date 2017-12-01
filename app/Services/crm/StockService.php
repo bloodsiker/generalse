@@ -30,17 +30,29 @@ class StockService
     {
         $user = $this->user;
 
-        $stocksNoReplaceQuantity = ['BAD', 'Not Used', 'Restored', 'Restored', 'Dismantling', 'Local Source', 'SWAP'];
+        $groupStocksNoReplaceQuantity = [
+            'Lenovo'        => ['BAD', 'Not Used', 'Restored', 'Dismantling', 'Local Source', 'SWAP'],
+            'Electrolux'    => ['OK (Выборгская, 104)', 'OK (KVAZAR)'],
+            'GE'            => [],
+            'Lenovo ПСР'    => [],
+            'UKRAINE OOW'   => []
+        ];
 
         if($user->isPartner()){
-            return $arrayProducts = array_map(function ($value) use($user, $stocksNoReplaceQuantity) {
-                if(!in_array($value['stock_name'], $stocksNoReplaceQuantity)){
-                    if ($value['quantity'] <= 5) {
-                        $value['quantity'] = 'Заканчивается';
-                    } else {
-                        $value['quantity'] = 'На складе';
+            return $arrayProducts = array_map(function ($value) use($user, $groupStocksNoReplaceQuantity) {
+
+                foreach ($groupStocksNoReplaceQuantity as $group => $stocks){
+                    if($user->getGroupName() == $group){
+                        if(!in_array($value['stock_name'], $stocks)){
+                            if ($value['quantity'] <= 5) {
+                                $value['quantity'] = 'Заканчивается';
+                            } else {
+                                $value['quantity'] = 'На складе';
+                            }
+                        }
                     }
                 }
+
                 $value['stock_name'] = $this->replaceNameStockInResultTable($value['stock_name'], $user->getRole());
                 $value['price'] = round($value['price'], 2);
                 return $value;
@@ -119,7 +131,7 @@ class StockService
             } elseif($stockName == 'KVAZAR, Киев\б/у'
                 || $stockName == 'PEX, Киев\б/у') {
                 $stockReplace = 'БУ(UA)';
-            } elseif ($stockName == 'OK (Выборгская, 104)'){
+            } elseif ($stockName == 'OK (Выборгская, 104)' || $stockName == 'OK (KVAZAR)'){
                 $stockReplace = 'Electrolux';
             } else {
                 $stockReplace = $stockName;
@@ -154,7 +166,7 @@ class StockService
                         } elseif($stock == 'KVAZAR, Киев\б/у'
                             || $stock == 'PEX, Киев\б/у') {
                             $newArrayStocks[] = 'БУ(UA)';
-                        } elseif ($stock == 'OK (Выборгская, 104)'){
+                        } elseif ($stock == 'OK (Выборгская, 104)' || $stock == 'OK (KVAZAR)'){
                             $newArrayStocks[] = 'Electrolux';
                         } else {
                             $newArrayStocks[] = $stock;
@@ -173,6 +185,7 @@ class StockService
                             $newArrayStocks[] = 'PEX, Киев\б/у';
                         } elseif ($stock == 'Electrolux'){
                             $newArrayStocks[] = 'OK (Выборгская, 104)';
+                            $newArrayStocks[] = 'OK (KVAZAR)';
                         } else {
                             $newArrayStocks[] = $stock;
                         }
