@@ -5,10 +5,11 @@ use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
 use Umbrella\app\Mail\OtherRequestMail;
 use Umbrella\app\User;
+use Umbrella\components\Decoder;
 use Umbrella\components\ImportExcel;
 use Umbrella\components\Logger;
 use Umbrella\models\Admin;
-use Umbrella\models\OtherRequest;
+use Umbrella\models\crm\OtherRequest;
 use Umbrella\models\Products;
 
 /**
@@ -41,26 +42,28 @@ class OtherRequestController extends AdminBase
         $delivery_address = $user->getDeliveryAddress();
 
         if(isset($_POST['add_request']) && $_POST['add_request'] == 'true'){
-            $options['id_user'] = $user->id_user;
+            $options['id_user'] = $user->getId();
             $options['part_number'] = $_POST['part_number'];
+            $options['quantity'] = $_POST['quantity'];
             $part_num = Products::checkPurchasesPartNumber($_POST['part_number']);
             $options['part_description'] = iconv('WINDOWS-1251', 'UTF-8', $part_num['mName']);
             $options['so_number'] = $_POST['so_number'];
             $options['order_type'] = $_POST['order_type'];
-            $options['address'] = isset($_POST['address']) ? $_POST['address'] : null;
+            $options['address'] = $_POST['address'] ?? null;
             $options['note'] = $_POST['note'];
             $options['status_name'] = 'В обработке';
 
             $id = OtherRequest::addRequestOrders($options);
             if($id){
+                Logger::getInstance()->log($user->getId(), ' создал заявку в Lenovo Request. partNumber:' . $options['part_number']);
                 OtherRequestMail::getInstance()->sendEmailGS($options, $user->name_partner, $id);
                 Url::previous();
             }
         }
 
-        if($user->role == 'partner' || $user->role == 'manager'){
+        if($user->isPartner() || $user->isManager()){
             $listRequests = OtherRequest::getListRequest($user->controlUsers($user->id_user));
-        } elseif($user->role == 'administrator' || $user->role == 'administrator-fin' ){
+        } elseif($user->isAdmin()){
             $listRequests = OtherRequest::getListRequestAdmin();
         }
 
@@ -93,23 +96,19 @@ class OtherRequestController extends AdminBase
                         // Получаем массив данных из файла
                         $excelArray = ImportExcel::importRequest($excel_file);
 
-                        $note = null;
-                        if(isset($_REQUEST['note'])){
-                            $note = iconv('UTF-8', 'WINDOWS-1251', $_REQUEST['note']);
-                        }
-
-                        $options['id_user'] = $user->id_user;
-                        $options['note'] = $note;
+                        $options['id_user'] = $user->getId();
+                        $options['note'] = $_REQUEST['note'] ?? null;
                         $options['status_name'] = 'В обработке';
                         $options['order_type'] = $_REQUEST['order_type'];
-                        $options['address'] = isset($_POST['address']) ? $_REQUEST['address'] : null;
+                        $options['address'] = $_REQUEST['address'] ?? null;
 
                         foreach ($excelArray as $import){
                             $options['part_number'] = trim($import['part_number']);
                             $options['so_number'] = trim($import['so_number']);
+                            $options['quantity'] = empty($import['quantity']) ?? 1;
 
                             $mName = Products::checkPurchasesPartNumber($options['part_number']);
-                            $options['part_description'] = iconv('WINDOWS-1251', 'UTF-8', $mName['mName']);
+                            $options['part_description'] = Decoder::strToUtf($mName['mName']);
 
                             if(!empty($options['part_number'])){
                                 OtherRequest::addRequestOrders($options);
@@ -118,7 +117,7 @@ class OtherRequestController extends AdminBase
 
                         OtherRequestMail::getInstance()->sendImportEmailGS($options, $user->name_partner, count($excelArray));
 
-                        Logger::getInstance()->log($user->id_user, ' загрузил массив с excel в Lenovo Request');
+                        Logger::getInstance()->log($user->getId(), ' загрузил массив с excel в Lenovo Request');
                         Url::redirect('/adm/crm/other-request');
                     }
                 }
@@ -143,7 +142,7 @@ class OtherRequestController extends AdminBase
 
             $ok = OtherRequest::editPriceToRequestById($id_request, str_replace(',', '.', $price));
             if ($ok) {
-                Logger::getInstance()->log($user->id_user, ' изменил price в lenovo request #' . $id_request . ' на ' . $price);
+                Logger::getInstance()->log($user->getId(), ' изменил price в lenovo request #' . $id_request . ' на ' . $price);
                 print_r(200);
             }
         }
@@ -154,7 +153,7 @@ class OtherRequestController extends AdminBase
 
             $ok = OtherRequest::deleteRequestById($id_request, 1);
             if ($ok) {
-                Logger::getInstance()->log($user->id_user, ' удалил lenovo request #' . $id_request);
+                Logger::getInstance()->log($user->getId(), ' удалил lenovo request #' . $id_request);
                 print_r(200);
             }
         }

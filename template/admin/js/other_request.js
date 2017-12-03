@@ -39,8 +39,9 @@ $(document).on('click', '#send-request-price', function(e) {
                 $('[data-id="' + id_request + '"]').find('.request_price').text(request_price).css('color', 'green');
                 $('#edit-price form')[0].reset();
                 $('#edit-price').foundation('close');
+                showNotification('Цена успешно установлена!', 'success');
             } else {
-                alert('Ошибка! Не удалось обновить запись!');
+                showNotification('Не удалось обновить запись!', 'Ошибка! ', 'error');
             }
         }
     });
@@ -63,10 +64,11 @@ $(document).on('click', '.request-delete', function(e) {
             success: function (response) {
                 if(response == 200){
                     var html = '<td>' + id_request + '</td>'
-                        + '<td colspan="12" class="text-center">Request deleted</td>';
+                        + '<td colspan="13" class="text-center">Request deleted</td>';
                     $('[data-id="' + id_request + '"]').html(html).css('background', '#9ef19d');
+                    showNotification('Запись удалена!', 'success');
                 } else {
-                    alert('Ошибка! Не удалось удалить запись!');
+                    showNotification('Не удалось удалить запись!', 'Ошибка! ', 'error');
                 }
             }
         });
@@ -124,13 +126,15 @@ $(document).on('click', '.request-action', function(e) {
                         if (action == 4) {
                             element.find('.action-control').text('Нет согласия').css('color', 'red');
                             element.find('.status').text('Нет согласия').removeClass('aqua').addClass('red');
+                            showNotification('Заявки перешел в статус "Нет согласия"', 'success');
                         } else if (action == 2) {
                             element.find('.action-control').text('Отказано').css('color', 'red');
                             element.find('.status').text('Отказано').removeClass('yellow').addClass('red');
                             element.find('.edit-price').remove();
+                            showNotification('Зявки перешел в статус "Отказано"', 'success');
                         }
                     } else {
-                        alert('Ошибка! Не удалось отклонить!');
+                        showNotification('Не удалось отклонить!', 'Ошибка!', 'error');
                     }
                 }
             });
@@ -157,27 +161,30 @@ $(document).on('click', '.request-action', function(e) {
                         element.find('.action-control').text('Ожидаем действия партнера').css('color', 'green');
                         element.find('.status').text('Согласование').removeClass('yellow').addClass('aqua');
                         element.find('.edit-price').remove();
+                        showNotification('Отправленно на согласование', 'success');
                     } else if(action == 2) {
                         element.find('.action-control').text('Отказано').css('color', 'red');
                         element.find('.status').text('Отказано').removeClass('yellow').addClass('red');
                         element.find('.edit-price').remove();
+                        showNotification('Заявки перешел в статус "Отказано"', 'success');
                     } else if(action == 3) {
                         element.find('.action-control').text('Ожидается отправка').css('color', 'orange');
                         element.find('.status').text('Отправка').removeClass('aqua').addClass('orange');
                     } else if(action == 5) {
                         element.find('.action-control').text('Выполненный запрос').css('color', 'orange');
                         element.find('.status').text('Выполненный').removeClass('orange').addClass('green');
+                        showNotification('Запрос успешно выполнен!', 'success');
                     }
 
                 } else {
                     if (action == 1) {
-                        alert('Ошибка! Не удалось отправить на согласование!');
+                        showNotification('Не удалось отправить на согласование!', 'Ошибка', 'error');
                     } else if(action == 2) {
-                        alert('Ошибка! Не удалось отклонить!');
+                        showNotification('Не удалось отклонить!', 'Ошибка', 'error');
                     } else if(action == 3) {
-                        alert('Ошибка! Не удалось принять!');
+                        showNotification('Не удалось принять!', 'Ошибка', 'error');
                     } else if(action == 5) {
-                        alert('Ошибка! Не удалось выполнить запрос!');
+                        showNotification('Не удалось выполнить запрос!', 'Ошибка', 'error');
                     }
                 }
             }

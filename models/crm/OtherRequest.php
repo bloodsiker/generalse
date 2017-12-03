@@ -1,6 +1,6 @@
 <?php
 
-namespace Umbrella\models;
+namespace Umbrella\models\crm;
 
 use PDO;
 use Umbrella\components\Db\MySQL;
@@ -18,15 +18,16 @@ class OtherRequest
         $db = MySQL::getConnection();
 
         $sql = 'INSERT INTO gs_other_request '
-            . '(id_user, part_number, part_description, so_number, note, address, status_name, order_type)'
+            . '(id_user, part_number, part_description, so_number, quantity, note, address, status_name, order_type)'
             . 'VALUES '
-            . '(:id_user, :part_number, :part_description, :so_number, :note, :address, :status_name, :order_type)';
+            . '(:id_user, :part_number, :part_description, :so_number, :quantity, :note, :address, :status_name, :order_type)';
 
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $options['id_user'], PDO::PARAM_INT);
         $result->bindParam(':part_number', $options['part_number'], PDO::PARAM_STR);
         $result->bindParam(':part_description', $options['part_description'], PDO::PARAM_STR);
         $result->bindParam(':so_number', $options['so_number'], PDO::PARAM_STR);
+        $result->bindParam(':quantity', $options['quantity'], PDO::PARAM_INT);
         $result->bindParam(':note', $options['note'], PDO::PARAM_STR);
         $result->bindParam(':address', $options['address'], PDO::PARAM_STR);
         $result->bindParam(':status_name', $options['status_name'], PDO::PARAM_STR);
@@ -50,19 +51,7 @@ class OtherRequest
         $idS = implode(',', $array_id);
 
         $sql = "SELECT
-                    gor.id,
-                    gor.id_user,
-                    gor.part_number,
-                    gor.part_description,
-                    gor.so_number,
-                    gor.price,
-                    gor.address,
-                    gor.order_type,
-                    gor.note,
-                    gor.status_name,
-                    gor.action,
-                    gor.comment_disagree,
-                    gor.date_create,
+                    gor.*,
                     gu.name_partner
                 FROM gs_other_request gor
                     INNER JOIN gs_user gu
@@ -88,19 +77,7 @@ class OtherRequest
         $db = MySQL::getConnection();
 
         $sql = "SELECT
-                    gor.id,
-                    gor.id_user,
-                    gor.part_number,
-                    gor.part_description,
-                    gor.so_number,
-                    gor.price,
-                    gor.address,
-                    gor.order_type,
-                    gor.note,
-                    gor.status_name,
-                    gor.action,
-                    gor.comment_disagree,
-                    gor.date_create,
+                    gor.*,
                     gu.name_partner
                 FROM gs_other_request gor
                     INNER JOIN gs_user gu
@@ -129,6 +106,7 @@ class OtherRequest
                     gor.part_number,
                     gor.part_description,
                     gor.so_number,
+                    gor.quantity,
                     gor.price,
                     gor.status_name,
                     gor.comment_disagree,

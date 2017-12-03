@@ -44,7 +44,7 @@
                 <?php if(isset($request_message) && $request_message != ''):?>
                     <div class="alert-success" style="margin: 0px auto 10px;"><?=$request_message?></div>
                 <?php endif;?>
-                <?php if($user->role == 'partner'):?>
+                <?php if($user->isPartner()):?>
                 <table class="umbrella-table" id="goods_data">
                     <caption>List requests
                         <span id="count_refund" class="text-green">(<?php if (isset($listRequests)) echo count($listRequests) ?>)</span>
@@ -56,6 +56,7 @@
                         <th>Part Number</th>
                         <th>Part Description</th>
                         <th>SO Number</th>
+                        <th>Quantity</th>
                         <th>Price</th>
                         <th>Address</th>
                         <th>Type</th>
@@ -75,6 +76,7 @@
                                 <td><?= $request['part_number']?></td>
                                 <td><?= $request['part_description']?></td>
                                 <td><?= $request['so_number']?></td>
+                                <td><?= $request['quantity']?></td>
                                 <td><?= str_replace('.',',', $request['price'])?></td>
                                 <td><?= $request['address']?></td>
                                 <td><?= $request['order_type']?></td>
@@ -120,9 +122,7 @@
                     <?php endif;?>
                     </tbody>
                 </table>
-                <?php elseif($user->role == 'administrator'
-                    || $user->role == 'administrator-fin'
-                    || $user->role == 'manager'):?>
+                <?php elseif($user->isAdmin() || $user->isManager()):?>
                     <table class="umbrella-table" id="goods_data">
                         <caption>List requests
                             <span id="count_refund" class="text-green">(<?php if (isset($listRequests)) echo count($listRequests) ?>)</span>
@@ -134,6 +134,7 @@
                             <th>Part Number</th>
                             <th>Part Description</th>
                             <th>SO Number</th>
+                            <th>Quantity</th>
                             <th>Price</th>
                             <th>Address</th>
                             <th>Type</th>
@@ -156,6 +157,7 @@
                                     <td><?= $request['part_number']?></td>
                                     <td><?= $request['part_description']?></td>
                                     <td><?= $request['so_number']?></td>
+                                    <td><?= $request['quantity']?></td>
                                     <td class="request-price">
                                         <span class="request_price"><?= str_replace('.',',', $request['price'])?></span>
                                         <?php if($request['action'] == 0):?>
@@ -226,9 +228,13 @@
             <div class="medium-12 small-12 columns">
                 <h3>New request</h3>
             </div>
-            <div class="medium-12 small-12 columns">
+            <div class="medium-9 small-9 columns">
                 <label>Part Number <span style="color: #4CAF50;" class="name-product"></span></label>
                 <input type="text" class="required" name="part_number" required>
+            </div>
+            <div class="medium-3 small-3 columns">
+                <label>Count</label>
+                <input type="text" class="required" name="quantity" value="1" required>
             </div>
             <div class="medium-12 small-12 columns">
                 <label>SO Number</label>
