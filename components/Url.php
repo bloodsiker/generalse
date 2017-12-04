@@ -5,13 +5,24 @@ namespace Umbrella\components;
 class Url
 {
     // Поиск в строке Url родительского каталога
-    public static function Is_url($url, $alias)
+    public static function Is_url($alias)
     {
-        $result = strpos($url, $alias);
-        if ($result === false) {
-            return false;
+        $url = $_SERVER['REQUEST_URI'];
+
+        if(is_array($alias)){
+            foreach ($alias as $slug){
+                $result = strpos($url, $slug);
+                if ($result !== false) {
+                    return true;
+                }
+            }
+        } else {
+            $result = strpos($url, $alias);
+            if ($result === false) {
+                return false;
+            }
+            return true;
         }
-        return true;
     }
 
     /**
