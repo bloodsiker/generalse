@@ -285,6 +285,12 @@ class Psr
             case 'Принято, в обработке':
                 return 'yellow';
                 break;
+            case 'Диагностика':
+                return 'yellow';
+                break;
+            case 'Ремонт завершен, ожидайте выдачи':
+                return 'aqua';
+                break;
         }
         return true;
     }

@@ -33,7 +33,9 @@ class PsrActivityController extends AdminBase
     {
         $user = $this->user;
 
-        $this->render('admin/psr/activity/index', compact('user', 'listPsr'));
+        $userList = [];
+
+        $this->render('admin/psr/activity/index', compact('user', 'userList'));
         return true;
     }
 
