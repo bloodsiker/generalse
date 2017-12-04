@@ -14,16 +14,41 @@ class Log
      */
     public static function getAllLog($num)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $data = $db->query("SELECT * FROM gs_log gl
                               INNER JOIN gs_user gu
                                 ON gl.id_user = gu.id_user
                             ORDER BY gl.id_log DESC LIMIT $num, 50")->fetchAll(PDO::FETCH_ASSOC);
 
         return $data;
+    }
+
+
+    /**
+     * Select logs by userId and between date
+     * @param $user_id
+     * @param $fromDate
+     * @param $toDate
+     *
+     * @return array
+     */
+    public static function getLogByUserId($id_user, $fromDate, $toDate)
+    {
+        $db = MySQL::getConnection();
+
+        $sql = 'SELECT * FROM gs_log 
+                WHERE id_user = :id_user 
+                AND date_log 
+                BETWEEN :fromDate AND :toDate 
+                ORDER BY id_log DESC';
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id_user', $id_user, PDO::PARAM_INT);
+        $result->bindParam(':fromDate', $fromDate, PDO::PARAM_INT);
+        $result->bindParam(':toDate', $toDate, PDO::PARAM_INT);
+        $result->execute();
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
