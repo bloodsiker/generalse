@@ -7,7 +7,9 @@ use Umbrella\app\Services\crm\StockService;
 use Umbrella\app\User;
 use Umbrella\components\Decoder;
 use Umbrella\models\Admin;
+use Umbrella\models\Currency;
 use Umbrella\models\GroupModel;
+use Umbrella\models\Products;
 use Umbrella\models\Stocks;
 
 /**
@@ -20,6 +22,9 @@ class StockController extends AdminBase
      */
     private $user;
 
+    /**
+     * @var StockService
+     */
     private $stockService;
 
     /**
@@ -135,4 +140,20 @@ class StockController extends AdminBase
         return true;
     }
 
+
+    /**
+     * show prices in modal
+     */
+    public function actionStockAjax()
+    {
+        if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'get_prices'){
+            $goodID = (int)$_REQUEST['good_id'];
+            $part_number = $_REQUEST['part_number'];
+            $goods_name = $_REQUEST['goods_name'];
+            $prices = Currency::getPartnersCurrencyByGoodsID($goodID);
+            $currencyUsd = Currency::getRatesCurrency('usd');
+            $this->render('admin/crm/stocks/_part/show_prices_modal', compact('prices', 'currencyUsd', 'part_number', 'goods_name'));
+            return true;
+        }
+    }
 }

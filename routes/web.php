@@ -157,6 +157,7 @@ return [
     /*************** STOCKS  ***************/
     'adm/crm/stocks/s/([a-z0-9-_?&]+)' => 'umbrella/crm/Stock@search/$1',
     'adm/crm/stocks/([a-z0-9-_?&]+)' => 'umbrella/crm/Stock@stocks/$1',
+    'adm/crm/stocks_ajax' => 'umbrella/crm/Stock@stockAjax',
     'adm/crm/stocks' => 'umbrella/crm/Stock@stocks',
 
 

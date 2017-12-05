@@ -3,118 +3,141 @@
 namespace Umbrella\models;
 
 use PDO;
-use Umbrella\components\Db\MySQL;
+use Umbrella\components\Db\MsSQL;
 
-class Country
+class Currency
 {
 
-    public static function getCountryId($id_country)
+    public static function getRatesCurrency($currency)
     {
-        // Соединение с базой данных
-        $db = MySQL::getConnection();
+        $db = MsSQL::getConnection();
 
-        // Делаем запрос к базе данных
-        $sql = 'SELECT * FROM gs_country WHERE id_country = :id_country';
+        $sql = "SELECT TOP 1
+                  tbl_Rate.DateRate,
+                  tbl_Rate.OutputRate,
+                  tbl_Curency.ShortName
+                FROM tbl_Rate
+                  INNER JOIN tbl_Curency
+                    ON tbl_Rate.CurencyID = tbl_Curency.Number
+                WHERE tbl_Curency.ShortName = :currency
+                ORDER BY tbl_Rate.Number DESC";
 
-        // Делаем подготовленный запрос
         $result = $db->prepare($sql);
-        $result->bindParam(':id_country', $id_country, PDO::PARAM_INT);
-
-        // Указываем, что хотим получить данные в виде массива
-        $result->setFetchMode(PDO::FETCH_ASSOC);
+        $result->bindParam(':currency', $currency, PDO::PARAM_STR);
         $result->execute();
-
-        return $result->fetch();
+        return $result->fetch(PDO::FETCH_ASSOC);
     }
 
 
     /**
-     * @param $options
-     * @return int|string
+     * Prices by goodID
+     * @param $goodsID
+     *
+     * @return mixed
      */
-    public static function addCountry($options)
+    public static function getPartnersCurrencyByGoodsID($goodsID)
     {
-        // Соединение с БД
-        $db = MySQL::getConnection();
+        $db = MsSQL::getConnection();
 
-        // Текст запроса к БД
-        $sql = 'INSERT INTO gs_country '
-            . '(short_name, full_name)'
-            . 'VALUES '
-            . '(:short_name, :full_name)';
+        $sql = "select
+               tbl_GoodsNames.i_d --номер товара
+               ,PriceR.price * dbo.ufn_Curencys_Rate_Output_Cross(1, tbl_Produsers.curency_id, 1, dbo.ufn_Date_Current_Short())as rozn_new --розница
+               ,PriceRBU.price * dbo.ufn_Curencys_Rate_Output_Cross(1, tbl_Produsers.curency_id, 1, dbo.ufn_Date_Current_Short()) as rozn_used --розница б/у
+               ,PriceP.price * dbo.ufn_Curencys_Rate_Output_Cross(1, tbl_Produsers.curency_id, 1, dbo.ufn_Date_Current_Short()) as partner_new -- партнер
+               ,PricePBU.price * dbo.ufn_Curencys_Rate_Output_Cross(1, tbl_Produsers.curency_id, 1, dbo.ufn_Date_Current_Short()) as partner_used -- парнер б/у
+               ,PriceO.price * dbo.ufn_Curencys_Rate_Output_Cross(1, tbl_Produsers.curency_id, 1, dbo.ufn_Date_Current_Short()) as opt_new -- оптовик
+               ,PriceOBU.price * dbo.ufn_Curencys_Rate_Output_Cross(1, tbl_Produsers.curency_id, 1, dbo.ufn_Date_Current_Short()) as opt_used -- отптовик б/у
+               ,PriceV.price * dbo.ufn_Curencys_Rate_Output_Cross(1, tbl_Produsers.curency_id, 1, dbo.ufn_Date_Current_Short()) as vip_new -- вип
+               ,PriceVBU.price * dbo.ufn_Curencys_Rate_Output_Cross(1, tbl_Produsers.curency_id, 1, dbo.ufn_Date_Current_Short()) as vip_used -- вип б/у
+        from tbl_GoodsNames
+                     inner join tbl_Produsers
+                            on tbl_Produsers.i_d = tbl_GoodsNames.produserID
+               left outer join
+                     (select
+                            tbl_ABCDPrices.goodsNameID
+                            ,convert(float, tbl_ABCDPrices.price) / 100 as price
+                     from tbl_ABCDPrices with (nolock)
+                     where
+                            tbl_ABCDPrices.depatmentID = 1
+                            and tbl_ABCDPrices.namePriceID = 1
+                     )PriceR
+                     on PriceR.goodsNameID = tbl_GoodsNames.i_d
+               left outer join
+                     (select
+                            tbl_ABCDPrices.goodsNameID
+                            ,convert(float, tbl_ABCDPrices.price) / 100 as price
+                     from tbl_ABCDPrices with (nolock)
+                     where
+                            tbl_ABCDPrices.depatmentID = 1
+                            and tbl_ABCDPrices.namePriceID = 15
+                     )PriceRBU
+                     on PriceRBU.goodsNameID = tbl_GoodsNames.i_d
+               left outer join
+                     (select
+                            tbl_ABCDPrices.goodsNameID
+                            ,convert(float, tbl_ABCDPrices.price) / 100 as price
+                     from tbl_ABCDPrices with (nolock)
+                     where
+                            tbl_ABCDPrices.depatmentID = 1
+                            and tbl_ABCDPrices.namePriceID = 5
+                     )PriceP
+                     on PriceP.goodsNameID = tbl_GoodsNames.i_d
+               left outer join
+                     (select
+                            tbl_ABCDPrices.goodsNameID
+                            ,convert(float, tbl_ABCDPrices.price) / 100 as price
+                     from tbl_ABCDPrices with (nolock)
+                     where
+                            tbl_ABCDPrices.depatmentID = 1
+                            and tbl_ABCDPrices.namePriceID = 20
+                     )PricePBU
+                     on PricePBU.goodsNameID = tbl_GoodsNames.i_d
+               left outer join
+                     (select
+                            tbl_ABCDPrices.goodsNameID
+                            ,convert(float, tbl_ABCDPrices.price) / 100 as price
+                     from tbl_ABCDPrices with (nolock)
+                     where
+                            tbl_ABCDPrices.depatmentID = 1
+                            and tbl_ABCDPrices.namePriceID = 18
+                     )PriceO
+                     on PriceO.goodsNameID = tbl_GoodsNames.i_d
+               left outer join
+                     (select
+                            tbl_ABCDPrices.goodsNameID
+                            ,convert(float, tbl_ABCDPrices.price) / 100 as price
+                     from tbl_ABCDPrices with (nolock)
+                     where
+                            tbl_ABCDPrices.depatmentID = 1
+                            and tbl_ABCDPrices.namePriceID = 23
+                     )PriceOBU
+                     on PricePBU.goodsNameID = tbl_GoodsNames.i_d
+               left outer join
+                     (select
+                            tbl_ABCDPrices.goodsNameID
+                            ,convert(float, tbl_ABCDPrices.price) / 100 as price
+                     from tbl_ABCDPrices with (nolock)
+                     where
+                            tbl_ABCDPrices.depatmentID = 1
+                            and tbl_ABCDPrices.namePriceID = 6
+                     )PriceV
+                     on PriceV.goodsNameID = tbl_GoodsNames.i_d
+               left outer join
+                     (select
+                            tbl_ABCDPrices.goodsNameID
+                            ,convert(float, tbl_ABCDPrices.price) / 100 as price
+                     from tbl_ABCDPrices with (nolock)
+                     where
+                            tbl_ABCDPrices.depatmentID = 1
+                            and tbl_ABCDPrices.namePriceID = 22
+                     )PriceVBU
+                     on PriceVBU.goodsNameID = tbl_GoodsNames.i_d
+        where
+               tbl_GoodsNames.i_d = :id";
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
-        $result->bindParam(':short_name', $options['short_name'], PDO::PARAM_STR);
-        $result->bindParam(':full_name', $options['full_name'], PDO::PARAM_STR);
-
-        if ($result->execute()) {
-            // Если запрос выполенен успешно, возвращаем id добавленной записи
-            return $db->lastInsertId();
-        }
-        // Иначе возвращаем 0
-        return 0;
+        $result->bindParam(':id', $goodsID, PDO::PARAM_INT);
+        $result->execute();
+        return $result->fetch(PDO::FETCH_ASSOC);
     }
-
-
-    /**
-     * @param $id
-     * @param $options
-     * @return bool
-     */
-    public static function updateCountry($id, $options)
-    {
-        // Соединение с БД
-        $db = MySQL::getConnection();
-
-        // Текст запроса к БД
-        $sql = "UPDATE gs_country
-            SET
-                short_name = :short_name,
-                full_name = :full_name
-            WHERE id_country = :id_country";
-
-        // Получение и возврат результатов. Используется подготовленный запрос
-        $result = $db->prepare($sql);
-        $result->bindParam(':id_country', $id, PDO::PARAM_INT);
-        $result->bindParam(':short_name', $options['short_name'], PDO::PARAM_STR);
-        $result->bindParam(':full_name', $options['full_name'], PDO::PARAM_STR);
-        return $result->execute();
-    }
-
-
-    /**
-     * Получаем весь список стран
-     * @return array
-     */
-    public static function getAllCountry()
-    {
-        // Соединение с БД
-        $db = MySQL::getConnection();
-
-        // Получение и возврат результатов
-        $data = $db->query('SELECT * FROM gs_country ORDER BY full_name')->fetchAll(PDO::FETCH_ASSOC);
-
-        return $data;
-    }
-
-
-    /**
-     * @param $id
-     * @return bool
-     */
-    public static function deleteCountryById($id)
-    {
-        // Соединение с БД
-        $db = MySQL::getConnection();
-
-        // Текст запроса к БД
-        $sql = 'DELETE FROM gs_country WHERE id_country = :id_country';
-
-        // Получение и возврат результатов. Используется подготовленный запрос
-        $result = $db->prepare($sql);
-        $result->bindParam(':id_country', $id, PDO::PARAM_INT);
-        return $result->execute();
-    }
-
 }

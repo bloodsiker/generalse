@@ -25,6 +25,7 @@ class Stocks
         $sql = "SELECT
                  sgt.stock_name,
                  sgt.goods_name,
+                 sgt.goods_name_id,
                  sgt.part_number,
                  sgt.type_name,
                  sgt.subtype_name,
@@ -64,6 +65,7 @@ class Stocks
         $sql = "SELECT
                  sgt.stock_name,
                  sgt.goods_name,
+                 sgt.goods_name_id,
                  sgt.part_number,
                  sgt.type_name,
                  sgt.subtype_name,
@@ -107,6 +109,7 @@ class Stocks
         $sql = "SELECT
                  sgt.stock_name,
                  sgt.goods_name,
+                 sgt.goods_name_id,
                  sgt.part_number,
                  sgt.type_name,
                  sgt.subtype_name,
@@ -117,11 +120,11 @@ class Stocks
                  sgu.site_client_name
                 FROM site_gm_stocks sgt
                 INNER JOIN tbl_Users tu
-                    ON sgt.site_account_id = tu.site_gs_account_id
+                  ON sgt.site_account_id = tu.site_gs_account_id
                 INNER JOIN site_gm_users sgu
-                    ON sgu.id = tu.site_gs_account_id
+                  ON sgu.id = tu.site_gs_account_id
                 WHERE sgu.site_account_id IN ({$ids_partner})
-                AND stock_name IN ('{$stock_iconv}') {$filters}";
+                AND sgt.stock_name IN ('{$stock_iconv}') {$filters}";
 
         $result = $db->prepare($sql);
         $result->execute();
@@ -154,6 +157,7 @@ class Stocks
         $sql = "SELECT
                  sgt.stock_name,
                  sgt.goods_name,
+                 sgt.goods_name_id,
                  sgt.part_number,
                  sgt.type_name,
                  sgt.subtype_name,
@@ -192,6 +196,7 @@ class Stocks
         $sql = "SELECT
                  sgt.stock_name,
                  sgt.goods_name,
+                 sgt.goods_name_id,
                  sgt.part_number,
                  sgt.type_name,
                  sgt.subtype_name,
@@ -225,6 +230,7 @@ class Stocks
         $sql = "SELECT
                  sgt.stock_name,
                  sgt.goods_name,
+                 sgt.goods_name_id,
                  sgt.part_number,
                  sgt.type_name,
                  sgt.subtype_name,
@@ -238,7 +244,7 @@ class Stocks
                     ON sgt.site_account_id = tu.site_gs_account_id
                 INNER JOIN site_gm_users sgu
                     ON sgu.id = tu.site_gs_account_id
-                WHERE stock_name = :stock_name";
+                WHERE sgt.stock_name = :stock_name";
         // Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':stock_name', $stock_name, PDO::PARAM_STR);
@@ -261,6 +267,7 @@ class Stocks
         $sql = "SELECT
                     sgt.stock_name,
                     sgt.goods_name,
+                    sgt.goods_name_id,
                     sgt.part_number,
                     sgt.type_name,
                     sgt.subtype_name,

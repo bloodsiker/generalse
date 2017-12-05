@@ -62,7 +62,8 @@
                     <tbody>
                     <?php if (isset($allGoodsByPartner)): ?>
                         <?php foreach ($allGoodsByPartner as $goods): ?>
-                            <tr class="goods">
+                            <tr class="goods"
+                                ondblclick="getPricesProduct(<?= $goods['goods_name_id']?>, '<?= $goods['part_number']?>', '<?= $goods['goods_name']?>')">
                                 <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $goods['site_client_name'])?></td>
                                 <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $goods['part_number'])?></td>
                                 <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $goods['goods_name'])?></td>
@@ -186,6 +187,23 @@
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
+
+<?php if($user->isAdmin() || $user->isManager()): ?>
+    <div class="reveal" id="show-prices-modal" data-reveal>
+        <div class="row align-top">
+            <div class="medium-12 small-12 columns">
+                <h3>Prices</h3>
+            </div>
+            <div class="medium-12 small-12 columns" id="container-prices">
+
+            </div>
+        </div>
+
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+<?php endif;  ?>
 
 <script type="text/javascript">
     var tableToExcel = (function() {

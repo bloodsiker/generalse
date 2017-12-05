@@ -40,6 +40,21 @@ let checkColor = function (event) {
     }
 };
 
+// get prices and show in modal
+let getPricesProduct = (good_id, part_number, goods_name) => {
+    $('#container-prices').html('');
+    $.ajax({
+        url: "/adm/crm/stocks_ajax",
+        type: "POST",
+        data: {good_id : good_id, action : 'get_prices', part_number : part_number, goods_name : goods_name},
+        cache: false,
+        success: function (response) {
+            $('#show-prices-modal').foundation('open');
+            $('#container-prices').html(response);
+        }
+    });
+    return false;
+};
 
 $(document).ready(function () {
     let subtype_td = $('.subtype_td');
