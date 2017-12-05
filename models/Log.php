@@ -37,11 +37,15 @@ class Log
     {
         $db = MySQL::getConnection();
 
-        $sql = 'SELECT * FROM gs_log 
-                WHERE id_user = :id_user 
-                AND date_log 
-                BETWEEN :fromDate AND :toDate 
-                ORDER BY id_log DESC';
+        $sql = 'SELECT
+                gl.* ,
+                gu.name_partner
+                FROM gs_log gl
+                  INNER JOIN gs_user gu
+                    ON gl.id_user = gu.id_user
+                WHERE gl.id_user = :id_user 
+                AND gl.date_log BETWEEN :fromDate AND :toDate 
+                ORDER BY gl.id_log DESC';
 
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $id_user, PDO::PARAM_INT);
