@@ -76,7 +76,7 @@
                         <div class="alert-success" style="margin: 0px auto 10px;"><?=$request_message['replace_by_analog']?></div>
                     </div>
                 <?php endif;?>
-                <?php if($user->role == 'partner'):?>
+                <?php if($user->isPartner()):?>
                     <?php if($user->getGroupName() == 'UKRAINE OOW'):?>
 
                         <table class="umbrella-table">
@@ -168,9 +168,8 @@
                         </table>
                     <?php endif;?>
 
-                <?php elseif($user->role == 'administrator'
-                    || $user->role == 'administrator-fin'
-                    || $user->role == 'manager'):?>
+                <?php elseif($user->isAdmin()
+                    || $user->isManager()):?>
                     <table class="umbrella-table">
                         <caption>List requests
                             <span id="count_refund" class="text-green">(<?php if (isset($listCheckOrders)) echo count($listCheckOrders) ?>)</span>

@@ -107,6 +107,7 @@ class Stocks
         $ids_partner = implode(',', $id_partners);
 
         $sql = "SELECT
+                 sgt.site_account_id,
                  sgt.stock_name,
                  sgt.goods_name,
                  sgt.goods_name_id,

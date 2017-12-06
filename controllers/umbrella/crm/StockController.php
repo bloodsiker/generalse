@@ -152,6 +152,7 @@ class StockController extends AdminBase
             $goods_name = $_REQUEST['goods_name'];
             $prices = Currency::getPartnersCurrencyByGoodsID($goodID);
             $currencyUsd = Currency::getRatesCurrency('usd');
+            //$stockDecompile = '';
             $this->render('admin/crm/stocks/_part/show_prices_modal', compact('prices', 'currencyUsd', 'part_number', 'goods_name'));
             return true;
         }
