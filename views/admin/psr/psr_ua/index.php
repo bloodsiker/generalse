@@ -14,10 +14,39 @@
                     </div>
                     <div class="medium-12 small-12 columns">
                         <div class="row align-bottom">
-                            <div class="medium-9 small-12 columns">
+                            <div class="medium-3 small-12 columns">
                                 <?php if (Umbrella\app\AdminBase::checkDenied('adm.psr.create', 'view')): ?>
                                     <button class="button primary tool" id="add-psr"><i class="fi-plus"></i> Create</button>
                                 <?php endif;?>
+
+                                <button data-open="export-modal" class="button primary tool"><i class="fi-page-export"></i> Export to Excel</button>
+                            </div>
+                            <div class="medium-6  small-12 columns">
+                                <form action="/adm/psr/ua" method="get" class="form">
+                                    <div class="row align-bottom">
+                                        <div class="medium-3 text-left small-12 columns">
+                                            <label for="right-label"><i class="fi-calendar"></i> From date</label>
+                                            <input type="text" id="date-start" value="<?=(isset($_GET['start']) && $_GET['start'] != '') ? $_GET['start'] : ''?>" name="start">
+                                        </div>
+                                        <div class="medium-3 small-12 columns">
+                                            <label for="right-label"><i class="fi-calendar"></i> To date</label>
+                                            <input type="text" id="date-end" value="<?=(isset($_GET['end']) && $_GET['end'] != '') ? $_GET['end'] : ''?>" name="end">
+                                        </div>
+                                        <div class="medium-4 small-12 columns">
+                                            <label>Status</label>
+                                            <select name="status">
+                                                <option value="all" <?=(isset($_GET['status']) && $_GET['status'] == 'all') ? 'selected' : ''?>>Все</option>
+                                                <option value="Зарегистрирован" <?=(isset($_GET['status']) && $_GET['status'] == 'Зарегистрирован') ? 'selected' : ''?>>Зарегистрирован</option>
+                                                <option value="Принят в ремонт" <?=(isset($_GET['status']) && $_GET['status'] == 'Принят в ремонт') ? 'selected' : ''?>>Принят в ремонт</option>
+                                                <option value="Ремонт завершен" <?=(isset($_GET['status']) && $_GET['status'] == 'Ремонт завершен') ? 'selected' : ''?>>Ремонт завершен</option>
+                                                <option value="Выдан" <?=(isset($_GET['status']) && $_GET['status'] == 'Выдан') ? 'selected' : ''?>>Выдан</option>
+                                            </select>
+                                        </div>
+                                        <div class="medium-2 small-12 columns">
+                                            <button type="submit" class="button primary"><i class="fi-eye"></i> Show</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                             <div class="medium-3 small-12 columns">
                                 <form action="/adm/psr/s/" method="get" class="form" data-abide novalidate>
@@ -121,7 +150,7 @@
                                      || $user->isManager()):?>
                                          <td class="order-tr-so"><?= $psr['so']?></td>
                                      <?php endif;?>
-                                     <td><?= \Carbon\Carbon::parse($psr['created_at'])->format('Y-m-d')?></td>
+                                     <td><?= $psr['created_at']?></td>
                                  </tr>
                              <?php endforeach;?>
                          </tbody>
@@ -313,5 +342,46 @@
         </button>
     </div>
 <?php endif; ?>
+
+<!--=== EXPORT EXCEL ====-->
+<div class="reveal" id="export-modal" data-reveal>
+    <form action="/adm/psr/export" method="post" class="form" data-abide novalidate>
+        <div class="row align-bottom">
+            <div class="medium-12 small-12 columns">
+                <h3>Generate report</h3>
+            </div>
+
+            <div class="medium-12 small-12 columns">
+                <label><i class="fi-list"></i> Status</label>
+                <select name="status">
+                    <option value="all">Все</option>
+                    <option value="Зарегистрирован">Зарегистрирован</option>
+                    <option value="Принят в ремонт">Принят в ремонт</option>
+                    <option value="Ремонт завершен">Ремонт завершен</option>
+                    <option value="Выдан">Выдан</option>
+                </select>
+            </div>
+
+            <div class="medium-12 small-12 columns">
+                <div class="row">
+                    <div class="medium-6 small-12 columns">
+                        <label>From Date</label>
+                        <input type="text" class="required date" name="start" required>
+                    </div>
+                    <div class="medium-6 small-12 columns">
+                        <label>To Date</label>
+                        <input type="text" class="required date" name="end" required>
+                    </div>
+                </div>
+            </div>
+            <div class="medium-12 small-12 columns">
+                <button type="submit" class="button primary">Generate</button>
+            </div>
+        </div>
+    </form>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
 
 <?php require_once ROOT . '/views/admin/layouts/footer.php'; ?>

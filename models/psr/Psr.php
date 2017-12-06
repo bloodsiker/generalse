@@ -102,10 +102,13 @@ class Psr
 
     /**
      * Список заявок на регистрацию ПСР для конкретного парнера и пользователей которыми он может управлять
+     *
      * @param $array_id
+     * @param string $filter
+     *
      * @return array
      */
-    public static function getPsrByPartnerMsSQL($array_id)
+    public static function getPsrByPartnerMsSQL($array_id, $filter = '')
     {
         $db = MsSQL::getConnection();
 
@@ -121,7 +124,7 @@ class Psr
                 FROM site_gm_psr sgp
                 INNER JOIN site_gm_users sgu
                     ON sgp.id_user = sgu.site_account_id
-                WHERE sgp.id_user IN({$idS})
+                WHERE sgp.id_user IN({$idS}) {$filter}
                 ORDER BY sgp.id DESC";
 
         $result = $db->prepare($sql);
@@ -169,7 +172,12 @@ class Psr
     }
 
 
-    public static function getAllPsrMsSQL()
+    /**
+     * @param $filter
+     *
+     * @return array
+     */
+    public static function getAllPsrMsSQL($filter)
     {
         $db = MsSQL::getConnection();
 
@@ -183,6 +191,7 @@ class Psr
                  FROM site_gm_psr sgp
                  INNER JOIN site_gm_users sgu
                     ON sgp.id_user = sgu.site_account_id
+                 WHERE 1 = 1 {$filter}
                  ORDER BY sgp.id DESC";
 
         $result = $db->prepare($sql);
@@ -276,19 +285,13 @@ class Psr
             case 'Выдан':
                 return 'green';
                 break;
-            case 'Отказано':
-                return 'red';
-                break;
             case 'Зарегистрирован':
                 return 'orange';
                 break;
-            case 'Принято, в обработке':
+            case 'Принят в ремонт':
                 return 'yellow';
                 break;
-            case 'Диагностика':
-                return 'yellow';
-                break;
-            case 'Ремонт завершен, ожидайте выдачи':
+            case 'Ремонт завершен':
                 return 'aqua';
                 break;
         }

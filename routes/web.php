@@ -79,8 +79,10 @@ return [
 
     'adm/psr/test' => 'umbrella/psr/Psr@test',
     'adm/psr/show_upload_file' => 'umbrella/psr/Psr@showUploadFile',
+    'adm/psr/export' => 'umbrella/psr/Psr@export',
     'adm/psr/psr_ajax' => 'umbrella/psr/Psr@psrAjax',
     'adm/psr/s/([a-z0-9-_?&]+)' => 'umbrella/psr/Psr@search/$1',
+    'adm/psr/ua([a-z0-9-_?&]+)' => 'umbrella/psr/Psr@index/$1',
     'adm/psr/ua' => 'umbrella/psr/Psr@index',
 
 

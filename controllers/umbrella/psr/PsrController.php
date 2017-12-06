@@ -40,6 +40,7 @@ class PsrController extends AdminBase
 
 
     /**
+     * Register PSR
      * @return bool
      */
     public function actionIndex()
@@ -106,11 +107,32 @@ class PsrController extends AdminBase
             }
         }
 
-        if($user->isPartner()){
-            $listPsr = Decoder::arrayToUtf(Psr::getPsrByPartnerMsSQL($user->controlUsers($user->id_user)), ['manufacture_date', 'purchase_date']);
-        } elseif($user->isAdmin() || $user->isManager()){
-            $listPsr = Decoder::arrayToUtf(Psr::getAllPsrMsSQL(), ['manufacture_date', 'purchase_date']);
+        // Filter
+        $filter = null;
+        if(!empty($_REQUEST['start'])){
+            $start = $_REQUEST['start'] . " 00:00";
+            $end = !empty($_REQUEST['end']) ? $_REQUEST['end'] . " 23:59" : date('Y-m-d');
+            $filter .= " AND sgp.created_at BETWEEN '{$start}' AND '{$end}'";
         }
+        if(isset($_REQUEST['status']) && !empty($_REQUEST['status'])){
+            $status = Decoder::strToWindows($_REQUEST['status']);
+            if($status != 'all'){
+                $filter .= " AND sgp.status_name = '{$status}'";
+            }
+        }
+
+        if($user->isPartner()){
+            $listPsr = Decoder::arrayToUtf(Psr::getPsrByPartnerMsSQL($user->controlUsers($user->id_user), $filter));
+        } elseif($user->isAdmin() || $user->isManager()){
+            $listPsr = Decoder::arrayToUtf(Psr::getAllPsrMsSQL($filter));
+        }
+
+        $listPsr = array_map(function ($value){
+            $value['manufacture_date'] = Functions::formatDate($value['manufacture_date'], 'd.m.Y');
+            $value['purchase_date'] = Functions::formatDate($value['purchase_date'], 'd.m.Y');
+            $value['created_at'] = Functions::formatDate($value['created_at'], 'Y-m-d');
+            return $value;
+        }, $listPsr);
 
         $this->render('admin/psr/psr_ua/index', compact('user', 'listPsr', 'message_success', 'class'));
         return true;
@@ -132,14 +154,19 @@ class PsrController extends AdminBase
             $idS = implode(',', $user_ids);
             $filter = " AND gp.id_user ($idS)";
 
-            $listPsr = Psr::getSearchInPsr($search, $filter);
-            $listPsr = Decoder::arrayToUtf($listPsr);
+            $listPsr = Decoder::arrayToUtf(Psr::getSearchInPsr($search, $filter));
         } elseif($user->isAdmin()){
             $search = Decoder::strToWindows(trim($_REQUEST['search']));
 
-            $listPsr = Psr::getSearchInPsr($search);
-            $listPsr = Decoder::arrayToUtf($listPsr);
+            $listPsr = Decoder::arrayToUtf(Psr::getSearchInPsr($search));
         }
+
+        $listPsr = array_map(function ($value){
+            $value['manufacture_date'] = Functions::formatDate($value['manufacture_date'], 'd.m.Y');
+            $value['purchase_date'] = Functions::formatDate($value['purchase_date'], 'd.m.Y');
+            $value['created_at'] = Functions::formatDate($value['created_at'], 'Y-m-d');
+            return $value;
+        }, $listPsr);
 
         $search = isset($search) ? Decoder::strToUtf($search) : null;
 
@@ -208,36 +235,41 @@ class PsrController extends AdminBase
     }
 
 
-    public function actionTest()
+    /**
+     * Export PSR
+     * @return bool
+     */
+    public function actionExport()
     {
+        $user = $this->user;
+        // Filter
+        $filter = null;
+        if(!empty($_REQUEST['start'])){
+            $start = $_REQUEST['start'] . " 00:00";
+            $end = !empty($_REQUEST['end']) ? $_REQUEST['end'] . " 23:59" : date('Y-m-d');
+            $filter .= " AND sgp.created_at BETWEEN '{$start}' AND '{$end}'";
+        }
+        if(isset($_REQUEST['status']) && !empty($_REQUEST['status'])){
+            $status = Decoder::strToWindows($_REQUEST['status']);
+            if($status != 'all'){
+                $filter .= " AND sgp.status_name = '{$status}'";
+            }
+        }
 
-//        $list = $listPsr = Psr::getAllPsrMsSQL();
-//
-//        $new_psr = [];
-//        $i = 0;
-//        foreach ($list as $iconv){
-//            $new_psr[$i] = Decoder::arrayToWindows($iconv);
-//            $new_psr[$i]['ready'] = 0;
-//            $i++;
-//        }
-        //var_dump($new_psr);
+        if($user->isPartner()){
+            $listExport = Decoder::arrayToUtf(Psr::getPsrByPartnerMsSQL($user->controlUsers($user->id_user), $filter));
+        } elseif($user->isAdmin() || $user->isManager()){
+            $listExport = Decoder::arrayToUtf(Psr::getAllPsrMsSQL($filter));
+        }
 
-//        foreach ($new_psr as $psr){
-//            Psr::addPsrMsSQL($psr);
-//        }
+        $listExport = array_map(function ($value){
+            $value['manufacture_date'] = Functions::formatDate($value['manufacture_date'], 'd.m.Y');
+            $value['purchase_date'] = Functions::formatDate($value['purchase_date'], 'd.m.Y');
+            $value['created_at'] = Functions::formatDate($value['created_at'], 'Y-m-d');
+            return $value;
+        }, $listExport);
 
-//        $allDocument = Psr::getAllDocumentsInPsr();
-//        $allDocument = array_map(function ($value) {
-//            $value['file_path'] = 'http://generalse.com' . $value['file_path'];
-//            $value['ready'] = 0;
-//            return $value;
-//        },$allDocument);
-//        var_dump($allDocument);
-
-//        foreach ($allDocument as $psr) {
-//            Psr::addDocumentInPsrMsSQL($psr['id_psr'], $psr['file_path'], $psr['file_name'], $psr['ready']);
-//        }
-
+        $this->render('admin/psr/export/psr_ua', compact('listExport', 'user'));
         return true;
     }
 }

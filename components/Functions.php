@@ -20,12 +20,15 @@ class Functions
 
     /**
      * Возращает дату в другом формате
+     *
      * @param $date
+     * @param string $format
+     *
      * @return string
      */
-    public static function formatDate($date)
+    public static function formatDate($date, $format = 'Y-m-d')
     {
-        return date_create($date)->Format('Y-m-d');
+        return date_create($date)->Format($format);
     }
 
 
@@ -211,8 +214,8 @@ class Functions
     public static function replaceSearchResult($search, $result, $charset = 'windows')
     {
         if($charset = 'windows'){
-            $search = iconv('WINDOWS-1251', 'UTF-8', $search);
-            $result = iconv('WINDOWS-1251', 'UTF-8', $result);
+            $search = Decoder::strToUtf($search);
+            $result = Decoder::strToUtf($result);
         }
         return preg_replace("/".$search."/i", "<b class='highlight'>".$search."</b>", $result);
     }
