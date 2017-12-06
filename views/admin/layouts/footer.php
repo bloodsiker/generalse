@@ -33,7 +33,7 @@ if (Umbrella\components\Url::Is_url('/crm/moto')) echo "<script src='/template/a
 if (Umbrella\components\Url::Is_url('/adm/psr')) echo "<script src='/template/admin/js/psr.js?v.1.7'></script>";
 if (Umbrella\components\Url::Is_url('/crm/supply')) echo "<script src='/template/admin/js/supply.js?v.1.6'></script>";
 if (Umbrella\components\Url::Is_url('/crm/request')) echo "<script src='/template/admin/js/vendor/jquery.form.js'></script>
-<script src='/template/admin/js/request.js?v.2.1.3'></script>";
+<script src='/template/admin/js/request.js?v.2.1.4'></script>";
 if (Umbrella\components\Url::Is_url('/crm/other-request')) echo "<script src='/template/admin/js/other_request.js?v.1.5.0'></script>";
 if (Umbrella\components\Url::Is_url('/ccc')) echo "<script src='/template/admin/js/ccc/knowledge.js'></script>";
 if (Umbrella\components\Url::Is_url(['/adm/lithographer', '/adm/ccc/tree_knowledge/article'])) echo "

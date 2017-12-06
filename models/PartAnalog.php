@@ -3,6 +3,7 @@
 namespace Umbrella\models;
 
 use PDO;
+use Umbrella\components\Db\MsSQL;
 use Umbrella\components\Db\MySQL;
 
 class PartAnalog
@@ -106,5 +107,40 @@ class PartAnalog
         $result->bindParam(':part_analog', $part_analog, PDO::PARAM_STR);
         $result->bindParam(':comment', $r_comment, PDO::PARAM_STR);
         return $result->execute();
+    }
+
+
+    /**
+     * Part analog
+     * @param $part_number
+     *
+     * @return mixed
+     */
+    public static function getAnalogByPartNumberMsSQL($part_number)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "SELECT
+                  tbl_GoodsNamesAnalogs.GoodsNameID,
+                  tbl_GoodsNames.PartNumber,
+                  tbl_GoodsNames.mName
+                FROM tbl_GoodsNamesAnalogs
+                  INNER JOIN tbl_GoodsNames
+                    ON tbl_GoodsNamesAnalogs.GoodsNameID = tbl_GoodsNames.I_D
+                WHERE
+                  tbl_GoodsNamesAnalogs.IdentityColums IN
+                  (SELECT IdentityColums
+                   FROM tbl_GoodsNamesAnalogs
+                     INNER JOIN tbl_GoodsNames tGN
+                       ON tbl_GoodsNamesAnalogs.GoodsNameID = tGN.I_D
+                   WHERE
+                     tGN.PartNumber = :part_number)
+                  AND tbl_GoodsNames.PartNumber != :part_number";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':part_number', $part_number, PDO::PARAM_STR);
+        $result->execute();
+        $all = $result->fetchAll(PDO::FETCH_ASSOC);
+        return $all;
     }
 }

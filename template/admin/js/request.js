@@ -121,6 +121,25 @@ let checkColor = function (event) {
     }
 };
 
+// get part analog for GM
+let partAnalogGM = function (value) {
+    $('.load_part_number').html('<i class="fa fa-spin fa-spinner"></i>');
+    let user_id = $('#user_id_analog').val();
+    let part_number = value;
+    $.ajax({
+        url: "/adm/crm/request/request_ajax",
+        type: "POST",
+        data: {part_number : part_number, action : 'find_analog_gm', user_id : user_id},
+        cache: false,
+        success: function (response) {
+            console.log(response);
+            $('#analog-in-stocks').html(response);
+            $('.load_part_number').html('');
+        }
+    });
+    return false;
+};
+
 
 //PART NUMBER SEARCH
 $('[name="part_number"]').keyup(function(e) {

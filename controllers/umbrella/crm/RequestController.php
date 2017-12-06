@@ -426,6 +426,7 @@ class RequestController extends AdminBase
     public function actionRequestAjax()
     {
         $user = $this->user;
+        $group = new Group();
 
         // Редактируем парт номер
         if($_REQUEST['action'] == 'edit_pn'){
@@ -660,6 +661,43 @@ class RequestController extends AdminBase
             $part_desc= $_REQUEST['part_desc'];
             RequestMail::getInstance()->sendEmailContentManager($part_number, $part_desc);
             print_r(200);
+        }
+
+        // Поиск аналогов в GM
+        if($_REQUEST['action'] == 'find_analog_gm'){
+            $part_number = trim($_REQUEST['part_number']);
+            $userID = (int)$_REQUEST['user_id'];
+            $listAnalog = Decoder::arrayToUtf(PartAnalog::getAnalogByPartNumberMsSQL($part_number));
+
+            $stocks_group = $group->stocksFromGroup($user->idGroupUser($userID), 'name', 'request');
+
+//            $listAnalog = [
+//                [
+//                    'GoodsNameID' => '74203',
+//                    'PartNumber' => '03X6657',
+//                    'mName' => 'Оперативная память 8GB DDR3L 1600 SODIMM',
+//                ],
+//                [
+//                    'GoodsNameID' => '78178',
+//                    'PartNumber' => '11200504',
+//                    'mName' => 'Модуль памяти NBC LV SS M471B1G73BH0-YK0 DDR3L1600 8GB',
+//                ],
+//                [
+//                    'GoodsNameID' => '78173',
+//                    'PartNumber' => '01018141001W',
+//                    'mName' => 'Модуль памяти NBC LV SS M471B1G73BH0-YK0 DDR3L1600 8GB',
+//                ]
+//            ];
+
+            $analogPartInStocks = [];
+            $i = 0;
+            foreach ($listAnalog as $part){
+                $analogPartInStocks[$i]['PartNumber'] = $part['PartNumber'];
+                $analogPartInStocks[$i]['mName'] = $part['mName'];
+                $analogPartInStocks[$i]['stocks'] = Stocks::checkInStockAndReplaceName($userID, $stocks_group, $part['PartNumber'], $user);
+                $i++;
+            }
+            $this->render('admin/crm/request/_part/request_part_analog_show', compact('analogPartInStocks', 'user'));
         }
 
         return true;

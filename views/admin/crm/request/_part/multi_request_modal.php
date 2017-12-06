@@ -105,7 +105,7 @@
                         </div>
 
                         <div class="medium-9 small-9 columns">
-                            <label>Парт номер <span id="load_part_number"></span></label>
+                            <label>Парт номер <span class="load_part_number"></span></label>
                             <input type="text" class="required" name="multi_part_number" autocomplete="off" required>
                         </div>
 

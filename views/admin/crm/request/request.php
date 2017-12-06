@@ -26,6 +26,10 @@
                                     <button class="button primary tool" id="add-multi-request-button"><i class="fi-plus"></i> Multi Request</button>
                                 <?php endif;?>
 
+                                <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.part_analog_gm', 'view')): ?>
+                                    <button data-open="find-part-analog-gm"  class="button primary tool"><i class="fi-plus"></i> Part Analog GM</button>
+                                <?php endif;?>
+
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.import', 'view')): ?>
                                     <button data-open="add-request-import-modal" class="button primary tool"><i class="fi-plus"></i> Import request</button>
                                 <?php endif;?>
@@ -279,6 +283,9 @@
     <?php require(views_path('admin/crm/request/_part/multi_request_modal.php'))?>
 <?php endif; ?>
 
+<?php if (Umbrella\app\AdminBase::checkDenied('crm.request.part_analog_gm', 'view')): ?>
+    <?php require(views_path('admin/crm/request/_part/request_part_analog_gm.php'))?>
+<?php endif; ?>
 
 <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.price', 'view')): ?>
     <?php require(views_path('admin/crm/request/_part/request_price.php'))?>
