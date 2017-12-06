@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="/template/admin/css/app.css">
     <link rel="stylesheet" href="/template/admin/css/fonts.css">
     <link rel="stylesheet" href="/template/admin/fonts/foundation-icons/foundation-icons.css">
-    <link rel="stylesheet" href="/template/admin/css/style.css?v.2.0.5">
+    <link rel="stylesheet" href="/template/admin/css/style.css?v.2.0.6">
     <link rel="stylesheet" href="/template/admin/font-awesome/css/font-awesome.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/5.0.0/video-js.min.css" rel="stylesheet">
 

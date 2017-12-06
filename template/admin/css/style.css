@@ -19,6 +19,9 @@ hr{
 }
 .tooltip {
   max-width: 16rem !important;
+  opacity: 1 !important;
+  font-size: 13px;
+  padding: 5px 5px!important;
 }
 .reveal{
   overflow: hidden;!important;
