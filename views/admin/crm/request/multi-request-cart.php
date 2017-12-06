@@ -5,6 +5,8 @@ if(is_array($multiRequestCart)){
     foreach ($multiRequestCart as $product){
         $totalCount += $product['part_quantity'] * $product['price'];
     }
+    $userCartArray = $multiRequestCart;
+    $userCurrency = array_shift($userCartArray)['user_currency'];
 }
 
 ?>
@@ -13,7 +15,7 @@ if(is_array($multiRequestCart)){
     <table class="umbrella-table">
         <tr>
             <td>Общая стоимость:</td>
-            <td class="text-right"><?= number_format($totalCount, 2, '.', ' ')?> <?=$user->getInfoUserGM()['ShortName']?></td>
+            <td class="text-right"><?= number_format($totalCount, 2, '.', ' ')?> <?=$userCurrency?></td>
         </tr>
     </table>
 
@@ -48,7 +50,7 @@ if(is_array($multiRequestCart)){
                         <?php $sumPrice = number_format($cart['price'] * $cart['part_quantity'], 2, '.', ' ')?>
 
                         <?= round($cart['price'], 2)?> x <?= $cart['part_quantity']?> = <?= $sumPrice?>
-                        <?=$user->getInfoUserGM()['ShortName']?>
+                        <?= $cart['user_currency']?>
                     </td>
                 </tr>
                 <tr>

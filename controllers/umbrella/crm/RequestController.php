@@ -13,6 +13,7 @@ use Umbrella\components\ImportExcel;
 use Umbrella\components\Logger;
 use Umbrella\models\Admin;
 use Umbrella\models\crm\Request;
+use Umbrella\models\Currency;
 use Umbrella\models\File;
 use Umbrella\models\GroupModel;
 use Umbrella\models\Orders;
@@ -141,9 +142,9 @@ class RequestController extends AdminBase
 
         } elseif($user->role == 'administrator' || $user->role == 'administrator-fin'){
 
-            //$listCheckOrders = Request::getAllReserveOrdersMsSQL(0, 1);
-            //$listCheckOrders = Functions::getUniqueArray('number', $listCheckOrders);
-            $listCheckOrders = [];
+            $listCheckOrders = Request::getAllReserveOrdersMsSQL(0, 1);
+            $listCheckOrders = Functions::getUniqueArray('number', $listCheckOrders);
+            //$listCheckOrders = [];
             $listRemovedRequest = Decoder::arrayToUtf(Request::getAllReserveOrdersMsSQL(0, 0));
             //$listRemovedRequest = [];
 
@@ -383,19 +384,33 @@ class RequestController extends AdminBase
         if($_REQUEST['action'] == 'part-stock') {
             $part_number = $_REQUEST['part_number']; //SB18C01336
             $quantity = $_REQUEST['quantity'];
+            $user_id = $_REQUEST['user_id'];
             $result = [];
 
+            $userID = $user_id != 'false' ? $user_id : $user->getId();
+
+            $userClient = Admin::getInfoGmUser($user_id);
 
             $infoPart = Products::checkPartNumberInGM($part_number);
             //$stocks_group = explode(',', 'BAD,Not Used,Restored,Dismantling,Local Source'); 12
-            $stocks_group = $group->stocksFromGroup($user->idGroupUser($user->getId()), 'name', 'request');
-            $partInStock = Stocks::checkInStockAndReplaceName($user->getId(), $stocks_group, $part_number);
+            $stocks_group = $group->stocksFromGroup($user->idGroupUser($userID), 'name', 'request');
+            $partInStock = Stocks::checkInStockAndReplaceName($userID, $stocks_group, $part_number, $user);
 
             if(sizeof($partInStock) > 0){
                 $result['status'] = 200;
+                $result['user_role'] = $user->role;
+                $result['request_user_id'] = $userID;
+                $result['user_currency'] = $userClient['ShortName'];
+                $result['rate_currency_usd'] = Currency::getRatesCurrency('usd')['OutputRate'];
+                $result['rate_currency_euro'] = Currency::getRatesCurrency('euro')['OutputRate'];
                 $result['stocks'] = Decoder::arrayToUtf($partInStock);
             } else {
                 $result['status'] = 404;
+                $result['user_role'] = $user->role;
+                $result['user_request_id'] = $userID;
+                $result['user_currency'] = $userClient['ShortName'];
+                $result['rate_currency_usd'] = Currency::getRatesCurrency('usd')['OutputRate'];
+                $result['rate_currency_euro'] = Currency::getRatesCurrency('euro')['OutputRate'];
             }
             $result['goods_name'] = Decoder::arrayToUtf([$infoPart['mName']]);
 
@@ -515,7 +530,9 @@ class RequestController extends AdminBase
 
             $saveToCart = [];
 
-            $options['site_account_id'] = $user->getID();
+            $userRequestId = (int)$_REQUEST['request_user_id'];
+
+            $options['site_account_id'] = $userRequestId;
             $options['part_number'] = trim($_REQUEST['multi_part_number']);
             if($_REQUEST['part_quantity'] > $_REQUEST['stock_count'] && $_REQUEST['stock_name'] != 'ЗАПРОС НА ПОСТАВКУ'){
                 $options['part_quantity'] = $_REQUEST['stock_count'];
@@ -523,11 +540,12 @@ class RequestController extends AdminBase
                 $options['part_quantity'] = $_REQUEST['part_quantity'];
             }
             $options['goods_name'] = Decoder::strToWindows($_REQUEST['goods_name']);
-            $price = Products::getPricePartNumber($options['part_number'], $user->getId());
+            $price = Products::getPricePartNumber($options['part_number'], $userRequestId);
             //$options['price'] = ($price['price'] != 0) ? round($price['price'], 2) : 0;
             $options['price'] = ($_REQUEST['pn_price'] != 0) ? $_REQUEST['pn_price'] : $price['price'];
             $options['number'] = $lastNumber;
             $options['period'] = $_REQUEST['period'];
+            $options['user_currency'] = $_REQUEST['user_currency'];
             $options['note1'] = $_REQUEST['note1'];
             $options['stock_id'] = isset($_REQUEST['stock_id']) ? $_REQUEST['stock_id'] : null;
             $options['stock_name'] = $_REQUEST['stock_name'];
@@ -589,7 +607,7 @@ class RequestController extends AdminBase
 
                     if ($stock_count >= $i) {
                         $options['stock_id'] = $product['stock_id'];
-                        $stock_name = $product['stock_name'];
+                        $stock_name = Stocks::replaceNameStockInResultTable($product['stock_name'], 'partner');
                         $options['status_name'] = Decoder::strToWindows('Создан запрос со склада ' . $stock_name);
                     } else {
                         $options['stock_id'] = null;
@@ -636,6 +654,14 @@ class RequestController extends AdminBase
                 print_r(200);
             }
         }
+
+        if($_REQUEST['action'] == 'send_content_manager'){
+            $part_number = $_REQUEST['part_number'];
+            $part_desc= $_REQUEST['part_desc'];
+            RequestMail::getInstance()->sendEmailContentManager($part_number, $part_desc);
+            print_r(200);
+        }
+
         return true;
     }
 

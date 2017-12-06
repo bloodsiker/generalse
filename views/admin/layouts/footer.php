@@ -5,6 +5,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <script src="/template/admin/js/vendor/jquery.js"></script>
 <script src="/template/admin/js/vendor/js-ui.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
 <script src="/template/admin/js/calendar-local-eng.js"></script>
 <script src="/template/admin/js/vendor/what-input.js"></script>
 <script src="/template/admin/js/vendor/foundation.min.js"></script>
@@ -15,30 +16,56 @@
 <script src="/template/admin/js/kpi.js"></script>
 <script src="/template/admin/plugins/jquery-search/jquery.filtertable.min.js"></script>
 
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
 <!-- switch  -->
 <?php
-if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/dashboard')) echo "<script src='/template/admin/js/dashboard.js'></script>";
-if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/user')) echo "<script src='/template/admin/js/users.js?v.1.9.2'></script>";
-if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/stocks')) echo "<script src='/template/admin/js/stocks.js?v.1.6'></script>";
-if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/returns')) echo "<script src='/template/admin/js/returns.js'></script>";
-if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/orders')) echo "<script src='/template/admin/js/orders.js?v.1.6'></script>";
-if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/purchase')) echo "<script src='/template/admin/js/purchase.js?v.1.5'></script>";
-if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/disassembly')) echo "<script src='/template/admin/js/disassembly.js?v.1.5.0'></script>";
-if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/moto')) echo "<script src='/template/admin/js/moto.js'></script>";
-if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/adm/psr')) echo "<script src='/template/admin/js/psr.js?v.1.6'></script>";
-if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/supply')) echo "<script src='/template/admin/js/supply.js?v.1.6'></script>";
-if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/request')) echo "<script src='/template/admin/js/vendor/jquery.form.js'></script>
-<script src='/template/admin/js/request.js?v.2.1.1'></script>";
-if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/crm/other-request')) echo "<script src='/template/admin/js/other_request.js'></script>";
-if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/ccc')) echo "<script src='/template/admin/js/ccc/knowledge.js'></script>";
-if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/adm/lithographer') ||
-    Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/adm/ccc/tree_knowledge/article')) echo "
+if (Umbrella\components\Url::Is_url('/dashboard')) echo "<script src='/template/admin/js/dashboard.js'></script>";
+if (Umbrella\components\Url::Is_url('/user')) echo "<script src='/template/admin/js/users.js?v.1.9.2'></script>";
+if (Umbrella\components\Url::Is_url('/crm/stocks')) echo "<script src='/template/admin/js/stocks.js?v.1.8'></script>";
+if (Umbrella\components\Url::Is_url('/crm/returns')) echo "<script src='/template/admin/js/returns.js'></script>";
+if (Umbrella\components\Url::Is_url('/crm/orders')) echo "<script src='/template/admin/js/orders.js?v.1.6'></script>";
+if (Umbrella\components\Url::Is_url('/crm/purchase')) echo "<script src='/template/admin/js/purchase.js?v.1.5'></script>";
+if (Umbrella\components\Url::Is_url('/crm/disassembly')) echo "<script src='/template/admin/js/disassembly.js?v.1.5.0'></script>";
+if (Umbrella\components\Url::Is_url('/crm/moto')) echo "<script src='/template/admin/js/moto.js'></script>";
+if (Umbrella\components\Url::Is_url('/adm/psr')) echo "<script src='/template/admin/js/psr.js?v.1.7'></script>";
+if (Umbrella\components\Url::Is_url('/crm/supply')) echo "<script src='/template/admin/js/supply.js?v.1.6'></script>";
+if (Umbrella\components\Url::Is_url('/crm/request')) echo "<script src='/template/admin/js/vendor/jquery.form.js'></script>
+<script src='/template/admin/js/request.js?v.2.1.3'></script>";
+if (Umbrella\components\Url::Is_url('/crm/other-request')) echo "<script src='/template/admin/js/other_request.js?v.1.5.0'></script>";
+if (Umbrella\components\Url::Is_url('/ccc')) echo "<script src='/template/admin/js/ccc/knowledge.js'></script>";
+if (Umbrella\components\Url::Is_url(['/adm/lithographer', '/adm/ccc/tree_knowledge/article'])) echo "
   <script src='https://cdnjs.cloudflare.com/ajax/libs/video.js/5.0.0/video.min.js'></script>
   <script src='/template/admin/js/lithographer.js'></script>
   <script src='/template/admin/plugins/ckeditor/ckeditor.js'></script>
   ";
 
 ?>
+
+<script>
+    toastr.options.timeOut = '10000';
+
+    let showNotification = function (message, type) {
+        switch (type) {
+            case 'success':
+                toastr.success(message);
+                break;
+            case 'error':
+                toastr.error(message);
+                break;
+            case 'warning':
+                toastr.warning(message);
+                break;
+            case 'info':
+                toastr.info(message);
+                break;
+            default:
+                toastr.warning('Не известная ошибка!');
+        }
+    };
+</script>
 
 <script>
     new Clipboard('.btn-clip');
@@ -59,22 +86,11 @@ if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/adm/lithographer'
 </script>
 
 
-<?php if(Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/adm/lithographer') ||
-        Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/adm/ccc/tree_knowledge/article')):?>
+<?php if(Umbrella\components\Url::Is_url(['/adm/lithographer', '/adm/ccc/tree_knowledge/article'])):?>
     <script>
         CKEDITOR.replace('ck_rules');
         CKEDITOR.replace('ck_tips');
         CKEDITOR.replace('edit');
-
-        //    CKEDITOR.replace( 'ck_rules',
-        //        {
-        //            filebrowserBrowseUmbrella\components\Url : '/ckfinder/ckfinder.html',
-        //            filebrowserImageBrowseUmbrella\components\Url : '/ckfinder/ckfinder.html?type=Images',
-        //            filebrowserFlashBrowseUmbrella\components\Url : '/ckfinder/ckfinder.html?type=Flash',
-        //            filebrowserUploadUmbrella\components\Url : '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
-        //            filebrowserImageUploadUmbrella\components\Url : '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
-        //            filebrowserFlashUploadUmbrella\components\Url : '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash'
-        //        });
     </script>
 <?php endif;?>
 

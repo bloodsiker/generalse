@@ -33,7 +33,7 @@ class StockService
         $groupStocksNoReplaceQuantity = [
             'Lenovo'        => ['BAD', 'Not Used', 'Restored', 'Dismantling', 'Local Source', 'SWAP'],
             'Electrolux'    => ['OK (Выборгская, 104)', 'OK (KVAZAR)'],
-            'GE'            => [],
+            'GE'            => ['OK'],
             'Lenovo ПСР'    => [],
             'UKRAINE OOW'   => []
         ];

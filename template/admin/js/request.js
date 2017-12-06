@@ -196,25 +196,33 @@ $(document).on('change', 'select[name="note"]', function (e) {
 // Мульти реквест
 let multiPartNumber = function (e) {
     $('#load_part_number').html('<i class="fa fa-spin fa-spinner"></i>');
+    $('#send-content').addClass('hide');
     let part_number = $("#add-multi-request-form [name='multi_part_number']").val();
     let quantity = $("#add-multi-request-form [name='part_quantity']").val();
+    let user_id = $("#add-multi-request-form [name='user_id']").val() || false;
     if(validCount({value:quantity})){
-
+        const pay = {
+            currency: '',
+            rate_currency_usd: '',
+            rate_currency_euro: ''
+        };
 
         $.ajax({
             url: "/adm/crm/request/price_part_ajax",
             type: "POST",
-            data: {action : 'part-stock', part_number : part_number, quantity : quantity},
+            data: {action : 'part-stock', part_number : part_number, quantity : quantity, user_id : user_id},
             cache: false,
             success: function (response) {
                 console.log(response);
                 let obj = JSON.parse(response);
-                console.log(obj);
 
+                $('[name="request_user_id"]').val(obj.request_user_id);
+                $('[name="user_currency"]').val(obj.user_currency);
 
                 let notStockFunc = () => {
                     $('[name="stock_name"]').val('');
                     $('[name="stock_price"]').val('');
+                    $('[name="stock_price_other"]').val('');
                     $('[name="stock_count"]').val('0');
                     $('[name="pn_price"]').val('0');
                     $("#add-multi-request-form [name='goods_name']").val(obj.goods_name[0]);
@@ -222,6 +230,13 @@ let multiPartNumber = function (e) {
                     $("[name='stock_id']").html('<option value="">ЗАПРОС НА ПОСТАВКУ</option>');
                     $('[name="stock_name"]').val('ЗАПРОС НА ПОСТАВКУ');
                 };
+
+                // Is not found part number in db
+                if(!obj.goods_name[0]){
+                    $('#send-content').removeClass('hide');
+                } else {
+                    $('#send-content').addClass('hide');
+                }
 
                 if(obj.status == 200){
 
@@ -270,7 +285,12 @@ let multiPartNumber = function (e) {
                         });
                     } else {
                         Object.keys(obj.stocks).forEach(key => {
-                            let count = +obj.stocks[key].quantity > +quantity ? quantity : obj.stocks[key].quantity;
+                            let count;
+                            if(obj.user_role == 'partner'){
+                                count = +obj.stocks[key].quantity > +quantity ? quantity : obj.stocks[key].quantity;
+                            } else {
+                                count = +obj.stocks[key].quantity;
+                            }
 
                             arr.push({
                                 title: key,
@@ -281,10 +301,32 @@ let multiPartNumber = function (e) {
                         });
                     }
 
+                    if(obj.user_currency === 'usd'){
+                        pay.currency = obj.user_currency;
+                        pay.rate_currency_usd = obj.rate_currency_usd;
+                        pay.rate_currency_euro = obj.rate_currency_euro;
+                        $('#first_price_currency').html(obj.user_currency);
+                        $('#last_price_currency').html('uah');
+                    } else if(obj.user_currency === 'uah') {
+                        pay.currency = obj.user_currency;
+                        pay.rate_currency_usd = obj.rate_currency_usd;
+                        pay.rate_currency_euro = obj.rate_currency_euro;
+                        $('#first_price_currency').html(obj.user_currency);
+                        $('#last_price_currency').html('usd');
+                    } else if(obj.user_currency === 'euro')  {
+                        pay.currency = obj.user_currency;
+                        pay.rate_currency_usd = obj.rate_currency_usd;
+                        pay.rate_currency_euro = obj.rate_currency_euro;
+                        $('#first_price_currency').html(obj.user_currency);
+                        $('#last_price_currency').html('uah');
+                    }
+
+
                     if (arr.length) {
                         $('[name="stock_count"]').val('');
                         $('[name="stock_name"]').val('');
                         $('[name="stock_price"]').val('');
+                        $('[name="stock_price_other"]').val('');
                         $('[name="pn_price"]').val('');
                         $('.stocks-view').html('');
                         $('.stocks-view').html('<li style="color: #09c509;">Найдено на складах:</li>');
@@ -306,20 +348,56 @@ let multiPartNumber = function (e) {
         });
 
         $(document).on('change', '[name="stock_id"]', function (e) {
+
             let count = $(this).find('option:selected').attr('data-count');
             let stock_name = $(this).find('option:selected').attr('data-stock-name');
             let stock_price = $(this).find('option:selected').attr('data-price');
             $('[name="stock_count"]').val(count);
             $('[name="stock_name"]').val(stock_name);
-            $('[name="stock_price"]').val(stock_price);
             $('[name="pn_price"]').val(stock_price);
+
+            $('[name="stock_price"]').val(stock_price);
+            let last_price;
+            if(pay.currency === 'usd'){
+                last_price = (stock_price * pay.rate_currency_usd);
+            } else if(pay.currency === 'uah') {
+                last_price = (stock_price / pay.rate_currency_usd);
+            } else if(pay.currency === 'euro'){
+                last_price = (stock_price / pay.rate_currency_euro);
+            }
+
+            $('#last_price').val(last_price.toFixed(2));
         })
     }
 
 };
 $("#add-multi-request-form [name='multi_part_number'], #add-multi-request-form [name='part_quantity']").keyup(function(e) {
+    if(e.target.value < 1){
+        return false;
+    }
     multiPartNumber(e);
 });
+$(document).on('click', '#send-content', function (e) {
+    sendContentManager(e);
+});
+let sendContentManager = function (e) {
+    let part_number = $("#add-multi-request-form [name='multi_part_number']").val();
+    let part_desc = $("#add-multi-request-form [name='goods_name']").val();
+    $.ajax({
+        url: "/adm/crm/request/request_ajax",
+        type: "POST",
+        data: {part_number : part_number, action : 'send_content_manager', part_desc : part_desc},
+        cache: false,
+        success: function (response) {
+            if(response == 200){
+                showNotification('Увеломление успешно отправленно!', 'success');
+            } else {
+                showNotification('Не удалось отправить письмо', 'error');
+            }
+        }
+    });
+    return false;
+};
 
 
 // Востановляем реквест
@@ -367,7 +445,8 @@ $(document).on('click', '.restored', function (e) {
 // Добавляем в корзину
 $('#add-multi-request-form').submit(function(e) {
     e.preventDefault();
-    if ($('#add-multi-request-form input').hasClass('is-invalid-input')) { // проверка на валидность
+    if ($('#add-multi-request-form input').hasClass('is-invalid-input')
+        || $('#add-multi-request-form select').hasClass('is-invalid-input')) { // проверка на валидность
         return false;
     } else {
         e.preventDefault();
@@ -384,6 +463,7 @@ $('#add-multi-request-form').submit(function(e) {
                 $('#cart-container').html('');
                 $('#cart-container').html(response);
                 $('#add-multi-request-modal form')[0].reset();
+                $('.selectpicker').selectpicker('refresh');
                 $('.stocks-view').html('');
             }
         });

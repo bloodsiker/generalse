@@ -7,16 +7,22 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GS Umbrella</title>
+    <?php if (Umbrella\components\Url::Is_url(['/adm/crm/request', '/adm/psr'])): ?>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+    <?php endif; ?>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <link rel="stylesheet" href="/template/admin/css/foundation.min.css">
     <link rel="stylesheet" href="/template/admin/css/app.css">
     <link rel="stylesheet" href="/template/admin/css/fonts.css">
     <link rel="stylesheet" href="/template/admin/fonts/foundation-icons/foundation-icons.css">
-    <link rel="stylesheet" href="/template/admin/css/style.css?v.2.0.3">
+    <link rel="stylesheet" href="/template/admin/css/style.css?v.2.0.5">
     <link rel="stylesheet" href="/template/admin/font-awesome/css/font-awesome.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/5.0.0/video-js.min.css" rel="stylesheet">
+
     <?php
 
-    if (Umbrella\components\Url::Is_url($_SERVER['REQUEST_URI'], '/ccc')) echo "<link rel='stylesheet' href='/template/admin/css/ccc_style.css'>";
+    if (Umbrella\components\Url::Is_url('/ccc')) echo "<link rel='stylesheet' href='/template/admin/css/ccc_style.css'>";
     ?>
     <style>
         .yellow {

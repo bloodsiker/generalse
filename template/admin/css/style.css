@@ -8,6 +8,9 @@ html {
 a {
   color: #fff;
 }
+a:hover{
+  text-decoration: none;
+}
 hr{
   margin: 3px 0;
 }
@@ -1297,4 +1300,11 @@ td select {
 
 .bs-searchbox .form-control {
   color: #000000 !important;
+}
+#send-content{
+  background: #fff;
+  padding: 2px 5px;
+  color: orange;
+  border-radius: 3px;
+  cursor: pointer;
 }
