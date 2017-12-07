@@ -9,6 +9,7 @@ use Umbrella\components\Decoder;
 use Umbrella\components\ImportExcel;
 use Umbrella\components\Logger;
 use Umbrella\models\Admin;
+use Umbrella\models\Currency;
 use Umbrella\models\GroupModel;
 use Umbrella\models\Orders;
 use Umbrella\models\Products;
@@ -453,20 +454,35 @@ class OrderController extends AdminBase
      */
     public function actionShowDetailOrders()
     {
+        $user = $this->user;
+
         $order_id = $_REQUEST['order_id'];
-        $data = Decoder::arrayToUtf(Orders::getShowDetailsOrdersMsSql($order_id));
-        $html = "";
-        foreach($data as $item){
-            $html .= "<tr>";
-            $html .= "<td>" . $item['part_number'] . "</td>";
-            $html .= "<td>" . $item['goods_name'] . "</td>";
-            $html .= "<td>" . $item['so_number'] . "</td>";
-            $html .= "<td>" . Stocks::replaceNameStockInResultTable($item['stock_name'], $this->user->getRole()) . "</td>";
-            $html .= "<td>" . $item['quantity'] . "</td>";
-            $html .= "<td>" . round($item['price'], 2) . "</td>";
-            $html .= "</tr>";
+        $user_id = $_REQUEST['user_id'];
+        $ordersElements = Decoder::arrayToUtf(Orders::getShowDetailsOrdersMsSql($order_id));
+        $userClient = Decoder::arrayToUtf(Admin::getInfoGmUser($user_id));
+        $rateCurrencyUsd = Currency::getRatesCurrency('usd')['OutputRate'];
+
+        $ordersElements = array_map(function ($value) use ($user, $userClient, $rateCurrencyUsd) {
+            if($userClient['ShortName'] == 'usd') {
+                $value['price_usd'] = round($value['price'], 2);
+                $value['price_uah'] = round($value['price'] * $rateCurrencyUsd, 2);
+            } elseif ($userClient['ShortName'] == 'uah') {
+                $value['price_usd'] = round($value['price'] / $rateCurrencyUsd, 2);
+                $value['price_uah'] = round($value['price'], 2);
+            }
+            $value['stock_name'] = Stocks::replaceNameStockInResultTable($value['stock_name'], $user->getRole());
+            $value['price'] = round($value['price'], 2);
+            return $value;
+        }, $ordersElements);
+
+        $sumPriceUsd = 0;
+        $sumPriceUah = 0;
+        foreach ($ordersElements as $element){
+            $sumPriceUsd += $element['quantity'] * $element['price_usd'];
+            $sumPriceUah += $element['quantity'] * $element['price_uah'];
+
         }
-        print_r($html);
+        $this->render('admin/crm/orders/_part/show_details', compact('user', 'ordersElements', 'sumPriceUsd', 'sumPriceUah', 'userClient'));
         return true;
     }
 

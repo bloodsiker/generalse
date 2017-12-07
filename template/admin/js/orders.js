@@ -263,23 +263,20 @@ $('#add-checkout-form').submit(function(e) {
 });
 
 // Показываем в модальном окне, продукты заказа
-$(document).on('dblclick', '.checkout tbody tr', function(e) {
-    var order_id = $(this).attr('data-order-id');
+let showDetailOrders = (order_id, user_id) => {
 
     $.ajax({
         url: "/adm/crm/show_orders",
         type: "POST",
-        data: {order_id : order_id},
+        data: {order_id : order_id, user_id : user_id},
         cache: false,
         success: function (response) {
-            //alert(response);
             $('#show-details').foundation('open');
             $('#container-details').html(response);
         }
     });
-
     return false;
-});
+};
 
 
 
