@@ -41,12 +41,12 @@ let checkColor = function (event) {
 };
 
 // get prices and show in modal
-let getPricesProduct = (good_id, part_number, goods_name) => {
+let getPricesProduct = (good_id, part_number, goods_name, user_id) => {
     $('#container-prices').html('');
     $.ajax({
         url: "/adm/crm/stocks_ajax",
         type: "POST",
-        data: {good_id : good_id, action : 'get_prices', part_number : part_number, goods_name : goods_name},
+        data: {good_id : good_id, action : 'get_prices', part_number : part_number, goods_name : goods_name, user_id : user_id},
         cache: false,
         success: function (response) {
             $('#show-prices-modal').foundation('open');

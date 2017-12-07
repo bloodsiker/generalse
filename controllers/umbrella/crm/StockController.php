@@ -150,10 +150,12 @@ class StockController extends AdminBase
             $goodID = (int)$_REQUEST['good_id'];
             $part_number = $_REQUEST['part_number'];
             $goods_name = $_REQUEST['goods_name'];
+            $user_id = (int)$_REQUEST['user_id'];
             $prices = Currency::getPartnersCurrencyByGoodsID($goodID);
             $currencyUsd = Currency::getRatesCurrency('usd');
-            //$stockDecompile = '';
-            $this->render('admin/crm/stocks/_part/show_prices_modal', compact('prices', 'currencyUsd', 'part_number', 'goods_name'));
+            $stockDecompile = Stocks::checkGoodsInDecompileStocksPartners($user_id, $part_number);
+            $this->render('admin/crm/stocks/_part/show_prices_modal', compact('prices', 'currencyUsd',
+                'part_number', 'goods_name', 'stockDecompile'));
             return true;
         }
     }

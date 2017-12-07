@@ -160,19 +160,7 @@ class Orders
         $db = MsSQL::getConnection();
 
         $data = $db->query("SELECT
-                              sgo.site_id,
-                              sgo.order_id,
-                              sgo.order_number,
-                              sgo.site_account_id,
-                              sgo.so_number,
-                              sgo.status_name,
-                              sgo.created_on,
-                              sgo.shipped_on,
-                              sgo.command,
-                              sgo.note,
-                              sgo.note1,
-                              sgo.command_text,
-                              sgo.request_id,
+                              sgo.*,
                               sgu.site_client_name,
                               sgu.status_name as site_client_status,
                               sgot.name as type_name
@@ -264,18 +252,7 @@ class Orders
         $db = MsSQL::getConnection();
         $idS = implode(',', $array_id);
         $sql = "SELECT
-                   sgo.site_id,
-                   sgo.order_id,
-                   sgo.order_number,
-                   sgo.site_account_id,
-                   sgo.so_number,
-                   sgo.status_name,
-                   sgo.created_on,
-                   sgo.shipped_on,
-                   sgo.note,
-                   sgo.note1,
-                   sgo.command_text,
-                   sgo.request_id,
+                   sgo.*,
                    sgu.site_client_name,
                    sgu.status_name as site_client_status,
                    sgot.name as type_name

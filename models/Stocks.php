@@ -187,6 +187,39 @@ class Stocks
 
 
     /**
+     * Find part in stocks decompile
+     * @param $id_partner
+     * @param $part_number
+     *
+     * @return mixed
+     */
+    public static function checkGoodsInDecompileStocksPartners($id_partner, $part_number)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "SELECT
+                 sgt.stock_name,
+                 sgt.quantity,
+                 sgt.price,
+                 sgt.stock_id
+                FROM site_gm_stocks_decompiles sgt
+                INNER JOIN tbl_Users tu
+                    ON sgt.site_account_id = tu.site_gs_account_id
+                INNER JOIN site_gm_users sgu
+                    ON sgu.id = tu.site_gs_account_id
+                WHERE sgu.site_account_id = :id_partner
+                AND sgt.part_number = :part_number";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id_partner', $id_partner, PDO::PARAM_INT);
+        $result->bindParam(':part_number', $part_number, PDO::PARAM_STR);
+        $result->execute();
+        $all = $result->fetch(PDO::FETCH_ASSOC);
+        return $all;
+    }
+
+
+    /**
      *  товары со всех складов всех партнеров
      * @return array
      */

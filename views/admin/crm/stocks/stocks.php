@@ -75,7 +75,11 @@
                     <?php if (isset($allGoodsByPartner)): ?>
                         <?php foreach ($allGoodsByPartner as $goods): ?>
                             <tr class="goods"
-                                ondblclick="getPricesProduct(<?= $goods['goods_name_id']?>, '<?= $goods['part_number']?>', '<?= $goods['goods_name']?>')">
+                                ondblclick="getPricesProduct(
+                                        <?= $goods['goods_name_id']?>,
+                                        '<?= $goods['part_number']?>',
+                                        '<?= $goods['goods_name']?>',
+                                        '<?= $goods['site_account_id']?>')">
                                 <td><?= $goods['site_client_name']?></td>
                                 <td><?= $goods['part_number']?></td>
                                 <td><?= $goods['goods_name']?></td>

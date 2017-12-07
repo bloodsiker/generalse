@@ -9,6 +9,10 @@
             <td>Goods name</td>
             <td><?= $goods_name ?></td>
         </tr>
+        <tr>
+            <td>Кол-во в предразборках</td>
+            <td><?= $stockDecompile['quantity'] ?></td>
+        </tr>
         </tbody>
     </table>
     <table class="umbrella-table" border="1">
