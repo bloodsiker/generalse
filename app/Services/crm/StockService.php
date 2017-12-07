@@ -87,9 +87,9 @@ class StockService
                 $filters .= " AND subtype_name IN('{$subType}')";
             }
 
-            $stocks =  isset($request['stock']) ? $request['stock'] : [];
+            $stocks = $request['stock'] ?? [];
             $stocks = $this->replaceNameStockInFilter($stocks, 'back_replace', $this->user->getRole());
-            $id_partners = isset($_REQUEST['id_partner']) ? $request['id_partner'] : [];
+            $id_partners = $request['id_partner'] ?? [];
 
             $allGoods = Decoder::arrayToUtf(Stocks::getGoodsInStocksPartners($id_partners, $stocks, $filters));
             $allGoods = $this->replaceInfoProduct($allGoods);
@@ -102,9 +102,9 @@ class StockService
                 $filters .= " AND subtype_name IN('{$subType}')";
             }
 
-            $stocks =  isset($request['stock']) ? $request['stock'] : [];
+            $stocks = $request['stock'] ?? [];
             $stocks = $this->replaceNameStockInFilter($stocks, 'back_replace', $this->user->getRole());
-            $id_partners = isset($request['id_partner']) ? $request['id_partner'] : [];
+            $id_partners = $request['id_partner'] ?? [];
 
             $allGoods = Decoder::arrayToUtf(Stocks::getGoodsInStocksPartners($id_partners, $stocks, $filters));
             $allGoods = $this->replaceInfoProduct($allGoods);
