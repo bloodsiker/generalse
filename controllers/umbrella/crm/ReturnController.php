@@ -6,6 +6,7 @@ use Josantonius\Session\Session;
 use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
 use Umbrella\app\User;
+use Umbrella\components\Decoder;
 use Umbrella\components\ImportExcel;
 use Umbrella\components\Logger;
 use Umbrella\models\Admin;
@@ -33,6 +34,7 @@ class ReturnController extends AdminBase
 
     /**
      * @return bool
+     * @throws \Exception
      */
     public function actionReturns()
     {
@@ -43,23 +45,23 @@ class ReturnController extends AdminBase
         $arr_error_return = Session::pull('error_return');
 
         $allReturnsByPartner = [];
-        if($user->role == 'partner' || $user->role == 'manager') {
+        if($user->isPartner() || $user->isManager()) {
             $interval = "";
             if($user->role == 'manager'){
-                $status_1 = iconv('UTF-8', 'WINDOWS-1251', 'Предварительный');
-                $status_2 = iconv('UTF-8', 'WINDOWS-1251', 'В обработке');
+                $status_1 = Decoder::strToWindows('Предварительный');
+                $status_2 = Decoder::strToWindows('В обработке');
                 $interval = " AND (sgs.status_name = '$status_1' OR sgs.status_name = '$status_2')";
             }
 
-            $interval .= " AND sgs.created_on >= DATEADD(day, -14, GETDATE())";
+            $interval .= " AND sgs.created_on >= DATEADD(day, -7, GETDATE())";
             $allReturnsByPartner = Returns::getReturnsByPartner($user->controlUsers($user->id_user), $interval);
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
+        } else if($user->isAdmin()){
 
-            $status_1 = iconv('UTF-8', 'WINDOWS-1251', 'Предварительный');
-            $status_2 = iconv('UTF-8', 'WINDOWS-1251', 'В обработке');
+            $status_1 = Decoder::strToWindows('Предварительный');
+            $status_2 = Decoder::strToWindows('В обработке');
             $interval = " AND (sgs.status_name = '$status_1' OR sgs.status_name = '$status_2')";
-            $interval .= " AND sgs.created_on >= DATEADD(day, -14, GETDATE())";
+            $interval .= " AND sgs.created_on >= DATEADD(day, -7, GETDATE())";
             $allReturnsByPartner = Returns::getAllReturns($interval);
         }
 
@@ -70,6 +72,7 @@ class ReturnController extends AdminBase
 
     /**
      * @return bool
+     * @throws \Exception
      */
     public function actionReturnsAjax()
     {
@@ -82,7 +85,7 @@ class ReturnController extends AdminBase
             $id_return = $_REQUEST['id_return'];
 
             $response['stock'] = $stock;
-            $stock_name = iconv('UTF-8', 'WINDOWS-1251', $stock);
+            $stock_name = Decoder::strToWindows($stock);
             //$ok = Returns::updateStatusReturns($id_return, $stock);
             $ok = Returns::updateStatusAndStockReturns($id_return, $stock_name);
             if($ok){
@@ -111,7 +114,7 @@ class ReturnController extends AdminBase
 
         if($_REQUEST['action'] == 'dismiss'){
             $return_id = $_REQUEST['return_id'];
-            $comment = iconv('UTF-8', 'WINDOWS-1251', $_REQUEST['comment']);
+            $comment = Decoder::strToWindows($_REQUEST['comment']);
             $ok = Returns::updateStatusReturnsGM($return_id, 2, $comment);
             $status = [];
             if($ok){
@@ -131,6 +134,7 @@ class ReturnController extends AdminBase
     /**
      * Import returns
      * @return bool
+     * @throws \Exception
      */
     public function actionImportReturns()
     {
@@ -161,8 +165,8 @@ class ReturnController extends AdminBase
                         $errorReturn = [];
                         $i = 0;
                         foreach($excelArray as $excel){
-                            $insertArray[$i]['so_number'] = iconv('UTF-8', 'WINDOWS-1251', $excel['so_number']);
-                            $insertArray[$i]['stock_name'] = iconv('UTF-8', 'WINDOWS-1251', $excel['stock_name']);
+                            $insertArray[$i]['so_number'] = Decoder::strToWindows($excel['so_number']);
+                            $insertArray[$i]['stock_name'] = Decoder::strToWindows($excel['stock_name']);
                             $insertArray[$i]['order_number'] = $excel['order_number'];
                             $insertArray[$i]['id_user'] = $user->id_user;
                             $ok = Returns::getSoNumberByPartnerInReturn($insertArray[$i]);
@@ -199,7 +203,7 @@ class ReturnController extends AdminBase
 
         $arr_error_return = Session::pull('error_return');
 
-        if($user->role == 'partner' || $user->role == 'manager') {
+        if($user->isPartner() || $user->isManager()) {
 
             $filter = "";
 
@@ -210,7 +214,7 @@ class ReturnController extends AdminBase
             }
             $allReturnsByPartner = Returns::getReturnsByPartner($user->controlUsers($user->id_user), $filter);
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
+        } else if($user->isAdmin()){
 
             $filter = "";
 
@@ -235,7 +239,7 @@ class ReturnController extends AdminBase
     {
         $user = $this->user;
 
-        if($user->role == 'partner'){
+        if($user->isPartner()){
 
             $listExport = [];
             $start = '';
@@ -251,7 +255,7 @@ class ReturnController extends AdminBase
 
             $listExport = Returns::getExportReturnsByPartner($user->controlUsers($user->id_user), $start, $end);
 
-        } elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager' ){
+        } elseif($user->isAdmin() || $user->isManager() ){
 
             $listExport = [];
             $start = '';
@@ -283,14 +287,15 @@ class ReturnController extends AdminBase
     /**
      * Поиск по Возвратам
      * @return bool
+     * @throws \Exception
      */
     public function actionSearch()
     {
         $user = $this->user;
 
-        if($user->role == 'partner' || $user->role == 'manager') {
+        if($user->isPartner() || $user->isManager()) {
 
-            $search = iconv('UTF-8', 'WINDOWS-1251', trim($_REQUEST['search']));
+            $search = Decoder::strToWindows(trim($_REQUEST['search']));
 
             $user_ids = $user->controlUsers($user->id_user);
             $partnerList = Admin::getPartnerControlUsers($user_ids);
@@ -299,9 +304,9 @@ class ReturnController extends AdminBase
             $filter = " AND sgs.site_account_id IN ($idS)";
             $allReturnsByPartner = Returns::getSearchInReturns($search, $filter);
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
+        } else if($user->isAdmin()){
 
-            $search = iconv('UTF-8', 'WINDOWS-1251', trim($_REQUEST['search']));
+            $search = Decoder::strToWindows(trim($_REQUEST['search']));
 
             $partnerList = Admin::getAllPartner();
 
