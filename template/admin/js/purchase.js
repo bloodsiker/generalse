@@ -116,6 +116,12 @@ $('#stock').change(function(e) {
                 .attr('required', '')
                 .parent().show();
             break;
+        case 'ITC Warranty':
+            hideAllInput();
+            $('[name="service_order"], [name="part_number"]')
+                .attr('required', '')
+                .parent().show();
+            break;
         case 'Restored':
             hideAllInput();
             $('[name="part_number"], [name="quantity"]')

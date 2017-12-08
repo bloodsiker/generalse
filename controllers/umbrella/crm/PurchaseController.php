@@ -80,7 +80,7 @@ class PurchaseController extends AdminBase
                         $i = 0;
                         $n = 0;
                         $m = 0;
-                        $stock = iconv('UTF-8', 'WINDOWS-1251', $_POST['stock']);
+                        $stock = Decoder::strToWindows($_POST['stock']);
                         // собираем массив где парт номера найдены в базе
                         foreach($excelArray as $excel){
                             // если выбран сток Local Source, ищем на других складах, естли такие продукты
@@ -97,7 +97,7 @@ class PurchaseController extends AdminBase
                                     } else {
                                         $insertArray[$m]['site_id'] = $lastId;
                                         $insertArray[$m]['part_number'] = $excel['part_number'];
-                                        $insertArray[$m]['goods_name'] = iconv('WINDOWS-1251', 'UTF-8', $result['mName']);
+                                        $insertArray[$m]['goods_name'] = Decoder::strToUtf($result['mName']);
                                         $insertArray[$m]['quantity'] = $excel['quantity'];
                                         $insertArray[$m]['price'] = str_replace(',','.', $excel['price']);
                                         $insertArray[$m]['so_number'] = $excel['so_number'];
@@ -107,7 +107,7 @@ class PurchaseController extends AdminBase
                                 } else {
                                     $arr_check_stock[$n]['part_number'] = $excel['part_number'];
                                     $arr_check_stock[$n]['stock_name'] = $result['stock_name'];
-                                    $arr_check_stock[$n]['mName'] = iconv('WINDOWS-1251', 'UTF-8', $result['mName']);
+                                    $arr_check_stock[$n]['mName'] = Decoder::strToUtf($result['mName']);
                                     $n++;
                                 }
 
@@ -116,7 +116,7 @@ class PurchaseController extends AdminBase
                                 if($success != 0){
                                     $insertArray[$i]['site_id'] = $lastId;
                                     $insertArray[$i]['part_number'] = $excel['part_number'];
-                                    $insertArray[$i]['goods_name'] = iconv('WINDOWS-1251', 'UTF-8', $success['mName']);
+                                    $insertArray[$i]['goods_name'] = Decoder::strToUtf($success['mName']);
                                     $insertArray[$i]['quantity'] = $excel['quantity'];
                                     $insertArray[$i]['price'] = str_replace(',','.', $excel['price']);
                                     $insertArray[$i]['so_number'] = $excel['so_number'];
@@ -290,7 +290,7 @@ class PurchaseController extends AdminBase
     public function actionPurchasePartNumAjax()
     {
         $part_number = $_REQUEST['part_number'];
-        $stock = iconv('UTF-8', 'WINDOWS-1251', $_REQUEST['stock']);
+        $stock = Decoder::strToWindows($_REQUEST['stock']);
         // если выбран сток Local Source, ищем на других складах, естли такие продукты
         if($stock == 'Local Source'){
 
@@ -311,7 +311,7 @@ class PurchaseController extends AdminBase
                     $data['result'] = 1;
                     $data['action'] = 'purchase';
                     //$data['mName'] = $result['mName'];
-                    $data['mName'] = iconv('WINDOWS-1251', 'UTF-8', $result['mName']);
+                    $data['mName'] = Decoder::strToUtf($result['mName']);
                     print_r(json_encode($data));
                 }
                 // Иначе уведомляем пользовател о наличии товаров на складах
@@ -320,7 +320,7 @@ class PurchaseController extends AdminBase
                 $data['action'] = 'stock';
                 $data['stock_name'] = $result['stock_name'];
                 //$data['mName'] = $result['mName'];
-                $data['mName'] = iconv('WINDOWS-1251', 'UTF-8', $result['mName']);
+                $data['mName'] = Decoder::strToUtf($result['mName']);
                 print_r(json_encode($data));
             }
 
@@ -335,7 +335,7 @@ class PurchaseController extends AdminBase
                 $data['result'] = 1;
                 $data['action'] = 'purchase';
                 //$data['mName'] = $result['mName'];
-                $data['mName'] = iconv('WINDOWS-1251', 'UTF-8', $result['mName']);
+                $data['mName'] = Decoder::strToUtf($result['mName']);
                 print_r(json_encode($data));
             }
         }
@@ -362,7 +362,7 @@ class PurchaseController extends AdminBase
         $lastId++;
 
         $options['site_id'] = $lastId;
-        $options['stock_name'] = iconv('UTF-8', 'WINDOWS-1251', $data_json['stock']);
+        $options['stock_name'] = Decoder::strToWindows($data_json['stock']);
         $options['so_number'] = '';
         $options['id_user'] = $data_json['id_partner'];
         $options['ready'] = 1;
@@ -437,7 +437,7 @@ class PurchaseController extends AdminBase
         $start =  isset($_POST['start']) ? $_POST['start'] .' 00:00' : '';
         $end =  isset($_POST['end']) ? $_POST['end'] .' 23:59' : '';
         if(!empty($_POST['status_name'])){
-            $status = iconv('UTF-8', 'WINDOWS-1251', trim($_POST['status_name']));
+            $status = Decoder::strToWindows(trim($_POST['status_name']));
             $filter .= " AND sgp.status_name = '$status'";
         }
         $id_partners = isset($_POST['id_partner']) ? $_POST['id_partner'] : [];
@@ -458,7 +458,7 @@ class PurchaseController extends AdminBase
 
         if($user->role == 'partner' || $user->role == 'manager') {
 
-            $search = iconv('UTF-8', 'WINDOWS-1251', trim($_REQUEST['search']));
+            $search = Decoder::strToWindows(trim($_REQUEST['search']));
 
             $user_ids = $user->controlUsers($user->id_user);
             $partnerList = Admin::getPartnerControlUsers($user_ids);
@@ -469,7 +469,7 @@ class PurchaseController extends AdminBase
 
         } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
 
-            $search = iconv('UTF-8', 'WINDOWS-1251', trim($_REQUEST['search']));
+            $search = Decoder::strToWindows(trim($_REQUEST['search']));
 
             $partnerList = Admin::getAllPartner();
 
