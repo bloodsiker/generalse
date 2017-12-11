@@ -213,6 +213,7 @@ class ImportExcel
         foreach($newArray as $data){
             $pushArray[$i]['id'] = $data['A'];
             $pushArray[$i]['status_name'] = $data['B'];
+            $pushArray[$i]['expected_date'] = $data['C'];
             $i++;
         }
         return $pushArray;

@@ -717,11 +717,14 @@ class RequestController extends AdminBase
 
                             $id = $import['id'];
                             $status_name = Decoder::strToWindows($import['status_name']);
+                            $expected_date = Decoder::strToWindows($import['expected_date']);
                             $requestInfo = Request::getOrderRequestInfo($id);
-                            $ok = Request::editStatusFromCheckOrdersById($id, $status_name);
+                            $ok = Request::editStatusFromCheckOrdersById($id, $status_name, $expected_date);
                             if($ok){
+                                $oldStatus = $requestInfo['status_name'] . ' ' . $requestInfo['expected_date'];
+                                $newStatus = $import['status_name'] . ' ' . $import['expected_date'];
                                 $partnersEmails = Admin::getAdminById($requestInfo['site_account_id']);
-                                RequestMail::getInstance()->sendEmailEditStatus($id, $requestInfo['status_name'], $status_name, $partnersEmails);
+                                RequestMail::getInstance()->sendEmailEditStatus($id, $oldStatus, $newStatus, $partnersEmails);
                             }
                         }
                         Logger::getInstance()->log($user->id_user, ' изменил(а) статусы в Request с excel');
