@@ -177,48 +177,6 @@ class RequestController extends AdminBase
     }
 
 
-    /**
-     * Completed request
-     * @return bool
-     */
-    public function actionCompletedRequest()
-    {
-        $user = $this->user;
-
-        if($user->isPartner()){
-
-            $filter = "";
-            $interval = " AND sgog.created_on >= DATEADD(day, -30, GETDATE())";
-
-            if(!empty($_GET['end']) && !empty($_GET['start'])){
-                $start = $_GET['start']. " 00:00";
-                $end = $_GET['end']. " 23:59";
-                $filter .= " AND sgog.created_on BETWEEN '$start' AND '$end'";
-                $interval = '';
-            }
-            $filter .= $interval;
-
-            $listCheckOrders = Orders::getCompletedRequestInOrdersByPartnerMsSQL($user->controlUsers($user->id_user), $filter);
-        } elseif($user->isAdmin() || $user->isManager()){
-
-            $filter = "";
-            $interval = " AND sgog.created_on >= DATEADD(day, -30, GETDATE())";
-
-            if(!empty($_GET['end']) && !empty($_GET['start'])){
-                $start = $_GET['start']. " 00:00";
-                $end = $_GET['end']. " 23:59";
-                $filter .= " AND sgog.created_on BETWEEN '$start' AND '$end'";
-                $interval = '';
-            }
-            $filter .= $interval;
-
-            $listCheckOrders = Orders::getAllCompletedRequestInOrdersMsSQL($filter);
-        }
-
-        $this->render('admin/crm/request/request_completed', compact('user','listCheckOrders'));
-        return true;
-    }
-
 
     /**
      * @return bool
@@ -249,11 +207,11 @@ class RequestController extends AdminBase
                         $arrayReplaceAnalog = [];
                         foreach ($excelArray as $import){
                             $note = null;
-                            if($_POST['note'] == 'other_address'){
-                                $address = $_POST['your_address'];
+                            if($_REQUEST['note'] == 'other_address'){
+                                $address = $_REQUEST['your_address'];
                                 $note = !empty($address) ? Decoder::strToWindows($address) : null;
                             } else {
-                                $note = Decoder::strToWindows($_POST['note']);
+                                $note = Decoder::strToWindows($_REQUEST['note']);
                             }
                             $options['id_user'] = $user->getId();
 
@@ -269,7 +227,7 @@ class RequestController extends AdminBase
                             $options['so_number'] = Decoder::strToWindows(trim($import['so_number']));
                             $options['note'] = $note;
                             $mName = Products::checkPurchasesPartNumber($options['part_number']);
-                            $price = Products::getPricePartNumber($options['part_number'], $user->id_user);
+                            $price = Products::getPricePartNumber($options['part_number'], $user->getId());
                             $options['goods_name'] = $mName['mName'];
                             $options['price'] = ($price['price'] != 0) ? $price['price'] : 0;
                             $options['expected_date'] = null;
@@ -285,11 +243,19 @@ class RequestController extends AdminBase
 
                             $options['created_on'] = date('Y-m-d H:i:s');
                             $options['order_type_id'] = $_REQUEST['order_type_id'];
-                            $options['note1'] = isset($_POST['note1']) ? Decoder::strToWindows($_POST['note1']): null;
+                            $options['note1'] = !empty($import['note1']) ? Decoder::strToWindows($import['note1']): null;
                             $options['created_by'] = $user->getId();
 
-                            if(!empty($options['part_number'])){
-                                Request::addReserveOrdersMsSQL($options);
+                            $quantity = !empty($import['quantity']) ? $import['quantity'] : 1;
+                            $so_number = $options['so_number'];
+                            if(!empty($options['part_number'])) {
+                                for ($i = 1; $i <= $quantity; $i++) {
+                                    // Если кол-во больше 1, номеруем каждую заявку
+                                    if ($quantity > 1) {
+                                        $options['so_number'] = $so_number . ' (' . $i . ')';
+                                    }
+                                    Request::addReserveOrdersMsSQL($options);
+                                }
                             }
                         }
                         Session::set('add_request', 'Out of stock, delivery is forming');
@@ -298,7 +264,7 @@ class RequestController extends AdminBase
                             Session::set('replace_by_analog', "Part numbers is replaced by an analog {$partImplode}");
                         }
 
-                        Logger::getInstance()->log($user->id_user, ' загрузил массив с excel в Request');
+                        Logger::getInstance()->log($user->getId(), ' загрузил массив с excel в Request');
                         Url::redirect('/adm/crm/request');
                     }
                 }

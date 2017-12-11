@@ -94,7 +94,7 @@ class OtherRequestController extends AdminBase
                     if (move_uploaded_file($_FILES['excel_file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . $options['file_path'] . $options['file_name'])) {
                         $excel_file = $options['file_path'] . $options['file_name'];
                         // Получаем массив данных из файла
-                        $excelArray = ImportExcel::importRequest($excel_file);
+                        $excelArray = ImportExcel::importOtherRequest($excel_file);
 
                         $options['id_user'] = $user->getId();
                         $options['note'] = $_REQUEST['note'] ?? null;

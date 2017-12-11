@@ -164,9 +164,40 @@ class ImportExcel
 
 
     /**
-     * Импорт с раздела Request
+     * Импорт с раздела OtherRequest
      * @param $file
      * @return array
+     */
+    public static function importOtherRequest($file)
+    {
+        include_once 'PHPExcel/Classes/PHPExcel/IOFactory.php';
+
+        $inputFileName = $_SERVER['DOCUMENT_ROOT'] . $file;
+        $objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
+
+        $sheetData = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);
+
+        // Убираем нулевой елемент массива - заголовки
+        $newArray = array_splice($sheetData, 1);
+        // Формируем новый массив с ассоциативныи ключами
+        $pushArray = [];
+        $i = 0;
+        foreach($newArray as $data){
+            $pushArray[$i]['part_number'] = $data['A'];
+            $pushArray[$i]['so_number'] = $data['B'];
+            $pushArray[$i]['quantity'] = $data['C'];
+            $i++;
+        }
+        return $pushArray;
+    }
+
+
+    /**
+     * Импорт с раздела Request
+     * @param $file
+     *
+     * @return array
+     * @throws \PHPExcel_Reader_Exception
      */
     public static function importRequest($file)
     {
@@ -186,6 +217,7 @@ class ImportExcel
             $pushArray[$i]['part_number'] = $data['A'];
             $pushArray[$i]['so_number'] = $data['B'];
             $pushArray[$i]['quantity'] = $data['C'];
+            $pushArray[$i]['note1'] = $data['D'];
             $i++;
         }
         return $pushArray;

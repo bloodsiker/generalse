@@ -32,11 +32,6 @@
                     </div>
 
                     <div class="medium-12 small-12 columns">
-                        <label>Note</label>
-                        <textarea rows="3" name="note1"></textarea>
-                    </div>
-
-                    <div class="medium-12 small-12 columns">
                         <div class="row align-bottom ">
                             <div class="medium-12 small-12 columns">
                                 <label for="upload_file_form" class="button primary">Attach</label>
