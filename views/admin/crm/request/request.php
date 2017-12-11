@@ -163,7 +163,12 @@
                                                    title="<?= iconv('WINDOWS-1251', 'UTF-8', $order['note1'])?>"></i>
                                             <?php endif;?>
                                         </td>
-                                        <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?></td>
+                                        <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?>
+                                            <?php if (!empty($order['expected_date'])): ?>
+                                                <?= \Umbrella\components\Functions::formatDate($order['expected_date']) ?>
+                                            <?php endif; ?>
+
+                                        </td>
                                         <td><?= Umbrella\components\Functions::formatDate($order['created_on'])?></td>
                                     </tr>
                                 <?php endforeach;?>
@@ -248,6 +253,12 @@
                                     </td>
                                     <td class="order-tr-status">
                                         <span class="order_status"><?= iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?></span>
+                                        <?php if (!empty($order['expected_date'])): ?>
+                                            <span class="expected_date"><?= \Umbrella\components\Functions::formatDate($order['expected_date']) ?></span>
+                                        <?php else: ?>
+                                            <span class="expected_date"></span>
+                                        <?php endif; ?>
+
                                         <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
                                             <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.status_edit', 'view')): ?>
                                                 <a href="" class="button edit-status delete"><i class="fi-pencil"></i></a>

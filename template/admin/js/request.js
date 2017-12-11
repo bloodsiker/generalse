@@ -751,22 +751,25 @@ $(document).on('click', '.edit-status', function(e) {
     e.preventDefault();
     $('#edit-status').foundation('open');
     var order_status = $(this).siblings('.order_status').text();
+    var expected_date = $(this).siblings('.expected_date').text();
     $("#order_status").val(order_status.trim());
+    $("#expected_date").val(expected_date.trim());
     id_order = $(this).parent('td').parent('tr').data('id');
 });
 $(document).on('click', '#send-order-status', function(e) {
     e.preventDefault();
     var order_status = $("#order_status").val();
-    var data = "action=edit_status&id_order=" + id_order + "&order_status=" + order_status;
+    let expected_date = $("#edit-status [name='expected_date']").val();
 
     $.ajax({
         url: "/adm/crm/request/request_ajax",
         type: "POST",
-        data: data,
+        data: {action : 'edit_status', id_order : id_order, order_status : order_status, expected_date : expected_date},
         cache: false,
         success: function (response) {
             if(response == 200){
                 $('[data-id="' + id_order + '"]').find('.order_status').text(order_status).css('color', 'green');
+                $('[data-id="' + id_order + '"]').find('.expected_date').text(expected_date).css('color', 'green');
                 $('#edit-status form')[0].reset();
                 $('#edit-status').foundation('close');
             } else {

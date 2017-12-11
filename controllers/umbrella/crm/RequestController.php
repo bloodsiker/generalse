@@ -44,7 +44,9 @@ class RequestController extends AdminBase
 
     /**
      * @param string $filter
+     *
      * @return bool
+     * @throws \Exception
      */
     public function actionIndex($filter = '')
     {
@@ -74,7 +76,7 @@ class RequestController extends AdminBase
                     $note_mysql = $_POST['note'];
                 }
             }
-            $options['id_user'] = $user->id_user;
+            $options['id_user'] = $user->getId();
 
             $partAnalog = PartAnalog::getAnalogByPartNumber($_POST['part_number']);
             //если имееться аналог парт номера, заменяем его
@@ -94,19 +96,22 @@ class RequestController extends AdminBase
             $price = Products::getPricePartNumber($options['part_number'], $user->id_user);
             $options['goods_name'] = $mName['mName'];
             $options['price'] = ($price['price'] != 0) ? $price['price'] : 0;
+            $options['expected_date'] = null;
             if($user->name_partner == 'Servisexpress'
                 || $user->name_partner == 'Technoservice'
                 || $user->name_partner == 'Techpoint'){
                 $options['status_name'] = Decoder::strToWindows('Нет в наличии, формируется поставка.');
             } else {
-                $options['status_name'] = Decoder::strToWindows('Нет в наличии, формируется поставка, ориентировочная дата поставки на наш склад ' . Functions::whatDayOfTheWeekAndAdd(date('Y-m-d')));
+                $options['status_name'] = Decoder::strToWindows('Нет в наличии, формируется поставка, ориентировочная дата поставки на наш склад ');
+                $options['expected_date'] = Functions::whatDayOfTheWeekAndAdd(date('Y-m-d'));
             }
 
             $options['status_name_mysql'] = 'Нет в наличии, формируется поставка, ориентировочная дата поставки на наш склад ' . Functions::whatDayOfTheWeekAndAdd(date('Y-m-d'));
             $options['created_on'] = date('Y-m-d H:i:s');
             $options['order_type_id'] = $_POST['order_type_id'];
             $options['note1'] = isset($_POST['note1']) ? Decoder::strToWindows($_POST['note1']): null;
-            $options['note1_mysql'] = isset($_POST['note1']) ? $_POST['note1']: null;
+            $options['note1_mysql'] = $_POST['note1'] ?? null;
+            $options['created_by'] = $user->getId();
 
             $so_number = $options['so_number'];
             $part_quantity = $_REQUEST['part_quantity'];
@@ -131,7 +136,7 @@ class RequestController extends AdminBase
             Url::previous();
         }
 
-        if($user->role == 'partner' || $user->role == 'manager'){
+        if($user->isPartner() || $user->isManager()){
 
             $listCheckOrders = Request::getReserveOrdersByPartnerMsSQL($user->controlUsers($user->id_user), 0, 1);
             $listCheckOrders = Functions::getUniqueArray('number', $listCheckOrders);
@@ -140,7 +145,7 @@ class RequestController extends AdminBase
 
             $partnerList = Admin::getPartnerControlUsers($user->controlUsers($user->id_user));
 
-        } elseif($user->role == 'administrator' || $user->role == 'administrator-fin'){
+        } elseif($user->isAdmin()){
 
             $listCheckOrders = Request::getAllReserveOrdersMsSQL(0, 1);
             $listCheckOrders = Functions::getUniqueArray('number', $listCheckOrders);
@@ -172,7 +177,6 @@ class RequestController extends AdminBase
     }
 
 
-
     /**
      * Completed request
      * @return bool
@@ -181,7 +185,7 @@ class RequestController extends AdminBase
     {
         $user = $this->user;
 
-        if($user->role == 'partner'){
+        if($user->isPartner()){
 
             $filter = "";
             $interval = " AND sgog.created_on >= DATEADD(day, -30, GETDATE())";
@@ -195,7 +199,7 @@ class RequestController extends AdminBase
             $filter .= $interval;
 
             $listCheckOrders = Orders::getCompletedRequestInOrdersByPartnerMsSQL($user->controlUsers($user->id_user), $filter);
-        } elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
+        } elseif($user->isAdmin() || $user->isManager()){
 
             $filter = "";
             $interval = " AND sgog.created_on >= DATEADD(day, -30, GETDATE())";
@@ -218,6 +222,7 @@ class RequestController extends AdminBase
 
     /**
      * @return bool
+     * @throws \Exception
      */
     public function actionRequestImport()
     {
@@ -250,38 +255,41 @@ class RequestController extends AdminBase
                             } else {
                                 $note = Decoder::strToWindows($_POST['note']);
                             }
-                            $options['id_user'] = $user->id_user;
+                            $options['id_user'] = $user->getId();
 
                             $partAnalog = PartAnalog::getAnalogByPartNumber($import['part_number']);
                             //если имееться аналог парт номера, заменяем его
                             if($partAnalog && $partAnalog['type_part']== 'analog'){
-                                $options['part_number'] = iconv('UTF-8', 'WINDOWS-1251', $partAnalog['part_analog']);
+                                $options['part_number'] = Decoder::strToWindows($partAnalog['part_analog']);
                                 array_push($arrayReplaceAnalog, "[{$import['part_number']}] => [{$partAnalog['part_analog']}]");
                             } else {
-                                $options['part_number'] = iconv('UTF-8', 'WINDOWS-1251', trim($import['part_number']));
+                                $options['part_number'] = Decoder::strToWindows(trim($import['part_number']));
                             }
 
-                            $options['so_number'] = iconv('UTF-8', 'WINDOWS-1251', trim($import['so_number']));
+                            $options['so_number'] = Decoder::strToWindows(trim($import['so_number']));
                             $options['note'] = $note;
                             $mName = Products::checkPurchasesPartNumber($options['part_number']);
                             $price = Products::getPricePartNumber($options['part_number'], $user->id_user);
                             $options['goods_name'] = $mName['mName'];
                             $options['price'] = ($price['price'] != 0) ? $price['price'] : 0;
+                            $options['expected_date'] = null;
 
                             if($user->name_partner == 'Servisexpress'
                                 || $user->name_partner == 'Technoservice'
                                 || $user->name_partner == 'Techpoint'){
-                                $options['status_name'] = iconv('UTF-8', 'WINDOWS-1251', 'Нет в наличии, формируется поставка.');
+                                $options['status_name'] = Decoder::strToWindows('Нет в наличии, формируется поставка.');
                             } else {
-                                $options['status_name'] = iconv('UTF-8', 'WINDOWS-1251', 'Нет в наличии, формируется поставка, ориентировочная дата поставки на наш склад ' . Functions::whatDayOfTheWeekAndAdd(date('Y-m-d')));
+                                $options['status_name'] = Decoder::strToWindows('Нет в наличии, формируется поставка, ориентировочная дата поставки на наш склад ');
+                                $options['expected_date'] = Functions::whatDayOfTheWeekAndAdd(date('Y-m-d'));
                             }
 
                             $options['created_on'] = date('Y-m-d H:i:s');
                             $options['order_type_id'] = $_REQUEST['order_type_id'];
-                            $options['note1'] = isset($_POST['note1']) ? iconv('UTF-8', 'WINDOWS-1251', $_POST['note1']): null;
+                            $options['note1'] = isset($_POST['note1']) ? Decoder::strToWindows($_POST['note1']): null;
+                            $options['created_by'] = $user->getId();
 
                             if(!empty($options['part_number'])){
-                                Orders::addReserveOrdersMsSQL($options);
+                                Request::addReserveOrdersMsSQL($options);
                             }
                         }
                         Session::set('add_request', 'Out of stock, delivery is forming');
@@ -296,37 +304,6 @@ class RequestController extends AdminBase
                 }
             }
         }
-
-        if(isset($_POST['edit_status_from_excel']) && $_POST['edit_status_from_excel'] == 'true'){
-            if(!empty($_FILES['excel_file']['name'])) {
-
-                $options['name_real'] = $_FILES['excel_file']['name'];
-                // Все загруженные файлы помещаются в эту папку
-                $options['file_path'] = "/upload/attach_request/";
-                $randomName = substr_replace(sha1(microtime(true)), '', 5);
-
-                $randomName = $user->name_partner . '-' . $randomName . "-" . $options['name_real'];
-                $options['file_name'] = $randomName;
-
-                if (is_uploaded_file($_FILES["excel_file"]["tmp_name"])) {
-                    if (move_uploaded_file($_FILES['excel_file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . $options['file_path'] . $options['file_name'])) {
-                        $excel_file = $options['file_path'] . $options['file_name'];
-                        // Получаем массив данных из файла
-                        $excelArray = ImportExcel::importStatusInRequest($excel_file);
-
-                        foreach ($excelArray as $import){
-
-                            $options['id'] = $import['id'];
-                            $options['status_name'] = iconv('UTF-8', 'WINDOWS-1251', $import['status_name']);
-
-                            Orders::addReserveOrdersMsSQL($options);
-                        }
-                        Logger::getInstance()->log($user->id_user, ' изменил(а) статусы в Request с excel');
-                        Url::redirect('/adm/crm/request');
-                    }
-                }
-            }
-        }
         return true;
     }
 
@@ -334,6 +311,7 @@ class RequestController extends AdminBase
     /**
      * Получаем цену продукта по парт номеру
      * @return bool
+     * @throws \Exception
      */
     public function actionPricePartNumAjax()
     {
@@ -370,10 +348,10 @@ class RequestController extends AdminBase
                 $data['result'] = 1;
                 $data['action'] = 'purchase';
                 $data['price'] = round($result['price'], 2);
-                $data['mName'] = iconv('WINDOWS-1251', 'UTF-8', $result['mName']);
+                $data['mName'] = Decoder::strToUtf($result['mName']);
                 if($partInStock){
                     $data['in_stock'] = 1;
-                    $data['stock'] = iconv('WINDOWS-1251', 'UTF-8', $partInStock['stock_name']);
+                    $data['stock'] = Decoder::strToUtf($partInStock['stock_name']);
                     $data['quantity'] = $partInStock['quantity'] . ' Units';
                 }
             }
@@ -422,6 +400,7 @@ class RequestController extends AdminBase
 
     /**
      * @return bool
+     * @throws \Exception
      */
     public function actionRequestAjax()
     {
@@ -433,9 +412,9 @@ class RequestController extends AdminBase
             $id_order = $_REQUEST['id_order'];
             $order_pn = trim($_REQUEST['order_pn']);
 
-            $requestInfo = Orders::getOrderRequestInfo($id_order);
+            $requestInfo = Request::getOrderRequestInfo($id_order);
 
-            $ok = Orders::editPartNumberFromCheckOrdersById($id_order, $order_pn);
+            $ok = Request::editPartNumberFromCheckOrdersById($id_order, $order_pn);
             if($ok){
                 $analogPrice = Products::getPricePartNumber($order_pn, $requestInfo['site_account_id']);
                 $originPrice = Products::getPricePartNumber($requestInfo['part_number'], $requestInfo['site_account_id']);
@@ -454,7 +433,7 @@ class RequestController extends AdminBase
             $id_order = $_REQUEST['id_order'];
             $order_so = trim(iconv('UTF-8', 'WINDOWS-1251', $_REQUEST['order_so']));
 
-            $ok = Orders::editSoNumberFromCheckOrdersById($id_order, $order_so);
+            $ok = Request::editSoNumberFromCheckOrdersById($id_order, $order_so);
             if($ok){
                 Logger::getInstance()->log($user->id_user, ' изменил so number в request #' . $id_order . ' на ' . $order_so);
                 print_r(200);
@@ -466,7 +445,7 @@ class RequestController extends AdminBase
             $id_order = $_REQUEST['id_order'];
             $goods_name = null;
 
-            $ok = Orders::clearGoodsNameFromCheckOrdersById($id_order, $goods_name);
+            $ok = Request::clearGoodsNameFromCheckOrdersById($id_order, $goods_name);
             if($ok){
                 Logger::getInstance()->log($user->id_user, ' очистил(а) название part_number в request #' . $id_order);
                 print_r(200);
@@ -475,15 +454,18 @@ class RequestController extends AdminBase
 
         if($_REQUEST['action'] == 'edit_status'){
             $id_order = $_REQUEST['id_order'];
-            $order_status = trim(iconv('UTF-8', 'WINDOWS-1251', $_REQUEST['order_status']));
+            $order_status = trim(Decoder::strToWindows($_REQUEST['order_status']));
+            $expected_date = !empty($_REQUEST['expected_date']) ? $_REQUEST['expected_date'] : null;
 
-            $requestInfo = Orders::getOrderRequestInfo($id_order);
+            $requestInfo = Request::getOrderRequestInfo($id_order);
 
-            $ok = Orders::editStatusFromCheckOrdersById($id_order, $order_status);
+            $ok = Request::editStatusFromCheckOrdersById($id_order, $order_status, $expected_date);
             if($ok){
-                $userRequest = new User($requestInfo['site_account_id']);
+                $userRequest = Admin::getAdminById($requestInfo['site_account_id']);
+                $oldStatus = $requestInfo['status_name'] . ' ' . $requestInfo['expected_date'];
+                $newStatus = $order_status. ' ' . $expected_date;
 
-                RequestMail::getInstance()->sendEmailEditStatus($id_order, $requestInfo['status_name'], $order_status, $userRequest->email);
+                RequestMail::getInstance()->sendEmailEditStatus($id_order, $oldStatus, $newStatus, $userRequest['email']);
 
                 Logger::getInstance()->log($user->id_user, ' изменил Status в request #' . $id_order);
                 print_r(200);
@@ -550,9 +532,9 @@ class RequestController extends AdminBase
             $options['note1'] = $_REQUEST['note1'];
             $options['stock_id'] = isset($_REQUEST['stock_id']) ? $_REQUEST['stock_id'] : null;
             $options['stock_name'] = $_REQUEST['stock_name'];
-            if($options['stock_name'] == 'НОВЫЕ' || $options['stock_name'] == 'БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ'){
+            if($options['stock_name'] == 'НОВЫЙ(UA)' || $options['stock_name'] == 'БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ'){
                 $options['used'] = 0;
-            } else if($options['stock_name'] == 'БУ' || $options['stock_name'] == 'БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ'){
+            } else if($options['stock_name'] == 'БУ(UA)' || $options['stock_name'] == 'БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ'){
                 $options['used'] = 1;
             } else {
                 $options['used'] = 0;
@@ -602,6 +584,7 @@ class RequestController extends AdminBase
                 $options['note1'] = Decoder::strToWindows($product['note1']);
                 $options['stock_id'] = null;
                 $options['used'] = $product['used'];
+                $options['created_by'] = $user->getId();
                 $stock_count = $product['stock_count'];
 
                 for ($i = 1; $i <= $options['part_quantity']; $i++) {
@@ -707,6 +690,7 @@ class RequestController extends AdminBase
     /**
      * Edit status from import excel
      * @return bool
+     * @throws \Exception
      */
     public function actionEditStatusFromExcel()
     {
@@ -720,7 +704,7 @@ class RequestController extends AdminBase
                 $options['file_path'] = "/upload/attach_request/other/";
                 $randomName = substr_replace(sha1(microtime(true)), '', 5);
 
-                $randomName = $user->name_partner . '-' . $randomName . "-" . $options['name_real'];
+                $randomName = $user->getName() . '-' . $randomName . "-" . $options['name_real'];
                 $options['file_name'] = $randomName;
 
                 if (is_uploaded_file($_FILES["excel_file"]["tmp_name"])) {
@@ -732,12 +716,12 @@ class RequestController extends AdminBase
                         foreach ($excelArray as $import){
 
                             $id = $import['id'];
-                            $status_name = iconv('UTF-8', 'WINDOWS-1251', $import['status_name']);
-                            $requestInfo = Orders::getOrderRequestInfo($id);
-                            $ok = Orders::editStatusFromCheckOrdersById($id, $status_name);
+                            $status_name = Decoder::strToWindows($import['status_name']);
+                            $requestInfo = Request::getOrderRequestInfo($id);
+                            $ok = Request::editStatusFromCheckOrdersById($id, $status_name);
                             if($ok){
-                                $userRequest = new User($requestInfo['site_account_id']);
-                                RequestMail::getInstance()->sendEmailEditStatus($id, $requestInfo['status_name'], $status_name, $userRequest->email);
+                                $partnersEmails = Admin::getAdminById($requestInfo['site_account_id']);
+                                RequestMail::getInstance()->sendEmailEditStatus($id, $requestInfo['status_name'], $status_name, $partnersEmails);
                             }
                         }
                         Logger::getInstance()->log($user->id_user, ' изменил(а) статусы в Request с excel');
@@ -761,25 +745,8 @@ class RequestController extends AdminBase
         self::checkDenied('crm.request.delete', 'controller');
         $ok =  Request::moveRequest($id, 0);
 
-//        $requestInfo = Orders::getOrderRequestInfo($id);
-//        $requestInfo['goods_name'] = iconv('WINDOWS-1251', 'UTF-8', $requestInfo['goods_name']);
-//        $requestInfo['so_number'] = iconv('WINDOWS-1251', 'UTF-8', $requestInfo['so_number']);
-//        $requestInfo['note'] = iconv('WINDOWS-1251', 'UTF-8', $requestInfo['note']);
-//        $requestInfo['status_name'] = iconv('WINDOWS-1251', 'UTF-8', $requestInfo['status_name']);
-//        $requestInfo['subtype_name'] = iconv('WINDOWS-1251', 'UTF-8', $requestInfo['subtype_name']);
-//        $json = json_encode($requestInfo);
-//
-//        $ok = Orders::deleteRequestMsSQLById($id);
-
         if($ok){
-            //Orders::addRemovedRequest($json);
-//            $file = ROOT . '/storage/logs/removed_request.txt';
-//            $person = (string)$json . "\r\n";
-//            // используя флаг FILE_APPEND flag для дописывания содержимого в конец файла
-//            // и флаг LOCK_EX для предотвращения записи данного файла кем-нибудь другим в данное время
-//            file_put_contents($file, $person, FILE_APPEND | LOCK_EX);
-
-            Logger::getInstance()->log($user->id_user, 'переместил в корзину request #' . $id);
+            Logger::getInstance()->log($user->getId(), 'переместил в корзину request #' . $id);
             Url::previous();
         }
         return true;
@@ -837,7 +804,7 @@ class RequestController extends AdminBase
                 $options['file_path'] = "/upload/attach_request/other/";
                 $randomName = substr_replace(sha1(microtime(true)), '', 5);
 
-                $randomName = $user->name_partner . '-' . $randomName . "-" . $options['name_real'];
+                $randomName = $user->getName() . '-' . $randomName . "-" . $options['name_real'];
                 $options['file_name'] = $randomName;
 
                 if (is_uploaded_file($_FILES["excel_file"]["tmp_name"])) {

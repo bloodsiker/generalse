@@ -7,6 +7,14 @@
             <div class="medium-12 small-12 columns">
                 <div class="row">
                     <div class="medium-12 small-12 columns">
+                        <label>Expected date</label>
+                        <input type="text" id="expected_date" class="date" value="" name="expected_date">
+                    </div>
+                </div>
+            </div>
+            <div class="medium-12 small-12 columns">
+                <div class="row">
+                    <div class="medium-12 small-12 columns">
                         <label>Status</label>
                         <textarea name="" id="order_status" cols="30" rows="4"></textarea>
                     </div>

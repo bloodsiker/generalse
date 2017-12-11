@@ -18,9 +18,9 @@ class Request
         $db = MsSQL::getConnection();
 
         $sql = 'INSERT INTO site_gm_ordering_goods '
-            . '(site_account_id, part_number, goods_name, so_number, price, note, status_name, created_on, order_type_id, note1)'
+            . '(site_account_id, part_number, goods_name, so_number, price, note, status_name, created_on, order_type_id, note1, created_by, expected_date)'
             . 'VALUES '
-            . '(:site_account_id, :part_number, :goods_name, :so_number, :price, :note, :status_name, :created_on, :order_type_id, :note1)';
+            . '(:site_account_id, :part_number, :goods_name, :so_number, :price, :note, :status_name, :created_on, :order_type_id, :note1, :created_by, :expected_date)';
 
         $result = $db->prepare($sql);
         $result->bindParam(':site_account_id', $options['id_user'], PDO::PARAM_INT);
@@ -33,6 +33,8 @@ class Request
         $result->bindParam(':created_on', $options['created_on'], PDO::PARAM_STR);
         $result->bindParam(':order_type_id', $options['order_type_id'], PDO::PARAM_INT);
         $result->bindParam(':note1', $options['note1'], PDO::PARAM_INT);
+        $result->bindParam(':created_by', $options['created_by'], PDO::PARAM_INT);
+        $result->bindParam(':expected_date', $options['expected_date'], PDO::PARAM_INT);
 
         if ($result->execute()) {
             return $db->lastInsertId();
@@ -51,9 +53,9 @@ class Request
         $db = MsSQL::getConnection();
 
         $sql = 'INSERT INTO site_gm_ordering_goods '
-            . '(site_account_id, part_number, goods_name, price, status_name, created_on, note1, used, number, active, period, stock_id)'
+            . '(site_account_id, part_number, goods_name, price, status_name, created_on, note1, used, number, active, period, stock_id, created_by)'
             . 'VALUES '
-            . '(:site_account_id, :part_number, :goods_name, :price, :status_name, :created_on, :note1, :used, :number, :active, :period, :stock_id)';
+            . '(:site_account_id, :part_number, :goods_name, :price, :status_name, :created_on, :note1, :used, :number, :active, :period, :stock_id, :created_by)';
 
         $result = $db->prepare($sql);
         $result->bindParam(':site_account_id', $options['site_account_id'], PDO::PARAM_INT);
@@ -68,6 +70,7 @@ class Request
         $result->bindParam(':active', $options['active'], PDO::PARAM_INT);
         $result->bindParam(':period', $options['period'], PDO::PARAM_INT);
         $result->bindParam(':stock_id', $options['stock_id'], PDO::PARAM_INT);
+        $result->bindParam(':created_by', $options['created_by'], PDO::PARAM_INT);
 
         if ($result->execute()) {
             return $db->lastInsertId();
@@ -103,6 +106,7 @@ class Request
                  sgog.subtype_name,
                  sgog.period,
                  sgog.number,
+                 sgog.expected_date,
                  sgu.site_client_name,
                  sgu.status_name as site_client_status,
                  sgot.name as type_name
@@ -149,6 +153,7 @@ class Request
                     sgog.subtype_name,
                     sgog.period,
                     sgog.number,
+                    sgog.expected_date,
                     sgu.site_client_name,
                     sgu.status_name as site_client_status,
                     sgot.name as type_name
@@ -319,5 +324,113 @@ class Request
         $result->execute();
         $row = $result->fetchAll(PDO::FETCH_ASSOC);
         return $row;
+    }
+
+
+    /**
+     * Информация о реквесте
+     * @param $id_order
+     * @return mixed
+     */
+    public static function getOrderRequestInfo($id_order)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "SELECT
+                *
+                FROM site_gm_ordering_goods
+                WHERE id = :id";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $id_order, PDO::PARAM_INT);
+        $result->execute();
+        $res = $result->fetch(PDO::FETCH_ASSOC);
+        return $res;
+    }
+
+    /**
+     * Изменяем статус реквеста
+     * @param $id
+     * @param $status
+     * @return bool
+     */
+    public static function editStatusFromCheckOrdersById($id, $status, $expected_date)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "UPDATE site_gm_ordering_goods
+            SET
+                status_name = :status_name,
+                expected_date = :expected_date
+            WHERE id = :id";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $id, PDO::PARAM_INT);
+        $result->bindParam(':status_name', $status, PDO::PARAM_STR);
+        $result->bindParam(':expected_date', $expected_date, PDO::PARAM_STR);
+        return $result->execute();
+    }
+
+    /**
+     * Чистим описание детали
+     * @param $id
+     * @param $goods_name
+     * @return bool
+     */
+    public static function clearGoodsNameFromCheckOrdersById($id, $goods_name)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "UPDATE site_gm_ordering_goods
+            SET
+                goods_name = :goods_name
+            WHERE id = :id";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $id, PDO::PARAM_INT);
+        $result->bindParam(':goods_name', $goods_name, PDO::PARAM_STR);
+        return $result->execute();
+    }
+
+    /**
+     * Редактируем so номер в таблице резерва
+     * @param $id
+     * @param $so_number
+     * @return bool
+     */
+    public static function editSoNumberFromCheckOrdersById($id, $so_number)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "UPDATE site_gm_ordering_goods
+            SET
+                so_number = :so_number
+            WHERE id = :id";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $id, PDO::PARAM_INT);
+        $result->bindParam(':so_number', $so_number, PDO::PARAM_STR);
+        return $result->execute();
+    }
+
+    /**
+     * Редактируем парт номер в таблице резерва
+     * @param $id
+     * @param $part_number
+     * @return bool
+     */
+    public static function editPartNumberFromCheckOrdersById($id, $part_number)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "UPDATE site_gm_ordering_goods
+            SET
+                part_number = :part_number
+            WHERE id = :id";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $id, PDO::PARAM_INT);
+        $result->bindParam(':part_number', $part_number, PDO::PARAM_STR);
+        return $result->execute();
     }
 }

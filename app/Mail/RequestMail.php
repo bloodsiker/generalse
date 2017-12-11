@@ -58,11 +58,14 @@ class RequestMail
 
     /**
      * При изменении статуса реквеста
+     *
      * @param $id
      * @param $oldStatus
      * @param $newStatus
      * @param $userEmail
+     *
      * @return bool
+     * @throws \Exception
      */
     public function sendEmailEditStatus($id, $oldStatus, $newStatus, $userEmail) {
 
