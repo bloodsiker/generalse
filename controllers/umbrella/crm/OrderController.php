@@ -453,6 +453,7 @@ class OrderController extends AdminBase
     /**
      * Показать продукты с заказа
      * @return bool
+     * @throws \Exception
      */
     public function actionShowDetailOrders()
     {
@@ -461,30 +462,52 @@ class OrderController extends AdminBase
         $order_id = $_REQUEST['order_id'];
         $user_id = $_REQUEST['user_id'];
         $ordersElements = Decoder::arrayToUtf(Orders::getShowDetailsOrdersMsSql($order_id));
-        $userClient = Decoder::arrayToUtf(Admin::getInfoGmUser($user_id));
-        $rateCurrencyUsd = Currency::getRatesCurrency('usd')['OutputRate'];
 
-        $ordersElements = array_map(function ($value) use ($user, $userClient, $rateCurrencyUsd) {
-            if($userClient['ShortName'] == 'usd') {
-                $value['price_usd'] = round($value['price'], 2);
-                $value['price_uah'] = round($value['price'] * $rateCurrencyUsd, 2);
-            } elseif ($userClient['ShortName'] == 'uah') {
-                $value['price_usd'] = round($value['price'] / $rateCurrencyUsd, 2);
-                $value['price_uah'] = round($value['price'], 2);
+        if($user->isPartner()){
+            $ordersElements = array_map(function ($value) use ($user) {
+                $value['stock_name'] = Stocks::replaceNameStockInResultTable($value['stock_name'], $user->getRole());
+                $value['price'] = round($value['price'], 2);
+                return $value;
+            }, $ordersElements);
+
+        }elseif ($user->isAdmin() || $user->isManager()){
+
+            $userClient = Decoder::arrayToUtf(Admin::getInfoGmUser($user_id));
+            $rateCurrencyUsd = Currency::getRatesCurrency('usd')['OutputRate'];
+            $rateCurrencyEuro = Currency::getRatesCurrency('euro')['OutputRate'];
+
+            $ordersElements = array_map(function ($value) use ($user, $userClient, $rateCurrencyUsd, $rateCurrencyEuro) {
+                if($userClient['ShortName'] == 'usd') {
+                    $value['price_usd'] = round($value['price'], 2);
+                    $value['price_uah'] = round($value['price'] * $rateCurrencyUsd, 2);
+                } elseif ($userClient['ShortName'] == 'uah') {
+                    $value['price_usd'] = round($value['price'] / $rateCurrencyUsd, 2);
+                    $value['price_uah'] = round($value['price'], 2);
+                } elseif ($userClient['ShortName'] == 'euro') {
+                    $value['price_euro'] = round($value['price'], 2);
+                    $value['price_uah'] = round($value['price'] * $rateCurrencyEuro, 2);
+                }
+                $value['stock_name'] = Stocks::replaceNameStockInResultTable($value['stock_name'], $user->getRole());
+                $value['price'] = round($value['price'], 2);
+                return $value;
+            }, $ordersElements);
+
+            $sumPriceUsd = 0;
+            $sumPriceEuro = 0;
+            $sumPriceUah = 0;
+            foreach ($ordersElements as $element){
+                if($userClient['ShortName'] == 'usd' || $userClient['ShortName'] == 'uah') {
+                    $sumPriceUsd += $element['quantity'] * $element['price_usd'];
+                    $sumPriceUah += $element['quantity'] * $element['price_uah'];
+                } elseif ($userClient['ShortName'] == 'euro') {
+                    $sumPriceEuro += $element['quantity'] * $element['price_euro'];
+                    $sumPriceUah += $element['quantity'] * $element['price_uah'];
+                }
             }
-            $value['stock_name'] = Stocks::replaceNameStockInResultTable($value['stock_name'], $user->getRole());
-            $value['price'] = round($value['price'], 2);
-            return $value;
-        }, $ordersElements);
-
-        $sumPriceUsd = 0;
-        $sumPriceUah = 0;
-        foreach ($ordersElements as $element){
-            $sumPriceUsd += $element['quantity'] * $element['price_usd'];
-            $sumPriceUah += $element['quantity'] * $element['price_uah'];
-
         }
-        $this->render('admin/crm/orders/_part/show_details', compact('user', 'ordersElements', 'sumPriceUsd', 'sumPriceUah', 'userClient'));
+
+        $this->render('admin/crm/orders/_part/show_details', compact('user', 'ordersElements',
+            'sumPriceUsd', 'sumPriceUah', 'sumPriceEuro', 'userClient'));
         return true;
     }
 
