@@ -37,7 +37,9 @@ class OrderController extends AdminBase
 
     /**
      * @param string $filter
+     *
      * @return bool
+     * @throws \Exception
      */
     public function actionOrders($filter = "")
     {

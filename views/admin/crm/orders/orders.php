@@ -81,7 +81,7 @@
                 </div>
             </div>
             <div class="row">
-                <?php if($user->role == 'partner'):?>
+                <?php if($user->isPartner()):?>
                 <table class="umbrella-table">
                     <caption>Last recordings on
                         <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-14 days') ?> &mdash;
@@ -168,7 +168,7 @@
                     </tbody>
                 </table>
 
-                <?php elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+                <?php elseif($user->isAdmin() || $user->isManager()):?>
 
                     <table class="umbrella-table">
                         <?php if(isset($_GET['start']) && !empty($_GET['start'])):?>
@@ -181,11 +181,11 @@
                         <thead>
                         <tr>
                             <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.request_id', 'view')): ?>
-                                <th class="sort">Request id</th>
+                                <th>Request id</th>
                             <?php endif;?>
                             <th class="sort">Partner</th>
-                            <th class="sort">Partner status</th>
-                            <th class="sort">Order Number</th>
+                            <th>Partner status</th>
+                            <th>Order Number</th>
                             <th class="sort">Service Order</th>
                             <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.type_repair', 'view')): ?>
                                 <th class="sort">Type</th>
@@ -194,6 +194,7 @@
                             <th class="sort">Status</th>
                             <th class="text-center" width="70">Address</th>
                             <th class="sort">Date</th>
+                            <th>Author</th>
                             <th>Action</th>
                         </tr>
                         </thead>
@@ -244,6 +245,9 @@
                                     </td>
                                     <td>
                                         <?= Umbrella\components\Functions::formatDate($order['created_on'])?>
+                                    </td>
+                                    <td>
+                                        <?= \Umbrella\components\Decoder::strToUtf($order['created_by'])?>
                                     </td>
                                     <td class="action-control">
                                     <?php if($status_name == 'Предварительный' || $status_name == 'В обработке' || $status_name == 'Резерв'):?>
