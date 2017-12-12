@@ -77,6 +77,7 @@ class UserController extends AdminBase
 
 
     /**
+     * User control
      * @param $id_user
      * @return bool
      */
@@ -86,21 +87,37 @@ class UserController extends AdminBase
 
         $user = $this->user;
 
-        $listUsers = Admin::getAllUsers();
         $listControlUsers = Admin::getControlUsersId($id_user);
+
+        // Параметры для формирование фильтров
+        $groupList = GroupModel::getGroupList();
+        $userInGroup = [];
+        $i = 0;
+        foreach ($groupList as $group) {
+            $userInGroup[$i]['group_name'] = $group['group_name'];
+            $userInGroup[$i]['group_id'] = $group['id'];
+            $userInGroup[$i]['users'] = GroupModel::getUsersByGroup($group['id']);
+            $i++;
+        }
+        // Добавляем в массив пользователей без групп
+        $userNotGroup[0]['group_name'] = 'Without group';
+        $userNotGroup[0]['group_id'] = 'without_group';
+        $userNotGroup[0]['users'] = GroupModel::getUsersWithoutGroup();
+        $userInGroup = array_merge($userInGroup, $userNotGroup);
 
         if(isset($_REQUEST['add_multi-user_control']) && $_REQUEST['add_multi-user_control'] == 'true'){
             $users_id = $_POST['id_user'];
-            foreach ($users_id as $user_control_id){
-                Admin::addUserControl($id_user, $user_control_id);
+            if(is_array($users_id)){
+                foreach ($users_id as $user_control_id){
+                    Admin::addUserControl($id_user, $user_control_id);
+                }
             }
             Url::previous();
         }
-
-
-        $this->render('admin/users/user_control', compact('user', 'id_user', 'listUsers', 'listControlUsers'));
+        $this->render('admin/users/user_control', compact('user', 'id_user', 'listControlUsers', 'userInGroup'));
         return true;
     }
+
 
     /**
      * Удаляем пользователя из списка управляемых пользователем
@@ -118,6 +135,33 @@ class UserController extends AdminBase
             echo "<script>alert('У вас нету прав на удаление')</script>";
         }
 
+        Url::previous();
+        return true;
+    }
+
+
+    /**
+     * Multi-delete users
+     * @return bool
+     */
+    public function actionUserControlMultiDelete()
+    {
+        $user = $this->user;
+
+        if(isset($_REQUEST['multi_delete_user']) && $_REQUEST['multi_delete_user'] == 'true'){
+            if($user->getRole() == 'administrator'){
+                $id_user = $_REQUEST['id_user'];
+                $usersIds = $_REQUEST['delete_users'];
+                var_dump($id_user);
+                if(is_array($usersIds)){
+                    foreach ($usersIds as $id){
+                        Admin::deleteUserControl($id_user, $id);
+                    }
+                }
+            } else {
+                echo "<script>alert('У вас нету прав на удаление')</script>";
+            }
+        }
         Url::previous();
         return true;
     }

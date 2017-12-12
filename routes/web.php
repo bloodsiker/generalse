@@ -17,6 +17,7 @@ return [
 
     /*********** CONTROL USER  ***********/
     'adm/user/control/delete/([0-9]+)/([0-9]+)' => 'umbrella/User@userControlDelete/$1/$2',
+    'adm/user/control/multi-delete' => 'umbrella/User@userControlMultiDelete',
     'adm/user/control/([0-9]+)' => 'umbrella/User@userControl/$1',
 
 
