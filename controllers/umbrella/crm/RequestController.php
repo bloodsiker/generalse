@@ -333,7 +333,7 @@ class RequestController extends AdminBase
 
             $userID = $user_id != 'false' ? $user_id : $user->getId();
 
-            $userClient = Admin::getInfoGmUser($user_id);
+            $userClient = Admin::getInfoGmUser($userID);
 
             $infoPart = Products::checkPartNumberInGM($part_number);
             //$stocks_group = explode(',', 'BAD,Not Used,Restored,Dismantling,Local Source'); 12
