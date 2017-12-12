@@ -77,9 +77,6 @@
                              <th>Device</th>
                              <th>Manufacture Date</th>
                              <th>Purchase Date</th>
-                             <th>Defect description</th>
-                             <th>Device condition</th>
-                             <th>Complectation</th>
                              <th>Notes</th>
                              <th>Attach</th>
                              <th>Status</th>
@@ -94,7 +91,7 @@
                          <tbody>
                          <?php if(is_array($listPsr)):?>
                              <?php foreach ($listPsr as $psr):?>
-                                 <tr class="goods" data-id="<?= $psr['id']?>">
+                                 <tr class="goods" ondblclick="showDetails(<?= $psr['id']?>)" data-id="<?= $psr['id']?>">
                                      <td><?= $psr['id']?></td>
                                      <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $psr['site_client_name'])?></td>
                                      <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $psr['serial_number'])?></td>
@@ -102,9 +99,6 @@
                                      <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $psr['device_name'])?></td>
                                      <td><?= $psr['manufacture_date']?></td>
                                      <td><?= $psr['purchase_date']?></td>
-                                     <td><?= $psr['defect_description']?></td>
-                                     <td><?= $psr['device_condition']?></td>
-                                     <td><?= $psr['complectation']?></td>
                                      <td class="text-center">
                                          <?php if($psr['note'] != ' ' && $psr['note'] != null):?>
                                              <i class="fi-info has-tip [tip-top]" style="font-size: 16px;"

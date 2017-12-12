@@ -181,3 +181,20 @@ $(document).on('click', '#send-psr-dec-return', function(e) {
         }
     });
 });
+
+// show psr details
+let showDetails = (id_psr) => {
+    $('#container-psr').html('');
+    $.ajax({
+        url: "/adm/psr/psr_ajax",
+        type: "POST",
+        data: {id_psr : id_psr, action : 'show_psr'},
+        cache: false,
+        success: function (response) {
+            console.log(response);
+            $('#show-details-modal').foundation('open');
+            $('#container-psr').html(response);
+        }
+    });
+    return false;
+};

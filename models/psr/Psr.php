@@ -202,6 +202,32 @@ class Psr
 
 
     /**
+     * find PSR by ID
+     * @param $id_psr
+     *
+     * @return array
+     */
+    public static function findPsrById($id_psr)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "SELECT
+                  sgp.*,
+                  sgu.site_client_name
+                 FROM site_gm_psr sgp
+                 INNER JOIN site_gm_users sgu
+                    ON sgp.id_user = sgu.site_account_id
+                 WHERE sgp.id = :id";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $id_psr, PDO::PARAM_INT);
+        $result->execute();
+        $all = $result->fetch(PDO::FETCH_ASSOC);
+        return $all;
+    }
+
+
+    /**
      * Обновляем номер декларации для ПСР
      * @param $id_psr
      * @param $declaration_number

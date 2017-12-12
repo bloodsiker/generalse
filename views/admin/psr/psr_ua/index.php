@@ -71,6 +71,11 @@
                      </div>
                  <?php endif;?>
                      <table class="umbrella-table">
+                         <caption>Last recordings on
+                             <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-14 days') ?> &mdash;
+                             <?= (isset($_GET['end']) && !empty($_GET['end'])) ? $_GET['end'] : date('Y-m-d') ?>
+                             <span id="count_refund" class="text-green">(<?php if (isset($listPsr)) echo count($listPsr) ?>)</span>
+                         </caption>
                          <thead>
                          <tr>
                              <th>ID</th>
@@ -80,9 +85,6 @@
                              <th>Device</th>
                              <th>Manufacture Date</th>
                              <th>Purchase Date</th>
-                             <th>Defect description</th>
-                             <th>Device condition</th>
-                             <th>Complectation</th>
                              <th>Notes</th>
                              <th>Attach</th>
                              <th>Status</th>
@@ -98,7 +100,7 @@
                          <?php //$listPsr = [];?>
                          <?php if(is_array($listPsr)):?>
                              <?php foreach ($listPsr as $psr):?>
-                                 <tr class="goods" data-id="<?= $psr['id']?>">
+                                 <tr class="goods" ondblclick="showDetails(<?= $psr['id']?>)" data-id="<?= $psr['id']?>">
                                      <td><?= $psr['id']?></td>
                                      <td><?= $psr['site_client_name']?></td>
                                      <td><?= $psr['serial_number']?></td>
@@ -106,9 +108,6 @@
                                      <td><?= $psr['device_name']?></td>
                                      <td><?= $psr['manufacture_date']?></td>
                                      <td><?= $psr['purchase_date']?></td>
-                                     <td><?= $psr['defect_description']?></td>
-                                     <td><?= $psr['device_condition']?></td>
-                                     <td><?= $psr['complectation']?></td>
                                      <td class="text-center">
                                          <?php if($psr['note'] != ' ' && $psr['note'] != null):?>
                                              <i class="fi-info has-tip [tip-top]" style="font-size: 16px;"
@@ -146,8 +145,7 @@
                                              </tr>
                                          </table>
                                      </td>
-                                     <?php if($user->isAdmin()
-                                     || $user->isManager()):?>
+                                     <?php if($user->isAdmin() || $user->isManager()):?>
                                          <td class="order-tr-so"><?= $psr['so']?></td>
                                      <?php endif;?>
                                      <td><?= $psr['created_at']?></td>
@@ -379,6 +377,21 @@
             </div>
         </div>
     </form>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="reveal" id="show-details-modal" data-reveal>
+    <div class="row align-top">
+        <div class="medium-12 small-12 columns">
+            <h3>Details</h3>
+        </div>
+        <div class="medium-12 small-12 columns" id="container-psr">
+
+        </div>
+    </div>
+
     <button class="close-button" data-close aria-label="Close modal" type="button">
         <span aria-hidden="true">&times;</span>
     </button>

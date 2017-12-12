@@ -42,6 +42,7 @@ class PsrController extends AdminBase
     /**
      * Register PSR
      * @return bool
+     * @throws \Exception
      */
     public function actionIndex()
     {
@@ -108,18 +109,22 @@ class PsrController extends AdminBase
         }
 
         // Filter
+        $interval = " AND sgp.created_at >= DATEADD(day, -14, GETDATE())";
         $filter = null;
         if(!empty($_REQUEST['start'])){
             $start = $_REQUEST['start'] . " 00:00";
             $end = !empty($_REQUEST['end']) ? $_REQUEST['end'] . " 23:59" : date('Y-m-d');
             $filter .= " AND sgp.created_at BETWEEN '{$start}' AND '{$end}'";
+            $interval = '';
         }
         if(isset($_REQUEST['status']) && !empty($_REQUEST['status'])){
             $status = Decoder::strToWindows($_REQUEST['status']);
             if($status != 'all'){
                 $filter .= " AND sgp.status_name = '{$status}'";
             }
+            $interval = '';
         }
+        $filter .= $interval;
 
         if($user->isPartner()){
             $listPsr = Decoder::arrayToUtf(Psr::getPsrByPartnerMsSQL($user->controlUsers($user->id_user), $filter));
@@ -177,6 +182,7 @@ class PsrController extends AdminBase
 
     /**
      * @return bool
+     * @throws \Exception
      */
     public function actionPsrAjax()
     {
@@ -216,6 +222,17 @@ class PsrController extends AdminBase
                 print_r(200);
             }
         }
+
+        // show psr details
+        if($_REQUEST['action'] == 'show_psr') {
+            $idPsr = $_REQUEST['id_psr'];
+            $psrInfo = Decoder::arrayToUtf(Psr::findPsrById($idPsr));
+            $psrInfo['manufacture_date'] = Carbon::parse($psrInfo['manufacture_date'])->format('Y-m-d');
+            $psrInfo['purchase_date'] = Carbon::parse($psrInfo['purchase_date'])->format('Y-m-d');
+            $psrInfo['created_at'] = Carbon::parse($psrInfo['created_at'])->format('Y-m-d');
+            $this->render('admin/psr/psr_ua/_part/show_details_psr', compact('psrInfo', 'user'));
+        }
+
         return true;
     }
 
