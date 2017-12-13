@@ -22,6 +22,8 @@ return [
     'api/bands([a-z0-9-_?&]+)' => 'api/hr/Band@allBand/$1',
     'api/band([a-z0-9-_?&]+)' => 'api/hr/Band@band/$1',
 
+    'api/staff([a-z0-9-_?&]+)' => 'api/hr/Staff@allStaff/$1',
+
     'api/structure/delete([a-z0-9-_?&]+)' => 'api/hr/Structure@deleteStructure/$1',
     'api/structure/edit([a-z0-9-_?&]+)' => 'api/hr/Structure@editStructure/$1',
     'api/structure/add([a-z0-9-_?&]+)' => 'api/hr/Structure@addStructure/$1',

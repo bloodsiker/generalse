@@ -6,6 +6,7 @@ use PDO;
 use Umbrella\components\Db\MySQL;
 
 /**
+ * Достижения
  * Class FormUserAchievements
  * @package Umbrella\models\hr
  */
