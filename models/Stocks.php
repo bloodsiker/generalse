@@ -491,7 +491,7 @@ class Stocks
      */
     public static function replaceNameStockInResultTable($stockName, $role = 'administrator')
     {
-        if($role != 'administrator'){
+        if($role == 'partner'){
             if($stockName == 'KVAZAR, Киев\OK'
                 || $stockName == 'PEX, Киев\OK'
                 || $stockName == 'PEX, Киев\Квазар'){
@@ -524,7 +524,7 @@ class Stocks
 
         if(is_array($stockName)){
             foreach ($stockName as $stock){
-                if($role != 'administrator'){
+                if($role == 'partner'){
                     if($stock == 'KVAZAR, Киев\OK'
                         || $stock == 'PEX, Киев\OK'
                         || $stock == 'PEX, Киев\Квазар'){

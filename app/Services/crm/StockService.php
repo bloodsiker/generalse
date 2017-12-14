@@ -123,7 +123,7 @@ class StockService
      */
     public function replaceNameStockInResultTable($stockName, $role = 'administrator')
     {
-        if($role != 'administrator'){
+        if($role == 'partner'){
             if($stockName == 'KVAZAR, Киев\OK'
                 || $stockName == 'PEX, Киев\OK'
                 || $stockName == 'PEX, Киев\Квазар'){
@@ -155,7 +155,7 @@ class StockService
     {
         $newArrayStocks = [];
 
-        if($role != 'administrator') {
+        if($role == 'partner') {
             if($replace == 'replace'){
                 if(is_array($arrayStocks)){
                     foreach ($arrayStocks as $stock){

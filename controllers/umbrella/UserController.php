@@ -63,11 +63,11 @@ class UserController extends AdminBase
         $countryList = Country::getAllCountry();
         $branchList = Branch::getBranchList();
 
-        if($user->getRole() == 'partner' || $user->getRole() == 'manager'){
+        if($user->isPartner()){
 
             Url::redirect('/adm/access_denied');
 
-        } else if($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin' ){
+        } else if($user->isAdmin() || $user->isManager()){
 
             $this->render('admin/users/index', compact('user', 'listUsers', 'groupList',
                 'countryList', 'branchList', 'message'));
@@ -129,7 +129,7 @@ class UserController extends AdminBase
     {
         $user = $this->user;
 
-        if($user->getRole() == 'administrator'){
+        if($user->isAdmin() || $user->isManager()){
             Admin::deleteUserControl($id_user, $control_user_id);
         } else {
             echo "<script>alert('У вас нету прав на удаление')</script>";
@@ -149,7 +149,7 @@ class UserController extends AdminBase
         $user = $this->user;
 
         if(isset($_REQUEST['multi_delete_user']) && $_REQUEST['multi_delete_user'] == 'true'){
-            if($user->getRole() == 'administrator'){
+            if($user->isAdmin() || $user->isManager()){
                 $id_user = $_REQUEST['id_user'];
                 $usersIds = $_REQUEST['delete_users'];
                 var_dump($id_user);
