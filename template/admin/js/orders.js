@@ -262,6 +262,9 @@ $('#add-checkout-form').submit(function(e) {
                 } else if(response == 0){
                     $('.error_form_purchases').text('Request sending error')
                 }
+            },
+            ajaxError: function () {
+                showNotification('Не удалось обработать запрос', 'error');
             }
         });
         return false;

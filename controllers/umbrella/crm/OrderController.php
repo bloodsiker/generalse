@@ -4,13 +4,13 @@ namespace Umbrella\controllers\umbrella\crm;
 use Josantonius\Session\Session;
 use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
+use Umbrella\app\Group;
 use Umbrella\app\User;
 use Umbrella\components\Decoder;
 use Umbrella\components\ImportExcel;
 use Umbrella\components\Logger;
 use Umbrella\models\Admin;
 use Umbrella\models\Currency;
-use Umbrella\models\GroupModel;
 use Umbrella\models\Orders;
 use Umbrella\models\Products;
 use Umbrella\models\Stocks;
@@ -159,7 +159,6 @@ class OrderController extends AdminBase
             }
         }
 
-
         if($user->isPartner() || $user->isManager()) {
 
             $filter = "";
@@ -188,12 +187,15 @@ class OrderController extends AdminBase
             $filter .= $status;
 
             $allOrders = Orders::getOrdersByPartnerMsSql($user->controlUsers($user->id_user), $filter);
+            $allOrders = Decoder::arrayToUtf($allOrders);
 
             // Параметры для формирование фильтров
             $user_ids = $user->controlUsers($user->id_user);
             $partnerList = Admin::getPartnerControlUsers($user_ids);
 
         } else if($user->isAdmin()){
+
+            $group = new Group();
 
             $filter = "";
             $status_1 = Decoder::strToWindows( 'Предварительный');
@@ -208,23 +210,10 @@ class OrderController extends AdminBase
                 $interval = "";
             }
             $filter .= $interval;
-            $allOrders = Orders::getAllOrdersMsSql($filter);
+            $allOrders = Decoder::arrayToUtf(Orders::getAllOrdersMsSql($filter));
 
             // Параметры для формирование фильтров
-            $groupList = GroupModel::getGroupList();
-            $userInGroup = [];
-            $i = 0;
-            foreach ($groupList as $group) {
-                $userInGroup[$i]['group_name'] = $group['group_name'];
-                $userInGroup[$i]['group_id'] = $group['id'];
-                $userInGroup[$i]['users'] = GroupModel::getUsersByGroup($group['id']);
-                $i++;
-            }
-            // Добавляем в массив пользователей без групп
-            $userNotGroup[0]['group_name'] = 'Without group';
-            $userNotGroup[0]['group_id'] = 'without_group';
-            $userNotGroup[0]['users'] = GroupModel::getUsersWithoutGroup();
-            $userInGroup = array_merge($userInGroup, $userNotGroup);
+            $userInGroup = $group->groupFormationForFilter();
 
             $partnerList = Admin::getAllPartner();
         }
@@ -237,6 +226,7 @@ class OrderController extends AdminBase
 
     /**
      * @return bool
+     * @throws \Exception
      */
     public function actionOrdersSuccess()
     {
@@ -280,6 +270,7 @@ class OrderController extends AdminBase
             $partnerList = Admin::getPartnerControlUsers($user_ids);
 
         } else if($user->isAdmin()){
+            $group = new Group();
 
             $filter = "";
             $status_1 = Decoder::strToWindows('Предварительный');
@@ -296,20 +287,7 @@ class OrderController extends AdminBase
             $allOrders = Orders::getAllOrdersMsSql($filter);
 
             // Параметры для формирование фильтров
-            $groupList = GroupModel::getGroupList();
-            $userInGroup = [];
-            $i = 0;
-            foreach ($groupList as $group) {
-                $userInGroup[$i]['group_name'] = $group['group_name'];
-                $userInGroup[$i]['group_id'] = $group['id'];
-                $userInGroup[$i]['users'] = GroupModel::getUsersByGroup($group['id']);
-                $i++;
-            }
-            // Добавляем в массив пользователей без групп
-            $userNotGroup[0]['group_name'] = 'Without group';
-            $userNotGroup[0]['group_id'] = 'without_group';
-            $userNotGroup[0]['users'] = GroupModel::getUsersWithoutGroup();
-            $userInGroup = array_merge($userInGroup, $userNotGroup);
+            $userInGroup = $group->groupFormationForFilter();
             $partnerList = Admin::getAllPartner();
         }
 
@@ -340,6 +318,7 @@ class OrderController extends AdminBase
 
     /**
      * @return bool
+     * @throws \Exception
      */
     public function actionOrdersAjax()
     {
@@ -349,7 +328,7 @@ class OrderController extends AdminBase
         $data_json = json_decode($data, true);
         //print_r($data_json);
 
-        // Полачем последний номер покупки
+        // Полачем последний номер заказа
         $lastId = Orders::getLastOrdersId();
         if($lastId == false){
             $lastId = 100;
@@ -400,6 +379,7 @@ class OrderController extends AdminBase
     /**
      * Принимаем\отклоняем заказы
      * @return bool
+     * @throws \Exception
      */
     public function actionOrdersAction()
     {
@@ -515,6 +495,7 @@ class OrderController extends AdminBase
     /**
      * генерация таблицы заказов для экспорта
      * @return bool
+     * @throws \Exception
      */
     public function actionExportOrders()
     {
@@ -539,44 +520,35 @@ class OrderController extends AdminBase
     }
 
 
-
+    /**
+     * @return bool
+     * @throws \Exception
+     */
     public function actionSearch()
     {
         $user = $this->user;
 
         if($user->isPartner() || $user->isManager()) {
 
-            $search = iconv('UTF-8', 'WINDOWS-1251', trim($_REQUEST['search']));
+            $search = Decoder::strToWindows(trim($_REQUEST['search']));
 
             $idS = implode(',', $user->controlUsers($user->id_user));
             $filter = " AND sgo.site_account_id IN($idS)";
-            $allOrders = Orders::getSearchInOrders($search, $filter);
+            $allOrders = Decoder::arrayToUtf(Orders::getSearchInOrders($search, $filter));
 
             // Параметры для формирование фильтров
             $user_ids = $user->controlUsers($user->id_user);
             $partnerList = Admin::getPartnerControlUsers($user_ids);
 
         } else if($user->isAdmin()){
+            $group = new Group();
 
-            $search = iconv('UTF-8', 'WINDOWS-1251', trim($_REQUEST['search']));
+            $search = Decoder::strToWindows(trim($_REQUEST['search']));
 
-            $allOrders = Orders::getSearchInOrders($search);
+            $allOrders = Decoder::arrayToUtf(Orders::getSearchInOrders($search));
 
             // Параметры для формирование фильтров
-            $groupList = GroupModel::getGroupList();
-            $userInGroup = [];
-            $i = 0;
-            foreach ($groupList as $group) {
-                $userInGroup[$i]['group_name'] = $group['group_name'];
-                $userInGroup[$i]['group_id'] = $group['id'];
-                $userInGroup[$i]['users'] = GroupModel::getUsersByGroup($group['id']);
-                $i++;
-            }
-            // Добавляем в массив пользователей без групп
-            $userNotGroup[0]['group_name'] = 'Without group';
-            $userNotGroup[0]['group_id'] = 'without_group';
-            $userNotGroup[0]['users'] = GroupModel::getUsersWithoutGroup();
-            $userInGroup = array_merge($userInGroup, $userNotGroup);
+            $userInGroup = $group->groupFormationForFilter();
         }
 
         $this->render('admin/crm/orders/orders_search', compact('userInGroup', 'partnerList', 'allOrders',

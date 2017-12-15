@@ -226,7 +226,7 @@ class ReturnController extends AdminBase
             $allReturnsByPartner = Returns::getAllReturns($filter);
         }
 
-        $this->render('admin/crm/returns', compact('user','partnerList', 'arr_error_return', 'allReturnsByPartner'));
+        $this->render('admin/crm/returns/returns', compact('user','partnerList', 'arr_error_return', 'allReturnsByPartner'));
         return true;
     }
 

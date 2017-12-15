@@ -115,14 +115,14 @@
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.request_id', 'view')): ?>
                                     <td><?= $order['request_id']?></td>
                                 <?php endif;?>
-                                <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['site_client_name'])?></td>
+                                <td><?= $order['site_client_name']?></td>
                                 <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
-                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['site_client_status'])?></td>
+                                    <td><?= $order['site_client_status']?></td>
                                 <?php endif?>
                                 <td><?= $order['order_number']?></td>
-                                <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></td>
+                                <td><?= $order['so_number']?></td>
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.type_repair', 'view')): ?>
-                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['type_name'])?></td>
+                                    <td><?= $order['type_name']?></td>
                                 <?php endif; ?>
 
                                 <td class="text-center">
@@ -131,11 +131,11 @@
                                            data-tooltip aria-haspopup="true"
                                            data-show-on="small"
                                            data-click-open="true"
-                                           title="<?= iconv('WINDOWS-1251', 'UTF-8', $order['note1'])?>"></i>
+                                           title="<?= $order['note1']?>"></i>
                                     <?php endif;?>
                                 </td>
 
-                                <?php $status_name = iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?>
+                                <?php $status_name = $order['status_name']?>
 								<td class="<?= Umbrella\models\Orders::getStatusRequest($status_name);?>">
                                     <?= $status_name?>
                                     <?php if($status_name == 'Отказано'):?>
@@ -143,7 +143,10 @@
                                            data-tooltip aria-haspopup="true"
                                            data-show-on="small"
                                            data-click-open="true"
-                                           title="<?= iconv('WINDOWS-1251', 'UTF-8', $order['command_text'])?>"></i>
+                                           title="<?= $order['command_text']?>"></i>
+                                    <?php endif;?>
+                                    <?php if($status_name == 'Выдан'): ?>
+                                        <br><?= Umbrella\components\Functions::formatDate($order['shipped_on'])?>
                                     <?php endif;?>
                                 </td>
                                 <td class="text-center">
@@ -152,15 +155,11 @@
                                        data-tooltip aria-haspopup="true"
                                        data-show-on="small"
                                        data-click-open="true"
-                                       title="<?= iconv('WINDOWS-1251', 'UTF-8', $order['note'])?>"></i>
+                                       title="<?= $order['note']?>"></i>
                                 <?php endif;?>
                                 </td>
                                 <td>
-                                    <?php if($user->name_partner == 'GS Electrolux' && $status_name == 'Выдан'):?>
-                                        <?= Umbrella\components\Functions::formatDate($order['shipped_on'])?>
-                                    <?php else:?>
-                                        <?= Umbrella\components\Functions::formatDate($order['created_on'])?>
-                                    <?php endif;?>
+                                    <?= Umbrella\components\Functions::formatDate($order['created_on'])?>
                                 </td>
                             </tr>
                         <?php endforeach;?>
@@ -194,6 +193,7 @@
                             <th class="sort">Status</th>
                             <th class="text-center" width="70">Address</th>
                             <th class="sort">Date</th>
+                            <th>Reserve</th>
                             <th>Author</th>
                             <th>Action</th>
                         </tr>
@@ -205,12 +205,12 @@
                                     <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.request_id', 'view')): ?>
                                         <td><?= $order['request_id']?></td>
                                     <?php endif;?>
-                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['site_client_name'])?></td>
-                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['site_client_status'])?></td>
+                                    <td><?= $order['site_client_name']?></td>
+                                    <td><?= $order['site_client_status']?></td>
                                     <td><?= $order['order_number']?></td>
-                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></td>
+                                    <td><?= $order['so_number']?></td>
                                     <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.type_repair', 'view')): ?>
-                                        <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['type_name'])?></td>
+                                        <td><?= $order['type_name']?></td>
                                     <?php endif;?>
 
                                     <td class="text-center">
@@ -219,11 +219,11 @@
                                                data-tooltip aria-haspopup="true"
                                                data-show-on="small"
                                                data-click-open="true"
-                                               title="<?= iconv('WINDOWS-1251', 'UTF-8', $order['note1'])?>"></i>
+                                               title="<?= $order['note1']?>"></i>
                                         <?php endif;?>
                                     </td>
 
-                                    <?php $status_name = iconv('WINDOWS-1251', 'UTF-8', $order['status_name'])?>
+                                    <?php $status_name = $order['status_name']?>
                                     <td class="<?=Umbrella\models\Orders::getStatusRequest($status_name);?>">
                                         <?= $status_name?>
                                         <?php if($status_name == 'Отказано'):?>
@@ -231,7 +231,10 @@
                                                data-tooltip aria-haspopup="true"
                                                data-show-on="small"
                                                data-click-open="true"
-                                               title="<?= iconv('WINDOWS-1251', 'UTF-8', $order['command_text'])?>"></i>
+                                               title="<?= $order['command_text']?>"></i>
+                                        <?php endif;?>
+                                        <?php if($status_name == 'Выдан'): ?>
+                                            <br><?= Umbrella\components\Functions::formatDate($order['shipped_on'])?>
                                         <?php endif;?>
                                     </td>
                                     <td class="text-center">
@@ -240,14 +243,17 @@
                                                data-tooltip aria-haspopup="true"
                                                data-show-on="small"
                                                data-click-open="true"
-                                               title="<?= iconv('WINDOWS-1251', 'UTF-8', $order['note'])?>"></i>
+                                               title="<?= $order['note']?>"></i>
                                         <?php endif;?>
                                     </td>
                                     <td>
                                         <?= Umbrella\components\Functions::formatDate($order['created_on'])?>
                                     </td>
                                     <td>
-                                        <?= \Umbrella\components\Decoder::strToUtf($order['created_by'])?>
+                                        <?= Umbrella\components\Functions::formatDate($order['to_date'])?>
+                                    </td>
+                                    <td>
+                                        <?= $order['created_by']?>
                                     </td>
                                     <td class="action-control">
                                     <?php if($status_name == 'Предварительный' || $status_name == 'В обработке' || $status_name == 'Резерв'):?>
@@ -261,7 +267,7 @@
                                     <?php endif;?>
 
                                     <?php if(isset($order['request_id'])):?>
-                                        <?php if($status_name != 'Выдан' || $status_name != 'Отказано'):?>
+                                        <?php if($status_name != 'Выдан' && $status_name != 'Отказано'):?>
                                             <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.return_to_request', 'view')): ?>
                                             <a href="" data-request-id="<?=$order['request_id']?>" class="return order-return"><i class="fi-loop"></i></a>
                                             <?php endif;?>
@@ -284,7 +290,7 @@
             <div class="medium-12 small-12 columns">
                 <h3>New checkout</h3>
             </div>
-            <?php if($user->role == 'administrator' || $user->role == 'administrator-fin'):?>
+            <?php if($user->isAdmin()):?>
 
                 <div class="medium-12 small-12 columns">
                     <label>Partner</label>
@@ -298,7 +304,7 @@
                     </select>
                 </div>
 
-            <?php elseif ($user->role == 'manager' || $user->role == 'partner'):?>
+            <?php elseif ($user->isManager() || $user->isPartner()):?>
 
                 <div class="medium-12 small-12 columns">
                     <label><i class="fi-list"></i> Partner</label>
@@ -412,7 +418,7 @@
                 </div>
 
                 <h4 style="color: #fff">Partners</h4>
-                <?php if($user->role == 'administrator' || $user->role == 'fin-administrator'):?>
+                <?php if($user->isAdmin()):?>
                     <div class="row align-bottom" style="background: #323e48; padding-top: 10px">
                         <div class="medium-12 small-12 columns">
                             <ul class="tabs" data-deep-link="true" data-update-history="true" data-deep-link-smudge="true" data-deep-link-smudge="500" data-tabs id="deeplinked-tabs">
