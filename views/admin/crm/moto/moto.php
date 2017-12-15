@@ -55,7 +55,7 @@
         <!-- body -->
         <div class="body-content checkout">
             <div class="row">
-                <?php if($user->role == 'partner'):?>
+                <?php if($user->isPartner()):?>
                     <table id="goods_data" class="umbrella-table table">
                         <thead>
                         <tr>
@@ -74,19 +74,19 @@
                             <?php foreach ($listMoto as $moto): ?>
                                 <tr data-siteid="<?=$moto['site_id']?>" class="goods ">
                                     <td><?=$moto['service_object_id']?></td>
-                                    <td><?=iconv('WINDOWS-1251', 'UTF-8', $moto['serial_number'])?></td>
+                                    <td><?=$moto['serial_number']?></td>
                                     <td><?=$moto['part_number']?></td>
-                                    <td><?=iconv('WINDOWS-1251', 'UTF-8', $moto['goods_name'])?></td>
-                                    <td><?=iconv('WINDOWS-1251', 'UTF-8', $moto['problem_description'])?></td>
+                                    <td><?=$moto['goods_name']?></td>
+                                    <td><?=$moto['problem_description']?></td>
                                     <td><?= Umbrella\components\Functions::formatDate($moto['purchase_date'])?></td>
                                     <td><?= Umbrella\components\Functions::formatDate($moto['carry_in_date'])?></td>
-                                    <td><?=iconv('WINDOWS-1251', 'UTF-8', $moto['status_name'])?></td>
+                                    <td><?=$moto['status_name']?></td>
                                 </tr>
                             <?php endforeach; ?>
                         <?php endif; ?>
                         </tbody>
                     </table>
-                <?php elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+                <?php elseif($user->isAdmin() || $user->isManager()):?>
                 <table class="umbrella-table" id="goods_data">
                     <thead>
                     <tr>
@@ -107,13 +107,13 @@
                         <tr data-siteid="<?=$moto['site_id']?>" class="goods ">
                             <td><?=$moto['site_client_name']?></td>
                             <td><?=$moto['service_object_id']?></td>
-                            <td><?=iconv('WINDOWS-1251', 'UTF-8', $moto['serial_number'])?></td>
+                            <td><?=$moto['serial_number']?></td>
                             <td><?=$moto['part_number']?></td>
-                            <td><?=iconv('WINDOWS-1251', 'UTF-8', $moto['goods_name'])?></td>
-                            <td><?=iconv('WINDOWS-1251', 'UTF-8', $moto['problem_description'])?></td>
+                            <td><?=$moto['goods_name']?></td>
+                            <td><?=$moto['problem_description']?></td>
                             <td><?= Umbrella\components\Functions::formatDate($moto['purchase_date'])?></td>
                             <td><?= Umbrella\components\Functions::formatDate($moto['carry_in_date'])?></td>
-                            <td><?=iconv('WINDOWS-1251', 'UTF-8', $moto['status_name'])?></td>
+                            <td><?=$moto['status_name']?></td>
                         </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>

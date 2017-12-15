@@ -4,6 +4,7 @@ namespace Umbrella\controllers\umbrella\crm;
 use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
 use Umbrella\app\User;
+use Umbrella\components\Decoder;
 use Umbrella\components\Logger;
 use Umbrella\models\Admin;
 use Umbrella\models\Moto;
@@ -31,7 +32,9 @@ class MotoController extends AdminBase
 
     /**
      * @param string $filter
+     *
      * @return bool
+     * @throws \Exception
      */
     public function actionMoto($filter = '')
     {
@@ -39,7 +42,7 @@ class MotoController extends AdminBase
 
         $partnerList = Admin::getAllPartner();
 
-        if($user->role == 'partner') {
+        if($user->isPartner()) {
 
             $filter = "";
 
@@ -47,13 +50,13 @@ class MotoController extends AdminBase
                 if($_GET['status'] == 'Все'){
                     $filter = '';
                 } else {
-                    $status = iconv('UTF-8', 'WINDOWS-1251', $_GET['status']);
+                    $status = Decoder::strToWindows($_GET['status']);
                     $filter .= " AND sgso.status_name = '$status'";
                 }
             }
             $listMoto = Moto::getAllMotoByPartner($user->id_user, $filter);
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
+        } else if($user->isAdmin() || $user->isManager()){
 
             $filter = "";
 
@@ -61,11 +64,11 @@ class MotoController extends AdminBase
                 if($_GET['status'] == 'Все'){
                     $filter = '';
                 } else {
-                    $status = iconv('UTF-8', 'WINDOWS-1251', $_GET['status']);
+                    $status = Decoder::strToWindows($_GET['status']);
                     $filter .= " AND sgso.status_name = '$status'";
                 }
             }
-            $listMoto = Moto::getAllMoto($filter);
+            $listMoto = Decoder::arrayToUtf(Moto::getAllMoto($filter));
         }
 
         $options = [];
@@ -81,13 +84,13 @@ class MotoController extends AdminBase
 
             $options['site_id'] = $lastId;
             $options['site_account_id'] = $user->id_user;
-            $options['client_name'] = iconv('UTF-8', 'WINDOWS-1251',$_REQUEST['client_name']);
+            $options['client_name'] = Decoder::strToWindows($_REQUEST['client_name']);
             $options['client_phone'] = $_REQUEST['client_phone'];
             $options['client_email'] = $_REQUEST['client_email'];
-            $options['serial_number'] = iconv('UTF-8', 'WINDOWS-1251', $_REQUEST['serial_number']);
+            $options['serial_number'] = Decoder::strToWindows($_REQUEST['serial_number']);
             $options['part_number'] = $_REQUEST['mtm'];
             $options['goods_name'] = $_REQUEST['goods_name'];
-            $options['problem_description'] = iconv('UTF-8', 'WINDOWS-1251', $_REQUEST['problem_description']);
+            $options['problem_description'] = Decoder::strToWindows($_REQUEST['problem_description']);
             $options['purchase_date'] = $_REQUEST['purchase_date'];
             $options['carry_in_date'] = $_REQUEST['carry_in_date'];
             $options['ready'] = 1;
@@ -97,13 +100,6 @@ class MotoController extends AdminBase
             foreach ($_FILES['attach_file']['name'] as $key => $val) {
                 if(!empty($_FILES['attach_file']['name'][$key])){
                     $options['name'] = $_FILES['attach_file']['name'][$key];
-
-                    // Получаем бинарник файла
-//                    $data = file_get_contents($_FILES['attach_file']['tmp_name'][$key], true);
-//                    $options['file_name'] = $options['name'];
-//                    $options['file_data'] = base64_encode($data);
-//                    Moto::addDocumentServiceObjectsMsSql($options);
-
 
                     $options['real_file_name'] = $options['name'];
                     // Все загруженные файлы помещаются в эту папку
@@ -190,6 +186,7 @@ class MotoController extends AdminBase
     /**
      * Проверка патр номера в базе
      * @return bool
+     * @throws \Exception
      */
     public function actionMotoPartNumAjax()
     {
@@ -200,7 +197,7 @@ class MotoController extends AdminBase
         $result = Products::checkPartNumberInGM($mtm);
 
         $mName = '';
-        $mName = iconv('WINDOWS-1251', 'UTF-8', $result['mName']);
+        $mName = Decoder::strToUtf($result['mName']);
         print_r($mName);
 
         return true;
@@ -227,13 +224,14 @@ class MotoController extends AdminBase
     /**
      * Показываем подробности
      * @return bool
+     * @throws \Exception
      */
     public function actionShowMoto()
     {
         $user = $this->user;
 
         $site_id = $_REQUEST['site_id'];
-        $data = Moto::getShowMoto($site_id);
+        $data = Decoder::arrayToUtf(Moto::getShowMoto($site_id));
         $listDocument = Moto::getShowDocumentByMoto($site_id);
 
         $this->render('admin/crm/moto/moto_show_detailes', compact('user', 'data', 'listDocument'));

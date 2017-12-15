@@ -33,7 +33,7 @@
         <?php if($item['operation_type'] == 1):?>
             <tr>
                 <td><?=$item['part_number']?></td>
-                <td><?=iconv('WINDOWS-1251', 'UTF-8', $item['goods_name'])?></td>
+                <td><?=$item['goods_name']?></td>
                 <td><?=$item['serial_number']?></td>
             </tr>
         <?php endif;?>
@@ -57,7 +57,7 @@
         <?php if($item['operation_type'] == 2):?>
             <tr>
                 <td><?=$item['part_number']?></td>
-                <td><?=iconv('WINDOWS-1251', 'UTF-8', $item['goods_name'])?></td>
+                <td><?=$item['goods_name']?></td>
                 <td><?=$item['price']?></td>
                 <td><?=$item['serial_number']?></td>
             </tr>
