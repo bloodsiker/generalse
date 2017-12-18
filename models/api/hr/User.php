@@ -9,18 +9,22 @@ use Umbrella\components\Db\MySQL;
  * Class Band
  * @package Umbrella\models\hr
  */
-class Staff
+class User
 {
 
     /**
-     * get all staff
+     * get all users
      * @return array
      */
     public static function getAll()
     {
         $db = MySQL::getConnection();
 
-        $sql = "SELECT * FROM gs_hr_staff";
+        $sql = "SELECT 
+                id_user,
+                name_partner
+                FROM gs_user 
+                WHERE is_active = 1 AND (id_role = 1 OR id_role = 3)";
 
         $result = $db->prepare($sql);
         $result->execute();

@@ -246,6 +246,7 @@ class Request
                  LEFT JOIN site_gm_orders_types sgot
                      ON sgot.id = sgog.order_type_id
              WHERE sgog.processed = :processed
+             AND sgog.active = 1
              AND sgog.site_account_id IN({$idS})
              AND sgog.created_on BETWEEN :start AND :end
              ORDER BY sgog.id DESC";

@@ -11,11 +11,16 @@ use Umbrella\models\GroupModel;
 class Group
 {
     /**
+     * @var array
+     */
+    private $allGroup = [];
+
+    /**
      * Group constructor.
      */
     public function __construct()
     {
-
+        $this->allGroup = GroupModel::getGroupList();
     }
 
 
@@ -87,7 +92,6 @@ class Group
      */
     public function checkStockInGroups($id_group, $id_stock, $section)
     {
-        $list_stock = GroupModel::getStocksFromGroup($id_group, $section);
         $found_key = in_array($id_stock, $this->stocksFromGroup($id_group, 'id', $section));
         if($found_key){
             return true;
@@ -134,5 +138,29 @@ class Group
     {
         Denied::deleteUserFromGroupByDenied($id_group, $slug);
         return true;
+    }
+
+
+    /**
+     * формирование списка пользователей по группам для отображения в фильтрах
+     * @return array
+     */
+    public function groupFormationForFilter()
+    {
+        $groupList = $this->allGroup;
+        $userInGroup = [];
+        $i = 0;
+        foreach ($groupList as $group) {
+            $userInGroup[$i]['group_name'] = $group['group_name'];
+            $userInGroup[$i]['group_id'] = $group['id'];
+            $userInGroup[$i]['users'] = GroupModel::getUsersByGroup($group['id']);
+            $i++;
+        }
+        // Добавляем в массив пользователей без групп
+        $userNotGroup[0]['group_name'] = 'Without group';
+        $userNotGroup[0]['group_id'] = 'without_group';
+        $userNotGroup[0]['users'] = GroupModel::getUsersWithoutGroup();
+        $userInGroup = array_merge($userInGroup, $userNotGroup);
+        return $userInGroup;
     }
 }
