@@ -3,7 +3,6 @@ namespace Umbrella\controllers\api\hr;
 
 use Umbrella\app\Api\Middleware\VerifyToken;
 use Umbrella\app\Api\Response;
-use Umbrella\models\api\hr\Band;
 use Umbrella\models\api\hr\Staff;
 
 

@@ -26,4 +26,24 @@ class Staff
         $result->execute();
         return $result->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    /**
+     * @param $id
+     *
+     * @return mixed
+     */
+    public static function getStaffById($id)
+    {
+        $db = MySQL::getConnection();
+
+        $sql = "SELECT 
+                  *
+                FROM gs_hr_staff
+                WHERE id = :id";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $id, PDO::PARAM_INT);
+        $result->execute();
+        return $result->fetch(PDO::FETCH_ASSOC);
+    }
 }

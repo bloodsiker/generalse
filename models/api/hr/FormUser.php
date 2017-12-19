@@ -22,7 +22,8 @@ class FormUser
         $db = MySQL::getConnection();
 
         $sql = "SELECT 
-                    ghuf.*,
+                    ghuf.id,
+                    ghuf.form,
                     ghs.name as company,
                     ghs1.name as department,
                     ghs2.name as branch,
@@ -59,7 +60,7 @@ class FormUser
         $db = MySQL::getConnection();
 
         $sql = "SELECT 
-                    ghuf.*,
+                    ghuf.form,
                     ghs.name as company,
                     ghs1.name as department,
                     ghs2.name as branch,
@@ -85,6 +86,32 @@ class FormUser
         $result->execute();
         return $result->fetch(PDO::FETCH_ASSOC);
     }
+
+
+    /**
+     * @param $id_user
+     *
+     * @return mixed
+     */
+    public static function getNewFormUserById($id_user)
+    {
+        $db = MySQL::getConnection();
+
+        $sql = "SELECT 
+                    ghuf.form,
+                    ghuf.staff_id,
+                    ghuf.company_id,
+                    ghuf.department_id,
+                    ghuf.branch_id
+                FROM gs_hr_users_form ghuf
+                WHERE ghuf.id = :id";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $id_user, PDO::PARAM_INT);
+        $result->execute();
+        return $result->fetch(PDO::FETCH_ASSOC);
+    }
+
 
 
     /**
@@ -115,6 +142,31 @@ class FormUser
         $result->bindParam(':position', $options['position'], PDO::PARAM_STR);
         $result->bindParam(':band_id', $options['band_id'], PDO::PARAM_INT);
         $result->bindParam(':func_group', $options['func_group'], PDO::PARAM_STR);
+
+        if ($result->execute()) {
+            return $db->lastInsertId();
+        }
+        return 0;
+    }
+
+    public static function addNewFormUser($options)
+    {
+        $db = MySQL::getConnection();
+
+        $sql = 'INSERT INTO gs_hr_users_form '
+            . '(user_id, form, company_id, staff_id, department_id, branch_id, band_id)'
+            . 'VALUES '
+            . '(:user_id, :form, :company_id, :staff_id, :department_id, :branch_id, :band_id)';
+
+        // Получение и возврат результатов. Используется подготовленный запрос
+        $result = $db->prepare($sql);
+        $result->bindParam(':user_id', $options['user_id'], PDO::PARAM_INT);
+        $result->bindParam(':form', $options['form'], PDO::PARAM_STR);
+        $result->bindParam(':staff_id', $options['staff_id'], PDO::PARAM_INT);
+        $result->bindParam(':company_id', $options['company_id'], PDO::PARAM_INT);
+        $result->bindParam(':department_id', $options['department_id'], PDO::PARAM_INT);
+        $result->bindParam(':branch_id', $options['branch_id'], PDO::PARAM_INT);
+        $result->bindParam(':band_id', $options['band_id'], PDO::PARAM_INT);
 
         if ($result->execute()) {
             return $db->lastInsertId();
@@ -169,6 +221,58 @@ class FormUser
         return $result->execute();
     }
 
+    /**
+     * Edit form user info
+     * @param $options
+     *
+     * @return bool
+     */
+    public static function savedNewFormUser($options)
+    {
+        $db = MySQL::getConnection();
+
+        $sql = "UPDATE gs_hr_users_form
+            SET
+                form = :form
+            WHERE id = :id";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $options['id'], PDO::PARAM_INT);
+        $result->bindParam(':form', $options['form'], PDO::PARAM_STR);
+        return $result->execute();
+    }
+
+    /**
+     * Apply form user
+     * @param $options
+     *
+     * @return bool
+     */
+    public static function updateNewFormUser($options)
+    {
+        $db = MySQL::getConnection();
+
+        $sql = "UPDATE gs_hr_users_form
+            SET
+                form = :form,
+                staff_id = :staff_id,
+                company_id = :company_id,
+                department_id = :department_id,
+                branch_id = :branch_id,
+                band_id = :band_id
+            WHERE id = :id";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $options['id'], PDO::PARAM_INT);
+        $result->bindParam(':form', $options['form'], PDO::PARAM_STR);
+        $result->bindParam(':staff_id', $options['staff_id'], PDO::PARAM_INT);
+        $result->bindParam(':company_id', $options['company_id'], PDO::PARAM_INT);
+        $result->bindParam(':department_id', $options['department_id'], PDO::PARAM_INT);
+        $result->bindParam(':branch_id', $options['branch_id'], PDO::PARAM_INT);
+        $result->bindParam(':band_id', $options['band_id'], PDO::PARAM_INT);
+        return $result->execute();
+    }
+
 
     /**
      * @param $id
@@ -192,6 +296,29 @@ class FormUser
         $result->bindParam(':id', $id, PDO::PARAM_INT);
         $result->bindParam(':value_1', $value_1, PDO::PARAM_STR);
         $result->bindParam(':value_2', $value_2, PDO::PARAM_STR);
+        return $result->execute();
+    }
+
+
+    /**
+     * @param $id
+     * @param $key
+     * @param $value
+     *
+     * @return bool
+     */
+    public static function updateSelectAttrFormUser($id, $key, $value)
+    {
+        $db = MySQL::getConnection();
+
+        $sql = "UPDATE gs_hr_users_form
+            SET
+                {$key} = :value
+            WHERE id = :id";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $id, PDO::PARAM_INT);
+        $result->bindParam(':value', $value, PDO::PARAM_STR);
         return $result->execute();
     }
 
@@ -223,15 +350,17 @@ class FormUser
         $db = MySQL::getConnection();
 
         $sql = 'INSERT INTO gs_hr_users_form_log '
-            . '(form_user_id, user_id, key_form, value_form, comment, updated_at)'
+            . '(form_user_id, user_id, key_form, title, value_form, state, comment, updated_at)'
             . 'VALUES '
-            . '(:form_user_id, :user_id, :key_form, :value_form, :comment, :updated_at)';
+            . '(:form_user_id, :user_id, :key_form, :title, :value_form, :state, :comment, :updated_at)';
 
         $result = $db->prepare($sql);
         $result->bindParam(':form_user_id', $options['form_user_id'], PDO::PARAM_INT);
         $result->bindParam(':user_id', $options['user_id'], PDO::PARAM_INT);
         $result->bindParam(':key_form', $options['key_form'], PDO::PARAM_STR);
+        $result->bindParam(':title', $options['title'], PDO::PARAM_STR);
         $result->bindParam(':value_form', $options['value_form'], PDO::PARAM_STR);
+        $result->bindParam(':state', $options['state'], PDO::PARAM_STR);
         $result->bindParam(':comment', $options['comment'], PDO::PARAM_STR);
         $result->bindParam(':updated_at', $options['updated_at'], PDO::PARAM_STR);
 

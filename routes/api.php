@@ -19,8 +19,17 @@ return [
     'api/form-users/get([a-z0-9-_?&]+)' => 'api/hr/FormUser@getUser/$1',
     'api/form-users([a-z0-9-_?&]+)' => 'api/hr/FormUser@usersInStructure/$1',
 
+
+    'api/new-form-users/apply' => 'api/hr/FormUser@applyNewFormUser',
+    'api/new-form-users/edit' => 'api/hr/FormUser@editNewFormUser',
+    'api/new-form-users/add' => 'api/hr/FormUser@add',
+    'api/new-form-users/get([a-z0-9-_?&]+)' => 'api/hr/FormUser@getFormUser/$1',
+    'api/new-form-users([a-z0-9-_?&]+)' => 'api/hr/FormUser@newForm/$1',
+
     'api/bands([a-z0-9-_?&]+)' => 'api/hr/Band@allBand/$1',
     'api/band([a-z0-9-_?&]+)' => 'api/hr/Band@band/$1',
+
+    'api/users([a-z0-9-_?&]+)' => 'api/hr/User@allUsers/$1',
 
     'api/staff([a-z0-9-_?&]+)' => 'api/hr/Staff@allStaff/$1',
 

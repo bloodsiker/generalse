@@ -3,15 +3,15 @@ namespace Umbrella\controllers\api\hr;
 
 use Umbrella\app\Api\Middleware\VerifyToken;
 use Umbrella\app\Api\Response;
-use Umbrella\models\api\hr\Staff;
+use Umbrella\models\api\hr\User;
 
 
 /**
- * список доступов по должностям
- * Class StaffController
+ * список пользователей
+ * Class UserController
  * @package Umbrella\controllers\api\hr
  */
-class StaffController
+class UserController
 {
 
     /**
@@ -25,10 +25,20 @@ class StaffController
     /**
      * @return bool
      */
-    public function actionAllStaff()
+    public function actionAllUsers()
     {
-        $allStaff = Staff::getAll();
-        Response::responseJson($allStaff, 200, 'OK');
+        $allUsers = User::getAll();
+        $userRelativeForm = User::getUsersRelativeForm();
+        $allUsers = array_map(function ($value) use ($userRelativeForm){
+            $newValue['id'] = $value['id_user'];
+            $newValue['name'] = $value['name_partner'];
+            $newValue['disabled'] = '';
+            if(in_array($value['id_user'], array_column($userRelativeForm, 'user_id'))){
+                $newValue['disabled'] = 'true';
+            }
+            return $newValue;
+        }, $allUsers);
+        Response::responseJson($allUsers, 200, 'OK');
         return true;
     }
 }

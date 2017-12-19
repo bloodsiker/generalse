@@ -43,7 +43,7 @@
 
 <body>
 <header>
-    <div id="wait" class="hide">
+    <div id="wait" class="">
         <div id="container-wait">
             <h1>Please wait</h1>
             <img src="/template/admin/img/wait.svg" alt="">
