@@ -1,4 +1,12 @@
 <?php if($user->isPartner()): ?>
+    <table class="umbrella-table" style="width: 25%">
+        <tbody>
+        <tr>
+            <td><b>Declaration number</b></td>
+            <td><?= $order['delivery_declaration'] ?></td>
+        </tr>
+        </tbody>
+    </table>
     <table class="umbrella-table">
         <thead>
         <tr>
@@ -56,6 +64,10 @@
                 <td><?= round($sumPriceEuro, 2) ?></td>
             </tr>
         <?php endif; ?>
+        <tr>
+            <td><b>Declaration number</b></td>
+            <td><?= $order['delivery_declaration'] ?></td>
+        </tr>
         </tbody>
     </table>
     <table class="umbrella-table">

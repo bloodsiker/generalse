@@ -441,6 +441,7 @@ class OrderController extends AdminBase
 
         $order_id = $_REQUEST['order_id'];
         $user_id = $_REQUEST['user_id'];
+        $order = Decoder::arrayToUtf(Orders::getShowDetailsOrdersMsSql($order_id, 'site_gm_orders', 'fetch'));
         $ordersElements = Decoder::arrayToUtf(Orders::getShowDetailsOrdersMsSql($order_id));
 
         if($user->isPartner()){
@@ -486,7 +487,7 @@ class OrderController extends AdminBase
             }
         }
 
-        $this->render('admin/crm/orders/_part/show_details', compact('user', 'ordersElements',
+        $this->render('admin/crm/orders/_part/show_details', compact('user', 'ordersElements', 'order',
             'sumPriceUsd', 'sumPriceUah', 'sumPriceEuro', 'userClient'));
         return true;
     }

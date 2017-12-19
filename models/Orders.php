@@ -125,30 +125,6 @@ class Orders
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
     }
-
-    /**
-     * Получить список всех заказов
-     * @param string $filter
-     * @return array
-     */
-    public static function getAllOrders($filter = '')
-    {
-        $db = MySQL::getConnection();
-
-        $data = $db->query("SELECT
-                              go.id,
-                              go.site_id,
-                              go.id_user,
-                              go.so_number,
-                              go.date_create,
-                              gu.name_partner
-                            FROM gm_orders go
-                              INNER JOIN gs_user gu
-                                ON go.id_user = gu.id_user
-                              WHERE 1 = 1 {$filter}
-                              ORDER BY go.id DESC")->fetchAll(PDO::FETCH_ASSOC);
-        return $data;
-    }
 	
 	/**
      * Получить список всех заказов MSSQL
@@ -214,32 +190,6 @@ class Orders
         return $all;
     }
 
-
-    /**
-     * Просмотр заказов для партнеров
-     * @param $id_partner
-     * @param string $filter
-     * @return array
-     */
-    public static function getOrdersByPartner($id_partner, $filter = '')
-    {
-        $db = MySQL::getConnection();
-
-        $sql = "SELECT
-                  go.id,
-                  go.site_id,
-                  go.id_user,
-                  go.date_create
-                FROM gm_orders go
-                  WHERE go.id_user = :id_user {$filter}
-                  ORDER BY go.id DESC";
-
-        $result = $db->prepare($sql);
-        $result->bindParam(':id_user', $id_partner, PDO::PARAM_INT);
-        $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
-    }
 	
 	/** 
      * Просмотр заказов для партнеров MsSql
@@ -292,43 +242,28 @@ class Orders
 
 
     /**
-     * Получить детальный список заказов
-     * @param $site_id
-     * @return array
-     */
-    public static function getShowDetailsOrders($site_id)
-    {
-        $db = MySQL::getConnection();
-        $sql = "SELECT
-                *
-                FROM gm_orders_elements
-                WHERE site_id = :site_id";
-
-        $result = $db->prepare($sql);
-        $result->bindParam(':site_id', $site_id, PDO::PARAM_INT);
-        $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
-    }
-	
-	/**
      * Получить список покупок в модальном окне
+     *
      * @param $order_id
+     * @param string $table
+     *
+     * @param string $attr
+     *
      * @return array
      */
-    public static function getShowDetailsOrdersMsSql($order_id)
+    public static function getShowDetailsOrdersMsSql($order_id, $table = 'site_gm_orders_elements', $attr = 'fetchAll')
     {
         $db = MsSQL::getConnection();
 
         $sql = "SELECT
                  *
-                 FROM site_gm_orders_elements
+                 FROM {$table}
                  WHERE order_id = :order_id";
 
         $result = $db->prepare($sql);
         $result->bindParam(':order_id', $order_id, PDO::PARAM_INT);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
+        $all = $result->{$attr}(PDO::FETCH_ASSOC);
         return $all;
     }
 
