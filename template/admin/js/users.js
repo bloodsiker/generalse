@@ -69,28 +69,32 @@ var id_address = '';
 $(document).on('click', '.edit-address', function(e) {
     e.preventDefault();
     $('#edit-user-address').foundation('open');
-    var user_address = $(this).parent('td').parent('tr').find('.user-address').text();
+    let user_address = $(this).parent('td').parent('tr').find('.user-address').text();
+    let user_phone = $(this).parent('td').parent('tr').find('.user-phone').text();
     $("#user_address").val(user_address.trim());
+    $("#user_phone").val(user_phone.trim());
     id_address = $(this).data('id');
 });
 
 $(document).on('click', '#send-user-address', function(e) {
     e.preventDefault();
-    var address = $("#user_address").val();
-    var data = "action=edit_address&id_address=" + id_address + "&address=" + address;
+    let address = $("#user_address").val();
+    let phone = $("#user_phone").val();
 
     $.ajax({
         url: "/adm/user/address/update",
         type: "POST",
-        data: data,
+        data: {action : 'edit_address', id_address : id_address, address : address, phone : phone},
         cache: false,
         success: function (response) {
             if(response == 200){
-                $('[data-id="' + id_address + '"]').parent('td').parent('tr').find('.user-address').text(address).css('color', 'green');
-                $('#edit-user-address form')[0].reset();
+                let row_id = $('[data-id="' + id_address + '"]');
+                row_id.parent('td').parent('tr').find('.user-address').text(address).css('color', 'green');
+                row_id.parent('td').parent('tr').find('.user-phone').text(phone).css('color', 'green');
                 $('#edit-user-address').foundation('close');
+                showNotification('Запись успешно обновленна','success');
             } else {
-                alert('Ошибка! Не удалось обновить запись!');
+                showNotification('Ошибка! Не удалось обновить запись!','error');
             }
         }
     });

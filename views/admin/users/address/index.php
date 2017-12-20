@@ -4,13 +4,14 @@
         <div class="medium-12 small-12 columns">
             <div class="row body-content">
                 <div class="medium-8 small-12 columns">
-                    <h2 class="float-left">Список адресов для пользователя <?= $selectUser->name_partner ?></h2>
+                    <h2 class="float-left">Список адресов для пользователя <?= $selectUser['name_partner'] ?></h2>
                     <a href="/adm/users" style="margin-bottom: 0" class="button small float-right">Назад</a>
                     <div class="clearfix"></div>
                     <table class="umbrella-table" border="1" cellspacing="0" cellpadding="5">
                         <thead>
                         <tr>
                             <th>Address</th>
+                            <th>Phone</th>
                             <th width="100">Edit</th>
                         </tr>
                         </thead>
@@ -19,6 +20,7 @@
                             <?php foreach ($listAddress as $address):?>
                                 <tr>
                                     <td><span class="user-address"><?= $address['address']?></span></td>
+                                    <td><span class="user-phone"><?= $address['phone']?></span></td>
                                     <td>
                                         <button data-id="<?= $address['id']?>" class="button no-margin small edit-address"><i class="fi-pencil"></i></button>
                                         <a href="/adm/user/address/delete/<?= $address['id']?>" class="button no-margin small" onclick="return confirm('Вы уверены что хотите удалить адрес?') ? true : false;"><i class="fi-x"></i></a>
@@ -34,7 +36,8 @@
                     <h2 class="float-left">Добавить адрес</h2>
                     <div class="clearfix"></div>
                     <form action="" method="post">
-                        <input type="text" name="address" autocomplete="off">
+                        <input type="text" name="address" autocomplete="off" placeholder="Adress"><br>
+                        <input type="text" name="phone" autocomplete="off" placeholder="Phone">
                         <input type="hidden" name="add_user_address" value="true">
                         <button type="submit" style="margin-top: 15px" class="button small float-right">Добавить</button>
                     </form>
@@ -56,6 +59,10 @@
                         <div class="medium-12 small-12 columns">
                             <label>Address</label>
                             <input type="text" id="user_address" name="address" autocomplete="off">
+                        </div>
+                        <div class="medium-12 small-12 columns">
+                            <label>Phone</label>
+                            <input type="text" id="user_phone" name="phone" autocomplete="off">
                         </div>
                     </div>
                 </div>

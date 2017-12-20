@@ -427,37 +427,36 @@ class UserController extends AdminBase
 
         $listAddress = DeliveryAddress::getAddressByPartner($id_user);
 
-        $selectUser = new User($id_user);
+        $selectUser = Admin::getAdminById($id_user);
 
         if(isset($_REQUEST['add_user_address']) && $_REQUEST['add_user_address'] == 'true'){
             $address = $_REQUEST['address'];
-            $ok = DeliveryAddress::addAddress($id_user, $address);
+            $phone = $_REQUEST['phone'];
+            $ok = DeliveryAddress::addAddress($id_user, $address, $phone);
             if($ok) {
-                header("Location: " . $_SERVER['HTTP_REFERER']);
+                Url::previous();
             }
         }
-
         $this->render('admin/users/address/index', compact('user', 'listAddress', 'selectUser'));
         return true;
     }
 
 
     /**
+     * Редактируем список адресов партнера
      * @return bool
      */
     public function actionUserAddressUpdate()
     {
-        //$user = $this->user;
-
         if($_REQUEST['action'] == 'edit_address'){
             $id = $_REQUEST['id_address'];
             $address = $_REQUEST['address'];
-            $ok = DeliveryAddress::updateAddress($id, $address);
+            $phone = $_REQUEST['phone'];
+            $ok = DeliveryAddress::updateAddress($id, $address, $phone);
             if($ok) {
                 echo 200;
             }
         }
-
         return true;
     }
 
