@@ -8,7 +8,7 @@
             <form action="/adm/crm/export/request/" method="POST" id="form-generate-excel" data-abide>
                 <h4 style="color: #fff">Between date</h4>
                 <div class="row align-bottom" style="background: #323e48; padding-top: 10px; margin-bottom: 10px">
-                    <div class="medium-8 small-8 columns">
+                    <div class="medium-6 small-6 columns">
                         <div class="row">
                             <div class="medium-6 small-12 columns">
                                 <label>From Date</label>
@@ -20,11 +20,19 @@
                             </div>
                         </div>
                     </div>
-                    <div class="medium-4 small-4 columns">
+                    <div class="medium-3 small-3 columns">
                         <label>Status</label>
                         <select name="processed" id="processed">
                             <option value="0">Not completed</option>
                             <option value="1">Completed</option>
+                        </select>
+                    </div>
+                    <div class="medium-3 small-3 columns">
+                        <label>Type</label>
+                        <select name="order_type_id">
+                            <option value="all">Все</option>
+                            <option value="1">Гарантия</option>
+                            <option value="2">Негарантия</option>
                         </select>
                     </div>
                 </div>

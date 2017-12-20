@@ -211,13 +211,15 @@ class Request
 
     /**
      * Формирование массива на експорт в excel
+     *
      * @param $array_id
      * @param $start
      * @param $end
-     * @param int $processed
+     * @param $filter
+     *
      * @return array
      */
-    public static function getExportRequestsByPartners($array_id, $start, $end, $processed = 0)
+    public static function getExportRequestsByPartners($array_id, $start, $end, $filter)
     {
         $db = MsSQL::getConnection();
 
@@ -245,8 +247,8 @@ class Request
                      ON sgog.site_account_id = sgu.site_account_id
                  LEFT JOIN site_gm_orders_types sgot
                      ON sgot.id = sgog.order_type_id
-             WHERE sgog.processed = :processed
-             AND sgog.active = 1
+             WHERE sgog.active = 1 
+             {$filter}
              AND sgog.site_account_id IN({$idS})
              AND sgog.created_on BETWEEN :start AND :end
              ORDER BY sgog.id DESC";
@@ -254,7 +256,6 @@ class Request
         $result = $db->prepare($sql);
         $result->bindParam(':start', $start, PDO::PARAM_STR);
         $result->bindParam(':end', $end, PDO::PARAM_STR);
-        $result->bindParam(':processed', $processed, PDO::PARAM_INT);
         $result->execute();
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;

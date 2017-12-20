@@ -809,13 +809,23 @@ class RequestController extends AdminBase
     public function actionExportRequests()
     {
         $user = $this->user;
+        $filter = '';
 
-        $start =  isset($_POST['start']) ? $_POST['start'] .' 00:00' : '';
-        $end =  isset($_POST['end']) ? $_POST['end'] .' 23:59' : '';
-        $processed = $_REQUEST['processed'];
+        $start =  isset($_REQUEST['start']) ? $_REQUEST['start'] .' 00:00' : '';
+        $end =  isset($_REQUEST['end']) ? $_REQUEST['end'] .' 23:59' : '';
 
-        $id_partners = isset($_POST['id_partner']) ? $_POST['id_partner'] : [];
-        $listExport = Request::getExportRequestsByPartners($id_partners, $start, $end, $processed);
+        $processed = (int)$_REQUEST['processed'];
+        if(isset($processed)){
+            $filter .= " AND sgog.processed = {$processed}";
+        }
+
+        $type = (int)$_REQUEST['order_type_id'];
+        if($type != 'all'){
+            $filter .= " AND sgog.order_type_id = '{$type}'";
+        }
+
+        $id_partners = isset($_REQUEST['id_partner']) ? $_REQUEST['id_partner'] : [];
+        $listExport = Request::getExportRequestsByPartners($id_partners, $start, $end, $filter);
 
         $this->render('admin/crm/export/requests', compact('user', 'listExport'));
         return true;
