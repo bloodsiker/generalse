@@ -20,9 +20,6 @@ class MySQL implements DataBase
     {
         if (self::$instance === null)
         {
-            $paramsPath = ROOT . '/config/db_params.php';
-            $params = include($paramsPath);
-
             $opt  = array(
                 PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,

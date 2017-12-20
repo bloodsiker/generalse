@@ -20,9 +20,6 @@ class MsSQL implements DataBase
     {
         if (self::$instance === null)
         {
-            $paramsPath = ROOT . '/config/db_mssql.php';
-            $params = include($paramsPath);
-
             try {
                 self::$instance = new PDO ("dblib:host={$_ENV['DB_MS_HOST']}:{$_ENV['DB_MS_PORT']};dbname={$_ENV['DB_MS_DATABASE']}",
                     "{$_ENV['DB_MS_USERNAME']}","{$_ENV['DB_MS_PASSWORD']}");

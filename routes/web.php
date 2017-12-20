@@ -239,6 +239,9 @@ return [
     'adm/logout' => 'umbrella/Admin@logout',
     'auth' => 'umbrella/Admin@auth',
 
+
+    'test-export' => 'Site@export',
+
     /*********** SITE  ***********/
     'contact_form' => 'Site@contactForm',
     'contact' => 'Site@contact',
