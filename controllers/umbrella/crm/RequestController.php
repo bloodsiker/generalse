@@ -113,6 +113,9 @@ class RequestController extends AdminBase
             $options['note1_mysql'] = $_POST['note1'] ?? null;
             $options['created_by'] = $user->getId();
 
+            // Прошить на PNC 1-yes/0-no
+            $options['is_npc'] = isset($_POST['is_npc']) ? $_POST['is_npc'] : 0;
+
             $so_number = $options['so_number'];
             $part_quantity = $_REQUEST['part_quantity'];
 
@@ -130,7 +133,7 @@ class RequestController extends AdminBase
                     //Пишем в mysql
                     Orders::addReserveOrders($options);
                     Session::set('add_request', 'Out of stock, delivery is forming');
-                    Logger::getInstance()->log($user->id_user, ' создал новый запрос в Request '. $options['part_number']);
+                    Logger::getInstance()->log($user->getId(), ' создал новый запрос в Request '. $options['part_number']);
                 }
             }
             Url::previous();
@@ -138,12 +141,12 @@ class RequestController extends AdminBase
 
         if($user->isPartner() || $user->isManager()){
 
-            $listCheckOrders = Request::getReserveOrdersByPartnerMsSQL($user->controlUsers($user->id_user), 0, 1);
+            $listCheckOrders = Request::getReserveOrdersByPartnerMsSQL($user->controlUsers($user->getId()), 0, 1);
             $listCheckOrders = Functions::getUniqueArray('number', $listCheckOrders);
-            $listRemovedRequest = Decoder::arrayToUtf(Request::getReserveOrdersByPartnerMsSQL($user->controlUsers($user->id_user), 0, 0));
+            $listRemovedRequest = Decoder::arrayToUtf(Request::getReserveOrdersByPartnerMsSQL($user->controlUsers($user->getId()), 0, 0));
             //$listRemovedRequest = [];
 
-            $partnerList = Admin::getPartnerControlUsers($user->controlUsers($user->id_user));
+            $partnerList = Admin::getPartnerControlUsers($user->controlUsers($user->getId()));
 
         } elseif($user->isAdmin()){
 
@@ -154,20 +157,7 @@ class RequestController extends AdminBase
             //$listRemovedRequest = [];
 
             // Параметры для формирование фильтров
-            $groupList = GroupModel::getGroupList();
-            $userInGroup = [];
-            $i = 0;
-            foreach ($groupList as $group) {
-                $userInGroup[$i]['group_name'] = $group['group_name'];
-                $userInGroup[$i]['group_id'] = $group['id'];
-                $userInGroup[$i]['users'] = GroupModel::getUsersByGroup($group['id']);
-                $i++;
-            }
-            // Добавляем в массив пользователей без групп
-            $userNotGroup[0]['group_name'] = 'Without group';
-            $userNotGroup[0]['group_id'] = 'without_group';
-            $userNotGroup[0]['users'] = GroupModel::getUsersWithoutGroup();
-            $userInGroup = array_merge($userInGroup, $userNotGroup);
+            $userInGroup = $group->groupFormationForFilter();
         }
 
         $this->render('admin/crm/request/request', compact('user','group', 'partnerList', 'order_type',
@@ -245,6 +235,9 @@ class RequestController extends AdminBase
                             $options['order_type_id'] = $_REQUEST['order_type_id'];
                             $options['note1'] = !empty($import['note1']) ? Decoder::strToWindows($import['note1']): null;
                             $options['created_by'] = $user->getId();
+
+                            // Прошить на PNC 1-yes/0-no
+                            $options['is_npc'] = 0;
 
                             $quantity = !empty($import['quantity']) ? $import['quantity'] : 1;
                             $so_number = $options['so_number'];
@@ -855,6 +848,13 @@ class RequestController extends AdminBase
                 }
             }
         }
+        return true;
+    }
+
+
+    public function actionAllUkrainePrice()
+    {
+        $export = ExportExcel::exportPurchase();
         return true;
     }
 

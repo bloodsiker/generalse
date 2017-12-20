@@ -18,9 +18,11 @@ class Request
         $db = MsSQL::getConnection();
 
         $sql = 'INSERT INTO site_gm_ordering_goods '
-            . '(site_account_id, part_number, goods_name, so_number, price, note, status_name, created_on, order_type_id, note1, created_by, expected_date)'
+            . '(site_account_id, part_number, goods_name, so_number, price, note, status_name, created_on, 
+                order_type_id, note1, created_by, expected_date, is_npc)'
             . 'VALUES '
-            . '(:site_account_id, :part_number, :goods_name, :so_number, :price, :note, :status_name, :created_on, :order_type_id, :note1, :created_by, :expected_date)';
+            . '(:site_account_id, :part_number, :goods_name, :so_number, :price, :note, :status_name, :created_on, 
+                :order_type_id, :note1, :created_by, :expected_date, :is_npc)';
 
         $result = $db->prepare($sql);
         $result->bindParam(':site_account_id', $options['id_user'], PDO::PARAM_INT);
@@ -34,7 +36,8 @@ class Request
         $result->bindParam(':order_type_id', $options['order_type_id'], PDO::PARAM_INT);
         $result->bindParam(':note1', $options['note1'], PDO::PARAM_INT);
         $result->bindParam(':created_by', $options['created_by'], PDO::PARAM_INT);
-        $result->bindParam(':expected_date', $options['expected_date'], PDO::PARAM_INT);
+        $result->bindParam(':expected_date', $options['expected_date'], PDO::PARAM_STR);
+        $result->bindParam(':is_npc', $options['is_npc'], PDO::PARAM_INT);
 
         if ($result->execute()) {
             return $db->lastInsertId();

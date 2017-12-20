@@ -62,6 +62,9 @@
             </div>
 
             <div class="medium-12 small-12 columns">
+                <label><input type="checkbox" name="is_npc" value="1" id="pnc"> Необходимость прошить</label>
+            </div>
+            <div class="medium-12 small-12 columns">
                 <label>Flash on PNC</label>
                 <input type="text" name="note1" autocomplete="off">
             </div>

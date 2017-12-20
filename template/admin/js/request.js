@@ -210,6 +210,18 @@ $(document).on('change', 'select[name="note"]', function (e) {
     }
 });
 
+// Если чекбокс отмеченный, делаем input PNC обьязательным
+$(function () {
+    $("#pnc").on("click", function () {
+        if ($(this).is(":checked")) {
+            $("input[name='note1']").attr('required', 'required').addClass('required');
+        }
+        else {
+            $("input[name='note1']").removeAttr('required').removeClass('required');
+        }
+    })
+});
+
 
 
 // Мульти реквест
