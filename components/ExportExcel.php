@@ -5,8 +5,6 @@ namespace Umbrella\components;
 use ExportDataExcel;
 use PHPExcel;
 use PHPExcel_IOFactory;
-use Umbrella\models\Admin;
-use Umbrella\models\Price;
 
 /**
  * Class ExportExcel
@@ -15,12 +13,15 @@ class ExportExcel
 {
 
     /**
+     * Export all price
+     *
+     * @param $listPrice
      *
      * @throws \PHPExcel_Exception
      * @throws \PHPExcel_Reader_Exception
      * @throws \PHPExcel_Writer_Exception
      */
-    public static function exportPurchase(){
+    public static function exportRequestAllPrice($listPrice){
 
         include_once 'PHPExcel/Classes/PHPExcel.php';
         require_once('PHPExcel/Classes/PHPExcel/Writer/Excel5.php');
@@ -30,49 +31,45 @@ class ExportExcel
         // Set document properties
         $xls->getProperties()->setCreator("Umbrella")
             ->setLastModifiedBy("Umbrella")
-            ->setTitle("Office 2007 XLSX Test Document")
-            ->setSubject("Office 2007 XLSX Test Document")
-            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+            ->setTitle("Office 2007 XLSX All price Document")
+            ->setSubject("Office 2007 XLSX All price Document")
+            ->setDescription("All price document for Office 2007 XLSX, generated using PHP classes.")
             ->setKeywords("office 2007 openxml php")
-            ->setCategory("Test result file");
-
-        $row = [
-            0 => [
-                'name' => 'Dima',
-                'fio' => 'Ovsijchuk',
-                'age' => '27',
-                'city' => 'Kiev'
-            ],
-            1 => [
-                'name' => 'Olya',
-                'fio' => 'Tvink',
-                'age' => '18',
-                'city' => 'Kiev'
-            ],
-            2 => [
-                'name' => 'Olya',
-                'fio' => 'Tvink',
-                'age' => '18',
-                'city' => 'Kiev'
-            ]
-        ];
-
-        //$listPrice = Price::getAllPriceMsSQL();
-        $listPrice = Admin::getAllPartner();
+            ->setCategory("All price result file");
 
         // Add some data
         $xls->setActiveSheetIndex(0)
-            ->setCellValue('A1', 'Name')
-            ->setCellValue('B1', 'Fio')
-            ->setCellValue('C1', 'Age')
-            ->setCellValue('D1', 'City');
+            ->setCellValue('A1', 'PartNumber')
+            ->setCellValue('B1', 'Название')
+            ->setCellValue('C1', 'Устройство(классификатор)')
+            ->setCellValue('D1', 'Подтип')
+            ->setCellValue('E1', 'Производитель')
+            ->setCellValue('F1', 'Тип')
+            ->setCellValue('G1', 'Розница NEW')
+            ->setCellValue('H1', 'Розница (б\у)')
+            ->setCellValue('I1', 'Партнер')
+            ->setCellValue('J1', 'Партнер (б\у)')
+            ->setCellValue('K1', 'Оптовик')
+            ->setCellValue('L1', 'Оптовик (б\у)')
+            ->setCellValue('M1', 'VIP')
+            ->setCellValue('N1', 'VIP (б\у)');
         $rowCount = 2;
         foreach ($listPrice as $item){
             $xls->setActiveSheetIndex(0)
-                ->setCellValue('A'.$rowCount, $item['name_partner'])
-                ->setCellValue('B'.$rowCount, $item['name_partner'])
-                ->setCellValue('C'.$rowCount, $item['name_partner'])
-                ->setCellValue('D'.$rowCount, $item['name_partner']);
+                ->setCellValue('A'.$rowCount, $item['PartNumber'])
+                ->setCellValue('B'.$rowCount, $item['mName'])
+                ->setCellValue('C'.$rowCount, $item['class_name'])
+                ->setCellValue('D'.$rowCount, $item['subType'])
+                ->setCellValue('E'.$rowCount, $item['producer'])
+                ->setCellValue('F'.$rowCount, $item['goodsType'])
+                ->setCellValue('G'.$rowCount, $item['rozNew'])
+                ->setCellValue('H'.$rowCount, $item['rozBu'])
+                ->setCellValue('I'.$rowCount, $item['partnerNew'])
+                ->setCellValue('J'.$rowCount, $item['partnerBu'])
+                ->setCellValue('K'.$rowCount, $item['optNew'])
+                ->setCellValue('L'.$rowCount, $item['optBu'])
+                ->setCellValue('M'.$rowCount, $item['vipNew'])
+                ->setCellValue('N'.$rowCount, $item['vipBu']);
             $rowCount++;
         }
 

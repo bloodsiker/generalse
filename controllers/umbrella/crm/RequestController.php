@@ -8,6 +8,7 @@ use Umbrella\app\Group;
 use Umbrella\app\Mail\RequestMail;
 use Umbrella\app\User;
 use Umbrella\components\Decoder;
+use Umbrella\components\ExportExcel;
 use Umbrella\components\Functions;
 use Umbrella\components\ImportExcel;
 use Umbrella\components\Logger;
@@ -15,9 +16,9 @@ use Umbrella\models\Admin;
 use Umbrella\models\crm\Request;
 use Umbrella\models\Currency;
 use Umbrella\models\File;
-use Umbrella\models\GroupModel;
 use Umbrella\models\Orders;
 use Umbrella\models\PartAnalog;
+use Umbrella\models\Price;
 use Umbrella\models\Products;
 use Umbrella\models\Stocks;
 use upload as FileUpload;
@@ -852,9 +853,23 @@ class RequestController extends AdminBase
     }
 
 
+    /**
+     *
+     * @return bool
+     * @throws \Exception
+     * @throws \PHPExcel_Exception
+     * @throws \PHPExcel_Reader_Exception
+     * @throws \PHPExcel_Writer_Exception
+     */
     public function actionAllUkrainePrice()
     {
-        $export = ExportExcel::exportPurchase();
+        $listPrice = [];
+        if($this->user->isAdmin() || $this->user->isManager()){
+            $listPrice = Decoder::arrayToUtf(Price::getAllPriceMsSQL());
+        } elseif ($this->user->isPartner()){
+            $listPrice = Decoder::arrayToUtf(Price::getAllPriceMsSQL());
+        }
+        ExportExcel::exportRequestAllPrice($listPrice);
         return true;
     }
 

@@ -23,7 +23,7 @@
 <!-- switch  -->
 <?php
 if (Umbrella\components\Url::Is_url('/dashboard')) echo "<script src='/template/admin/js/dashboard.js'></script>";
-if (Umbrella\components\Url::Is_url('/user')) echo "<script src='/template/admin/js/users.js?v.1.9.3'></script>";
+if (Umbrella\components\Url::Is_url('/user')) echo "<script src='/template/admin/js/users.js?v.1.9.4'></script>";
 if (Umbrella\components\Url::Is_url('/crm/stocks')) echo "<script src='/template/admin/js/stocks.js?v.1.9.1'></script>";
 if (Umbrella\components\Url::Is_url('/crm/returns')) echo "<script src='/template/admin/js/returns.js'></script>";
 if (Umbrella\components\Url::Is_url('/crm/orders')) echo "<script src='/template/admin/js/orders.js?v.1.9'></script>";
@@ -33,7 +33,7 @@ if (Umbrella\components\Url::Is_url('/crm/moto')) echo "<script src='/template/a
 if (Umbrella\components\Url::Is_url('/adm/psr')) echo "<script src='/template/admin/js/psr.js?v.1.8'></script>";
 if (Umbrella\components\Url::Is_url('/crm/supply')) echo "<script src='/template/admin/js/supply.js?v.1.6'></script>";
 if (Umbrella\components\Url::Is_url('/crm/request')) echo "<script src='/template/admin/js/vendor/jquery.form.js'></script>
-<script src='/template/admin/js/request.js?v.2.1.5'></script>";
+<script src='/template/admin/js/request.js?v.2.1.7'></script>";
 if (Umbrella\components\Url::Is_url('/crm/other-request')) echo "<script src='/template/admin/js/other_request.js?v.1.5.0'></script>";
 if (Umbrella\components\Url::Is_url('/ccc')) echo "<script src='/template/admin/js/ccc/knowledge.js'></script>";
 if (Umbrella\components\Url::Is_url(['/adm/lithographer', '/adm/ccc/tree_knowledge/article'])) echo "

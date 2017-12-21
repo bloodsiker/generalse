@@ -1,8 +1,6 @@
 <?php
 namespace Umbrella\controllers;
 
-use Umbrella\components\ExportExcel;
-use Umbrella\models\Price;
 use Umbrella\vendor\controller\Controller;
 
 class SiteController extends Controller
@@ -69,18 +67,6 @@ class SiteController extends Controller
 
         mail($to, $subject, $message, $headers);
 
-        return true;
-    }
-
-    /**
-     * @return bool
-     */
-    public function actionExport()
-    {
-        $export = ExportExcel::exportPurchase();
-        //$listPrice = Price::getAllPriceMsSQL();
-
-        //var_dump($listPrice);
         return true;
     }
 }

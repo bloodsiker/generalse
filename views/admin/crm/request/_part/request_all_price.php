@@ -9,7 +9,7 @@
                 <div class="medium-12 small-12 columns">
                     <div class="row" style="color: #fff">
                         <ul>
-                            <?php if($user->role == 'administrator' || $user->role == 'manager'):?>
+                            <?php if($user->isAdmin() || $user->isManager()):?>
                                 <li>
                                     <a href="<?= $user->linkUrlDownloadAllPrice(2, 'Партнер')?>" download>
                                         <span style="color: orange"><?= $user->linkNameDownloadAllPrice(2, 'Партнер')?></span>
@@ -28,13 +28,30 @@
                                     </a>
                                     <span class="date-upload-price">new upload date: <?= $user->lastUploadDateAllPrice(4, 'Партнер GE')?></span>
                                 </li>
-                            <?php elseif ($user->role == 'partner'):?>
                                 <li>
-                                    <a href="<?= $user->linkUrlDownloadAllPrice()?>" download>
-                                        <span style="color: orange"><?= $user->linkNameDownloadAllPrice()?></span>
+                                    <a href="/adm/crm/request/all__ukraine_price" id="all_price">
+                                        <span style="color: orange">Скачать все цены</span>
+                                        <span class="download_wait" style="color: #40e240"></span>
                                     </a>
-                                    <span class="date-upload-price">new upload date: <?= $user->lastUploadDateAllPrice()?></span>
                                 </li>
+                            <?php elseif ($user->isPartner()):?>
+                                <?php if($user->getGroupName() == 'Lenovo ПСР'
+                                    || $user->getGroupName() == 'Lenovo'
+                                    || $user->getGroupName() == 'UKRAINE OOW'): ?>
+                                <li>
+                                    <a href="/adm/crm/request/all__ukraine_price" id="all_price">
+                                        <span style="color: orange">All Ulraine price</span>
+                                        <span class="download_wait" style="color: #40e240"></span>
+                                    </a>
+                                </li>
+                                <?php else: ?>
+                                    <li>
+                                        <a href="<?= $user->linkUrlDownloadAllPrice()?>" download>
+                                            <span style="color: orange"><?= $user->linkNameDownloadAllPrice()?></span>
+                                        </a>
+                                        <span class="date-upload-price">new upload date: <?= $user->lastUploadDateAllPrice()?></span>
+                                    </li>
+                                <?php endif;?>
                             <?php endif;?>
                         </ul>
                     </div>

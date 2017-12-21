@@ -61,7 +61,7 @@
                 <input type="hidden" name="your_address" placeholder="Enter your address">
             </div>
 
-            <div class="medium-12 small-12 columns">
+            <div class="medium-12 small-12 columns hide">
                 <label><input type="checkbox" name="is_npc" value="1" id="pnc"> Необходимость прошить</label>
             </div>
             <div class="medium-12 small-12 columns">

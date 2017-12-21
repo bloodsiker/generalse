@@ -222,6 +222,14 @@ $(function () {
     })
 });
 
+//
+$(function () {
+    $("#all_price").on("click", function () {
+        $('.download_wait').text('Подождите пожалуйста пока формируется документ...');
+        $(this).css({'pointer-events':'none', 'cursor' : 'not-allowed'});
+    })
+});
+
 
 
 // Мульти реквест

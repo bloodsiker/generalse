@@ -13,7 +13,11 @@ if($config['debug'] == true) {
     error_reporting(null);
 }
 date_default_timezone_set($config['timezone']);
+ini_set('max_execution_time', 300);
 ini_set('max_file_uploads', "10");
+ini_set('session.gc_maxlifetime', 10800);
+ini_set('memory_limit', '512M');
+
 
 
 // Include file system
