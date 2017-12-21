@@ -207,6 +207,7 @@ class User
     /**
      * saved user information in session
      * @return array
+     * @throws \Exception
      */
     public function getInfoUser() :array
     {
@@ -408,10 +409,11 @@ class User
     /**
      * Список адресов доставки привязанных к партнеру
      * @return array
+     * @throws \Exception
      */
     public function getDeliveryAddress()
     {
-        $delivery_address = DeliveryAddress::getAddressByPartner($this->id_user);
+        $delivery_address = Decoder::arrayToUtf(DeliveryAddress::getAddressByPartnerMsSQL($this->id_user));
         return array_column($delivery_address, 'address');
     }
 

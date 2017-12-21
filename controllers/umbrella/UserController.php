@@ -415,24 +415,30 @@ class UserController extends AdminBase
     }
 
 
-
     /**
      * Список адресов для доставки клиентам
+     *
      * @param $id_user
+     *
      * @return bool
+     * @throws \Exception
      */
     public function actionUserAddress($id_user)
     {
         $user = $this->user;
 
-        $listAddress = DeliveryAddress::getAddressByPartner($id_user);
+        $listAddress = Decoder::arrayToUtf(DeliveryAddress::getAddressByPartnerMsSQL($id_user));
 
         $selectUser = Admin::getAdminById($id_user);
 
         if(isset($_REQUEST['add_user_address']) && $_REQUEST['add_user_address'] == 'true'){
             $address = $_REQUEST['address'];
             $phone = $_REQUEST['phone'];
+            $options['id_user'] = $id_user;
+            $options['address'] = $_REQUEST['address'];
+            $options['phone'] = $_REQUEST['phone'];
             $ok = DeliveryAddress::addAddress($id_user, $address, $phone);
+            DeliveryAddress::addAddressMsSQL(Decoder::arrayToWindows($options));
             if($ok) {
                 Url::previous();
             }
@@ -445,18 +451,37 @@ class UserController extends AdminBase
     /**
      * Редактируем список адресов партнера
      * @return bool
+     * @throws \Exception
      */
     public function actionUserAddressUpdate()
     {
         if($_REQUEST['action'] == 'edit_address'){
-            $id = $_REQUEST['id_address'];
-            $address = $_REQUEST['address'];
-            $phone = $_REQUEST['phone'];
-            $ok = DeliveryAddress::updateAddress($id, $address, $phone);
+            $options['id'] = $_REQUEST['id_address'];
+            $options['address'] = $_REQUEST['address'];
+            $options['phone'] = $_REQUEST['phone'];
+            $ok = DeliveryAddress::updateAddressMsSQL(Decoder::arrayToWindows($options));
             if($ok) {
                 echo 200;
             }
         }
+        return true;
+    }
+
+
+    /**
+     * Delete user address
+     * @param $id
+     * @return bool
+     */
+    public function actionUserAddressDelete($id)
+    {
+        $address = DeliveryAddress::getAddressByIdMsSQL($id);
+
+        DeliveryAddress::deleteUserAddressMsSQL($id);
+
+        $log = "удалил(а) адрес пользователя - " . $address['address'];
+        Log::addLog($this->user->id_user, $log);
+        Url::previous();
         return true;
     }
 
@@ -484,27 +509,6 @@ class UserController extends AdminBase
             print_r(json_encode($result));
         }
 
-        return true;
-    }
-
-
-    /**
-     * Delete user address
-     * @param $id
-     * @return bool
-     */
-    public function actionUserAddressDelete($id)
-    {
-        $user = $this->user;
-
-        $address = DeliveryAddress::getAddressById($id);
-
-        DeliveryAddress::deleteUserAddress($id);
-
-        $log = "удалил(а) адрес пользователя - " . $address['address'];
-        Log::addLog($user->id_user, $log);
-
-        header("Location: " . $_SERVER['HTTP_REFERER']);
         return true;
     }
 
