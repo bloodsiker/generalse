@@ -181,14 +181,14 @@
                     <tbody>
                     <?php if(is_array($allOrders)):?>
                         <?php foreach($allOrders as $order):?>
-                            <tr data-order-id="<?=$order['order_id']?>" class="goods">
+                            <tr ondblclick="showDetailOrders(<?=$order['order_id']?>, <?=$order['site_account_id']?>)" data-order-id="<?=$order['order_id']?>" class="goods">
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.request_id', 'view')): ?>
                                     <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $order['request_id'])?></td>
                                 <?php endif;?>
                                 <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $order['site_client_name'])?></td>
                                 <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search,  $order['part_number'])?></td>
                                 <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $order['order_number'])?></td>
-                                <td><?= $order['so_number'] ?></td>
+                                <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $order['so_number']) ?></td>
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.type_repair', 'view')): ?>
                                     <td><?= $order['type_name'] ?></td>
                                 <?php endif; ?>
@@ -267,14 +267,14 @@
                         <tbody>
                         <?php if(is_array($allOrders)):?>
                             <?php foreach($allOrders as $order):?>
-                                <tr data-order-id="<?=$order['order_id']?>" class="goods">
+                                <tr ondblclick="showDetailOrders(<?=$order['order_id']?>, <?=$order['site_account_id']?>)" data-order-id="<?=$order['order_id']?>" class="goods">
                                     <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.request_id', 'view')): ?>
                                         <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $order['request_id'])?></td>
                                     <?php endif;?>
                                     <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $order['site_client_name'])?></td>
                                     <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search,  $order['part_number'])?></td>
                                     <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $order['order_number'])?></td>
-                                    <td><?= $order['so_number'] ?></td>
+                                    <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $order['so_number']) ?></td>
                                     <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.type_repair', 'view')): ?>
                                         <td><?= $order['type_name']?></td>
                                     <?php endif;?>
@@ -583,22 +583,8 @@
         <div class="medium-12 small-12 columns">
             <h3>Order goods</h3>
         </div>
-        <div class="medium-12 small-12 columns">
-            <table class="umbrella-table">
-                <thead>
-                <tr>
-                    <th>PartNumber</th>
-                    <th>Goods Name</th>
-                    <th>Service Order</th>
-                    <th>Stock name</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                </tr>
-                </thead>
-                <tbody id="container-details">
+        <div class="medium-12 small-12 columns" id="container-details">
 
-                </tbody>
-            </table>
         </div>
     </div>
     <button class="close-button" data-close aria-label="Close modal" type="button">

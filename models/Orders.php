@@ -177,6 +177,7 @@ class Orders
                      ON sgot.id = sgo.order_type_id
                 WHERE 1 = 1 {$filter}
                 AND (sgo.order_number LIKE ?
+                OR sgoe.so_number LIKE ?
                 OR sgoe.part_number LIKE ?
                 OR sgu.site_client_name LIKE ?
                 OR sgo.request_id LIKE ?)
@@ -184,7 +185,7 @@ class Orders
 
         $result = $db->prepare($sql);
         //$result->bindParam(':search', $search , PDO::PARAM_STR);
-        $result->execute(array("%$search%", "%$search%", "%$search%", "%$search%"));
+        $result->execute(array("%$search%", "%$search%", "%$search%", "%$search%", "%$search%"));
 
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
