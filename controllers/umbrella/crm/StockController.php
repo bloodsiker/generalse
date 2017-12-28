@@ -40,6 +40,7 @@ class StockController extends AdminBase
 
     /**
      * @return bool
+     * @throws \Exception
      */
     public function actionStocks()
     {
@@ -85,6 +86,7 @@ class StockController extends AdminBase
     /**
      * Search product in stocks
      * @return bool
+     * @throws \Exception
      */
     public function actionSearch()
     {
@@ -92,7 +94,7 @@ class StockController extends AdminBase
 
         if($user->isPartner() || $user->isManager()) {
 
-            $search = iconv('UTF-8', 'WINDOWS-1251', trim($_REQUEST['search']));
+            $search = Decoder::strToWindows(trim($_REQUEST['search']));
 
             $user_ids = $user->controlUsers($user->getId());
             $partnerList = Admin::getPartnerControlUsers($user_ids);
@@ -111,7 +113,7 @@ class StockController extends AdminBase
 
         } else if($user->isAdmin()){
 
-            $search = iconv('UTF-8', 'WINDOWS-1251', trim($_REQUEST['search']));
+            $search = Decoder::strToWindows(trim($_REQUEST['search']));
 
             $list_stock = $user->renderSelectStocks($user->getId(), 'stocks');
 
@@ -153,7 +155,7 @@ class StockController extends AdminBase
             $user_id = (int)$_REQUEST['user_id'];
             $prices = Currency::getPartnersCurrencyByGoodsID($goodID);
             $currencyUsd = Currency::getRatesCurrency('usd');
-            $stockDecompile = Stocks::checkGoodsInDecompileStocksPartners($user_id, $part_number);
+            $stockDecompile = Stocks::checkGoodsByIdInDecompileStocksPartners($user_id, $part_number);
             $this->render('admin/crm/stocks/_part/show_prices_modal', compact('prices', 'currencyUsd',
                 'part_number', 'goods_name', 'stockDecompile'));
             return true;

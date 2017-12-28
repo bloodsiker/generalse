@@ -39,7 +39,7 @@ class StockService
         ];
 
         if($user->isPartner()){
-            return $arrayProducts = array_map(function ($value) use($user, $groupStocksNoReplaceQuantity) {
+            return $arrayProducts = array_map(function ($value) use ($user, $groupStocksNoReplaceQuantity) {
 
                 foreach ($groupStocksNoReplaceQuantity as $group => $stocks){
                     if($user->getGroupName() == $group){
@@ -59,7 +59,7 @@ class StockService
             }, $arrayProducts);
         } else {
 
-            return $arrayProducts = array_map(function ($value) use($user) {
+            return $arrayProducts = array_map(function ($value) use ($user) {
                 $value['price'] = round($value['price'], 2);
                 $value['stock_name'] = $this->replaceNameStockInResultTable($value['stock_name'], $user->getRole());
                 return $value;
@@ -70,8 +70,11 @@ class StockService
 
     /**
      * Список продуктов на складах
+     *
      * @param $request
+     *
      * @return array
+     * @throws \Exception
      */
     public function allGoodsByClient($request)
     {
@@ -111,6 +114,107 @@ class StockService
         }
 
         return $allGoods;
+    }
+
+    /**
+     * Проверка по складам наличия деталей
+     * @param $user_id
+     * @param $stocks_group
+     * @param $part_number
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function checkInStockAndReplaceName($user_id, $stocks_group, $part_number)
+    {
+        $stocks = [];
+        $i = 0;
+
+        foreach ($stocks_group as $stock){
+            if(!$this->user->isPartner()){
+                $product = Stocks::checkGoodsInStocksPartners($user_id, $stock, $part_number, 'fetchAll');
+                if(is_array($product)){
+                    foreach ($product as $prodStock){
+                        $stock = Decoder::strToUtf($prodStock['stock_name']);
+                        $stocks[$stock] = $prodStock;
+                    }
+                }
+            } else {
+                $product = Stocks::checkGoodsInStocksPartners($user_id, $stock, $part_number, 'fetch');
+                // PEX, Киев\ОК или PEX, Киев\Квазар
+                if($product){
+                    if(trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\OK')
+                        || trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\Квазар')
+                        || trim($product['stock_name']) == Decoder::strToWindows('KVAZAR, Киев\OK')){
+                        if($product['quantity'] > 0){
+                            if(isset($stocks['НОВЫЕ(UA)'])){
+                                if($stocks['НОВЫЕ(UA)']['quantity'] < $product['quantity']){
+                                    $stocks['НОВЫЕ(UA)'] = $product;
+                                }
+                            } else {
+                                //$product['stock_nam'] = "НОВЫЕ(UA)";
+                                $stocks['НОВЫЕ(UA)'] = $product;
+                            }
+                        }
+                    } elseif (trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\б/у')
+                        || trim($product['stock_name']) == Decoder::strToWindows('KVAZAR, Киев\б/у')){
+                        if($product['quantity'] > 0){
+                            if(isset($stocks['БУ(UA)'])){
+                                if($stocks['БУ(UA)']['quantity'] < $product['quantity']){
+                                    $stocks['БУ(UA)'] = $product;
+                                }
+                            } else {
+                                //$product['stock_nam'] = 'БУ(UA)';
+                                $stocks['БУ(UA)'] = $product;
+                            }
+                        }
+                    } else {
+                        //$product['stock_nam'] = $stock;
+                        $stocks[$stock] = $product;
+                    }
+                }
+            }
+            $i++;
+        }
+
+        // БЛИЖАЙШАЯ ПОСТАВКА
+        // PEX, Киев\ОК или PEX, Киев\б/у
+
+//        foreach ($stocks_group as $stock){
+//            $product = Stocks::checkGoodsInDecompileStocksPartners($user_id, $stock, $part_number);
+//            if($product){
+//                if(trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\OK')
+//                    || trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\Квазар')
+//                    || trim($product['stock_name']) == Decoder::strToWindows('KVAZAR, Киев\OK')){
+//                    if($product['quantity'] > 0){
+//                        if(isset($stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ'])){
+//                            if($stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ']['quantity'] < $product['quantity']){
+//                                $stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ'] = $product;
+//                            }
+//                        } else {
+//                            //$product['stock_nam'] = 'БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ';
+//                            $stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - НОВЫЕ'] = $product;
+//                        }
+//                    }
+//                }
+//
+//                if(trim($product['stock_name']) == Decoder::strToWindows('PEX, Киев\б/у')
+//                    || trim($product['stock_name']) == Decoder::strToWindows('KVAZAR, Киев\б/у')){
+//                    if($product['quantity'] > 0){
+//                        if(isset($stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ'])){
+//                            if($stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ']['quantity'] < $product['quantity']){
+//                                $stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ'] = $product;
+//                            }
+//                        } else {
+//                            //$product['stock_nam'] = 'БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ';
+//                            $stocks['БЛИЖАЙШАЯ ПОСТАВКА (2 дня) - БУ'] = $product;
+//                        }
+//                    }
+//                }
+//            }
+//            $i++;
+//        }
+        return $stocks;
     }
 
 

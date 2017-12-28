@@ -12,7 +12,8 @@
                     <?php elseif ($user->getUserBlockedGM() == 'blocked'):?>
                         Доступ к личному кабинету заблокирован. </p>
                     <?php endif;?>
-                    <p>Для дополнительной информации просьба связаться с нами по адресу: <a href="mailto:gsteam@generalse.com">gsteam@generalse.com</a></p>
+                    <p>Для дополнительной информации просьба связаться с нами по адресу: <a href="mailto:gsteam@generalse.com">gsteam@generalse.com</a>
+                        и <a href="mailto:sales@generalse.com">sales@generalse.com</a></p>
                     <p>Спасибо.</p>
                 </div>
             </div>

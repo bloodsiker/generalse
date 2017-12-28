@@ -109,4 +109,18 @@ class RequestMail
         mail('gsteam@generalse.com', 'MultiRequest. Внести партномер в систему', $mailToManager, $headers);
         return true;
     }
+
+
+    public function sendEmailManagerDecompileStock($partNumber, $partDesc) {
+
+        $headers = "From: Umbrella@generalse.com\n";
+        $headers .= "Content-Type: text/html; charset=utf-8\n";
+        $headers .= "Content-Transfer-Encoding: 8bit";
+
+        $mailToManager = "В системе отсутствует партномер:<br>";
+        $mailToManager .= "<b>{$partNumber} - {$partDesc}. Необходимо добавить в систему</b><br>";
+
+        mail('gsteam@generalse.com', 'MultiRequest. Внести партномер в систему', $mailToManager, $headers);
+        return true;
+    }
 }

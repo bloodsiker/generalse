@@ -6,6 +6,7 @@ use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
 use Umbrella\app\Group;
 use Umbrella\app\Mail\RequestMail;
+use Umbrella\app\Services\crm\StockService;
 use Umbrella\app\User;
 use Umbrella\components\Decoder;
 use Umbrella\components\ExportExcel;
@@ -98,9 +99,9 @@ class RequestController extends AdminBase
             $options['goods_name'] = $mName['mName'];
             $options['price'] = ($price['price'] != 0) ? $price['price'] : 0;
             $options['expected_date'] = null;
-            if($user->name_partner == 'Servisexpress'
-                || $user->name_partner == 'Technoservice'
-                || $user->name_partner == 'Techpoint'){
+            if($user->getName() == 'Servisexpress'
+                || $user->getName() == 'Technoservice'
+                || $user->getName() == 'Techpoint'){
                 $options['status_name'] = Decoder::strToWindows('Нет в наличии, формируется поставка.');
             } else {
                 $options['status_name'] = Decoder::strToWindows('Нет в наличии, формируется поставка, ориентировочная дата поставки на наш склад ');
@@ -152,8 +153,8 @@ class RequestController extends AdminBase
         } elseif($user->isAdmin()){
 
             $listCheckOrders = Request::getAllReserveOrdersMsSQL(0, 1);
-            $listCheckOrders = Functions::getUniqueArray('number', $listCheckOrders);
-            //$listCheckOrders = [];
+            //$listCheckOrders = Functions::getUniqueArray('number', $listCheckOrders);
+            $listCheckOrders = [];
             $listRemovedRequest = Decoder::arrayToUtf(Request::getAllReserveOrdersMsSQL(0, 0));
             //$listRemovedRequest = [];
 
@@ -176,7 +177,6 @@ class RequestController extends AdminBase
     public function actionRequestImport()
     {
         $user = $this->user;
-        $group = new Group();
 
         if(isset($_POST['import_request']) && $_POST['import_request'] == 'true'){
             if(!empty($_FILES['excel_file']['name'])) {
@@ -223,9 +223,9 @@ class RequestController extends AdminBase
                             $options['price'] = ($price['price'] != 0) ? $price['price'] : 0;
                             $options['expected_date'] = null;
 
-                            if($user->name_partner == 'Servisexpress'
-                                || $user->name_partner == 'Technoservice'
-                                || $user->name_partner == 'Techpoint'){
+                            if($user->getName() == 'Servisexpress'
+                                || $user->getName() == 'Technoservice'
+                                || $user->getName() == 'Techpoint'){
                                 $options['status_name'] = Decoder::strToWindows('Нет в наличии, формируется поставка.');
                             } else {
                                 $options['status_name'] = Decoder::strToWindows('Нет в наличии, формируется поставка, ориентировочная дата поставки на наш склад ');
@@ -332,11 +332,12 @@ class RequestController extends AdminBase
             $infoPart = Products::checkPartNumberInGM($part_number);
             //$stocks_group = explode(',', 'BAD,Not Used,Restored,Dismantling,Local Source'); 12
             $stocks_group = $group->stocksFromGroup($user->idGroupUser($userID), 'name', 'request');
-            $partInStock = Stocks::checkInStockAndReplaceName($userID, $stocks_group, $part_number, $user);
+            $stockService = new StockService();
+            $partInStock = $stockService->checkInStockAndReplaceName($userID, $stocks_group, $part_number);
 
             if(sizeof($partInStock) > 0){
                 $result['status'] = 200;
-                $result['user_role'] = $user->role;
+                $result['user_role'] = $user->getRole();
                 $result['request_user_id'] = $userID;
                 $result['user_currency'] = $userClient['ShortName'];
                 $result['rate_currency_usd'] = Currency::getRatesCurrency('usd')['OutputRate'];
@@ -366,6 +367,7 @@ class RequestController extends AdminBase
     {
         $user = $this->user;
         $group = new Group();
+        $stockService = new StockService();
 
         // Редактируем парт номер
         if($_REQUEST['action'] == 'edit_pn'){
@@ -391,11 +393,11 @@ class RequestController extends AdminBase
         // Редактируем СО_номер номер
         if($_REQUEST['action'] == 'edit_so'){
             $id_order = $_REQUEST['id_order'];
-            $order_so = trim(iconv('UTF-8', 'WINDOWS-1251', $_REQUEST['order_so']));
+            $order_so = trim(Decoder::strToWindows($_REQUEST['order_so']));
 
             $ok = Request::editSoNumberFromCheckOrdersById($id_order, $order_so);
             if($ok){
-                Logger::getInstance()->log($user->id_user, ' изменил so number в request #' . $id_order . ' на ' . $order_so);
+                Logger::getInstance()->log($user->getId(), ' изменил so number в request #' . $id_order . ' на ' . $order_so);
                 print_r(200);
             }
         }
@@ -407,7 +409,7 @@ class RequestController extends AdminBase
 
             $ok = Request::clearGoodsNameFromCheckOrdersById($id_order, $goods_name);
             if($ok){
-                Logger::getInstance()->log($user->id_user, ' очистил(а) название part_number в request #' . $id_order);
+                Logger::getInstance()->log($user->getId(), ' очистил(а) название part_number в request #' . $id_order);
                 print_r(200);
             }
         }
@@ -614,30 +616,12 @@ class RequestController extends AdminBase
 
             $stocks_group = $group->stocksFromGroup($user->idGroupUser($userID), 'name', 'request');
 
-//            $listAnalog = [
-//                [
-//                    'GoodsNameID' => '74203',
-//                    'PartNumber' => '03X6657',
-//                    'mName' => 'Оперативная память 8GB DDR3L 1600 SODIMM',
-//                ],
-//                [
-//                    'GoodsNameID' => '78178',
-//                    'PartNumber' => '11200504',
-//                    'mName' => 'Модуль памяти NBC LV SS M471B1G73BH0-YK0 DDR3L1600 8GB',
-//                ],
-//                [
-//                    'GoodsNameID' => '78173',
-//                    'PartNumber' => '01018141001W',
-//                    'mName' => 'Модуль памяти NBC LV SS M471B1G73BH0-YK0 DDR3L1600 8GB',
-//                ]
-//            ];
-
             $analogPartInStocks = [];
             $i = 0;
             foreach ($listAnalog as $part){
                 $analogPartInStocks[$i]['PartNumber'] = $part['PartNumber'];
                 $analogPartInStocks[$i]['mName'] = $part['mName'];
-                $analogPartInStocks[$i]['stocks'] = Stocks::checkInStockAndReplaceName($userID, $stocks_group, $part['PartNumber'], $user);
+                $analogPartInStocks[$i]['stocks'] = $stockService->checkInStockAndReplaceName($userID, $stocks_group, $part['PartNumber']);
                 $i++;
             }
             $this->render('admin/crm/request/_part/request_part_analog_show', compact('analogPartInStocks', 'user'));
