@@ -1,6 +1,6 @@
 <?php
 
-namespace Umbrella\models;
+namespace Umbrella\models\kpi;
 
 use PDO;
 use Umbrella\components\Db\MySQL;
@@ -10,12 +10,8 @@ class Data
 
     public static function getAllData()
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
-
-        // Получение и возврат результатов
         $data = $db->query('SELECT * FROM gs_kpi')->fetchAll(PDO::FETCH_ASSOC);
-
         return $data;
     }
 
@@ -23,62 +19,44 @@ class Data
     /**
      * Получаем последнюю дату которая есть в базе для даного партнера
      * @param $name_partner
-     * @param $sort
      * @return mixed
      */
-    public static function getLastData($name_partner, $sort)
+    public static function getLastData($name_partner)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
-        $sql = "SELECT gk.Service_Complete_Date
+        $sql = "SELECT 
+                  MAX(gk.Service_Complete_Date) as lastDate,
+                  MIN(gk.Service_Complete_Date) AS firstDate
                 FROM gs_kpi gk
                 WHERE gk.SERVICE_PROVIDE_NAME = :SERVICE_PROVIDE_NAME
-				AND gk.Service_Complete_Date IS NOT NULL
-                ORDER BY gk.Service_Complete_Date $sort LIMIT 1";
+				AND gk.Service_Complete_Date IS NOT NULL";
 
-        // Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':SERVICE_PROVIDE_NAME', $name_partner, PDO::PARAM_STR);
-
-        // Указываем, что хотим получить данные в виде массива
-        $result->setFetchMode(PDO::FETCH_ASSOC);
-
-        // Выполнение коменды
         $result->execute();
-
-        return $result->fetch();
+        return $result->fetch(PDO::FETCH_ASSOC);
     }
 
 
 
     /**
      * Получаем последнюю дату которая есть в базе для admin
-     * @param $sort
      * @return mixed
      */
-    public static function getLastDataAdmin($sort)
+    public static function getLastDataAdmin()
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
-        $sql = "SELECT gk.Service_Complete_Date
+        $sql = "SELECT
+                  MAX(gk.Service_Complete_Date) as lastDate,
+                  MIN(gk.Service_Complete_Date) AS firstDate
                 FROM gs_kpi gk
-				WHERE gk.Service_Complete_Date IS NOT NULL
-                ORDER BY gk.Service_Complete_Date $sort LIMIT 1";
+				WHERE gk.Service_Complete_Date IS NOT NULL";
 
-        // Используется подготовленный запрос
         $result = $db->prepare($sql);
-
-        // Указываем, что хотим получить данные в виде массива
-        $result->setFetchMode(PDO::FETCH_ASSOC);
-
-        // Выполнение коменды
         $result->execute();
-
-        return $result->fetch();
+        return $result->fetch(PDO::FETCH_ASSOC);
     }
 
 
@@ -91,26 +69,20 @@ class Data
      */
     public static function getKBP($name_partner, $start, $end)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT COUNT(DISTINCT gk.SO_NUMBER) AS count
                 FROM gs_kpi gk
                 WHERE gk.SERVICE_PROVIDE_NAME = :SERVICE_PROVIDE_NAME
                 AND gk.Service_Complete_Date BETWEEN :start_date AND :end_date
                 AND (gk.IRIS_1_Repair NOT LIKE '%Return / reimbursement%')";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':SERVICE_PROVIDE_NAME', $name_partner, PDO::PARAM_STR);
         $result->bindParam(':start_date', $start, PDO::PARAM_STR);
         $result->bindParam(':end_date', $end, PDO::PARAM_STR);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
-        $row = $result->fetch();
+        $row = $result->fetch(PDO::FETCH_ASSOC);
         return $row['count'];
     }
 
@@ -123,10 +95,8 @@ class Data
      */
     public static function getKRZCH($name_partner, $start, $end)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT COUNT(DISTINCT gk.SO_NUMBER) AS count
                 FROM gs_kpi gk
                 WHERE gk.SERVICE_PROVIDE_NAME = :SERVICE_PROVIDE_NAME
@@ -134,17 +104,13 @@ class Data
                 AND gk.Item_Product_ID NOT IN('SWAPLAB', 'PHREPL0', 'DPSTDW3', 'DPSTDW1', 'PHREPL2', 'TPSTDW3',
   'DPSTDW6', 'DPMIDW1', 'DPMIDW2', 'DPMOW02', 'TPSTDW6', 'PHREPL1', 'DPSTDW9')
                 AND (gk.IRIS_1_Repair NOT LIKE '%Return / reimbursement%')";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':SERVICE_PROVIDE_NAME', $name_partner, PDO::PARAM_STR);
         $result->bindParam(':start_date', $start, PDO::PARAM_STR);
         $result->bindParam(':end_date', $end, PDO::PARAM_STR);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
-        $row = $result->fetch();
+        $row = $result->fetch(PDO::FETCH_ASSOC);
         return $row['count'];
 
     }
@@ -159,10 +125,8 @@ class Data
      */
     public static function getKRBZ($name_partner, $start, $end)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT COUNT(*) AS count
                   FROM gs_kpi gk
                   WHERE gk.SERVICE_PROVIDE_NAME = :SERVICE_PROVIDE_NAME
@@ -173,17 +137,12 @@ class Data
                     GROUP BY gk1.SO_NUMBER
                     HAVING count(gk1.SO_NUMBER) = 1)
                   AND (gk.IRIS_1_Repair NOT LIKE '%Return / reimbursement%')";
-        // Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':SERVICE_PROVIDE_NAME', $name_partner, PDO::PARAM_STR);
         $result->bindParam(':start_date', $start, PDO::PARAM_STR);
         $result->bindParam(':end_date', $end, PDO::PARAM_STR);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
-        $row = $result->fetch();
+        $row = $result->fetch(PDO::FETCH_ASSOC);
         return $row['count'];
     }
 
@@ -195,20 +154,12 @@ class Data
      */
     public static function getCountMountForYear($date)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT WEEK('$date', 1) AS week";
-        // Используется подготовленный запрос
         $result = $db->prepare($sql);
-        //$result->bindParam(':date', $date, PDO::PARAM_STR);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
-        $row = $result->fetch();
+        $row = $result->fetch(PDO::FETCH_ASSOC);
         return $row['week'];
     }
 
@@ -224,10 +175,8 @@ class Data
      */
     public static function email_CSAT($name_partner, $start, $end)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT
                   gec.CIN_Location,
                   gec.CIN_Communication,
@@ -238,16 +187,12 @@ class Data
                 FROM gs_email_CSAT gec
                 WHERE gec.Name_of_Partner = :SERVICE_PROVIDE_NAME
                 AND gec.Week BETWEEN :start_date AND :end_date";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':SERVICE_PROVIDE_NAME', $name_partner, PDO::PARAM_STR);
         $result->bindParam(':start_date', $start, PDO::PARAM_STR);
         $result->bindParam(':end_date', $end, PDO::PARAM_STR);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
     }
@@ -262,26 +207,20 @@ class Data
      */
     public static function call_CSAT($name_partner, $start, $end)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT
                   AVG(gcc.customer_rating_to) AS avg
                 FROM gs_call_CSAT gcc
                 WHERE gcc.SERVICE_NAME = :SERVICE_NAME
                 AND gcc.date_processing BETWEEN :start_date AND :end_date
                 AND gcc.status = 'Answered'";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':SERVICE_NAME', $name_partner, PDO::PARAM_STR);
         $result->bindParam(':start_date', $start, PDO::PARAM_STR);
         $result->bindParam(':end_date', $end, PDO::PARAM_STR);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
         $row = $result->fetch(PDO::FETCH_ASSOC);
         return $row['avg'];
     }
@@ -297,27 +236,21 @@ class Data
      */
     public static function ECR($name_partner, $start, $end)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT COUNT(DISTINCT gk.Customer_Email) AS count
                 FROM gs_kpi gk
                 WHERE gk.SERVICE_PROVIDE_NAME = :SERVICE_PROVIDE_NAME
                 AND gk.Service_Complete_Date BETWEEN :start_date AND :end_date
                 AND gk.Unit_Received_Date IS NOT NULL
                 AND (gk.IRIS_1_Repair NOT LIKE '%Return / reimbursement%')";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':SERVICE_PROVIDE_NAME', $name_partner, PDO::PARAM_STR);
         $result->bindParam(':start_date', $start, PDO::PARAM_STR);
         $result->bindParam(':end_date', $end, PDO::PARAM_STR);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
-        $row = $result->fetch();
+        $row = $result->fetch(PDO::FETCH_ASSOC);
         return $row['count'];
     }
 
@@ -331,10 +264,8 @@ class Data
      */
     public static function Order_TAT($name_partner, $start, $end)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT COUNT(DISTINCT gk.SO_NUMBER) AS count
                 FROM gs_kpi gk
                 WHERE gk.SERVICE_PROVIDE_NAME = :SERVICE_PROVIDE_NAME
@@ -351,17 +282,13 @@ class Data
                   (case when weekday(gk.Part_Order_Date) = 6 then 1 else 0 end) -
                   (case when weekday(gk.SO_CREATION_DATE) = 5 then 1 else 0 end))) IS NULL)
               AND (gk.IRIS_1_Repair NOT LIKE '%Return / reimbursement%')";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':SERVICE_PROVIDE_NAME', $name_partner, PDO::PARAM_STR);
         $result->bindParam(':start_date', $start, PDO::PARAM_STR);
         $result->bindParam(':end_date', $end, PDO::PARAM_STR);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
-        $row = $result->fetch();
+        $row = $result->fetch(PDO::FETCH_ASSOC);
         return $row['count'];
     }
 
@@ -375,10 +302,8 @@ class Data
      */
     public static function Repair_TAT($name_partner, $start, $end)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT COUNT(DISTINCT gk.SO_NUMBER) AS count
                   FROM gs_kpi gk
                   WHERE gk.SERVICE_PROVIDE_NAME = :SERVICE_PROVIDE_NAME
@@ -395,17 +320,13 @@ class Data
                       (case when weekday(gk.Service_Complete_Date) = 6 then 1 else 0 end) -
                       (case when weekday(gk.Part_Delivery_Date) = 5 then 1 else 0 end))) IS NULL)
                   AND (gk.IRIS_1_Repair NOT LIKE '%Return / reimbursement%')";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':SERVICE_PROVIDE_NAME', $name_partner, PDO::PARAM_STR);
         $result->bindParam(':start_date', $start, PDO::PARAM_STR);
         $result->bindParam(':end_date', $end, PDO::PARAM_STR);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
-        $row = $result->fetch();
+        $row = $result->fetch(PDO::FETCH_ASSOC);
         return $row['count'];
     }
 
@@ -419,10 +340,8 @@ class Data
      */
     public static function SW_Repair_TAT($name_partner, $start, $end)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT COUNT(*) AS count
                   FROM gs_kpi gk
                   WHERE gk.SERVICE_PROVIDE_NAME = :SERVICE_PROVIDE_NAME
@@ -442,17 +361,13 @@ class Data
                       (case when weekday(gk.Service_Complete_Date) = 6 then 1 else 0 end) -
                       (case when weekday(gk.SO_CREATION_DATE) = 5 then 1 else 0 end))) IS NULL)
                   AND (gk.IRIS_1_Repair NOT LIKE '%Return / reimbursement%')";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':SERVICE_PROVIDE_NAME', $name_partner, PDO::PARAM_STR);
         $result->bindParam(':start_date', $start, PDO::PARAM_STR);
         $result->bindParam(':end_date', $end, PDO::PARAM_STR);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
-        $row = $result->fetch();
+        $row = $result->fetch(PDO::FETCH_ASSOC);
         return $row['count'];
     }
 
@@ -460,37 +375,29 @@ class Data
 
     public static function SO_Creation_TAT($name_partner, $start, $end)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT COUNT(DISTINCT gk.SO_NUMBER) AS count
                 FROM gs_kpi gk
                 WHERE gk.SERVICE_PROVIDE_NAME = :SERVICE_PROVIDE_NAME
                   AND gk.Service_Complete_Date BETWEEN :start_date AND :end_date
                   AND DATEDIFF(gk.SO_CREATION_DATE, gk.Unit_Received_Date) < 1
                   AND (gk.IRIS_1_Repair NOT LIKE '%Return / reimbursement%')";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':SERVICE_PROVIDE_NAME', $name_partner, PDO::PARAM_STR);
         $result->bindParam(':start_date', $start, PDO::PARAM_STR);
         $result->bindParam(':end_date', $end, PDO::PARAM_STR);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
-        $row = $result->fetch();
+        $row = $result->fetch(PDO::FETCH_ASSOC);
         return $row['count'];
     }
 
 
     public static function PPl($name_partner, $start, $end)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT COUNT(gk.Item_Product_ID) AS count
                 FROM gs_kpi gk
                 WHERE gk.SERVICE_PROVIDE_NAME = :SERVICE_PROVIDE_NAME
@@ -498,17 +405,13 @@ class Data
                 AND gk.Item_Product_ID NOT IN('SWAPLAB', 'PHREPL0', 'DPSTDW3', 'DPSTDW1', 'PHREPL2', 'TPSTDW3',
   'DPSTDW6', 'DPMIDW1', 'DPMIDW2', 'DPMOW02', 'TPSTDW6', 'PHREPL1', 'DPSTDW9', 'PHREPLS')
                 AND (gk.IRIS_1_Repair NOT LIKE '%Return / reimbursement%')";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':SERVICE_PROVIDE_NAME', $name_partner, PDO::PARAM_STR);
         $result->bindParam(':start_date', $start, PDO::PARAM_STR);
         $result->bindParam(':end_date', $end, PDO::PARAM_STR);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
-        $row = $result->fetch();
+        $row = $result->fetch(PDO::FETCH_ASSOC);
         return $row['count'];
     }
 
@@ -523,28 +426,22 @@ class Data
      */
     public static function LongTail_14_Days($name_partner, $start, $end, $count_day)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT COUNT(DISTINCT gk.SO_NUMBER) AS count
                 FROM gs_kpi gk
                 WHERE gk.SERVICE_PROVIDE_NAME = :SERVICE_PROVIDE_NAME
                   AND gk.Service_Complete_Date BETWEEN :start_date AND :end_date
                   AND DATEDIFF(gk.Service_Complete_Date, gk.SO_CREATION_DATE) < :count_day
                   AND (gk.IRIS_1_Repair NOT LIKE '%Return / reimbursement%')";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':SERVICE_PROVIDE_NAME', $name_partner, PDO::PARAM_STR);
         $result->bindParam(':start_date', $start, PDO::PARAM_STR);
         $result->bindParam(':end_date', $end, PDO::PARAM_STR);
         $result->bindParam(':count_day', $count_day, PDO::PARAM_INT);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
-        $row = $result->fetch();
+        $row = $result->fetch(PDO::FETCH_ASSOC);
         return $row['count'];
     }
 
@@ -559,95 +456,82 @@ class Data
      */
     public static function LongTail_21_Days($name_partner, $start, $end, $count_day)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT COUNT(DISTINCT gk.SO_NUMBER) AS count
                 FROM gs_kpi gk
                 WHERE gk.SERVICE_PROVIDE_NAME = :SERVICE_PROVIDE_NAME
                   AND gk.Service_Complete_Date BETWEEN :start_date AND :end_date
                   AND DATEDIFF(gk.Service_Complete_Date, gk.SO_CREATION_DATE) > :count_day
                   AND (gk.IRIS_1_Repair NOT LIKE '%Return / reimbursement%')";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':SERVICE_PROVIDE_NAME', $name_partner, PDO::PARAM_STR);
         $result->bindParam(':start_date', $start, PDO::PARAM_STR);
         $result->bindParam(':end_date', $end, PDO::PARAM_STR);
         $result->bindParam(':count_day', $count_day, PDO::PARAM_INT);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
-        $row = $result->fetch();
+        $row = $result->fetch(PDO::FETCH_ASSOC);
         return $row['count'];
     }
 
 
     /**
      * Получаем количество значений с gk.Unit_Received_Date для данного партнера
+     *
      * @param $name_partner
+     * @param $start
+     * @param $end
+     *
      * @return mixed
      */
     public static function LS_Rate($name_partner, $start, $end)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT COUNT(DISTINCT gk.SO_NUMBER) AS count
                 FROM gs_kpi gk
                 WHERE gk.SERVICE_PROVIDE_NAME = :SERVICE_PROVIDE_NAME
                 AND gk.Service_Complete_Date BETWEEN :start_date AND :end_date
                 AND gk.PARTS_MODEL_INDICATOR = 'L'
                 AND (gk.IRIS_1_Repair NOT LIKE '%Return / reimbursement%')";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':SERVICE_PROVIDE_NAME', $name_partner, PDO::PARAM_STR);
         $result->bindParam(':start_date', $start, PDO::PARAM_STR);
         $result->bindParam(':end_date', $end, PDO::PARAM_STR);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
-        $row = $result->fetch();
+        $row = $result->fetch(PDO::FETCH_ASSOC);
         return $row['count'];
     }
 
 
     /**
      * Количество знаений Return/reimbursement для данного юзера
+     *
      * @param $name_partner
      * @param $param
      * @param $start
      * @param $end
-     * @return mixed
+     *
+     * @return
      */
     public static function Refund_Rate($name_partner, $param, $start, $end)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT COUNT(DISTINCT gk.SO_NUMBER) AS count
                 FROM gs_kpi gk
                 WHERE gk.SERVICE_PROVIDE_NAME = :SERVICE_PROVIDE_NAME
                 AND gk.Service_Complete_Date BETWEEN :start_date AND :end_date
                 AND gk.IRIS_1_Repair LIKE '%$param%'";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':SERVICE_PROVIDE_NAME', $name_partner, PDO::PARAM_STR);
-        //$result->bindParam(':param', $param, PDO::PARAM_STR);
         $result->bindParam(':start_date', $start, PDO::PARAM_STR);
         $result->bindParam(':end_date', $end, PDO::PARAM_STR);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
-        $row = $result->fetch();
+        $row = $result->fetch(PDO::FETCH_ASSOC);
         return $row['count'];
     }
 
@@ -660,10 +544,8 @@ class Data
      */
     public static function FTF_30_Days($name_partner, $start, $end)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT *
                   FROM gs_kpi gk
                   WHERE gk.SERVICE_PROVIDE_NAME = :SERVICE_PROVIDE_NAME
@@ -675,16 +557,12 @@ class Data
                       HAVING count(gk1.Serial_Number) > 1)
                   AND (gk.IRIS_1_Repair NOT LIKE '%Return / reimbursement%')
                 ORDER BY gk.Serial_Number, gk.SO_NUMBER";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':SERVICE_PROVIDE_NAME', $name_partner, PDO::PARAM_STR);
         $result->bindParam(':start_date', $start, PDO::PARAM_STR);
         $result->bindParam(':end_date', $end, PDO::PARAM_STR);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
     }
@@ -696,10 +574,8 @@ class Data
      */
     public static function importKPI($options)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'INSERT INTO gs_kpi '
             . '(SO_NUMBER, SO_CREATION_DATE, HEADER_STATUS, SERVICE_PROVIDE_NAME, COUNTRY, Serial_Number, ITEM_STATUS, Service_Complete_Date, Item_Product_ID, 
                 Item_Product_Desc, IRIS_1_Repair, Unit_Received_Date, PARTS_MODEL_INDICATOR, Part_Order_Date, Part_Delivery_Date, Customer_Email)'
@@ -707,7 +583,6 @@ class Data
             . '(:SO_NUMBER, :SO_CREATION_DATE, :HEADER_STATUS, :SERVICE_PROVIDE_NAME, :COUNTRY, :Serial_Number, :ITEM_STATUS, :Service_Complete_Date, :Item_Product_ID, 
                 :Item_Product_Desc, :IRIS_1_Repair, :Unit_Received_Date, :PARTS_MODEL_INDICATOR, :Part_Order_Date, :Part_Delivery_Date, :Customer_Email)';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':SO_NUMBER', $options['SO_NUMBER'], PDO::PARAM_STR);
         $result->bindParam(':SO_CREATION_DATE', $options['SO_CREATION_DATE'], PDO::PARAM_STR);
@@ -725,40 +600,43 @@ class Data
         $result->bindParam(':Part_Order_Date', $options['Part_Order_Date'], PDO::PARAM_STR);
         $result->bindParam(':Part_Delivery_Date', $options['Part_Delivery_Date'], PDO::PARAM_STR);
         $result->bindParam(':Customer_Email', $options['Customer_Email'], PDO::PARAM_STR);
-
         return $result->execute();
     }
 
 
+    /**
+     * @param $options
+     *
+     * @return bool
+     */
     public static function importCallCSAT($options)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'INSERT INTO gs_call_CSAT '
             . '(SO_NUMBER, customer_rating_to, status, SERVICE_NAME, date_processing)'
             . 'VALUES '
             . '(:SO_NUMBER, :customer_rating_to, :status, :SERVICE_NAME, :date_processing)';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':SO_NUMBER', $options['SO_NUMBER'], PDO::PARAM_STR);
         $result->bindParam(':customer_rating_to', $options['customer_rating_to'], PDO::PARAM_STR);
         $result->bindParam(':status', $options['status'], PDO::PARAM_STR);
         $result->bindParam(':SERVICE_NAME', $options['SERVICE_NAME'], PDO::PARAM_STR);
         $result->bindParam(':date_processing', $options['date_processing'], PDO::PARAM_STR);
-
         return $result->execute();
     }
 
 
+    /**
+     * @param $options
+     *
+     * @return bool
+     */
     public static function importEmailCSAT($options)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'INSERT INTO gs_email_CSAT '
             . '(Month, Week, CIN_Location, CIN_Communication, CIN_Technical, CIN_Repair, CIN_Speed, CIN_Quality,
                 Name_of_Partner, Serial_Number, OSAT_Comment, Transaction_Number, Sum_of_Wai_Score)'
@@ -766,7 +644,6 @@ class Data
             . '(:Month, :Week, :CIN_Location, :CIN_Communication, :CIN_Technical, :CIN_Repair, :CIN_Speed, :CIN_Quality,
                 :Name_of_Partner, :Serial_Number, :OSAT_Comment, :Transaction_Number, :Sum_of_Wai_Score)';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':Month', $options['Month'], PDO::PARAM_STR);
         $result->bindParam(':Week', $options['Week'], PDO::PARAM_STR);
@@ -781,7 +658,6 @@ class Data
         $result->bindParam(':OSAT_Comment', $options['OSAT_Comment'], PDO::PARAM_STR);
         $result->bindParam(':Transaction_Number', $options['Transaction_Number'], PDO::PARAM_STR);
         $result->bindParam(':Sum_of_Wai_Score', $options['Sum_of_Wai_Score'], PDO::PARAM_STR);
-
         return $result->execute();
     }
 
@@ -848,33 +724,4 @@ class Data
         $result->execute();
         return $result->fetchAll();
     }
-
-
-    public static function dd($dd)
-    {
-        echo "<pre>";
-        print_r($dd);
-    }
-
-
-    /* кол-во повторяемых строк
-  SELECT gk.SO_NUMBER, gk.Serial_Number, count(gk.Serial_Number) AS reiteration
-  FROM gs_kpi gk
-  WHERE gk.SERVICE_PROVIDE_NAME = 'GS Remzone'
-  GROUP BY gk.Serial_Number
-  HAVING count(gk.Serial_Number) > 1
-    */
-
-    /* список всех повторяющих строк
-  SELECT *
-  FROM gs_kpi gk
-  WHERE gk.SERVICE_PROVIDE_NAME = 'GS Remzone'
-  AND gk.Serial_Number IN (
-      SELECT gk1.Serial_Number
-      FROM gs_kpi gk1
-      GROUP BY gk1.Serial_Number
-      HAVING count(gk1.Serial_Number) > 1)
-    ORDER BY gk.Serial_Number
-    */
-
 }

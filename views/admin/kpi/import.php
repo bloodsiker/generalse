@@ -1,4 +1,4 @@
-<?php require_once ROOT . '/views/admin/layouts/header.php'; ?>
+<?php require_once views_path('admin/layouts/header.php') ?>
 
 <div class="row">
     <div class="medium-12 small-12 columns">
@@ -114,8 +114,5 @@
     <?php endif;?>
 </div>
 
-
-
-<?php require_once ROOT . '/views/admin/layouts/footer.php'; ?>
-
+<?php require_once views_path('admin/layouts/footer.php') ?>
 

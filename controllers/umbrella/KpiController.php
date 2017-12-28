@@ -10,7 +10,7 @@ use Umbrella\components\ImportExcel;
 use Umbrella\components\KPI;
 use Umbrella\components\Logger;
 use Umbrella\models\Admin;
-use Umbrella\models\Data;
+use Umbrella\models\kpi\Data;
 use Umbrella\models\ProblemData;
 
 /**
@@ -40,16 +40,18 @@ class KpiController extends AdminBase
     {
         $user = $this->user;
 
-        if($user->getRole() == 'partner'){
+        if($user->isPartner()){
 
-            $lastData = Data::getLastData($user->getName(), 'DESC');
-            $firstData = Data::getLastData($user->getName(), 'ASC');
+            $lastAndFirstDate = Data::getLastData($user->getName());
+            $lastData = $lastAndFirstDate['lastDate'];
+            $firstData = $lastAndFirstDate['firstDate'];
 
-        } else if($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin' || $user->getRole() == 'manager'){
+        } else if($user->isAdmin() || $user->isManager()){
 
             $listPartner = Admin::getPartnerViewKpi(1);
-            $lastData = Data::getLastDataAdmin('DESC');
-            $firstData = Data::getLastDataAdmin('ASC');
+            $lastAndFirstDate = Data::getLastDataAdmin();
+            $lastData = $lastAndFirstDate['lastDate'];
+            $firstData = $lastAndFirstDate['firstDate'];
         }
 
         $this->render('admin/kpi/index', compact('user', 'lastData', 'firstData', 'listPartner'));
@@ -65,16 +67,16 @@ class KpiController extends AdminBase
         self::checkDenied('kpi.usage', 'controller');
         $user = $this->user;
 
-        if($user->getRole() == 'partner'){
+        if($user->isPartner()){
 
             $start = $_GET['start'];
             $end = $_GET['end'];
             $id_partner = $_GET['id_partner'];
 
             $listUsage = Data::getUsageByAdmin($id_partner, $start, $end);
-            Logger::getInstance()->log($user->id_user, "Посмотрел Usage c {$start} - {$end}");
+            Logger::getInstance()->log($user->getId(), "Посмотрел Usage c {$start} - {$end}");
 
-        } else if($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin' || $user->getRole() == 'manager'){
+        } else if($user->isAdmin() || $user->isManager()){
 
             $listPartner = Admin::getPartnerViewKpi(1);
 
@@ -84,7 +86,7 @@ class KpiController extends AdminBase
 
 
                 $listUsage = Data::getAllUsageByAdmin($start, $end);
-                Logger::getInstance()->log($user->id_user, "Посмотрел Usage c {$start} - {$end} для {$_GET['id_partner']}");
+                Logger::getInstance()->log($user->getId(), "Посмотрел Usage c {$start} - {$end} для {$_GET['id_partner']}");
 
             } else {
 
@@ -95,7 +97,7 @@ class KpiController extends AdminBase
                 $name = Admin::getNameById($id_partner);
 
                 $listUsage = Data::getUsageByAdmin($id_partner, $start, $end);
-                Logger::getInstance()->log($user->id_user, "Посмотрел Usage c {$start} - {$end} для {$name}");
+                Logger::getInstance()->log($user->getId(), "Посмотрел Usage c {$start} - {$end} для {$name}");
             }
         }
 
@@ -113,11 +115,11 @@ class KpiController extends AdminBase
 
         $user = $this->user;
 
-        if($user->getRole() == 'partner'){
+        if($user->isPartner()){
 
-            header("Location: /adm/access_denied");
+            Url::redirect('/adm/access_denied');
 
-        } else if($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin' || $user->getRole() == 'manager'){
+        } else if($user->isAdmin() || $user->isManager()){
 
             $count_kpi_success = Session::pull('kpi_success');
             $count_call_success = Session::pull('call_success');
@@ -147,9 +149,6 @@ class KpiController extends AdminBase
 
                             $excelArray = ImportExcel::importKpi($excel_file);
 
-//                            echo "<pre>";
-//                            print_r($excelArray);
-
                             $i = 0;
                             if(isset($excelArray) && count($excelArray) > 0){
                                 foreach ($excelArray as $insert){
@@ -159,7 +158,7 @@ class KpiController extends AdminBase
                                     }
                                 }
                             }
-                            Logger::getInstance()->log($user->id_user, 'Импортировал массив KPI');
+                            Logger::getInstance()->log($user->getId(), 'Импортировал массив KPI');
                             Session::set('kpi_success', $i);
                         }
                     }
@@ -191,9 +190,6 @@ class KpiController extends AdminBase
 
                             $excelArray = ImportExcel::importCallCSAT($excel_file);
 
-//                            echo "<pre>";
-//                            print_r($excelArray);
-
                             $i = 0;
                             if(isset($excelArray) && count($excelArray) > 0){
                                 foreach ($excelArray as $insert){
@@ -203,7 +199,7 @@ class KpiController extends AdminBase
                                     }
                                 }
                             }
-                            Logger::getInstance()->log($user->id_user, 'Импортировал массив Call CSAT');
+                            Logger::getInstance()->log($user->getId(), 'Импортировал массив Call CSAT');
                             Session::set('call_success', $i);
                         }
                     }
@@ -245,7 +241,7 @@ class KpiController extends AdminBase
                                     }
                                 }
                             }
-                            Logger::getInstance()->log($user->id_user, 'Импортировал массив Email CSAT');
+                            Logger::getInstance()->log($user->getId(), 'Импортировал массив Email CSAT');
                             Session::set('email_success', $i);
                         }
                     }
@@ -269,23 +265,24 @@ class KpiController extends AdminBase
 
         $start = $_GET['start'];
         $end = $_GET['end'];
-        if($end == ''){
+        if(empty($end)){
             $end = date('Y-m-d');
         }
 
-        if($user->getRole() == 'partner'){
+        if($user->isPartner()){
 
             $KPI = new KPI($user->getName(), $start, $end);
-            $lastData = Data::getLastData($user->getName(), 'DESC');
-            $firstData = Data::getLastData($user->getName(), 'ASC');
+            $lastAndFirstDate = Data::getLastData($user->getName());
+            $lastData = $lastAndFirstDate['lastDate'];
+            $firstData = $lastAndFirstDate['firstDate'];
             $name_partner = $user->getName();
 
-            Logger::getInstance()->log($user->id_user, "посмотрел отчет KPI с " . $start . " по " . $end);
+            Logger::getInstance()->log($user->getId(), "посмотрел отчет KPI с " . $start . " по " . $end);
 
             $this->render('admin/kpi/result_one_partner', compact('user', 'KPI', 'lastData', 'firstData', 'name_partner', 'start', 'end'));
 
 
-        } else if($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin' || $user->getRole() == 'manager'){
+        } else if($user->isAdmin() || $user->isManager()){
 
             $listPartner = Admin::getPartnerViewKpi(1);
 
@@ -295,26 +292,27 @@ class KpiController extends AdminBase
                 if($name_partner == 'all'){
 
                     $KPI = new KPI($user->getName(), $start, $end);
-                    $lastData = Data::getLastDataAdmin('DESC');
-                    $firstData = Data::getLastDataAdmin('ASC');
+                    $lastAndFirstDate = Data::getLastDataAdmin();
+                    $lastData = $lastAndFirstDate['lastDate'];
+                    $firstData = $lastAndFirstDate['firstDate'];
 
-                    Logger::getInstance()->log($user->id_user, "посмотрел отчет KPI с " . $start . " по " . $end . " для всех партнеров");
+                    Logger::getInstance()->log($user->getId(), "посмотрел отчет KPI с " . $start . " по " . $end . " для всех партнеров");
 
                     $this->render('admin/kpi/result_all_partner', compact('user', 'KPI', 'lastData', 'firstData', 'listPartner', 'start', 'end'));
 
                 } else {
 
                     $KPI = new KPI($name_partner, $start, $end);
-                    $lastData = Data::getLastData($name_partner, 'DESC');
-                    $firstData = Data::getLastData($name_partner, 'ASC');
+                    $lastAndFirstDate = Data::getLastData($user->getName());
+                    $lastData = $lastAndFirstDate['lastDate'];
+                    $firstData = $lastAndFirstDate['firstDate'];
 
-                    Logger::getInstance()->log($user->id_user, "посмотрел отчет KPI с " . $start . " по " . $end . " для " . $name_partner);
+                    Logger::getInstance()->log($user->getId(), "посмотрел отчет KPI с " . $start . " по " . $end . " для " . $name_partner);
 
                     $this->render('admin/kpi/result_one_partner', compact('user','KPI', 'lastData', 'firstData', 'name_partner', 'listPartner', 'start', 'end'));
                 }
             }
         }
-
         return true;
     }
 
@@ -393,10 +391,7 @@ class KpiController extends AdminBase
                 $data = [];
         }
 
-        //print_r($data);
-
         $this->render('admin/kpi/show_probem_kpi', compact('user','data', 'start', 'end', 'partner'));
         return true;
     }
-
 }

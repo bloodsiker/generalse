@@ -1,4 +1,4 @@
-<?php require_once ROOT . '/views/admin/layouts/header.php'; ?>
+<?php require_once views_path('admin/layouts/header.php') ?>
 
 <div class="row">
     <div class="medium-12 small-12 columns">
@@ -38,7 +38,7 @@
                         </caption>
                         <thead>
                         <tr>
-                            <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+                            <?php if($user->isAdmin() || $user->isManager()):?>
                                 <th class="sort">Partner</th>
                             <?php endif; ?>
                             <th class="sort">Part Number</th>
@@ -50,7 +50,7 @@
                         <?php if (is_array($listUsage)): ?>
                             <?php foreach ($listUsage as $usage): ?>
                                 <tr class="goods">
-                                    <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+                                    <?php if($user->isAdmin()  || $user->isManager()):?>
                                         <td><?=$usage['SERVICE_PROVIDE_NAME']?></td>
                                     <?php endif; ?>
                                     <td><?=$usage['Item_Product_ID']?></td>
@@ -79,7 +79,7 @@
             <div class="medium-12 small-12 columns">
                 <h3>Usage</h3>
             </div>
-            <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+            <?php if($user->isAdmin() || $user->isManager()):?>
                 <div class="medium-12 small-12 columns">
                     <div class="row">
                         <div class="medium-12 small-12 columns">
@@ -96,7 +96,7 @@
                         </div>
                     </div>
                 </div>
-            <?php elseif ($user->role == 'partner'):?>
+            <?php elseif ($user->isPartner()):?>
                 <div class="medium-12 small-12 columns">
                     <label><i class="fi-list"></i> Partner</label>
                     <select name="id_partner" class="required" required>
@@ -140,6 +140,6 @@
     })()
 </script>
 
-<?php require_once ROOT . '/views/admin/layouts/footer.php'; ?>
+<?php require_once views_path('admin/layouts/footer.php') ?>
 
 

@@ -1,10 +1,10 @@
-<?php require_once ROOT . '/views/admin/layouts/header.php'; ?>
+<?php require_once views_path('admin/layouts/header.php') ?>
 
 <div class="row">
     <div class="medium-12 small-12 columns">
         <div class="row header-content">
             <div class="medium-12 small-12 top-gray columns">
-                <h1 class="title-filter">Containing data on  <strong><?= $firstData['Service_Complete_Date']?> — <?= $lastData['Service_Complete_Date']?></strong></h1>
+                <h1 class="title-filter">Containing data on  <strong><?= $firstData?> — <?= $lastData?></strong></h1>
             </div>
             <div class="medium-12 small-12 bottom-gray colmns">
                 <form action="/adm/result/" method="get" id="kpi" class="form" data-abide novalidate>
@@ -17,16 +17,14 @@
                             <label for="right-label"><i class="fi-calendar"></i> To date</label>
                             <input type="text" id="date-end" name="end">
                         </div>
-                        <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+                        <?php if($user->isAdmin() || $user->isManager()):?>
                         <div class="medium-2 small-12 columns">
                             <label><i class="fi-torso-business"></i> Partner
                                 <select name="name_partner">
                                     <option value="all">All partners</option>
                                     <?php if (is_array($listPartner)): ?>
                                         <?php foreach ($listPartner as $partner): ?>
-                                            <?php if($partner['name_partner'] != 'GS Test' && $partner['name_partner'] != 'GS Electrolux'  && $partner['name_partner'] != 'GS Electrolux'):?>
                                             <option value="<?=$partner['name_partner']?>"><?=$partner['name_partner']?></option>
-                                            <?php endif; ?>
                                         <?php endforeach; ?>
                                     <?php endif; ?>
                                 </select>
@@ -49,7 +47,7 @@
                             <?php endif;?>
 
                             <?php if (Umbrella\app\AdminBase::checkDenied('kpi.import', 'view')): ?>
-                                <?php if($user->role == 'administrator' || $user->role == 'administrator-fin'):?>
+                                <?php if($user->isAdmin()):?>
                                     <a href="/adm/kpi/import" class="button primary tool"><i class="fi-page-export"></i> Import</a>
                                 <?php endif;?>
                             <?php endif;?>
@@ -68,7 +66,7 @@
             <div class="medium-12 small-12 columns">
                 <h3>Usage</h3>
             </div>
-            <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+            <?php if($user->isAdmin() || $user->isManager()):?>
                 <div class="medium-12 small-12 columns">
                     <div class="row">
                         <div class="medium-12 small-12 columns">
@@ -85,7 +83,7 @@
                         </div>
                     </div>
                 </div>
-            <?php elseif ($user->role == 'partner'):?>
+            <?php elseif ($user->isPartner()):?>
                 <div class="medium-12 small-12 columns">
                     <label><i class="fi-list"></i> Partner</label>
                     <select name="id_partner" class="required" required>
@@ -115,6 +113,6 @@
     </button>
 </div>
 
-<?php require_once ROOT . '/views/admin/layouts/footer.php'; ?>
+<?php require_once views_path('admin/layouts/footer.php') ?>
 
 

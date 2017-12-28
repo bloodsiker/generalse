@@ -1,10 +1,11 @@
-<?php require_once ROOT . '/views/admin/layouts/header.php' ?>
+<?php require_once views_path('admin/layouts/header.php') ?>
+
 
     <div class="row">
         <div class="medium-12 small-12 columns">
             <div class="row header-content">
                 <div class="medium-12 small-12 top-gray columns">
-                    <h1 class="title-filter">Containing data on  <?= $firstData['Service_Complete_Date']?> — <?= $lastData['Service_Complete_Date']?></h1>
+                    <h1 class="title-filter">Containing data on  <?= $firstData?> — <?= $lastData?></h1>
                 </div>
                 <div class="medium-12 small-12 bottom-gray colmns">
                     <form action="/adm/result/" method="get" class="form" id="kpi" data-abide novalidate>
@@ -17,7 +18,7 @@
                                 <label for="right-label">To date</label>
                                 <input type="text" id="date-end" placeholder="date" value="<?=$end?>" name="end">
                             </div>
-                            <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+                            <?php if($user->isAdmin() || $user->isManager()):?>
                                 <div class="medium-3 small-12 columns">
                                     <label>Partner
                                         <select name="name_partner">
@@ -304,4 +305,4 @@
         })()
     </script>
 
-<?php require_once ROOT . '/views/admin/layouts/footer.php' ?>
+<?php require_once views_path('admin/layouts/header.php') ?>
