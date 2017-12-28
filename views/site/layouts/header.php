@@ -8,7 +8,7 @@
   <link rel="shortcut icon" href="/template/site/img/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="/template/site/css/foundation.min.css">
   <link rel="stylesheet" href="/template/site/css/app.css">
-  <link rel="stylesheet" href="/template/site/css/style.css">
+  <link rel="stylesheet" href="/template/site/css/style.css?v.1.5.1">
   <link rel="stylesheet" href="/template/site/css/fonts.css">
   <link rel="stylesheet" href="/template/site/fonts/foundation-icons/foundation-icons.css">
   <link rel="stylesheet" href="https://daneden.github.io/animate.css/animate.min.css">
@@ -31,12 +31,11 @@
          <li><a href="/directions">Directions</a></li>
          <li><a href="/career">Career</a></li>
          <li><a href="/contact">Contact</a></li>
-            <?php \Josantonius\Session\Session::destroy('user')?>
-            <?php \Josantonius\Session\Session::destroy('info_user')?>
          <?php if(\Josantonius\Session\Session::get('user')):?>
             <li><a href="/adm/crm/orders"><i class="fi-unlock"></i>Cabinet</a>
          <?php else:?>
-         <li><a id="open-auth"><i class="fi-torso"></i>&nbsp;Log&nbsp;in</a>
+           <li><a data-open="sign-up"><i class="fi-torso"></i> Sign up</a>
+           <li><a id="open-auth"><i class="fi-torso"></i>&nbsp;Log&nbsp;in</a>
          <?php endif;?>
 
             <div class="auth contact-us">

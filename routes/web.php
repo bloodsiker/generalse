@@ -244,6 +244,7 @@ return [
     'test-export' => 'Site@export',
 
     /*********** SITE  ***********/
+    'sign_up' => 'Site@signUp',
     'contact_form' => 'Site@contactForm',
     'contact' => 'Site@contact',
     'career' => 'Site@career',

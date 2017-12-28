@@ -154,7 +154,7 @@ class RequestController extends AdminBase
 
             $listCheckOrders = Request::getAllReserveOrdersMsSQL(0, 1);
             //$listCheckOrders = Functions::getUniqueArray('number', $listCheckOrders);
-            $listCheckOrders = [];
+            //$listCheckOrders = [];
             $listRemovedRequest = Decoder::arrayToUtf(Request::getAllReserveOrdersMsSQL(0, 0));
             //$listRemovedRequest = [];
 

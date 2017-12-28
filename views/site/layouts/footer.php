@@ -78,17 +78,92 @@
   </button>
 </div>
 
+<div class="reveal" id="sign-up" data-reveal>
+    <div class="row align-bottom">
+        <div class="medium-12 small-12 columns">
+            <h5>Отправить заявку на регистрацию аккаунта</h5>
+        </div>
+        <div class="medium-12 small-12 columns">
+            <form action="" id="sign-up-form" method="post" class="form" data-abide novalidate>
+                <div class="row align-bottom">
+
+                    <div class="medium-12 small-12 columns">
+                        <label>Страна</label>
+                        <input type="text" name="country">
+                    </div>
+
+                    <div class="medium-12 small-12 columns">
+                        <label>ФИО</label>
+                        <input type="text" name="fio" class="required" required autocomplete="off">
+                    </div>
+
+                    <div class="medium-12 small-12 columns">
+                        <label>Наименование компании</label>
+                        <input type="text" name="company" class="required" required autocomplete="off">
+                    </div>
+
+                    <div class="medium-12 small-12 columns">
+                        <label>Email</label>
+                        <input type="email" name="email" class="required" required>
+                    </div>
+
+                    <div class="medium-12 small-12 columns">
+                        <label>Логин</label>
+                        <input type="text" name="login" class="required" required autocomplete="off">
+                    </div>
+
+                    <div class="medium-12 small-12 columns">
+                        <label>Телефон</label>
+                        <input type="text" name="phone" placeholder="(099)999-99-99" class="phone required" required autocomplete="off">
+                    </div>
+
+                    <div class="medium-12 small-12 columns">
+                        <label>Адрес</label>
+                        <input type="text" name="address" class="required" required autocomplete="off">
+                    </div>
+
+                    <div class="medium-12 small-12 columns">
+                        <label>Какие интересуют группы товаров</label>
+                        <input type="text" name="group_products" autocomplete="off">
+                    </div>
+
+                    <div class="medium-12 small-12 columns">
+                        <label>Комментарий</label>
+                        <textarea name="message" cols="30" rows="2"></textarea>
+                    </div>
+
+                    <input type="hidden" name="sign_up" value="true">
+                    <div class="medium-12 small-12 columns">
+                        <button type="submit" class="button primary float-right">Отправить</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
 
 <script src="/template/site/js/vendor/jquery.js"></script>
 <script src="/template/site/js/vendor/what-input.js"></script>
 <script src="/template/site/js/vendor/foundation.min.js"></script>
+<script src="/template/site/js/jquery.mask.min.js"></script>
 <script src="/template/admin/js/app.js"></script>
 <script src="/template/site/js/parallax.min.js"></script>
-<script src="/template/site/js/main.js?v.1.5.1"></script>
+<script src="/template/site/js/object.js"></script>
+<script src="/template/site/js/main.js?v.1.5.2"></script>
 <script src="http://mynameismatthieu.com/WOW/dist/wow.min.js"></script>
 
 <script src="/template/site/js/html2canvas.js"></script>
 
+<script>
+    $(document).ready(function(){
+        $('.phone').mask('(000) 000-00-00');
+    });
+</script>
 <script>
     new WOW().init();
 </script>

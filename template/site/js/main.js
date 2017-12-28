@@ -168,15 +168,6 @@ $(document).ready(function () {
 
         if (error_login == false) {
 
-            // html_down = "<div id='umbrella-down'>"
-            //                 + "<h3>В данный момент Umbrella не доступна!</h3>"
-            //                 + "<p>Сервис на техническом облуживании! <br> В ближайшее время вы сможете продолжить работу ^_^)</p>"
-            //                 + "<button class='btn-down'>Закрыть</button>"
-            //                 + "</div>";
-            //
-            // $('body').append(html_down);
-
-
             var data = "action=login&login=" + login + "&password=" + password;
 
             $.ajax({
@@ -187,13 +178,6 @@ $(document).ready(function () {
                 success: function(data){
                     var obj = jQuery.parseJSON(data);
                     if(obj.code == 1){
-                        //var html = "<p class='error_data'>" + obj.log + "</p>";
-
-                        // if($('p').is('.error_data')){
-                        //     return false;
-                        // } else {
-                        //     $('.form_title').after(html);
-                        // }
 
                         var html_error = "<div class='umbrella-alert'>"
                             + "<span>Не верные данные для входа в кабинет!</span>"
@@ -201,11 +185,6 @@ $(document).ready(function () {
 
                         $('body').append(html_error);
 
-                        function remove_elem() {
-                            $('.umbrella-alert').fadeOut(1500, function () {
-                                $('.umbrella-alert').remove();
-                            });
-                        }
                         setTimeout(remove_elem, 10000);
 
                         $(".password_umbrella").val("");
@@ -218,11 +197,6 @@ $(document).ready(function () {
 
                         $('body').append(html_mess);
 
-                        function remove_elem() {
-                            $('.umbrella-alert').fadeOut(1500, function () {
-                                $('.umbrella-alert').remove();
-                            });
-                        }
                         setTimeout(remove_elem, 10000)
 
                     } else {
@@ -230,9 +204,60 @@ $(document).ready(function () {
                     }
                 }
             });
-
             return false;
         }
         e.preventDefault();
     });
+});
+
+let remove_elem = function () {
+    $('.umbrella-alert').fadeOut(1500, function () {
+        $('.umbrella-alert').remove();
+    });
+};
+
+
+
+// Sign Up
+$('#sign-up-form').submit(function(e) {
+    e.preventDefault();
+    if ($('#sign-up-form input').hasClass('is-invalid-input')) {
+        return false;
+    } else {
+        let newForm = $(this).serializeObject(); // получение данных в объекте
+        let json = JSON.stringify(newForm); // json
+        console.log(json); // send to server json AJAX
+        $.ajax({
+            url: "/sign_up",
+            type: "POST",
+            data: {json : json},
+            cache: false,
+            success: function (response) {
+                console.log(response);
+                if(response == 1){
+                    setTimeout(function () {
+                        $('#sign-up').foundation('close');
+                        $('#sign-up-form').trigger("reset");
+                    }, 500);
+                    var html_error = "<div class='umbrella-alert'>"
+                        + "<span>Ваша заявка отправлена на рассмотрение. Наш менеджер свяжется с Вами в ближайшее время</span>"
+                        + "</div>";
+
+                    $('body').append(html_error);
+
+                    setTimeout(remove_elem, 10000);
+                } else if(response == 0){
+
+                    var html_error = "<div class='umbrella-alert'>"
+                        + "<span>Произошла ошибка при отправке заявки. Свяжитесь пожалуйста с нами по адресу <a href='mailto:sales@generalse.com'>sales@generalse.com</a></span>"
+                        + "</div>";
+
+                    $('body').append(html_error);
+
+                    setTimeout(remove_elem, 10000);
+                }
+            }
+        });
+        return false;
+    }
 });
