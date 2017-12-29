@@ -4,6 +4,7 @@ namespace Umbrella\controllers\umbrella;
 use Josantonius\Session\Session;
 use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
+use Umbrella\app\Group;
 use Umbrella\app\Services\UserService;
 use Umbrella\app\User;
 use Umbrella\components\Decoder;
@@ -86,24 +87,12 @@ class UserController extends AdminBase
         self::checkDenied('user.control', 'controller');
 
         $user = $this->user;
+        $group = new Group();
 
         $listControlUsers = Admin::getControlUsersId($id_user);
 
         // Параметры для формирование фильтров
-        $groupList = GroupModel::getGroupList();
-        $userInGroup = [];
-        $i = 0;
-        foreach ($groupList as $group) {
-            $userInGroup[$i]['group_name'] = $group['group_name'];
-            $userInGroup[$i]['group_id'] = $group['id'];
-            $userInGroup[$i]['users'] = GroupModel::getUsersByGroup($group['id']);
-            $i++;
-        }
-        // Добавляем в массив пользователей без групп
-        $userNotGroup[0]['group_name'] = 'Without group';
-        $userNotGroup[0]['group_id'] = 'without_group';
-        $userNotGroup[0]['users'] = GroupModel::getUsersWithoutGroup();
-        $userInGroup = array_merge($userInGroup, $userNotGroup);
+        $userInGroup = $group->groupFormationForFilter();
 
         if(isset($_REQUEST['add_multi-user_control']) && $_REQUEST['add_multi-user_control'] == 'true'){
             $users_id = $_POST['id_user'];
