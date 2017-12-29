@@ -783,6 +783,7 @@ class RequestController extends AdminBase
     /**
      * Page export to excel
      * @return bool
+     * @throws \Exception
      */
     public function actionExportRequests()
     {
@@ -803,7 +804,7 @@ class RequestController extends AdminBase
         }
 
         $id_partners = isset($_REQUEST['id_partner']) ? $_REQUEST['id_partner'] : [];
-        $listExport = Request::getExportRequestsByPartners($id_partners, $start, $end, $filter);
+        $listExport = Decoder::arrayToUtf(Request::getExportRequestsByPartners($id_partners, $start, $end, $filter));
 
         $this->render('admin/crm/export/requests', compact('user', 'listExport'));
         return true;

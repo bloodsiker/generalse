@@ -42,3 +42,21 @@ $(document).on('click', function(e) {
         }
     }
 });
+
+// check gorup users
+$(document).on('change', '.select-group', (event) => {
+    const element = $(event.target);
+    const selected = element.prop('checked');
+    const inputs = element.parents('.parent-block').find('.children-input-group');
+    for(let i = 0; i < inputs.length; i++) {
+        $(inputs[i]).prop('checked', selected);
+    }
+});
+
+// SlideToggle users in group
+$(document).ready(function(){
+    $('.parent-block .dark').on('click', function() {
+        $('.child-block  .show').slideToggle(500);
+        $(this).parent().find('.show').slideToggle(500);
+    });
+});

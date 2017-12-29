@@ -32,18 +32,54 @@
             <div class="medium-12 small-12 columns">
                 <div class="callout">
                     <form action="" method="post" enctype="multipart/form-data">
-                        <div class="row align-bottom ">
+                        <div class="row">
 
-                            <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
-                                <div class="medium-12 small-12 columns">
+                            <?php if($user->isAdmin() || $user->isManager()):?>
+                                <div class="medium-6 small-6 columns">
                                     <label style="color: #3C3C3C;">Who not sees</label>
                                     <div class="litographer-not-see" style="border: 1px solid #cacaca;">
-                                        <?php foreach ($listUsers as $partner):?>
-                                            <div>
-                                                <input type="checkbox" <?= (in_array($partner['id_user'], $listUserCloseView)) ? 'checked' : ''?> id="user-<?=$partner['id_user']?>" name="privilege[]" value="<?=$partner['id_user']?>">
-                                                <label style="color: #0a0a0a;" for="user-<?=$partner['id_user']?>"><?=$partner['name_partner']?></label>
-                                            </div>
-                                        <?php endforeach;?>
+                                        <div style="">
+                                            <?php foreach ($userInGroup as $groups):?>
+                                                <div class="parent-block">
+                                                    <div  class="dark" style="padding-left: 10px; border: 1px solid #ddd">
+                                                        <input class="select-group" type="checkbox"  id="group-<?= $groups['group_id']?>">
+                                                        <label for="group-<?= $groups['group_id']?>"><?= $groups['group_name']?></label>
+                                                    </div>
+                                                    <div class="child-block show"  style="margin-left: 25px; display: none">
+                                                        <?php foreach($groups['users'] as $userC):?>
+                                                            <input class="children-input-group" type="checkbox" <?= (in_array($userC['id_user'], $listUserCloseView)) ? 'checked' : ''?> id="id-<?=$userC['id_user'] ?>" name="privilege[]" value="<?=$userC['id_user'] ?>">
+                                                            <label style="color: #0a0a0a;"  class="check" for="id-<?=$userC['id_user'] ?>" ><?=$userC['name_partner'] ?></label><br>
+                                                        <?php endforeach; ?>
+                                                    </div>
+                                                </div>
+                                            <?php endforeach;?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="medium-6 small-6 columns">
+                                    <label style="color: #3C3C3C;">Documents</label>
+                                    <button type="button" data-open="open-upload-file" class="button primary">Attach file</button>
+                                    <div style="max-height: 200px; overflow-y: scroll">
+                                        <table class="umbrella-table">
+                                            <thead>
+                                            <tr>
+                                                <th>Document</th>
+                                                <th width="25"><i class="fa fa-download"></i></th>
+                                                <th width="25"></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <?php if(is_array($files)): ?>
+                                                <?php foreach ($files as $file): ?>
+                                                <tr>
+                                                    <td><a href="<?= $file['file_path'] . $file['file_name'] ?>" download=""><?= $file['file_name_real'] ?></a></td>
+                                                    <td class="text-center"><?= $file['count'] ?></td>
+                                                    <td><button><i class="fa fa-trash"></i></button></td>
+                                                </tr>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                                 <div class="medium-12 small-12 columns">
@@ -97,6 +133,48 @@
         </div>
     </div>
     <button class="close-button" data-close aria-label="Close reveal" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="reveal" id="open-upload-file" data-reveal>
+    <form action="" method="post" class="form" enctype="multipart/form-data" data-abide
+          novalidate>
+        <div class="row align-bottom">
+            <div class="medium-12 small-12 columns">
+                <h3>Upload file</h3>
+            </div>
+            <div class="medium-12 small-12 columns">
+                <div class="row">
+
+                    <div class="medium-12 small-12 columns">
+                        <div class="row align-bottom ">
+                            <div class="medium-12 small-12 columns">
+                                <label for="upload_document" class="button primary">Attach</label>
+                                <input type="file" id="upload_document" class="show-for-sr" name="file">
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="id" value="<?=  $article['id'] ?>">
+                    <input type="hidden" name="upload_document" value="true">
+
+                    <div class="medium-12 small-12 columns">
+                        <div class="row">
+                            <div class="medium-6 small-12 columns">
+
+                            </div>
+                            <div class="medium-6 small-12 columns">
+                                <input type="submit" class="button primary" value="Upload File to Server">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>

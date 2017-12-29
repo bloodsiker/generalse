@@ -211,12 +211,9 @@ return [
     'adm/lithographer/delete/([0-9]+)' => 'umbrella/Lithographer@delete/$1',
     'adm/lithographer/edit/([0-9]+)' => 'umbrella/Lithographer@edit/$1',
     'adm/lithographer/list' => 'umbrella/Lithographer@list',
-    'adm/lithographer/tips/([0-9]+)' => 'umbrella/Lithographer@view/$1',
-    'adm/lithographer/rules/([0-9]+)' => 'umbrella/Lithographer@view/$1',
+    'adm/lithographer/([a-z0-9-_?&]+)/view/([0-9]+)' => 'umbrella/Lithographer@view/$1/$2',
     'adm/lithographer/forms' => 'umbrella/Lithographer@forms',
-    'adm/lithographer/video' => 'umbrella/Lithographer@video',
-    'adm/lithographer/tips' => 'umbrella/Lithographer@tips',
-    'adm/lithographer/rules' => 'umbrella/Lithographer@rules',
+    'adm/lithographer/([a-z0-9-_?&]+)' => 'umbrella/Lithographer@categories/$1',
 
 
     /*********** REFUND REQUEST  ***********/

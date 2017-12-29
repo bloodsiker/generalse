@@ -10,12 +10,16 @@
         }
     ],
     "minimum-stability": "stable",
+    "config": {
+        "sort-packages": true
+    },
     "require": {
         "verot/class.upload.php": "dev-master",
         "josegonzalez/dotenv": "^3.2",
         "Josantonius/Session": "^1.1",
         "Josantonius/Url": "^1.1",
-        "nesbot/carbon": "^1.22"
+        "nesbot/carbon": "^1.22",
+        "roave/security-advisories":"dev-master"
     },
     "autoload": {
         "psr-4": {

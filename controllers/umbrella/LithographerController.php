@@ -4,9 +4,13 @@ namespace Umbrella\controllers\umbrella;
 
 use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
+use Umbrella\app\Group;
 use Umbrella\app\User;
+use Umbrella\components\Functions;
 use Umbrella\models\Admin;
-use Umbrella\models\Lithographer;
+use Umbrella\models\lithographer\File;
+use Umbrella\models\lithographer\Lithographer;
+use upload as FileUpload;
 
 /**
  * Class LithographerController
@@ -28,92 +32,49 @@ class LithographerController extends AdminBase
         $this->user = new User(Admin::CheckLogged());
     }
 
+
     /**
+     * List articles in category
+     * @param $category
+     *
      * @return bool
      */
-    public  function actionVideo()
+    public function actionCategories($category)
     {
         $user = $this->user;
 
-        $listUsers = Admin::getAllUsers();
+        $group = new Group();
+        $userInGroup = $group->groupFormationForFilter();
 
-        // список закрытых статей для пользователя
-        $listArticlesCloseViewUser = array_column(Lithographer::getArticleCloseViewByIdUser($user->getId()),'id_lithographer');
+        if($user->isPartner()){
 
-        if($user->getRole() == 'partner'){
+            $listArticle = Lithographer::getAllContent($category, $user->getId());
 
-            $listVideo = Lithographer::getAllContent('video');
+        } else if($user->isAdmin() || $user->isManager()){
 
-        } else if($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin' || $user->getRole() == 'manager'){
-
-            $listVideo = Lithographer::getAllContent('video');
+            $listArticle = Lithographer::getAllContent($category, $user->getId());
         }
-
-        $this->render('admin/lithographer/video', compact('user', 'listUsers', 'listArticlesCloseViewUser', 'listVideo'));
+        if($category == 'video'){
+            $this->render('admin/lithographer/video', compact('user', 'userInGroup', 'listArticle'));
+        } else {
+            $this->render('admin/lithographer/article', compact('user', 'userInGroup', 'listArticle'));
+        }
         return true;
     }
 
 
     /**
-     * @return bool
-     */
-    public  function actionTips()
-    {
-        $user = $this->user;
-
-        $listUsers = Admin::getAllUsers();
-
-        // список закрытых статей для пользователя
-        $listArticlesCloseViewUser = array_column(Lithographer::getArticleCloseViewByIdUser($user->id_user),'id_lithographer');
-
-        if($user->getRole() == 'partner'){
-
-            $listTips = Lithographer::getAllContent('tips');
-
-        } else if($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin' || $user->getRole() == 'manager'){
-
-            $listTips = Lithographer::getAllContent('tips');
-
-        }
-
-        $this->render('admin/lithographer/tips', compact('user', 'listUsers', 'listArticlesCloseViewUser', 'listTips'));
-        return true;
-    }
-
-
-    /**
-     * @return bool
-     */
-    public  function actionRules()
-    {
-        $user = $this->user;
-
-        $listUsers = Admin::getAllUsers();
-
-        // список закрытых статей для пользователя
-        $listArticlesCloseViewUser = array_column(Lithographer::getArticleCloseViewByIdUser($user->id_user),'id_lithographer');
-
-        if($user->getRole() == 'partner'){
-
-            $listRules = Lithographer::getAllContent('rules');
-
-        } else if($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin' || $user->getRole() == 'manager'){
-
-            $listRules = Lithographer::getAllContent('rules');
-        }
-
-        $this->render('admin/lithographer/rules', compact('user', 'listUsers', 'listArticlesCloseViewUser', 'listRules'));
-        return true;
-    }
-
-
-    /**
+     * @param $category
      * @param $id
+     *
      * @return bool
      */
-    public  function actionView($id)
+    public  function actionView($category, $id)
     {
         $user = $this->user;
+
+        $group = new Group();
+        $userInGroup = $group->groupFormationForFilter();
 
         // список закрытых статей для пользователя
         $listArticlesCloseViewUser = array_column(Lithographer::getArticleCloseViewByIdUser($user->id_user),'id_lithographer');
@@ -121,13 +82,11 @@ class LithographerController extends AdminBase
             Url::redirect('/adm/access_denied');
         }
 
-        $listUsers = Admin::getAllUsers();
-
         $view = Lithographer::getContentById($id);
         // Увеличиваем кол-во просмотров
         Lithographer::updateViewArticleById($id);
 
-        $this->render('admin/lithographer/view', compact('user', 'listUsers', 'listArticlesCloseViewUser', 'view'));
+        $this->render('admin/lithographer/view', compact('user', 'userInGroup', 'listArticlesCloseViewUser', 'view'));
         return true;
     }
 
@@ -141,14 +100,13 @@ class LithographerController extends AdminBase
         $user = $this->user;
 
         if(isset($_POST['add_video'])){
-            $options['privilege'] = 'partner';
             $options['id_author'] = $user->id_user;
             $options['published'] = $_POST['published'];
             $options['title'] = $_POST['title'];
             $options['text'] = '';
             $options['type_row'] = 'video';
 
-            $usersCloseView = $_POST['privilege'];
+            $usersCloseView = $_POST['privilege'] ?? [];
 
             if(!empty($_FILES['upload_video']['name'])) {
 
@@ -176,26 +134,24 @@ class LithographerController extends AdminBase
                     }
                 }
             }
-            Url::previous();
+            Url::redirect('/adm/lithographer/list');
         }
 
+        if(isset($_REQUEST['add_new']) && $_REQUEST['add_new'] == 'true'){
+            $usersCloseView = $_REQUEST['privilege'] ?? [];
 
-        if(isset($_POST['add_tips']) && $_POST['add_tips'] == 'true'){
+            $options['id_author'] = $user->getId();
 
-            $usersCloseView = $_POST['privilege'];
-
-            $options['id_author'] = $user->id_user;
-
-            if($user->getRole() == 'partner'){
+            if($user->isPartner()){
                 $options['published'] = 0;
-            } else if($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin' || $user->getRole() == 'manager') {
+            } else if($user->isAdmin() || $user->isManager()) {
 
-                $options['published'] = $_POST['published'];
+                $options['published'] = $_REQUEST['published'];
             }
-            $options['description'] = $_POST['description'];
-            $options['title'] = $_POST['title'];
-            $options['text'] = $_POST['content'];
-            $options['type_row'] = 'tips';
+            $options['description'] = $_REQUEST['description'];
+            $options['title'] = $_REQUEST['title'];
+            $options['text'] = $_REQUEST['content'];
+            $options['type_row'] = $_REQUEST['type_row'];
             $options['file_name'] = '';
             $options['file_path'] = '';
 
@@ -206,38 +162,7 @@ class LithographerController extends AdminBase
                         Lithographer::addUserViewClose($user_id, $id);
                     }
                 }
-                Url::previous();
-            }
-        }
-
-
-        if(isset($_POST['add_rules'])){
-
-            $usersCloseView = $_POST['privilege'];
-
-            $options['id_author'] = $user->id_user;
-
-            if($user->getRole() == 'partner'){
-                $options['published'] = 0;
-            } else if($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin' || $user->getRole() == 'manager') {
-
-                $options['published'] = $_POST['published'];
-            }
-            $options['description'] = $_POST['description'];
-            $options['title'] = $_POST['title'];
-            $options['text'] = $_POST['content'];
-            $options['type_row'] = 'rules';
-            $options['file_name'] = '';
-            $options['file_path'] = '';
-
-            $id = Lithographer::addVideo($options);
-            if($id){
-                if(is_array($usersCloseView)){
-                    foreach ($usersCloseView as $key => $user_id){
-                        Lithographer::addUserViewClose($user_id, $id);
-                    }
-                }
-                Url::previous();
+                Url::redirect('/adm/lithographer/list');
             }
         }
         return true;
@@ -252,18 +177,19 @@ class LithographerController extends AdminBase
     {
         $user = $this->user;
 
-        $listUsers = Admin::getAllUsers();
+        $group = new Group();
+        $userInGroup = $group->groupFormationForFilter();
 
-        if($user->getRole() == 'partner'){
+        if($user->isPartner()){
 
             $listLithographer = Lithographer::getAllContentByPartner($user->id_user);
 
-        } elseif($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin' || $user->getRole() == 'manager'){
+        } elseif($user->isAdmin() || $user->isManager()){
 
             $listLithographer = Lithographer::getAllContentByAdmin();
 
         }
-        $this->render('admin/lithographer/list_article', compact('user', 'listUsers', 'listLithographer'));
+        $this->render('admin/lithographer/list_article', compact('user', 'userInGroup', 'listLithographer'));
         return true;
     }
 
@@ -276,7 +202,10 @@ class LithographerController extends AdminBase
     {
         $user = $this->user;
 
-        $listUsers = Admin::getAllUsers();
+        $group = new Group();
+        $userInGroup = $group->groupFormationForFilter();
+
+        $files = File::getAllFilesById($id);
 
         // Получаем данные о конкретной статье
         $article = Lithographer::getContentById($id);
@@ -284,7 +213,7 @@ class LithographerController extends AdminBase
         $listUserCloseView = array_column(Lithographer::getUsersCloseViewById($id),'id_user');
 
         //Если партнер откроет для редактирование не свою статью, закрываем доступ
-        if($user->getRole() == 'partner') {
+        if($user->isPartner()) {
             if($article['id_author'] == $user->getId() && $article['published'] == 0) {
 
             } else {
@@ -293,11 +222,11 @@ class LithographerController extends AdminBase
         }
 
         if(isset($_POST['edit_article'])){
-            if($user->getRole() == 'partner'){
+            if($user->isPartner()){
 
                 $options['published'] = $article['published'];
 
-            } elseif ($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin' || $user->getRole() == 'manager') {
+            } elseif ($user->isAdmin() || $user->isManager()) {
 
                 $options['published'] = $_POST['published'];
                 $usersCloseView = $_POST['privilege'];
@@ -318,7 +247,26 @@ class LithographerController extends AdminBase
             }
         }
 
-        $this->render('admin/lithographer/edit', compact('user', 'listUsers', 'article', 'listUserCloseView'));
+        if(isset($_REQUEST['upload_document']) && $_REQUEST['upload_document'] == 'true'){
+            if (!empty($_FILES['file'])) {
+                $id = $_REQUEST['id'];
+                $handle = new FileUpload($_FILES['file']);
+                if ($handle->uploaded) {
+                    $file_name_real = $handle->file_src_name;
+                    $handle->file_new_name_body = Functions::strUrl($file_name_real);
+                    $file_name = $handle->file_new_name_body . '.' . $handle->file_src_name_ext;
+                    $path = '/upload/upload_img/file_lithographer/';
+                    $handle->process(ROOT . $path);
+                    if ($handle->processed) {
+                        File::addFile($id, $path, $file_name, $file_name_real);
+                        $handle->clean();
+                        Url::previous();
+                    }
+                }
+            }
+        }
+
+        $this->render('admin/lithographer/edit', compact('user', 'userInGroup', 'article', 'listUserCloseView', 'files'));
         return true;
     }
 
@@ -330,7 +278,8 @@ class LithographerController extends AdminBase
     {
         $user = $this->user;
 
-        $listUsers = Admin::getAllUsers();
+        $group = new Group();
+        $userInGroup = $group->groupFormationForFilter();
         // список закрытых статей для пользователя
         $listArticlesCloseViewUser = array_column(Lithographer::getArticleCloseViewByIdUser($user->getId()),'id_lithographer');
 
@@ -340,7 +289,7 @@ class LithographerController extends AdminBase
             $listSearch = Lithographer::getSearchContent($search_item);
         }
 
-        $this->render('admin/lithographer/search', compact('user', 'listUsers', 'listArticlesCloseViewUser', 'listSearch'));
+        $this->render('admin/lithographer/search', compact('user', 'userInGroup', 'listArticlesCloseViewUser', 'listSearch'));
         return true;
     }
 
@@ -357,11 +306,11 @@ class LithographerController extends AdminBase
         // Получаем данные о конкретной статье
         $article = Lithographer::getContentById($id);
 
-        if ($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin') {
+        if ($user->isAdmin() || $user->isManager()) {
             Lithographer::deleteArticleById($id);
             Url::redirect('/adm/lithographer/list');
 
-        } elseif ($user->getRole() == 'partner') {
+        } elseif ($user->isPartner()) {
 
             if ($article['id_author'] == $user->getId() && $article['published'] == 0) {
                 Lithographer::deleteArticleById($id);

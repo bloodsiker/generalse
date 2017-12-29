@@ -32,17 +32,15 @@
     </div>
     <div class="medium-10 small-12 columns container-litographer">
         <div class="row content-litographer">
-            <?php if (is_array($listVideo)): ?>
-                <?php foreach ($listVideo as $video): ?>
-                    <?php if(!in_array($video['id'], $listArticlesCloseViewUser)):?>
-                        <div class="medium-4 item small-12 columns">
-                            <a class="view-video" data-video="<?=$video['file_path'] . $video['file_name']?>">
-                                <div class="video-screen">
-                                    <h4><?=$video['title']?></h4>
-                                </div>
-                            </a>
-                        </div>
-                    <?php endif; ?>
+            <?php if (is_array($listArticle)): ?>
+                <?php foreach ($listArticle as $article): ?>
+                    <div class="medium-4 item small-12 columns">
+                        <a class="view-video" data-video="<?=$article['file_path'] . $article['file_name']?>">
+                            <div class="video-screen">
+                                <h4><?=$article['title']?></h4>
+                            </div>
+                        </a>
+                    </div>
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>

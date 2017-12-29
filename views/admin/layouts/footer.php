@@ -38,7 +38,7 @@ if (Umbrella\components\Url::Is_url('/crm/other-request')) echo "<script src='/t
 if (Umbrella\components\Url::Is_url('/ccc')) echo "<script src='/template/admin/js/ccc/knowledge.js'></script>";
 if (Umbrella\components\Url::Is_url(['/adm/lithographer', '/adm/ccc/tree_knowledge/article'])) echo "
   <script src='https://cdnjs.cloudflare.com/ajax/libs/video.js/5.0.0/video.min.js'></script>
-  <script src='/template/admin/js/lithographer.js'></script>
+  <script src='/template/admin/js/lithographer.js?v1.5.1'></script>
   <script src='/template/admin/plugins/ckeditor/ckeditor.js'></script>
   ";
 
@@ -94,8 +94,7 @@ if (Umbrella\components\Url::Is_url(['/adm/lithographer', '/adm/ccc/tree_knowled
 
 <?php if(Umbrella\components\Url::Is_url(['/adm/lithographer', '/adm/ccc/tree_knowledge/article'])):?>
     <script>
-        CKEDITOR.replace('ck_rules');
-        CKEDITOR.replace('ck_tips');
+        CKEDITOR.replace('ck_article');
         CKEDITOR.replace('edit');
     </script>
 <?php endif;?>

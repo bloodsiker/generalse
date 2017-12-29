@@ -1,6 +1,6 @@
 <?php
 
-namespace Umbrella\models;
+namespace Umbrella\models\lithographer;
 
 use PDO;
 use Umbrella\components\Db\MySQL;
@@ -10,16 +10,13 @@ class Lithographer
 
     public static function addVideo($options)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'INSERT INTO gs_lithographer '
             . '(type_row, id_author, published, description, title, text, file_path, file_name) '
             . 'VALUES '
             . '(:type_row, :id_author, :published, :description, :title, :text, :file_path, :file_name)';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':type_row', $options['type_row'], PDO::PARAM_STR);
         $result->bindParam(':id_author', $options['id_author'], PDO::PARAM_INT);
@@ -30,10 +27,8 @@ class Lithographer
         $result->bindParam(':file_path', $options['file_path'], PDO::PARAM_STR);
         $result->bindParam(':file_name', $options['file_name'], PDO::PARAM_STR);
         if ($result->execute()) {
-            // Если запрос выполенен успешно, возвращаем id добавленной записи
             return $db->lastInsertId();
         }
-        // Иначе возвращаем 0
         return 0;
     }
 
@@ -45,16 +40,13 @@ class Lithographer
      */
     public static function addUserViewClose($user_id, $id)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'INSERT INTO gs_lithographer_view_close '
             . '(id_user, id_lithographer) '
             . 'VALUES '
             . '(:id_user, :id_lithographer)';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $user_id, PDO::PARAM_INT);
         $result->bindParam(':id_lithographer', $id, PDO::PARAM_INT);
@@ -64,42 +56,41 @@ class Lithographer
 
     /**
      * Получаем записи для выбраного раздела
+     *
      * @param $type_row
+     * @param $user_id
+     *
      * @return array
      */
-    public static function getAllContent($type_row)
+    public static function getAllContent($type_row, $user_id)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-
-        // Получение и возврат результатов
         $sql = "SELECT *
                   FROM gs_lithographer
                   WHERE published = 1
                   AND type_row = :type_row
+                  AND id NOT IN(SELECT id_lithographer FROM gs_lithographer_view_close WHERE id_user = :user_id)
                   ORDER BY id DESC";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':type_row', $type_row, PDO::PARAM_STR);
-
-        // Выполнение коменды
+        $result->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $result->execute();
-
-        // Возвращаем значение count - количество
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
+    /**
+     * Search content
+     * @param $search
+     *
+     * @return array
+     */
     public static function getSearchContent($search)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        //$search = "%$search%";
-
-        // Получение и возврат результатов
         $sql = "SELECT *
                   FROM gs_lithographer
                   WHERE published = 1
@@ -108,17 +99,10 @@ class Lithographer
                   OR title LIKE ? 
                   OR text LIKE ?
                   ORDER BY id DESC";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
-        //$result->bindParam(':search', $search , PDO::PARAM_STR);
         $result->execute(array("%$search%", "%$search%", "%$search%"));
-
-        // Выполнение коменды
-        //$result->execute();
-
-        // Возвращаем значение count - количество
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
@@ -128,23 +112,16 @@ class Lithographer
      */
     public static function getUsersCloseViewById($id_lithographer)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT id_user
                 FROM gs_lithographer_view_close
                 WHERE id_lithographer = :id_lithographer";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':id_lithographer', $id_lithographer, PDO::PARAM_INT);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
@@ -154,23 +131,16 @@ class Lithographer
      */
     public static function getArticleCloseViewByIdUser($id_user)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT id_lithographer
                 FROM gs_lithographer_view_close
                 WHERE id_user = :id_user";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $id_user, PDO::PARAM_INT);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
@@ -180,23 +150,16 @@ class Lithographer
      */
     public static function getContentById($id)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT *
                   FROM gs_lithographer
                   WHERE id = :id";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':id', $id, PDO::PARAM_INT);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
-        $all = $result->fetch(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetch(PDO::FETCH_ASSOC);
     }
 
 
@@ -206,10 +169,8 @@ class Lithographer
      */
     public static function getAllContentByAdmin()
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT
                   gl.id,
                   gl.type_row,
@@ -222,16 +183,10 @@ class Lithographer
                   INNER JOIN gs_user gu
                     ON gl.id_author = gu.id_user
                 ORDER BY id DESC";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
-        //$result->bindParam(':type_row', $type_row, PDO::PARAM_STR);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -242,24 +197,17 @@ class Lithographer
      */
     public static function getAllContentByPartner($id_author)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT *
                   FROM gs_lithographer
                   WHERE id_author = :id_author
                   ORDER BY id DESC";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':id_author', $id_author, PDO::PARAM_INT);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -271,10 +219,8 @@ class Lithographer
      */
     public static function updateArticleById($id, $options)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
         $sql = "UPDATE gs_lithographer
             SET
                 published = :published,
@@ -283,7 +229,6 @@ class Lithographer
                 text = :text
             WHERE id = :id";
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id', $id, PDO::PARAM_INT);
         $result->bindParam(':published', $options['published'], PDO::PARAM_INT);
@@ -293,18 +238,20 @@ class Lithographer
         return $result->execute();
     }
 
+    /**
+     * @param $id
+     *
+     * @return bool
+     */
     public static function updateViewArticleById($id)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
         $sql = "UPDATE gs_lithographer
             SET
                 count_view = count_view + 1
             WHERE id = :id";
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id', $id, PDO::PARAM_INT);
         return $result->execute();
@@ -318,13 +265,10 @@ class Lithographer
      */
     public static function deleteArticleById($id)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'DELETE FROM gs_lithographer WHERE id = :id';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id', $id, PDO::PARAM_INT);
         return $result->execute();
@@ -337,19 +281,21 @@ class Lithographer
      */
     public static function deleteUserInCloseViewArticleById($id)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'DELETE FROM gs_lithographer_view_close WHERE id_lithographer = :id_lithographer';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id_lithographer', $id, PDO::PARAM_INT);
         return $result->execute();
     }
 
 
+    /**
+     * @param $status
+     *
+     * @return bool|string
+     */
     public static function getPublished($status)
     {
         switch($status)
@@ -366,6 +312,11 @@ class Lithographer
     }
 
 
+    /**
+     * @param $status
+     *
+     * @return bool|string
+     */
     public static function getClassPublished($status)
     {
         switch($status)

@@ -68,17 +68,17 @@
             <?php foreach ($listExport as $export):?>
                 <tr>
                     <td><?=$export['id']?></td>
-                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $export['site_client_name'])?></td>
-                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $export['site_client_status'])?></td>
+                    <td><?= $export['site_client_name']?></td>
+                    <td><?= $export['site_client_status']?></td>
                     <td><?=$export['part_number']?></td>
-                    <td><?=iconv('WINDOWS-1251', 'UTF-8',$export['goods_name'])?></td>
-                    <td><?=iconv('WINDOWS-1251', 'UTF-8',$export['subtype_name'])?></td>
-                    <td><?=iconv('WINDOWS-1251', 'UTF-8',$export['so_number'])?></td>
+                    <td><?=$export['goods_name']?></td>
+                    <td><?=$export['subtype_name']?></td>
+                    <td><?=$export['so_number']?></td>
                     <td style="text-align: center;"><?= round($export['price'], 2)?></td>
-                    <td><?= iconv('WINDOWS-1251', 'UTF-8',$export['note'])?></td>
-                    <td style="text-align: center;"><?=iconv('WINDOWS-1251', 'UTF-8',$export['type_name'])?></td>
-                    <td style="text-align: center;"><?=iconv('WINDOWS-1251', 'UTF-8',$export['note1'])?></td>
-                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $export['status_name']) ?></td>
+                    <td><?= $export['note']?></td>
+                    <td style="text-align: center;"><?=$export['type_name']?></td>
+                    <td style="text-align: center;"><?=$export['note1']?></td>
+                    <td><?= $export['status_name'] . Umbrella\components\Functions::formatDate($export['expected_date'])?></td>
                     <td style="text-align: center;"><?= Umbrella\components\Functions::formatDate($export['created_on'])?></td>
                 </tr>
             <?php endforeach;?>

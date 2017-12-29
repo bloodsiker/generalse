@@ -1293,8 +1293,6 @@ td select {
   max-height: 200px;
   overflow-y: scroll;
   background-color: rgba(255, 255, 255, 0.3);
-  padding-left: 10px;
-  padding-top: 10px
 }
 
 /**********************/

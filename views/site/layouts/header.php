@@ -32,7 +32,7 @@
          <li><a href="/career">Career</a></li>
          <li><a href="/contact">Contact</a></li>
          <?php if(\Josantonius\Session\Session::get('user')):?>
-            <li><a href="/adm/crm/orders"><i class="fi-unlock"></i>Cabinet</a>
+            <li><a href="/adm/crm/"><i class="fi-unlock"></i>Cabinet</a>
          <?php else:?>
            <li><a data-open="sign-up"><i class="fi-torso"></i> Sign up</a>
            <li><a id="open-auth"><i class="fi-torso"></i>&nbsp;Log&nbsp;in</a>

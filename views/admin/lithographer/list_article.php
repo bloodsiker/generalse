@@ -1,4 +1,5 @@
 <?php require_once ROOT . '/views/admin/layouts/header.php'; ?>
+
 <div class="row">
     <div class="medium-12 small-12 columns">
         <div class="row header-content">
@@ -37,7 +38,7 @@
                             <th width="50px">ID</th>
                             <th>Section</th>
                             <th>Title</th>
-                            <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+                            <?php if($user->isAdmin() || $user->isManager()):?>
                                 <th>Author</th>
                             <?php endif;?>
                             <th>Published</th>
@@ -51,28 +52,28 @@
                                     <td><?=$article['id']?></td>
                                     <td><?=$article['type_row']?></td>
                                     <td><?=$article['title']?></td>
-                                    <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+                                    <?php if($user->isAdmin() || $user->isManager()):?>
                                         <td><?=$article['name_partner']?></td>
                                     <?php endif;?>
-                                    <td style="text-align: center" class="<?= Umbrella\models\Lithographer::getClassPublished($article['published'])?>"><?= Umbrella\models\Lithographer::getPublished($article['published'])?></td>
+                                    <td style="text-align: center" class="<?= Umbrella\models\lithographer\Lithographer::getClassPublished($article['published'])?>"><?= Umbrella\models\lithographer\Lithographer::getPublished($article['published'])?></td>
                                     <td style="text-align: center">
                                         <?php if($article['type_row'] != 'video'):?>
-                                        <a href="/adm/lithographer/<?=$article['type_row']?>/<?=$article['id']?>"><i class="fi-eye"></i></a>
+                                        <a href="/adm/lithographer/<?=$article['type_row']?>/view/<?=$article['id']?>"><i class="fi-eye"></i></a>
                                         <?php endif;?>
                                     </td>
                                     <td style="text-align: center">
-                                        <?php if($user->role == 'partner' && $article['published'] == 0):?>
+                                        <?php if($user->isPartner() && $article['published'] == 0):?>
                                             <a href="/adm/lithographer/edit/<?=$article['id']?>"><i class="fi-pencil"></i></a>
-                                        <?php elseif(($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager')):?>
+                                        <?php elseif(($user->isAdmin() || $user->isManager())):?>
                                             <a href="/adm/lithographer/edit/<?=$article['id']?>"><i class="fi-pencil"></i></a>
                                         <?php endif;?>
                                     </td>
                                     <td style="text-align: center">
-                                        <?php if($user->role == 'partner' && $article['published'] == 0):?>
+                                        <?php if($user->isPartner() && $article['published'] == 0):?>
                                             <a href="/adm/lithographer/delete/<?=$article['id']?>"
                                                onclick="return confirm('Вы уверены что хотите удалить?') ? true : false;"><i
                                                     class="fi-x"></i></a>
-                                        <?php elseif(($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager')):?>
+                                        <?php elseif(($user->isAdmin() || $user->isManager())):?>
                                             <a href="/adm/lithographer/delete/<?=$article['id']?>"
                                                onclick="return confirm('Вы уверены что хотите удалить?') ? true : false;"><i
                                                     class="fi-x"></i></a>

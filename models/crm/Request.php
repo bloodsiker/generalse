@@ -242,6 +242,7 @@ class Request
                  sgog.subtype_name,
                  sgog.period,
                  sgog.number,
+                 sgog.expected_date,
                  sgu.site_client_name,
                  sgu.status_name as site_client_status,
                  sgot.name as type_name

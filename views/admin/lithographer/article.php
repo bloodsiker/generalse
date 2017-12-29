@@ -33,17 +33,15 @@
     <div class="medium-10 small-12 columns container-litographer">
         <div class="row content-litographer">
             <div class="medium-12 small-12 columns">
-                <?php if (isset($listTips)): ?>
-                    <?php foreach ($listTips as $tips): ?>
-                        <?php if(!in_array($tips['id'], $listArticlesCloseViewUser)):?>
-                            <div class="callout">
-                                <h5><?= $tips['title']?></h5>
-                                <i class="fi-calendar"></i><small class="time"> <i><?= $tips['date_create']?></i></small>&nbsp;
-                                <i class="fi-eye"></i><small class="count_view"> <i><?= $tips['count_view']?></i></small>
-                                <p><?=$tips['description']?></p>
-                                <a href="/adm/lithographer/tips/<?=$tips['id']?>">read more...</a>
-                            </div>
-                        <?php endif; ?>
+                <?php if (isset($listArticle)): ?>
+                    <?php foreach ($listArticle as $article): ?>
+                        <div class="callout">
+                            <h5><?= $article['title']?></h5>
+                            <i class="fi-calendar"></i><small class="time"> <i><?= $article['date_create']?></i></small>&nbsp;
+                            <i class="fi-eye"></i><small class="count_view"> <i><?= $article['count_view']?></i></small>
+                            <p><?=$article['description']?></p>
+                            <a href="/adm/lithographer/<?=$article['type_row']?>/view/<?=$article['id']?>">read more...</a>
+                        </div>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </div>
