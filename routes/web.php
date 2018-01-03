@@ -210,6 +210,8 @@ return [
     'adm/lithographer/s/([a-z0-9-_?&]+)' => 'umbrella/Lithographer@search/$1',
     'adm/lithographer/delete/([0-9]+)' => 'umbrella/Lithographer@delete/$1',
     'adm/lithographer/edit/([0-9]+)' => 'umbrella/Lithographer@edit/$1',
+    'adm/lithographer/file_delete' => 'umbrella/Lithographer@fileDelete',
+    'adm/lithographer/file_download' => 'umbrella/Lithographer@fileDownload',
     'adm/lithographer/list' => 'umbrella/Lithographer@list',
     'adm/lithographer/([a-z0-9-_?&]+)/view/([0-9]+)' => 'umbrella/Lithographer@view/$1/$2',
     'adm/lithographer/forms' => 'umbrella/Lithographer@forms',

@@ -10,7 +10,7 @@
 <script src="/template/admin/js/vendor/what-input.js"></script>
 <script src="/template/admin/js/vendor/foundation.min.js"></script>
 <script src="/template/admin/js/app.js"></script>
-<script src="/template/admin/js/main.js?v.1.8.2"></script>
+<script src="/template/admin/js/main.js?v.1.8.3"></script>
 <script src="/template/admin/js/jquery.tablesort.min.js"></script>
 <script src="/template/admin/js/object.js"></script>
 <script src="/template/admin/js/kpi.js"></script>
@@ -38,7 +38,7 @@ if (Umbrella\components\Url::Is_url('/crm/other-request')) echo "<script src='/t
 if (Umbrella\components\Url::Is_url('/ccc')) echo "<script src='/template/admin/js/ccc/knowledge.js'></script>";
 if (Umbrella\components\Url::Is_url(['/adm/lithographer', '/adm/ccc/tree_knowledge/article'])) echo "
   <script src='https://cdnjs.cloudflare.com/ajax/libs/video.js/5.0.0/video.min.js'></script>
-  <script src='/template/admin/js/lithographer.js?v1.5.1'></script>
+  <script src='/template/admin/js/lithographer.js?v1.5.2'></script>
   <script src='/template/admin/plugins/ckeditor/ckeditor.js'></script>
   ";
 

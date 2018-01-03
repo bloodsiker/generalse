@@ -60,3 +60,37 @@ $(document).ready(function(){
         $(this).parent().find('.show').slideToggle(500);
     });
 });
+
+// Delete lithographer file
+let deleteFile = (e, id) => {
+    e.preventDefault();
+    $.ajax({
+        url: "/adm/lithographer/file_delete",
+        type: "POST",
+        data: {id : id},
+        cache: false,
+        success: function (response) {
+            if(response == 200){
+                $(e.target).fadeOut(700, function () {
+                    $(e.target).parents('tr').remove();
+                });
+                showNotification('Файл удален!', 'success');
+            }
+        }
+    });
+    return false;
+};
+
+// Увеличение счетчика скачивания файла
+let countDownloadFile = (e, id) => {
+    $.ajax({
+        url: "/adm/lithographer/file_download",
+        type: "POST",
+        data: {id : id},
+        cache: false,
+        success: function (response) {
+
+        }
+    });
+    return false;
+};

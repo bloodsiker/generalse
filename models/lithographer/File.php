@@ -52,6 +52,27 @@ class File
 
 
     /**
+     * Info file
+     * @param $id
+     *
+     * @return mixed
+     */
+    public static function getInfoFilesById($id)
+    {
+        $db = MySQL::getConnection();
+
+        $sql = "SELECT *
+                  FROM gs_lithographer_file
+                  WHERE id = :id";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $id, PDO::PARAM_STR);
+        $result->execute();
+        return $result->fetch(PDO::FETCH_ASSOC);
+    }
+
+
+    /**
      * Удаляем запись
      * @param $id
      * @return bool
@@ -60,7 +81,27 @@ class File
     {
         $db = MySQL::getConnection();
 
-        $sql = 'DELETE FROM gs_lithographer WHERE id = :id';
+        $sql = 'DELETE FROM gs_lithographer_file WHERE id = :id';
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $id, PDO::PARAM_INT);
+        return $result->execute();
+    }
+
+
+    /**
+     * @param $id
+     *
+     * @return bool
+     */
+    public static function addCountDownloadFile($id)
+    {
+        $db = MySQL::getConnection();
+
+        $sql = "UPDATE gs_lithographer_file
+            SET
+                download = download + 1
+            WHERE id = :id";
 
         $result = $db->prepare($sql);
         $result->bindParam(':id', $id, PDO::PARAM_INT);

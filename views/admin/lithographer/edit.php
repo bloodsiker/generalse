@@ -72,9 +72,9 @@
                                             <?php if(is_array($files)): ?>
                                                 <?php foreach ($files as $file): ?>
                                                 <tr>
-                                                    <td><a href="<?= $file['file_path'] . $file['file_name'] ?>" download=""><?= $file['file_name_real'] ?></a></td>
-                                                    <td class="text-center"><?= $file['count'] ?></td>
-                                                    <td><button><i class="fa fa-trash"></i></button></td>
+                                                    <td><a href="<?= $file['file_path'] . $file['file_name'] ?>" onclick="countDownloadFile(event, <?= $file['id']?>)" download=""><?= $file['file_name_real'] ?></a></td>
+                                                    <td class="text-center"><?= $file['download'] ?></td>
+                                                    <td><button onclick="deleteFile(event, <?= $file['id']?>)"><i class="fa fa-trash"></i></button></td>
                                                 </tr>
                                                 <?php endforeach; ?>
                                             <?php endif; ?>

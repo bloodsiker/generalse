@@ -7,6 +7,7 @@ use Umbrella\app\AdminBase;
 use Umbrella\app\Group;
 use Umbrella\app\User;
 use Umbrella\components\Functions;
+use Umbrella\components\Logger;
 use Umbrella\models\Admin;
 use Umbrella\models\lithographer\File;
 use Umbrella\models\lithographer\Lithographer;
@@ -83,10 +84,11 @@ class LithographerController extends AdminBase
         }
 
         $view = Lithographer::getContentById($id);
+        $files = File::getAllFilesById($id);
         // Увеличиваем кол-во просмотров
         Lithographer::updateViewArticleById($id);
 
-        $this->render('admin/lithographer/view', compact('user', 'userInGroup', 'listArticlesCloseViewUser', 'view'));
+        $this->render('admin/lithographer/view', compact('user', 'userInGroup', 'listArticlesCloseViewUser', 'view', 'files'));
         return true;
     }
 
@@ -182,7 +184,7 @@ class LithographerController extends AdminBase
 
         if($user->isPartner()){
 
-            $listLithographer = Lithographer::getAllContentByPartner($user->id_user);
+            $listLithographer = Lithographer::getAllContentByPartner($user->getId());
 
         } elseif($user->isAdmin() || $user->isManager()){
 
@@ -267,6 +269,46 @@ class LithographerController extends AdminBase
         }
 
         $this->render('admin/lithographer/edit', compact('user', 'userInGroup', 'article', 'listUserCloseView', 'files'));
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public  function actionFileDelete()
+    {
+        $user = $this->user;
+
+        if(isset($_REQUEST['id'])){
+            $id = (int)$_REQUEST['id'];
+            $fileInfo = File::getInfoFilesById($id);
+            if(!$fileInfo){
+                return false;
+            }
+
+            $file = ROOT . $fileInfo['file_path'] . $fileInfo['file_name'];
+            if (file_exists($file)) {
+                unlink($file);
+                File::deleteFileById($id);
+                Logger::getInstance()->log($user->getId(), "Lithograph. Удалил(а) файл - " . $fileInfo['file_name_real']);
+                echo 200;
+            }
+        }
+        return true;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public  function actionFileDownload()
+    {
+        $user = $this->user;
+        $id = (int)$_REQUEST['id'];
+        $fileInfo = File::getInfoFilesById($id);
+        File::addCountDownloadFile($id);
+        Logger::getInstance()->log($user->getId(), "Lithograph. Скачал(а) файл - " . $fileInfo['file_name_real']);
+        echo 200;
         return true;
     }
 

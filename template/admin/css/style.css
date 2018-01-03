@@ -1310,3 +1310,12 @@ td select {
   border-radius: 3px;
   cursor: pointer;
 }
+
+.lith_files{
+    background: #ddd;
+    border-radius: 4px;
+    padding: 5px 15px;
+}
+.lith_files ul{
+    list-style-type: none;
+}

@@ -34,7 +34,19 @@
                     <i class="fi-calendar"></i><small class="time"> <i><?= $view['date_create']?></i></small> &nbsp;
                     <i class="fi-eye"></i><small class="count_view"> <i><?= $view['count_view']?></i></small>
                     <h5><?= $view['title']?></h5>
-                    <p><?= $view['text']?></p>
+                    <div>
+                        <?= $view['text']?>
+                    </div>
+                    <?php if(is_array($files) && count($files) > 0): ?>
+                    <div class="lith_files">
+                        <h2>Documents</h2>
+                        <ul>
+                            <?php foreach ($files as $file): ?>
+                                <li><i class="fa fa-file-text"></i> <a href="<?= $file['file_path'] . $file['file_name'] ?>" onclick="countDownloadFile(event, <?= $file['id']?>)" download><?= $file['file_name_real'] ?></a></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
