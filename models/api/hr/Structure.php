@@ -19,13 +19,12 @@ class Structure
      * @internal param string $structure
      * @internal param $value
      */
-    public static function getStructureList($filter)
+    public static function getStructureList($filter = '')
     {
         $db = MySQL::getConnection();
 
         $sql = "SELECT 
-                  id,
-                  name,
+                  *,
                   (SELECT 
                   count(id) 
                   FROM gs_hr_structure ghs
@@ -177,15 +176,6 @@ class Structure
     public static function getCompanyBranch($id)
     {
         $infoStructure = self::getStructureById($id);
-        //return $infoStructure['p_id'];
         return $infoStructure['is_company'] == 1 ? $infoStructure['id'] : self::getCompanyBranch($infoStructure['p_id']);
-//        if($infoStructure['is_company'] == 1){
-//            var_dump($infoStructure['id']);
-//            return (int)$infoStructure['p_id'];
-//            die();
-//        } else {
-//            self::getCompanyBranch($infoStructure['p_id']);
-//
-//        }
     }
 }
