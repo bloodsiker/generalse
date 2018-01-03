@@ -69,6 +69,18 @@ class FormUserController
             $infoStructure['company_id'] = Structure::getCompanyBranch($id);
         }
 
+        // new
+
+        if(isset($_GET['structure_id'])){
+            $id = (int)$_GET['structure_id'];
+            $userFire = (int)$_GET['user_fire'];
+            $filter .= " AND (company_id = {$id} OR department_id = {$id} OR branch_id = {$id}) AND user_fire = {$userFire}";
+            $usersInStructure = FormUser::getFormsUserByDepartment($filter);
+            $infoStructure = Structure::getStructureById($id);
+            $infoStructure['company_id'] = Structure::getCompanyBranch($id);
+        }
+
+
         // Проверяем, есть в пользователе изменения
         $usersInStructure = array_map(function ($user){
             $newUser = json_decode($user['form']);
