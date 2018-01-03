@@ -2,6 +2,10 @@
     <div class="row align-bottom">
         <div class="medium-12 small-12 columns">
             <h3>Download all prices in excel file</h3>
+            <?php if($user->getGroupName() == 'Electrolux' || $user->isAdmin() || $user->isManager()): ?>
+                <span style="color: #f33f35">«Стоимость деталей зависит от курса гривны на момент поступление деталей в Украину.
+                    Поэтому из-за не стабильного курса просим Вас ориентироваться на стоимости в евро.»<br></span>
+            <?php endif; ?>
         </div>
         <div class="medium-12 small-12 columns">
             <div class="row">
@@ -30,7 +34,7 @@
                                 </li>
                                 <li>
                                     <a href="/adm/crm/request/all__ukraine_price" id="all_price">
-                                        <span style="color: orange">Скачать все цены</span>
+                                        <span style="color: orange">Скачать все цены Ukraine</span>
                                         <span class="download_wait" style="color: #40e240"></span>
                                     </a>
                                 </li>
@@ -40,7 +44,7 @@
                                     || $user->getGroupName() == 'UKRAINE OOW'): ?>
                                 <li>
                                     <a href="/adm/crm/request/all__ukraine_price" id="all_price">
-                                        <span style="color: orange">All Ulraine price</span>
+                                        <span style="color: orange">Скачать все цены Ukraine</span>
                                         <span class="download_wait" style="color: #40e240"></span>
                                     </a>
                                 </li>

@@ -7,6 +7,7 @@ use Umbrella\app\AdminBase;
 use Umbrella\app\Group;
 use Umbrella\app\User;
 use Umbrella\components\Decoder;
+use Umbrella\components\Functions;
 use Umbrella\components\ImportExcel;
 use Umbrella\components\Logger;
 use Umbrella\models\Admin;
@@ -444,8 +445,12 @@ class OrderController extends AdminBase
         $order = Decoder::arrayToUtf(Orders::getShowDetailsOrdersMsSql($order_id, 'site_gm_orders', 'fetch'));
         $ordersElements = Decoder::arrayToUtf(Orders::getShowDetailsOrdersMsSql($order_id));
 
+        $dateOrder = Functions::formatDate($order['created_on']);
+        $rateCurrencyUsd = Currency::getRatesCurrencyPerDay('usd', $dateOrder)['OutputRate'];
+        $rateCurrencyEuro = Currency::getRatesCurrencyPerDay('euro', $dateOrder)['OutputRate'];
         if($user->isPartner()){
-            $ordersElements = array_map(function ($value) use ($user) {
+            $ordersElements = array_map(function ($value) use ($user, $rateCurrencyEuro) {
+                $value['price_euro'] = round($value['price'] / $rateCurrencyEuro, 2);
                 $value['stock_name'] = Stocks::replaceNameStockInResultTable($value['stock_name'], $user->getRole());
                 $value['price'] = round($value['price'], 2);
                 return $value;
@@ -454,8 +459,6 @@ class OrderController extends AdminBase
         }elseif ($user->isAdmin() || $user->isManager()){
 
             $userClient = Decoder::arrayToUtf(Admin::getInfoGmUser($user_id));
-            $rateCurrencyUsd = Currency::getRatesCurrency('usd')['OutputRate'];
-            $rateCurrencyEuro = Currency::getRatesCurrency('euro')['OutputRate'];
 
             $ordersElements = array_map(function ($value) use ($user, $userClient, $rateCurrencyUsd, $rateCurrencyEuro) {
                 if($userClient['ShortName'] == 'usd') {
@@ -464,6 +467,7 @@ class OrderController extends AdminBase
                 } elseif ($userClient['ShortName'] == 'uah') {
                     $value['price_usd'] = round($value['price'] / $rateCurrencyUsd, 2);
                     $value['price_uah'] = round($value['price'], 2);
+                    $value['price_euro'] = round($value['price'] / $rateCurrencyEuro, 2);
                 } elseif ($userClient['ShortName'] == 'euro') {
                     $value['price_euro'] = round($value['price'], 2);
                     $value['price_uah'] = round($value['price'] * $rateCurrencyEuro, 2);
@@ -477,12 +481,18 @@ class OrderController extends AdminBase
             $sumPriceEuro = 0;
             $sumPriceUah = 0;
             foreach ($ordersElements as $element){
-                if($userClient['ShortName'] == 'usd' || $userClient['ShortName'] == 'uah') {
+                if($userClient['ShortName'] == 'uah') {
                     $sumPriceUsd += $element['quantity'] * $element['price_usd'];
                     $sumPriceUah += $element['quantity'] * $element['price_uah'];
+                    $sumPriceEuro += $element['quantity'] * $element['price_euro'];
                 } elseif ($userClient['ShortName'] == 'euro') {
                     $sumPriceEuro += $element['quantity'] * $element['price_euro'];
                     $sumPriceUah += $element['quantity'] * $element['price_uah'];
+                } elseif ($userClient['ShortName'] == 'usd') {
+                    $sumPriceUsd += $element['quantity'] * $element['price_usd'];
+                    $sumPriceUah += $element['quantity'] * $element['price_uah'];
+                } elseif ($userClient['ShortName'] == 'gel') {
+                    $sumPriceUah += $element['quantity'] * $element['price'];
                 }
             }
         }

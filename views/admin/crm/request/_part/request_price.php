@@ -3,6 +3,10 @@
         <div class="row align-bottom">
             <div class="medium-12 small-12 columns">
                 <h3>Price</h3>
+                <?php if($user->getGroupName() == 'Electrolux' || $user->isAdmin() || $user->isManager()): ?>
+                    <span style="color: #f33f35">«Стоимость деталей зависит от курса гривны на момент поступление деталей в Украину.
+                        Поэтому из-за не стабильного курса просим Вас ориентироваться на стоимости в евро.»<br></span>
+                <?php endif; ?>
             </div>
             <div class="medium-12 small-12 columns">
                 <label>Part Number <span style="color: #4CAF50;" class="name-product"></span></label>

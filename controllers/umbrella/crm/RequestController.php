@@ -141,10 +141,17 @@ class RequestController extends AdminBase
             Url::previous();
         }
 
+        $rateCurrencyEuro = Currency::getRatesCurrency('euro')['OutputRate'];
+
         if($user->isPartner() || $user->isManager()){
 
             $listCheckOrders = Request::getReserveOrdersByPartnerMsSQL($user->controlUsers($user->getId()), 0, 1);
             $listCheckOrders = Functions::getUniqueArray('number', $listCheckOrders);
+            $listCheckOrders = array_map(function ($value) use ($rateCurrencyEuro){
+                $value['price_euro'] = round($value['price'] / $rateCurrencyEuro, 2);
+                return $value;
+            }, $listCheckOrders);
+
             $listRemovedRequest = Decoder::arrayToUtf(Request::getReserveOrdersByPartnerMsSQL($user->controlUsers($user->getId()), 0, 0));
             //$listRemovedRequest = [];
 
@@ -153,7 +160,11 @@ class RequestController extends AdminBase
         } elseif($user->isAdmin()){
 
             $listCheckOrders = Request::getAllReserveOrdersMsSQL(0, 1);
-            //$listCheckOrders = Functions::getUniqueArray('number', $listCheckOrders);
+            $listCheckOrders = Functions::getUniqueArray('number', $listCheckOrders);
+            $listCheckOrders = array_map(function ($value) use ($rateCurrencyEuro){
+                $value['price_euro'] = round($value['price'] / $rateCurrencyEuro, 2);
+                return $value;
+            }, $listCheckOrders);
             //$listCheckOrders = [];
             $listRemovedRequest = Decoder::arrayToUtf(Request::getAllReserveOrdersMsSQL(0, 0));
             //$listRemovedRequest = [];
@@ -167,7 +178,6 @@ class RequestController extends AdminBase
             'userInGroup'));
         return true;
     }
-
 
 
     /**
@@ -668,10 +678,10 @@ class RequestController extends AdminBase
                                 $oldStatus = $requestInfo['status_name'] . ' ' . $requestInfo['expected_date'];
                                 $newStatus = $import['status_name'] . ' ' . $import['expected_date'];
                                 $partnersEmails = Admin::getAdminById($requestInfo['site_account_id']);
-                                RequestMail::getInstance()->sendEmailEditStatus($id, $oldStatus, $newStatus, $partnersEmails);
+                                RequestMail::getInstance()->sendEmailEditStatus($id, $oldStatus, Decoder::strToWindows($newStatus), $partnersEmails);
                             }
                         }
-                        Logger::getInstance()->log($user->id_user, ' изменил(а) статусы в Request с excel');
+                        Logger::getInstance()->log($user->getId(), ' изменил(а) статусы в Request с excel');
                         Url::redirect('/adm/crm/request');
                     }
                 }

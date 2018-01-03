@@ -116,16 +116,19 @@
                             <tr>
                                 <th>Request id</th>
                                 <th>Partner</th>
-                                <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
+                                <?php if($user->getName() == 'GS Electrolux' || $user->getName() == 'GS Electrolux GE'):?>
                                     <th>Partner status</th>
                                 <?php endif?>
                                 <th>Part Number</th>
                                 <th>Part Description</th>
-                                <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
+                                <?php if($user->getName() == 'GS Electrolux' || $user->getName() == 'GS Electrolux GE'):?>
                                     <th>Subtype</th>
                                 <?php endif?>
                                 <th>SO Number</th>
-                                <th>Price</th>
+                                <th>Price uah</th>
+                                <?php if($user->getGroupName() == 'Electrolux'):?>
+                                    <th>Price euro</th>
+                                <?php endif?>
                                 <th>Address</th>
                                 <th>Type</th>
                                 <th>Note</th>
@@ -140,18 +143,21 @@
                                         <?= is_null($order['number'])? null : 'data-number=' . $order['number']?>>
                                         <td><?= is_null($order['number'])? $order['id'] : 'Multi-request ' . $order['number']?></td>
                                         <td><?= \Umbrella\components\Decoder::strToUtf($order['site_client_name'])?></td>
-                                        <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
+                                        <?php if($user->getName() == 'GS Electrolux' || $user->getName() == 'GS Electrolux GE'):?>
                                             <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['site_client_status'])?></td>
                                         <?php endif?>
                                         <td style="background: <?= in_array($order['part_number'], $arrayPartNumber) ? '#f79898' : 'inherit'?>">
                                             <?= $order['part_number']?>
                                         </td>
                                         <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['goods_name'])?></td>
-                                        <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
+                                        <?php if($user->getName() == 'GS Electrolux' || $user->getName() == 'GS Electrolux GE'):?>
                                             <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['subtype_name'])?></td>
                                         <?php endif?>
                                         <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></td>
                                         <td><?= str_replace('.',',', round($order['price'], 2))?></td>
+                                        <?php if($user->getGroupName() == 'Electrolux'):?>
+                                            <td><?= str_replace('.',',', round($order['price_euro'], 2))?></td>
+                                        <?php endif;?>
                                         <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['note'])?></td>
                                         <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['type_name'])?></td>
                                         <td class="text-center">
@@ -192,7 +198,8 @@
                             <th class="sort">Part Description</th>
                             <th>Subtype</th>
                             <th>SO Number</th>
-                            <th>Price</th>
+                            <th>Price uah</th>
+                            <th>Price euro</th>
                             <th>Address</th>
                             <th>Type</th>
                             <th>Note</th>
@@ -214,7 +221,7 @@
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['site_client_status'])?></td>
                                     <td data-pn="<?= $order['part_number']?>" class="order-tr-pn" style="background: <?= in_array($order['part_number'], $arrayPartNumber) ? '#f79898' : 'inherit'?>">
                                         <span class="order_part_num"><?= $order['part_number']?></span>
-                                        <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+                                        <?php if($user->isAdmin() || $user->isManager()):?>
                                             <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.pn_edit', 'view')): ?>
                                                 <a href="" class="button edit-pn delete"><i class="fi-pencil"></i></a>
                                             <?php endif;?>
@@ -222,7 +229,7 @@
                                     </td>
                                     <td class="order-tr-goods-name">
                                         <span class="pn_goods_name"><?= iconv('WINDOWS-1251', 'UTF-8', $order['goods_name'])?></span>
-                                        <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+                                        <?php if($user->isAdmin() || $user->isManager()):?>
                                             <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.clear_pn_desc', 'view')): ?>
                                                 <a href="" class="button clear_goods_name delete" onclick="return confirm('Вы уверены что хотите очистить название?') ? true : false;"><i class="fi-loop"></i></a>
                                             <?php endif;?>
@@ -233,13 +240,14 @@
                                     </td>
                                     <td class="order-tr-so">
                                         <span class="order_so"><?= iconv('WINDOWS-1251', 'UTF-8', $order['so_number'])?></span>
-                                        <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+                                        <?php if($user->isAdmin() || $user->isManager()):?>
                                             <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.so_edit', 'view')): ?>
                                                 <a href="" class="button edit-so delete"><i class="fi-pencil"></i></a>
                                             <?php endif;?>
                                         <?php endif;?>
                                     </td>
                                     <td><?= str_replace('.',',', round($order['price'], 2))?></td>
+                                    <td><?= str_replace('.',',', round($order['price_euro'], 2))?></td>
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['note'])?></td>
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $order['type_name'])?></td>
                                     <td class="text-center">
@@ -259,7 +267,7 @@
                                             <span class="expected_date"></span>
                                         <?php endif; ?>
 
-                                        <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+                                        <?php if($user->isAdmin() || $user->isManager()):?>
                                             <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.status_edit', 'view')): ?>
                                                 <a href="" class="button edit-status delete"><i class="fi-pencil"></i></a>
                                             <?php endif;?>

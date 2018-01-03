@@ -8,6 +8,12 @@ use Umbrella\components\Db\MsSQL;
 class Currency
 {
 
+    /**
+     * Последний актуальный курс
+     * @param $currency
+     *
+     * @return mixed
+     */
     public static function getRatesCurrency($currency)
     {
         $db = MsSQL::getConnection();
@@ -24,6 +30,35 @@ class Currency
 
         $result = $db->prepare($sql);
         $result->bindParam(':currency', $currency, PDO::PARAM_STR);
+        $result->execute();
+        return $result->fetch(PDO::FETCH_ASSOC);
+    }
+
+
+    /**
+     * Курс по заданной дате
+     * @param $currency
+     * @param $day
+     *
+     * @return mixed
+     */
+    public static function getRatesCurrencyPerDay($currency, $day)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "SELECT TOP 1
+                  tbl_Rate.DateRate,
+                  tbl_Rate.OutputRate,
+                  tbl_Curency.ShortName
+                FROM tbl_Rate
+                  INNER JOIN tbl_Curency
+                    ON tbl_Rate.CurencyID = tbl_Curency.Number
+                WHERE tbl_Curency.ShortName = :currency
+                AND tbl_Rate.DateRate = :per_day";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':currency', $currency, PDO::PARAM_STR);
+        $result->bindParam(':per_day', $day, PDO::PARAM_STR);
         $result->execute();
         return $result->fetch(PDO::FETCH_ASSOC);
     }
