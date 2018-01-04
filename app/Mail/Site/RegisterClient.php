@@ -45,7 +45,7 @@ class RegisterClient
         $mailToManager .= "<b>Какие интересуют группы товаров:</b> {$options['group_products']} <br>";
         $mailToManager .= "<b>Комментарий:</b> {$options['message']} <br>";
 
-        mail('sales@generalse.com', 'Новая регистрация в ПСР', $mailToManager, $headers);
+        mail('sales@generalse.com', 'Новая регистрация на получение аккаунта в Umbrella', $mailToManager, $headers);
         mail('do@generalse.com', 'Новая регистрация на получение аккаунта в Umbrella', $mailToManager, $headers);
         return true;
     }

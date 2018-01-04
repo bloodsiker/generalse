@@ -37,24 +37,21 @@ $(document).ready(function () {
         if ($('input').hasClass('is-invalid-input')) {
 
         } else {
-
             $("form").submit(function () {
-                var $that = $(this),
-                    formData = new FormData($that.get(0));
+                let newForm = $(this).serializeObject(); // получение данных в объекте
+                let json = JSON.stringify(newForm); // json
                 $.ajax({
+                    url: "/career",
                     type: "POST",
-                    url: "send_career.php",
-                    processData: false,
-                    contentType: false,
-                    data: formData,
-                    dataType: 'json'
-                }).done(function () {
-                    $('#career-form1').trigger("reset");
-                    $('#senq').foundation('open');
+                    data: {json : json},
+                    cache: false,
+                    success: function () {
+                        $('#career-form1').trigger("reset");
+                        $('#senq').foundation('open');
+                    }
                 });
                 return false;
             });
-
         }
     });
 
@@ -64,53 +61,89 @@ $(document).ready(function () {
         $('#career-form2').foundation('validateForm');
         if ($('input').hasClass('is-invalid-input')) {
         } else {
-
             $("form").submit(function () {
-                var $that = $(this),
-                    formData = new FormData($that.get(0));
+                let newForm = $(this).serializeObject(); // получение данных в объекте
+                let json = JSON.stringify(newForm); // json
                 $.ajax({
+                    url: "/career",
                     type: "POST",
-                    url: "send_career.php",
-                    processData: false,
-                    contentType: false,
-                    data: formData,
-                    dataType: 'json'
-                }).done(function (data) {
-                    $('#career-form2').trigger("reset");
-                    $('#senq').foundation('open');
+                    data: {json : json},
+                    cache: false,
+                    success: function () {
+                        $('#career-form2').trigger("reset");
+                        $('#senq').foundation('open');
+                    }
                 });
                 return false;
             });
-
         }
     });
 
     $('#career-send3').click(function () {
         $('#career-form3').foundation('validateForm');
         if ($('input').hasClass('is-invalid-input')) {
-
+            return false;
         } else {
-
             $("form").submit(function () {
-                var $that = $(this),
-                    formData = new FormData($that.get(0));
+                let newForm = $(this).serializeObject(); // получение данных в объекте
+                let json = JSON.stringify(newForm); // json
                 $.ajax({
+                    url: "/career",
                     type: "POST",
-                    url: "send_career.php",
-                    processData: false,
-                    contentType: false,
-                    data: formData,
-                    dataType: 'json'
-                }).done(function () {
-                    $('#career-form3').trigger("reset");
-                    $('#senq').foundation('open');
+                    data: {json : json},
+                    cache: false,
+                    success: function () {
+                        $('#career-form3').trigger("reset");
+                        $('#senq').foundation('open');
+                    }
                 });
                 return false;
             });
-
         }
     });
+});
 
+$('#sign-up-form').submit(function(e) {
+    e.preventDefault();
+    if ($('#sign-up-form input').hasClass('is-invalid-input')) {
+        return false;
+    } else {
+        let newForm = $(this).serializeObject(); // получение данных в объекте
+        let json = JSON.stringify(newForm); // json
+        console.log(json); // send to server json AJAX
+        $.ajax({
+            url: "/sign_up",
+            type: "POST",
+            data: {json : json},
+            cache: false,
+            success: function (response) {
+                console.log(response);
+                if(response == 1){
+                    setTimeout(function () {
+                        $('#sign-up').foundation('close');
+                        $('#sign-up-form').trigger("reset");
+                    }, 500);
+                    var html_error = "<div class='umbrella-alert'>"
+                        + "<span>Ваша заявка отправлена на рассмотрение. Наш менеджер свяжется с Вами в ближайшее время</span>"
+                        + "</div>";
+
+                    $('body').append(html_error);
+
+                    setTimeout(remove_elem, 10000);
+                } else if(response == 0){
+
+                    var html_error = "<div class='umbrella-alert'>"
+                        + "<span>Произошла ошибка при отправке заявки. Свяжитесь пожалуйста с нами по адресу <a href='mailto:sales@generalse.com'>sales@generalse.com</a></span>"
+                        + "</div>";
+
+                    $('body').append(html_error);
+
+                    setTimeout(remove_elem, 10000);
+                }
+            }
+        });
+        return false;
+    }
 });
 
 

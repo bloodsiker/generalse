@@ -2,6 +2,7 @@
 namespace Umbrella\controllers;
 
 use Umbrella\app\Mail\Site\RegisterClient;
+use Umbrella\app\Mail\Site\SendCareer;
 use Umbrella\models\site\Client;
 use Umbrella\vendor\controller\Controller;
 
@@ -49,6 +50,18 @@ class SiteController extends Controller
      */
     public function actionCareer()
     {
+        if(isset($_REQUEST['json'])){
+            $data_json = json_decode($_REQUEST['json'], true);
+
+            $options['fio'] = $data_json['fio'];
+            $options['email'] = $data_json['email'];
+            $options['company'] = $data_json['company'];
+            $options['phone'] = $data_json['phone'];
+            $options['page'] = $data_json['page'];
+            $options['vacancy'] = $data_json['vacancy'];
+            $options['message'] = $data_json['message'];
+            SendCareer::getInstance()->sendEmailCareer($options);
+        }
 
         $this->render('site/career');
         return true;
