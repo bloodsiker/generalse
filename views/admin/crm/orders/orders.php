@@ -94,7 +94,7 @@
                             <th class="sort">Request id</th>
                         <?php endif; ?>
                         <th class="sort">Partner</th>
-                        <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
+                        <?php if($user->getName() == 'GS Electrolux' || $user->getName() == 'GS Electrolux GE'):?>
                             <th>Partner status</th>
                         <?php endif?>
                         <th class="sort">Order Number</th>
@@ -116,7 +116,7 @@
                                     <td><?= $order['request_id']?></td>
                                 <?php endif;?>
                                 <td><?= $order['site_client_name']?></td>
-                                <?php if($user->name_partner == 'GS Electrolux' || $user->name_partner == 'GS Electrolux GE'):?>
+                                <?php if($user->getName() == 'GS Electrolux' || $user->getName() == 'GS Electrolux GE'):?>
                                     <td><?= $order['site_client_status']?></td>
                                 <?php endif?>
                                 <td><?= $order['order_number']?></td>
@@ -267,7 +267,7 @@
                                     <?php endif;?>
 
                                     <?php if(isset($order['request_id'])):?>
-                                        <?php if($status_name != 'Выдан' && $status_name != 'Отказано'):?>
+                                        <?php if($status_name != 'Выдан'):?>
                                             <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.return_to_request', 'view')): ?>
                                             <a href="" data-request-id="<?=$order['request_id']?>" class="return order-return"><i class="fi-loop"></i></a>
                                             <?php endif;?>

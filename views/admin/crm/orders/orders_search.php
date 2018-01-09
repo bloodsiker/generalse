@@ -319,7 +319,7 @@
                                     <?php endif;?>
 
                                     <?php if(isset($order['request_id'])):?>
-                                        <?php if($status_name != 'Выдан' && $status_name != 'Отказано'):?>
+                                        <?php if($status_name != 'Выдан'):?>
                                             <a href="" data-request-id="<?=$order['request_id']?>" class="return order-return"><i class="fi-loop"></i></a>
                                         <?php endif;?>
                                     <?php endif;?>
