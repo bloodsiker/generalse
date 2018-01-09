@@ -234,7 +234,7 @@
                                 <?=$Refund_Rate?>
                             </td>
                         </tr>
-                        <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+                        <?php if($user->isAdmin() || $user->isManager()):?>
                         <tr>
                             <?php $LS_Rate = $KPI->LS_Rate()?>
                             <td>LS rate</td>
@@ -305,4 +305,4 @@
         })()
     </script>
 
-<?php require_once views_path('admin/layouts/header.php') ?>
+<?php require_once views_path('admin/layouts/footer.php') ?>

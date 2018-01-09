@@ -2,7 +2,7 @@
 
 namespace Umbrella\components;
 
-use Umbrella\models\Data;
+use Umbrella\models\kpi\Data;
 
 /**
  * Calculate KPI the result service centers
@@ -27,6 +27,10 @@ class KPI
     const L2_Rate = 5;
     const Refund_Rate = 5;
     const LS_Rate = 40;
+
+    private $name;
+    private $start;
+    private $end;
 
 
     /**
