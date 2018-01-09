@@ -15,7 +15,7 @@ use Umbrella\components\ImportExcel;
 use Umbrella\components\Logger;
 use Umbrella\models\Admin;
 use Umbrella\models\crm\Request;
-use Umbrella\models\Currency;
+use Umbrella\models\crm\Currency;
 use Umbrella\models\File;
 use Umbrella\models\Orders;
 use Umbrella\models\PartAnalog;

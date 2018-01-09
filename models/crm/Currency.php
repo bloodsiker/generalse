@@ -1,6 +1,6 @@
 <?php
 
-namespace Umbrella\models;
+namespace Umbrella\models\crm;
 
 use PDO;
 use Umbrella\components\Db\MsSQL;

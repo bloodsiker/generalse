@@ -1,7 +1,6 @@
 <?php
 namespace Umbrella\controllers\api\hr;
 
-use Umbrella\app\Api\Middleware\VerifyToken;
 use Umbrella\app\User;
 use Umbrella\app\Api\Response;
 use Umbrella\components\Functions;
@@ -9,21 +8,15 @@ use Umbrella\models\api\hr\Auth;
 
 
 /**
- * Class StructureController
+ * Class AuthController
  * @package Umbrella\controllers\api\hr
  */
 class AuthController
 {
 
     /**
-     * StructureController constructor.
+     * @return bool
      */
-    public function __construct()
-    {
-        //new VerifyToken();
-    }
-
-
     public function actionAuth()
     {
         $data = file_get_contents('php://input');
@@ -33,7 +26,7 @@ class AuthController
         $auth = Auth::checkUserData($login, $password);
         if($auth !== false){
             $user = new User($auth);
-            if($user->getAuthProject(['global', 'hr'])){
+            if($user->getAuthProject('hr')){
                 Auth::auth($user);
                 $newUser = \Umbrella\models\api\hr\User::getUserById($user->getId());
                 Response::responseJson($newUser, 200, 'OK');
@@ -56,9 +49,9 @@ class AuthController
         $userId = isset($_GET['user_id']) ? (int)$_GET['user_id'] : null;
         if($userId !== null){
             Auth::updateToken($userId, null);
-            Response::responseJson($data = '', 200, 'OK');
+            Response::responseJson(null, 200, 'OK');
         } else {
-            Response::responseJson($data = '', 400, 'Bad Request');
+            Response::responseJson(null, 400, 'Bad Request');
         }
     }
 

@@ -7,9 +7,8 @@ use Umbrella\app\Services\crm\StockService;
 use Umbrella\app\User;
 use Umbrella\components\Decoder;
 use Umbrella\models\Admin;
-use Umbrella\models\Currency;
+use Umbrella\models\crm\Currency;
 use Umbrella\models\GroupModel;
-use Umbrella\models\Products;
 use Umbrella\models\Stocks;
 
 /**

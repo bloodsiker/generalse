@@ -10,7 +10,7 @@ use Umbrella\components\Decoder;
 use Umbrella\components\ImportExcel;
 use Umbrella\components\Logger;
 use Umbrella\models\Admin;
-use Umbrella\models\Returns;
+use Umbrella\models\crm\Returns;
 
 /**
  * Class ReturnController
@@ -47,14 +47,14 @@ class ReturnController extends AdminBase
         $allReturnsByPartner = [];
         if($user->isPartner() || $user->isManager()) {
             $interval = "";
-            if($user->role == 'manager'){
+            if($user->isManager()){
                 $status_1 = Decoder::strToWindows('Предварительный');
                 $status_2 = Decoder::strToWindows('В обработке');
                 $interval = " AND (sgs.status_name = '$status_1' OR sgs.status_name = '$status_2')";
             }
 
             $interval .= " AND sgs.created_on >= DATEADD(day, -7, GETDATE())";
-            $allReturnsByPartner = Returns::getReturnsByPartner($user->controlUsers($user->id_user), $interval);
+            $allReturnsByPartner = Returns::getReturnsByPartner($user->controlUsers($user->getId()), $interval);
 
         } else if($user->isAdmin()){
 
@@ -90,7 +90,7 @@ class ReturnController extends AdminBase
             $ok = Returns::updateStatusAndStockReturns($id_return, $stock_name);
             if($ok){
                 $response['status'] = 'ok';
-                Logger::getInstance()->log($user->id_user, 'сделал возврат в Returns ' . $id_return);
+                Logger::getInstance()->log($user->getId(), 'сделал возврат в Returns ' . $id_return);
             } else {
                 $response['status'] = 'bad';
             }
@@ -168,7 +168,7 @@ class ReturnController extends AdminBase
                             $insertArray[$i]['so_number'] = Decoder::strToWindows($excel['so_number']);
                             $insertArray[$i]['stock_name'] = Decoder::strToWindows($excel['stock_name']);
                             $insertArray[$i]['order_number'] = $excel['order_number'];
-                            $insertArray[$i]['id_user'] = $user->id_user;
+                            $insertArray[$i]['id_user'] = $user->getId();
                             $ok = Returns::getSoNumberByPartnerInReturn($insertArray[$i]);
                             if($ok){
                                 Returns::updateStatusImportReturns($insertArray[$i]);
@@ -177,7 +177,7 @@ class ReturnController extends AdminBase
                             }
                             $i++;
                         }
-                        Logger::getInstance()->log($user->id_user, 'загрузил массив с excel в Returns');
+                        Logger::getInstance()->log($user->getId(), 'загрузил массив с excel в Returns');
                         // Пишем в сессию массив с ненайденными so number
                         Session::set('error_return',  $errorReturn);
                     }
@@ -212,7 +212,7 @@ class ReturnController extends AdminBase
                 $end = $_GET['end']. " 23:59";
                 $filter .= " AND sgs.created_on BETWEEN '$start' AND '$end'";
             }
-            $allReturnsByPartner = Returns::getReturnsByPartner($user->controlUsers($user->id_user), $filter);
+            $allReturnsByPartner = Returns::getReturnsByPartner($user->controlUsers($user->getId()), $filter);
 
         } else if($user->isAdmin()){
 
@@ -253,7 +253,7 @@ class ReturnController extends AdminBase
                 $end = $_GET['end'] . ' 23:59';
             }
 
-            $listExport = Returns::getExportReturnsByPartner($user->controlUsers($user->id_user), $start, $end);
+            $listExport = Returns::getExportReturnsByPartner($user->controlUsers($user->getId()), $start, $end);
 
         } elseif($user->isAdmin() || $user->isManager() ){
 

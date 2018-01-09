@@ -12,7 +12,7 @@
         <div class="medium-12 small-12 columns">
             <div class="row" style="margin-top: 20px">
                 <div class="medium-12 small-12 columns text-center">
-                    <h2>User - <b>&laquo;  <?= $user_check->name_partner ?>&raquo;</b></h2>
+                    <h2>User - <b>&laquo;  <?= $user_check ?>&raquo;</b></h2>
                 </div>
             </div>
             <div class="row body-content">

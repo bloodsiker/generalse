@@ -7,7 +7,7 @@ use Umbrella\app\User;
 use Umbrella\components\Decoder;
 use Umbrella\components\Logger;
 use Umbrella\models\Admin;
-use Umbrella\models\Disassembly;
+use Umbrella\models\crm\Disassembly;
 
 /**
  * Class DisassemblyController
@@ -60,7 +60,7 @@ class DisassemblyController extends AdminBase
     {
         $user = $this->user;
 
-        if($user->role == 'partner'){
+        if($user->isPartner()){
             $filter = "";
             $interval = " AND gd.date_create >= DATE(NOW()) - INTERVAL 30 DAY";
             if(!empty($_GET['start'])){
@@ -76,7 +76,7 @@ class DisassemblyController extends AdminBase
             $filter .= $interval;
             $listDisassembly = Disassembly::getDisassemblyByPartner($user->controlUsers($user->getId()), $filter);
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
+        } else if($user->isAdmin() || $user->isManager()){
 
             $filter = "";
             $interval = " AND gd.date_create >= DATE(NOW()) - INTERVAL 30 DAY";
@@ -93,11 +93,6 @@ class DisassemblyController extends AdminBase
                 $interval = "";
             }
 
-//            if(!empty($_GET['id_partner'])){
-//                $id_partner = $_GET['id_partner'];
-//                $filter .= " AND gd.id_user = " .(int)$id_partner;
-//                $interval = "";
-//            }
             $filter .= $interval;
             $listDisassembly = Disassembly::getAllDisassembly($filter);
         }
@@ -111,13 +106,14 @@ class DisassemblyController extends AdminBase
     /**
      * search disassemble
      * @return bool
+     * @throws \Exception
      */
     public function actionSearch()
     {
         $user = $this->user;
 
-        if($user->role == 'partner'){
-            $search = iconv('UTF-8', 'WINDOWS-1251', trim($_REQUEST['search']));
+        if($user->isPartner()){
+            $search = Decoder::strToWindows(trim($_REQUEST['search']));
 
             $user_ids = $user->controlUsers($user->getId());
             $partnerList = Admin::getPartnerControlUsers($user_ids);
@@ -126,9 +122,9 @@ class DisassemblyController extends AdminBase
             $filter = " AND gd.id_user IN({$idS})";
             $listDisassembly = Disassembly::getSearchInDisassemble($search, $filter);
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
+        } else if($user->isAdmin() || $user->isManager()){
 
-            $search = iconv('UTF-8', 'WINDOWS-1251', trim($_REQUEST['search']));
+            $search = Decoder::strToWindows(trim($_REQUEST['search']));
 
             $listDisassembly = Disassembly::getSearchInDisassemble($search);
         }
@@ -204,6 +200,7 @@ class DisassemblyController extends AdminBase
 
     /**
      * @return bool
+     * @throws \Exception
      */
     public function actionDisassemblyActionAjax()
     {
@@ -224,7 +221,7 @@ class DisassemblyController extends AdminBase
 
         if($_REQUEST['action'] == 'dismiss'){
             $decompile_id = $_REQUEST['decompile_id'];
-            $comment = iconv('UTF-8', 'WINDOWS-1251', $_REQUEST['comment']);
+            $comment = Decoder::strToWindows($_REQUEST['comment']);
             $ok = Disassembly::updateStatusDisassemblyGM($decompile_id, 2, $comment);
             $status = [];
             if($ok){
@@ -276,7 +273,7 @@ class DisassemblyController extends AdminBase
     {
         $user = $this->user;
 
-        if($user->role == 'partner'){
+        if($user->isPartner()){
 
             $listExport = [];
             $start = '';
@@ -292,7 +289,7 @@ class DisassemblyController extends AdminBase
 
             $listExport = Disassembly::getExportDisassemblyByPartner($user->controlUsers($user->getId()), $start, $end);
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager' ){
+        } else if($user->isAdmin() || $user->isManager()){
 
             $listExport = [];
             $start = '';

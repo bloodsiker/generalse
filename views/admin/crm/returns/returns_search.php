@@ -82,7 +82,7 @@
         <!-- body -->
         <div class="body-content checkout">
             <div class="row">
-                <?php if($user->role == 'partner'):?>
+                <?php if($user->isPartner()):?>
                 <table class="umbrella-table">
                     <caption>
                         Search result for <?= iconv('WINDOWS-1251', 'UTF-8', $search)?>
@@ -99,7 +99,7 @@
                         <th>Stock</th>
                         <th class="sort">Date</th>
                         <th>Part Number</th>
-                        <th class="sort">Desription</th>
+                        <th class="sort">Description</th>
                         <th class="sort">Status</th>
                         <th class="text-center no-sort"><i class="fi-check"></i></th>
                     </tr>
@@ -130,7 +130,7 @@
                                     <td><?= \Umbrella\components\Functions::replaceSearchResult($search, $return['part_number'])?></td>
                                     <td><?= \Umbrella\components\Functions::replaceSearchResult($search,  $return['goods_name'])?></td>
                                     <?php $status_name = iconv('WINDOWS-1251', 'UTF-8', $return['status_name'])?>
-                                    <td class="status_return <?= Umbrella\models\Returns::getStatusRequest($status_name)?>"><?= $status_name?></td>
+                                    <td class="status_return <?= Umbrella\models\crm\Returns::getStatusRequest($status_name)?>"><?= $status_name?></td>
                                     <td class="text-center">
                                         <?php if($return['update_status_from_site'] != 2):?>
                                             <button class="apply-cout"><i class="fi-check"></i></button>
@@ -141,7 +141,7 @@
                         <?php endif; ?>
                     </tbody>
                 </table>
-                <?php elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+                <?php elseif($user->isAdmin() || $user->isManager()):?>
                     <table class="umbrella-table">
 
                         <caption>
@@ -160,7 +160,7 @@
                             <th>Stock</th>
                             <th class="sort">Date</th>
                             <th>Part Number</th>
-                            <th class="sort">Desription</th>
+                            <th class="sort">Description</th>
                             <th class="sort">Status</th>
                             <th class="text-center no-sort"><i class="fi-check"></i></th>
                             <th>Action</th>
@@ -192,7 +192,7 @@
                                     <td><?= \Umbrella\components\Functions::replaceSearchResult($search, $return['part_number'])?></td>
                                     <td><?= \Umbrella\components\Functions::replaceSearchResult($search,  $return['goods_name'])?></td>
                                     <?php $status_name = iconv('WINDOWS-1251', 'UTF-8', $return['status_name'])?>
-                                    <td class="status_return <?= Umbrella\models\Returns::getStatusRequest($status_name)?>"><?= $status_name?></td>
+                                    <td class="status_return <?= Umbrella\models\crm\Returns::getStatusRequest($status_name)?>"><?= $status_name?></td>
                                     <td class="text-center">
                                         <?php if($return['update_status_from_site'] != 2):?>
                                             <button class="apply-cout"><i class="fi-check"></i></button>
@@ -221,7 +221,7 @@
             <div class="medium-12 small-12 columns">
                 <h3>Generate report</h3>
             </div>
-            <?php if($user->role == 'administrator' || $user->role == 'administrator-fin'):?>
+            <?php if($user->isAdmin()):?>
 
                 <div class="medium-12 small-12 columns">
                     <div class="row">
@@ -240,7 +240,7 @@
                     </div>
                 </div>
 
-            <?php elseif($user->role == 'manager'):?>
+            <?php elseif($user->isMasnsger()):?>
 
                 <div class="medium-12 small-12 columns">
                     <div class="row">
@@ -248,7 +248,7 @@
                             <label><i class="fi-list"></i> Partner
                                 <select name="id_partner" class="required" required>
                                     <option value="all">All partners</option>
-                                    <?php $user->renderSelectControlUsers($user->id_user);?>
+                                    <?php $user->renderSelectControlUsers($user->getId());?>
                                 </select>
                             </label>
                         </div>

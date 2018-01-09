@@ -82,6 +82,20 @@
                                 </label>
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <label>Доступ к проектам</label>
+                                <div style="border: 2px solid #323e48; padding: 5px">
+                                    <input id="umbrella" type="checkbox" <?= (in_array('umbrella', $userProjects) ? 'checked' : false) ?> name="project[]" value="umbrella">
+                                    <label for="umbrella">Umbrella</label>
+                                    <br>
+                                    <input id="hr" type="checkbox" <?= (in_array('hr', $userProjects) ? 'checked' : false) ?> name="project[]" value="hr">
+                                    <label for="hr">HR</label>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="row">
                             <div class="large-12 columns">
                                 <input type="submit" name="update" class="button small float-right" value="Сохранить">

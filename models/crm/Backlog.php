@@ -1,6 +1,6 @@
 <?php
 
-namespace Umbrella\models;
+namespace Umbrella\models\crm;
 
 use PDO;
 use Umbrella\components\Db\MsSQL;
@@ -17,10 +17,8 @@ class Backlog
      */
     public static function getGoodsInStockByPartner($id_partner, $part_number, $sub_type)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT
                  sgt.stock_name,
                  sgt.goods_name,
@@ -39,13 +37,11 @@ class Backlog
                 AND stock_name = 'BAD'
                 AND part_number = :part_number
                 AND sgt.subtype_name = :sub_type";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $id_partner, PDO::PARAM_INT);
         $result->bindParam(':part_number', $part_number, PDO::PARAM_STR);
         $result->bindParam(':sub_type', $sub_type, PDO::PARAM_STR);
-
-        // Выполнение коменды
         $result->execute();
         $all = $result->fetchAll(PDO::FETCH_ASSOC);
         return $all;
@@ -59,11 +55,9 @@ class Backlog
      */
     public static function getPartNumberInBoomListSwap($user_id, $part_number)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
         // tbl_2_StockTraffick.serial_number = 'QB08242887'
-        // Получение и возврат результатов
         $sql = "select
                        ss.serial_number as unit_serial_number
                        ,ss.PartNumber as unit_part_number
@@ -114,17 +108,12 @@ class Backlog
                        ,tbl_Details.mName
                 HAVING 
                        SUM(ss.quantity) > 0";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $result->bindParam(':part_number', $part_number, PDO::PARAM_STR);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
@@ -134,10 +123,8 @@ class Backlog
      */
     public static function getPartNumberInBoomListNoStock($part_number)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "select
                        tbl_GoodsNames.PartNumber as unit_part_number
                        ,tbl_GoodsNames.mName as unit_goods_name
@@ -148,16 +135,11 @@ class Backlog
                        INNER JOIN tbl_GoodsNames tbl_Details ON tbl_Details.I_D = tbl_GoodsNamesDetails.DetailGoodsNameID
                 WHERE
                        tbl_Details.PartNumber = :part_number";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':part_number', $part_number, PDO::PARAM_STR);
-
-        // Выполнение коменды
         $result->execute();
-
-        // Возвращаем значение count - количество
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 }

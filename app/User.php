@@ -173,22 +173,22 @@ class User
 
     /**
      * Доступ к авторизации к проектам (Umbrella, HR)
-     * @param $permission
+     *
+     * @param $project
+     *
      * @return mixed
      */
-    public function getAuthProject($permission)
+    public function getAuthProject($project)
     {
         $user = Admin::getAdminById($this->id_user);
 
-        if(is_array($permission)){
-            if(in_array($user['project'], $permission)){
+        $userAccessProject = !empty($user['project']) ? json_decode($user['project']) : [];
+        if(is_array($userAccessProject)){
+            if(in_array($project, $userAccessProject)){
                 return true;
             }
             return false;
         } else {
-            if ($user['project'] == $permission) {
-                return true;
-            }
             return false;
         }
     }

@@ -73,7 +73,6 @@
                             </div>
                         </div>
 
-
                         <div class="row">
                             <div class="large-12 columns">
                                 <label>Перенаправление после авторизации
@@ -111,6 +110,19 @@
                                         <option value="1">Отображать</option>
                                     </select>
                                 </label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <label>Доступ к проектам</label>
+                                <div style="border: 2px solid #323e48; padding: 5px">
+                                    <input id="umbrella" type="checkbox" checked name="project[]" value="umbrella">
+                                    <label for="umbrella">Umbrella</label>
+                                    <br>
+                                    <input id="hr" type="checkbox" name="project[]" value="hr">
+                                    <label for="hr">HR</label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -248,16 +260,16 @@
 
                         <div class="row">
                             <div class="large-12 columns">
-                                <label>Склады
-                                    <?php if (is_array($stocksToPartners)): ?>
-                                        <?php foreach ($stocksToPartners as $stockPartner): ?>
-                                            <div>
-                                                <input id="stock-<?= $stockPartner['stock_id']?>" type="checkbox" name="stocks_partner[]" value="<?= $stockPartner['stock_id']?>">
-                                                <label for="stock-<?= $stockPartner['stock_id']?>"><?= $stockPartner['stock_name']?></label>
-                                            </div>
-                                        <?php endforeach; ?>
-                                    <?php endif; ?>
-                                </label>
+                                <label>Склады</label>
+                                <div style="border: 2px solid #323e48; padding: 5px">
+                                <?php if (is_array($stocksToPartners)): ?>
+                                    <?php foreach ($stocksToPartners as $stockPartner): ?>
+                                        <input id="stock-<?= $stockPartner['stock_id']?>" type="checkbox" name="stocks_partner[]" value="<?= $stockPartner['stock_id']?>">
+                                        <label for="stock-<?= $stockPartner['stock_id']?>"><?= $stockPartner['stock_name']?></label>
+                                        <br>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                                </div>
                             </div>
                         </div>
 

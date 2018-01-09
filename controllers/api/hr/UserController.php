@@ -27,7 +27,7 @@ class UserController
      */
     public function actionAllUsers()
     {
-        $allUsers = User::getAll();
+        $allUsers = User::getAll('hr');
         $userRelativeForm = User::getUsersRelativeForm();
         $allUsers = array_map(function ($value) use ($userRelativeForm){
             $newValue['id'] = $value['id_user'];

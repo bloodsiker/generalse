@@ -11,7 +11,7 @@ use Umbrella\components\Functions;
 use Umbrella\components\ImportExcel;
 use Umbrella\components\Logger;
 use Umbrella\models\Admin;
-use Umbrella\models\Currency;
+use Umbrella\models\crm\Currency;
 use Umbrella\models\Orders;
 use Umbrella\models\Products;
 use Umbrella\models\Stocks;

@@ -341,20 +341,7 @@ class Admin
         $db = MySQL::getConnection();
 
         $sql = 'SELECT
-                   gu.id_user,
-                   gu.id_role,
-                   gu.name_partner,
-                   gu.email,
-                   gu.login,
-                   gu.id_country,
-                   gu.kpi_coefficient,
-                   gu.kpi_view,
-                   gu.login_url,
-                   gu.is_active,
-                   gu.date_create,
-                   gu.date_active,
-                   gu.project,
-                   gu.token,
+                   gu.*,
                    gr.id_role,
                    gr.role,
                    gr.name_role,
@@ -376,15 +363,13 @@ class Admin
 
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $id_user, PDO::PARAM_INT);
-
-        $result->setFetchMode(PDO::FETCH_ASSOC);
         $result->execute();
-        return $result->fetch();
+        return $result->fetch(PDO::FETCH_ASSOC);
     }
 
 
     /**
-     * Страница добавлния юзера
+     * добавлния юзера
      * @param $options
      * @return bool
      */
@@ -393,11 +378,10 @@ class Admin
         $db = MySQL::getConnection();
 
         $sql = 'INSERT INTO gs_user '
-            . '(id_role, name_partner, id_country, login, email, password, login_url, kpi_view, date_create)'
+            . '(id_role, name_partner, id_country, login, email, password, login_url, kpi_view, date_create, project)'
             . 'VALUES '
-            . '(:id_role, :name_partner, :id_country, :login, :email, :password, :login_url, :kpi_view, :date_create)';
+            . '(:id_role, :name_partner, :id_country, :login, :email, :password, :login_url, :kpi_view, :date_create, :project)';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id_role', $options['id_role'], PDO::PARAM_INT);
         $result->bindParam(':name_partner', $options['name_partner'], PDO::PARAM_STR);
@@ -408,6 +392,7 @@ class Admin
         $result->bindParam(':login_url', $options['login_url'], PDO::PARAM_STR);
         $result->bindParam(':kpi_view', $options['kpi_view'], PDO::PARAM_INT);
         $result->bindParam(':date_create', $options['date_create'], PDO::PARAM_STR);
+        $result->bindParam(':project', $options['project'], PDO::PARAM_STR);
 
         if ($result->execute()) {
             return $db->lastInsertId();
@@ -509,7 +494,8 @@ class Admin
                 login = :login,
                 email = :email,
                 login_url = :login_url,
-                kpi_view = :kpi_view
+                kpi_view = :kpi_view,
+                project = :project
             WHERE id_user = :id_user";
 
         $result = $db->prepare($sql);
@@ -521,6 +507,7 @@ class Admin
         $result->bindParam(':name_partner', $options['name_partner'], PDO::PARAM_STR);
         $result->bindParam(':id_country', $options['id_country'], PDO::PARAM_INT);
         $result->bindParam(':kpi_view', $options['kpi_view'], PDO::PARAM_INT);
+        $result->bindParam(':project', $options['project'], PDO::PARAM_STR);
         return $result->execute();
     }
 

@@ -158,6 +158,7 @@ class UserController extends AdminBase
     /**
      * Добавление нового пользователя
      * @return bool
+     * @throws \Exception
      */
     public function actionAddUser()
     {
@@ -165,22 +166,22 @@ class UserController extends AdminBase
 
         $user = $this->user;
 
-        $roleList = Admin::getRoleList();
-        $currencyList = Admin::getCurrencyList();
-        $ADBCPriceList = Admin::getABSDPriceList();
-        $staffList = Admin::getStaffList();
-        $stockPlaceList = Admin::getStockPlaceList();
-        $regionList = Admin::getRegionsList();
-        $stocksToPartners = Decoder::arrayToUtf(Stocks::getAllStocksToPartner());
-
-        $countryList = Country::getAllCountry();
-        $groupList = GroupModel::getGroupList();
-
-        if($user->isPartner() || $user->isManager()){
+        if($user->isPartner()){
 
             Url::redirect('/adm/access_denied');
 
-        } else if($user->isAdmin()){
+        } else if($user->isAdmin() || $user->isManager()){
+
+            $roleList = Admin::getRoleList();
+            $currencyList = Admin::getCurrencyList();
+            $ADBCPriceList = Admin::getABSDPriceList();
+            $staffList = Admin::getStaffList();
+            $stockPlaceList = Admin::getStockPlaceList();
+            $regionList = Admin::getRegionsList();
+            $stocksToPartners = Decoder::arrayToUtf(Stocks::getAllStocksToPartner());
+
+            $countryList = Country::getAllCountry();
+            $groupList = GroupModel::getGroupList();
 
             // Обработка формы
             if (isset($_POST['add_user']) && $_POST['add_user'] == 'true') {
@@ -194,6 +195,7 @@ class UserController extends AdminBase
                     $options['login_url'] = $_POST['login_url'];
                     $options['kpi_view'] = $_POST['kpi_view'];
                     $options['date_create'] = date("Y-m-d H:i");
+                    $options['project'] = (isset($_POST['project']) && is_array($_POST['project'])) ? json_encode($_POST['project']) : json_encode(['umbrella']);
 
                     // Сохраняем изменения
                     $id_user = Admin::addUser($options);
@@ -202,19 +204,19 @@ class UserController extends AdminBase
                         $denied_lithograph->addDeniedLithograph();
 
                         $options['site_client_name'] = iconv('UTF-8', 'WINDOWS-1251', $_POST['name_partner']);
-                        $options['name_en'] = !empty($_POST['name_en']) ? iconv('UTF-8', 'WINDOWS-1251', $_POST['name_en']) : null;
-                        $options['address'] = !empty($_POST['address']) ? iconv('UTF-8', 'WINDOWS-1251', $_POST['address']) : null;
-                        $options['address_en'] = !empty($_POST['address_en']) ? iconv('UTF-8', 'WINDOWS-1251', $_POST['address_en']) : null;
-                        $options['for_ttn'] = !empty($_POST['for_ttn']) ? iconv('UTF-8', 'WINDOWS-1251', $_POST['for_ttn']) : null;
+                        $options['name_en'] = !empty($_POST['name_en']) ? Decoder::strToWindows($_POST['name_en']) : null;
+                        $options['address'] = !empty($_POST['address']) ?  Decoder::strToWindows($_POST['address']) : null;
+                        $options['address_en'] = !empty($_POST['address_en']) ?  Decoder::strToWindows($_POST['address_en']) : null;
+                        $options['for_ttn'] = !empty($_POST['for_ttn']) ?  Decoder::strToWindows($_POST['for_ttn']) : null;
                         $options['curency_id'] = $_POST['curency_id'];
-                        $options['abcd_id'] = !empty($_POST['abcd_id']) ? iconv('UTF-8', 'WINDOWS-1251', $_POST['abcd_id']) : null;
+                        $options['abcd_id'] = !empty($_POST['abcd_id']) ?  Decoder::strToWindows($_POST['abcd_id']) : null;
                         $options['to_electrolux'] = $_POST['to_electrolux'];
                         $options['to_mail_send'] = $_POST['to_mail_send'];
-                        $options['contract_number'] = !empty($_POST['contract_number']) ? iconv('UTF-8', 'WINDOWS-1251', $_POST['contract_number']) : null;
-                        $options['staff_id'] = !empty($_POST['staff_id']) ? iconv('UTF-8', 'WINDOWS-1251', $_POST['staff_id']) : null;
+                        $options['contract_number'] = !empty($_POST['contract_number']) ?  Decoder::strToWindows($_POST['contract_number']) : null;
+                        $options['staff_id'] = !empty($_POST['staff_id']) ?  Decoder::strToWindows($_POST['staff_id']) : null;
                         $options['stock_place_id'] = $_POST['stock_place_id'];
-                        $options['phone'] = !empty($_POST['phone']) ? iconv('UTF-8', 'WINDOWS-1251', $_POST['phone']) : null;
-                        $options['gm_email'] = !empty($_POST['gm_email']) ? iconv('UTF-8', 'WINDOWS-1251', $_POST['gm_email']) : null;
+                        $options['phone'] = !empty($_POST['phone']) ?  Decoder::strToWindows($_POST['phone']) : null;
+                        $options['gm_email'] = !empty($_POST['gm_email']) ?  Decoder::strToWindows($_POST['gm_email']) : null;
                         $options['region_id'] = $_POST['region_id'];
                         $okMsSQL = Admin::addUserMsSql($id_user, $options);
                         if($okMsSQL){
@@ -238,7 +240,7 @@ class UserController extends AdminBase
                             }
                         }
                         $log = "добавил нового пользователя " . $options['name_partner'];
-                        Log::addLog($user->id_user, $log);
+                        Log::addLog($user->getId(), $log);
                         Session::set('user_success', "User {$options['name_partner']} successfully added");
                         Url::redirect('/adm/users');
                     }
@@ -279,17 +281,18 @@ class UserController extends AdminBase
 
         $user = $this->user;
 
-        $roleList = Admin::getRoleList();
-        $countryList = Country::getAllCountry();
-
-        // Получаем данные о конкретной пользователе
-        $userInfo = Admin::getAdminById($id);
-
-        if($user->getRole() == 'partner' || $user->getRole() == 'manager'){
+        if($user->isPartner()){
 
             Url::redirect('/adm/access_denied');
 
-        } else if($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin'){
+        } else if($user->isAdmin() || $user->isManager()){
+
+            $roleList = Admin::getRoleList();
+            $countryList = Country::getAllCountry();
+
+            // Получаем данные о конкретной пользователе
+            $userInfo = Admin::getAdminById($id);
+            $userProjects = !empty($userInfo['project']) ? json_decode($userInfo['project']) : [];
 
             // Обработка формы
             if (isset($_POST['update'])) {
@@ -307,6 +310,7 @@ class UserController extends AdminBase
                     $options['email'] = $_POST['email'];
                     $options['login_url'] = $_POST['login_url'];
                     $options['kpi_view'] = $_POST['kpi_view'];
+                    $options['project'] = (isset($_POST['project']) && is_array($_POST['project'])) ? json_encode($_POST['project']) : null;
 
                     // Сохраняем изменения
                     $ok = Admin::updateUserById($id, $options);
@@ -314,7 +318,7 @@ class UserController extends AdminBase
                     if($ok){
                         Session::destroy('info_user');
                         $log = "редактировал учетку пользователя " . $userInfo['name_partner'];
-                        Log::addLog($user->id_user, $log);
+                        Log::addLog($user->getId(), $log);
                         Session::set('user_success', "user information edited");
                         Url::redirect('/adm/users');
                     }
@@ -332,14 +336,15 @@ class UserController extends AdminBase
 
                     if($ok){
                         $log = "изменил пароль от учетки пользователя " . $userInfo['name_partner'];
-                        Log::addLog($user->id_user, $log);
+                        Log::addLog($user->getId(), $log);
                         Session::set('user_success', "user password edited");
                         Url::redirect('/adm/users');
                     }
                 }
             }
             // Подключаем вид
-            $this->render('admin/users/update', compact('user','userInfo', 'roleList', 'branchList', 'countryList'));
+            $this->render('admin/users/update', compact('user','userInfo', 'roleList',
+                'branchList', 'countryList', 'userProjects'));
         }
         return true;
     }
@@ -390,11 +395,11 @@ class UserController extends AdminBase
 
         $userInfo = Admin::getAdminById($id);
 
-        if($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin'){
+        if($user->isAdmin()){
             Admin::deleteUserById($id);
             $log = "удалил учетку пользователя " . $userInfo['name_partner'];
             Session::set('user_success', "User {$userInfo['name_partner']} deleted!");
-            Log::addLog($user->id_user, $log);
+            Log::addLog($user->getId(), $log);
         } else {
             echo "<script>alert('У вас нету прав на удаление пользователя')</script>";
         }
@@ -469,7 +474,7 @@ class UserController extends AdminBase
         DeliveryAddress::deleteUserAddressMsSQL($id);
 
         $log = "удалил(а) адрес пользователя - " . $address['address'];
-        Log::addLog($this->user->id_user, $log);
+        Log::addLog($this->user->getId(), $log);
         Url::previous();
         return true;
     }
@@ -519,7 +524,7 @@ class UserController extends AdminBase
         // Получаем идентификатор пользователя из сессии
         $user = $this->user;
 
-        $user_check = new User($id_user);
+        $user_check = Admin::getNameById($id_user);
         // Список страниц
         $list_page = Denied::getListPageInSystem();
 
@@ -543,14 +548,14 @@ class UserController extends AdminBase
             $slug = $_POST['slug'];
             $ok = Denied::addDeniedSlugInUser($id_user, $name, $slug);
             if($ok){
-                header("Location: " . $_SERVER['HTTP_REFERER']);
+                Url::previous();
             }
         } elseif(isset($_POST['action']) && $_POST['action'] == 'success'){
             $name = $_POST['name'];
             $slug = $_POST['slug'];
             $ok = Denied::deleteSlugInUser($id_user, $name, $slug);
             if($ok){
-                header("Location: " . $_SERVER['HTTP_REFERER']);
+                Url::previous();
             }
         }
 
@@ -558,22 +563,4 @@ class UserController extends AdminBase
             'sub_menu', 'sub_menu_button', 'new_array', 'p_id', 'sub_id', 'id_user'));
         return true;
     }
-
-
-    public function actionUserTest()
-    {
-        $stocksToPartners = Decoder::arrayToUtf(Stocks::getAllStocksToPartner());
-        if(isset($_POST['stocks_partner']) && !empty($_POST['stocks_partner'])){
-            $arrayStocks = $_POST['stocks_partner'];
-            if(is_array($arrayStocks)){
-                foreach ($arrayStocks as $stock){
-                    //Stocks::addStockToPartner(1, $stock);
-                }
-            }
-        }
-
-        $this->render('admin/users/test', compact('user', 'stocksToPartners', 'id_user'));
-        return true;
-    }
-
 }

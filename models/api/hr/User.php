@@ -14,9 +14,12 @@ class User
 
     /**
      * get all users
+     *
+     * @param $project
+     *
      * @return array
      */
-    public static function getAll()
+    public static function getAll($project)
     {
         $db = MySQL::getConnection();
 
@@ -24,31 +27,10 @@ class User
                 id_user,
                 name_partner
                 FROM gs_user 
-                WHERE is_active = 1 AND (id_role = 1 OR id_role = 3)";
+                WHERE is_active = 1 AND project LIKE ?";
 
         $result = $db->prepare($sql);
-        $result->execute();
-        return $result->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-
-    /**
-     * Список пользователей не привязанных к форме
-     * @return array
-     */
-    public static function getUsersNotRelativeForm()
-    {
-        $db = MySQL::getConnection();
-
-        $sql = "SELECT 
-                    id_user,
-                    name_partner
-                FROM gs_user 
-                WHERE is_active = 1 AND (id_role = 1 OR id_role = 3)
-                AND id_user NOT IN(SELECT user_id FROM gs_hr_users_form WHERE user_id IS NOT NULL)";
-
-        $result = $db->prepare($sql);
-        $result->execute();
+        $result->execute(array("%$project%"));
         return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 

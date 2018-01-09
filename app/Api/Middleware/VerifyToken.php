@@ -35,9 +35,8 @@ class VerifyToken
             $auth = Auth::checkLogged($token);
             if ($auth) {
                 $user = new User($auth);
-                if($user->getAuthProject(['global', 'hr'])){
+                if($user->getAuthProject('hr')){
                     return true;
-                    //Response::responseJson($user, 200, 'OK');
                 } else {
                     Response::responseJson(null, 403, 'Forbidden');
                 }

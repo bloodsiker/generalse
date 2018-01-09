@@ -1,4 +1,5 @@
 <?php require_once ROOT . '/views/admin/layouts/header.php'; ?>
+
 <div class="row">
     <div class="medium-12 small-12 columns">
         <div class="row header-content">
@@ -67,7 +68,7 @@
                         <th>Stock</th>
                         <th>Status</th>
                         <th>Date create</th>
-                        <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+                        <?php if($user->isAdmin() || $user->isManager()):?>
                             <th class="text-center">Action</th>
                             <th class="text-center">Delete</th>
                         <?php endif; ?>
@@ -77,7 +78,7 @@
 
                     <?php if (isset($listDisassembly) && is_array($listDisassembly)): ?>
                         <?php foreach ($listDisassembly as $dis): ?>
-                            <?php $info = Umbrella\models\Disassembly::checkStatusRequestMSSQL($dis['site_id']);
+                            <?php $info = Umbrella\models\crm\Disassembly::checkStatusRequestMSSQL($dis['site_id']);
                             $id_gs = iconv('WINDOWS-1251', 'UTF-8', $info['decompile_id'])?>
 
                             <tr class="goods" data-siteid="<?=$dis['site_id']?>" data-decompile="<?=$id_gs?>">
@@ -88,11 +89,11 @@
                                 <td><?=$dis['serial_number']?></td>
                                 <td><?=$dis['stockName']?></td>
 								<?php $status = iconv('WINDOWS-1251', 'UTF-8', $info['status_name'])?>
-                                <td class="<?= Umbrella\models\Disassembly::getStatusRequest($status)?>">
+                                <td class="<?= Umbrella\models\crm\Disassembly::getStatusRequest($status)?>">
                                     <?= ($status == NULL) ? 'Expect' : $status ?>
                                 </td>
                                 <td><?= Umbrella\components\Functions::formatDate($dis['date_create'])?></td>
-                                <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+                                <?php if($user->isAdmin() || $user->isManager()):?>
                                     <td class="action-control">
                                         <?php if($status == 'Предварительная'):?>
                                             <a href="" class="accept disassemble-accept"><i class="fi-check"></i></a>

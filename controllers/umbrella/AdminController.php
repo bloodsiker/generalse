@@ -19,6 +19,7 @@ class AdminController extends AdminBase
 
     /**
      * @return bool
+     * @throws \Exception
      */
     public function actionAuth(){
 
@@ -32,36 +33,43 @@ class AdminController extends AdminBase
                 $userId = Admin::checkAdminData($login, $password);
 
                 if($userId == false){
-                    $errors['log'] = 'Incorrect data entry';
+                    $errors['log'] = config('app')['notification']['login_false'];
                     $errors['code'] = 1;
                     echo json_encode($errors);
                 } else {
                     //Если данные правильные, запоминаем пользователя в сессию
                     $user = new User($userId);
-                    //Проверка на проплату в GM
-                    if($user->getUserBlockedGM() == 'active'){
-                        if($user->isActive() == 1){
-                            Admin::auth($user);
+                    // Доступ к проекту
+                    if ($user->getAuthProject('umbrella')){
+                        //Проверка на проплату в GM
+                        if($user->getUserBlockedGM() == 'active'){
+                            if($user->isActive() == 1){
+                                Admin::auth($user);
 
-                            //Перенаправляем пользователя в закрытую часть – кабинет
-                            $succusse['log'] = $user->getUrlAfterLogin();
+                                //Перенаправляем пользователя в закрытую часть – кабинет
+                                $succusse['log'] = $user->getUrlAfterLogin();
+                                $succusse['code'] = 2;
+                                echo json_encode($succusse);
+                            } elseif ($user->isActive() == 0) {
+                                Session::destroy('info_user');
+                                $errors['log'] = config('app')['notification']['user_is_active'];
+                                $errors['code'] = 3;
+                                echo json_encode($errors);
+                            }
+                        } else {
+                            Admin::auth($user);
+                            $succusse['log'] = config('app')['url_redirect']['user_risk'];
                             $succusse['code'] = 2;
                             echo json_encode($succusse);
-                        } elseif ($user->isActive() == 0) {
-                            Session::destroy('info_user');
-                            $errors['log'] = 'Доступ к данному аккаунту закрыт!';
-                            $errors['code'] = 3;
-                            echo json_encode($errors);
                         }
                     } else {
-                        Admin::auth($user);
-                        $succusse['log'] = '/adm/risks';
-                        $succusse['code'] = 2;
-                        echo json_encode($succusse);
+                        $errors['log'] = config('app')['notification']['project_denied'];
+                        $errors['code'] = 3;
+                        echo json_encode($errors);
                     }
                 }
             } else {
-                $errors['log'] = config('app')['notification'];
+                $errors['log'] = config('app')['notification']['server_down'];
                 $errors['code'] = 3;
                 echo json_encode($errors);
             }

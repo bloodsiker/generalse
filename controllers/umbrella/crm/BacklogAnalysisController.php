@@ -3,10 +3,11 @@ namespace Umbrella\controllers\umbrella\crm;
 
 use Umbrella\app\AdminBase;
 use Umbrella\app\User;
+use Umbrella\components\Decoder;
 use Umbrella\components\ImportExcel;
 use Umbrella\components\Logger;
 use Umbrella\models\Admin;
-use Umbrella\models\Backlog;
+use Umbrella\models\crm\Backlog;
 use Umbrella\models\Products;
 
 class BacklogAnalysisController extends AdminBase
@@ -42,6 +43,7 @@ class BacklogAnalysisController extends AdminBase
 
     /**
      * @return bool
+     * @throws \Exception
      */
     public function actionExportBacklog()
     {
@@ -68,9 +70,9 @@ class BacklogAnalysisController extends AdminBase
                         $i = 0;
                         $new_array = [];
 
-                        if($user->role == 'partner'){
-                            $id_user = $user->id_user;
-                        } elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'){
+                        if($user->isPartner()){
+                            $id_user = $user->getId();
+                        } elseif($user->isAdmin() ||  $user->isManager()){
                             $id_user = (isset($_POST['id_partner']) ? $_POST['id_partner'] : false);
                         }
 
@@ -83,15 +85,15 @@ class BacklogAnalysisController extends AdminBase
                                     $new_array[$i]['comments'] = $check_part['stock_name'];
                                 } else {
                                     //Проверяем по складу Bad подтип = Материнская плата
-                                    $check_stock_bad = Backlog::getGoodsInStockByPartner($id_user, $excel['part_number'], iconv('UTF-8', 'WINDOWS-1251', 'Материнская плата'));
+                                    $check_stock_bad = Backlog::getGoodsInStockByPartner($id_user, $excel['part_number'], Decoder::strToWindows('Материнская плата'));
                                     if($check_stock_bad){
                                         $new_array[$i]['comments'] = 'Bad Stock. Try to restore.';
                                     } else {
                                         //Проверяем по складе SWAP по BOM листам
                                         $check_part_in_boom_list = Backlog::getPartNumberInBoomListSwap($id_user, $excel['part_number']);
                                         if($check_part_in_boom_list){
-                                            $new_array[$i]['comments'] = "SWAP <br> SN: " . iconv('WINDOWS-1251', 'UTF-8', $check_part_in_boom_list[0]['unit_serial_number'])
-                                                                        . "<br>Description: " . iconv('WINDOWS-1251', 'UTF-8', $check_part_in_boom_list[0]['unit_goods_name']);
+                                            $new_array[$i]['comments'] = "SWAP <br> SN: " . Decoder::strToUtf($check_part_in_boom_list[0]['unit_serial_number'])
+                                                                        . "<br>Description: " . Decoder::strToUtf($check_part_in_boom_list[0]['unit_goods_name']);
                                         } else {
                                             $not_found_or_boom_list = Backlog::getPartNumberInBoomListNoStock($excel['part_number']);
                                             $list = array_column($not_found_or_boom_list, 'unit_part_number');
@@ -103,10 +105,9 @@ class BacklogAnalysisController extends AdminBase
                             }
                             $i++;
                         }
-                        Logger::getInstance()->log($user->id_user, 'воспользовался функцией BacklogAnalysis');
+                        Logger::getInstance()->log($user->getId(), 'воспользовался функцией BacklogAnalysis');
                     }
                 }
-                //header("Location: /adm/crm/supply");
             }
         }
 
