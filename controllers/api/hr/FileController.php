@@ -40,8 +40,8 @@ class FileController
                 $file_name = $handle->file_new_name_body . '.' . $handle->file_src_name_ext;
                 $handle->process(ROOT . self::UPLOAD_PATH_PHOTO);
                 if ($handle->processed) {
-                    $options['form_user_id'] = $_POST['form_user_id'];
-                    $options['file_type'] = $_POST['file_type'];
+                    $options['form_user_id'] = $_REQUEST['form_user_id'];
+                    $options['file_type'] = $_REQUEST['file_type'];
                     $options['file_name'] = self::UPLOAD_PATH_PHOTO . $file_name;
                     File::addFile($options);
                     $handle->clean();

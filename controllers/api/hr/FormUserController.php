@@ -44,58 +44,157 @@ class FormUserController
         $usersInStructure = [];
         $infoStructure = [];
 
-        if(isset($_GET['structure']) && $_GET['structure'] == 'company'){
-            $id = (int)$_GET['id'];
-            $userFire = (int)$_GET['user_fire'];
-            $filter .= " AND company_id = {$id} AND user_fire = {$userFire}";
-            $usersInStructure = FormUser::getFormsUserByDepartment($filter);
-            $infoStructure = Structure::getStructureById($id);
-        }
-
-        if(isset($_GET['structure']) && $_GET['structure'] == 'department'){
-            $id = (int)$_GET['id'];
-            $userFire = (int)$_GET['user_fire'];
-            $filter .= " AND department_id = {$id} AND branch_id = 0 AND user_fire = {$userFire}";
-            $usersInStructure = FormUser::getFormsUserByDepartment($filter);
-            $infoStructure = Structure::getStructureById($id);
-        }
-
-        if(isset($_GET['structure']) && $_GET['structure'] == 'branch'){
-            $id = (int)$_GET['id'];
-            $userFire = (int)$_GET['user_fire'];
-            $filter .= " AND branch_id = {$id} AND user_fire = {$userFire}";
-            $usersInStructure = FormUser::getFormsUserByDepartment($filter);
-            $infoStructure = Structure::getStructureById($id);
-            $infoStructure['company_id'] = Structure::getCompanyBranch($id);
-        }
+//        if(isset($_GET['structure']) && $_GET['structure'] == 'company'){
+//            $id = (int)$_GET['id'];
+//            $userFire = (int)$_GET['user_fire'];
+//            $filter .= " AND company_id = {$id} AND user_fire = {$userFire}";
+//            $usersInStructure = FormUser::getFormsUserByDepartment($filter);
+//            $infoStructure = Structure::getStructureById($id);
+//        }
+//
+//        if(isset($_GET['structure']) && $_GET['structure'] == 'department'){
+//            $id = (int)$_GET['id'];
+//            $userFire = (int)$_GET['user_fire'];
+//            $filter .= " AND department_id = {$id} AND branch_id = 0 AND user_fire = {$userFire}";
+//            $usersInStructure = FormUser::getFormsUserByDepartment($filter);
+//            $infoStructure = Structure::getStructureById($id);
+//        }
+//
+//        if(isset($_GET['structure']) && $_GET['structure'] == 'branch'){
+//            $id = (int)$_GET['id'];
+//            $userFire = (int)$_GET['user_fire'];
+//            $filter .= " AND branch_id = {$id} AND user_fire = {$userFire}";
+//            $usersInStructure = FormUser::getFormsUserByDepartment($filter);
+//            $infoStructure = Structure::getStructureById($id);
+//            $infoStructure['company_id'] = Structure::getCompanyBranch($id);
+//        }
 
         // new
 
         if(isset($_GET['structure_id'])){
             $id = (int)$_GET['structure_id'];
             $userFire = (int)$_GET['user_fire'];
-            $filter .= " AND (company_id = {$id} OR department_id = {$id} OR branch_id = {$id}) AND user_fire = {$userFire}";
-            $usersInStructure = FormUser::getFormsUserByDepartment($filter);
-            $infoStructure = Structure::getStructureById($id);
-            $infoStructure['company_id'] = Structure::getCompanyBranch($id);
-        }
 
-
-        // Проверяем, есть в пользователе изменения
-        $usersInStructure = array_map(function ($user){
-            $newUser = json_decode($user['form']);
-            $newUser->id = $user['id'];
-            $saved = 0;
-            foreach ($newUser as $key => $value){
-                $obj = $newUser->{$key};
-                if(isset($obj->state) && $obj->state == 'saved'){
-                    $saved = 1;
+            // Инфиормация о залогиненом пользователе
+            $infoAuthUser = FormUser::getUserByToken($_GET['token']);
+            if ($infoAuthUser['id']) {
+                $authUser = json_decode($infoAuthUser['form']);
+                if ($authUser->staff->value_id == '1') {
+                    if ($authUser->branch->value_id == $id){
+                        $filter .= " AND (branch_id = {$id}) AND user_fire = {$userFire}";
+                    } else {
+                        $filter .= " AND false";
+                    }
+                } elseif ($authUser->staff->value_id == '2') {
+                    if ($authUser->branch->value_id == $id){
+                        $filter .= " AND (branch_id = {$id}) AND user_fire = {$userFire}";
+                    } else {
+                        $filter .= " AND false";
+                    }
+                } elseif ($authUser->staff->value_id == '3') {
+                    //Получаем все внутрении структуры департамента
+                    $branch = Structure::getChildStructureById($authUser->department->value_id);
+                    $branchIds = array_column($branch, 'id');
+                    if ($authUser->department->value_id == $id){
+                        $filter .= " AND department_id = {$id} AND user_fire = {$userFire}";
+                    } elseif(in_array($id, $branchIds)) {
+                        $filter .= " AND branch_id = {$id} AND user_fire = {$userFire}";
+                    } else {
+                        $filter .= " AND false";
+                    }
+                } elseif ($authUser->staff->value_id == '4') {
+                    // Руководитель компании видит все
+                    $filter .= " AND (company_id = {$id} OR department_id = {$id} OR branch_id = {$id}) AND user_fire = {$userFire}";
                 }
+
+                //$filter .= " AND (company_id = {$id} OR department_id = {$id} OR branch_id = {$id}) AND user_fire = {$userFire}";
+                $usersInStructure = FormUser::getFormsUserByDepartment($filter);
+                $infoStructure = Structure::getStructureById($id);
+                $infoStructure['company_id'] = Structure::getCompanyBranch($id);
             }
-            $newUser->saved = $saved;
-            //$user = $newUser;
-            return $newUser;
-        }, $usersInStructure);
+
+            $allUsers = FormUser::getFormsUserByDepartment();
+
+            // Проверяем, есть в пользователе изменения
+            $usersInStructure = array_map(function ($user) use ($allUsers){
+                $newUser = json_decode($user['form']);
+                $newUser->id = $user['id'];
+                $newUser->user_staff = $newUser->staff->value;
+                $saved = 0;
+                foreach ($newUser as $key => $value){
+                    $obj = $newUser->{$key};
+                    if(isset($obj->state) && $obj->state == 'saved'){
+                        $saved = 1;
+                    }
+                }
+
+                //
+                $newUser->head = null;
+
+                foreach ($allUsers as $user){
+                    $listUser = json_decode($user['form']);
+
+                    // Для сотрудника, ищем руководителя группы в которой находиться сотрудник или выше по структуре
+                    if(is_null($newUser->head)
+                        && $newUser->staff->value_id == '1'
+                        && $newUser->branch->value_id == $listUser->branch->value_id){
+
+                        // Если в группе есть руководитель, то отображаем его руководителем этого пользователя
+                        if($listUser->staff->value_id == '2'){
+                            $newUser->head = $listUser->surname->value . ' ' . $listUser->name->value;
+                            break;
+                        }
+                    } elseif (is_null($newUser->head)
+                        && $newUser->staff->value_id == '1'
+                        && $newUser->department->value_id == $listUser->department->value_id){
+
+                        // Если в департаменте есть руководитель, то отображаем его руководителем этого пользователя
+                        if($listUser->staff->value_id == '3'){
+                            $newUser->head = $listUser->surname->value . ' ' . $listUser->name->value;
+                            break;
+                        }
+                    } elseif (is_null($newUser->head)
+                        && $newUser->staff->value_id == '1'
+                        && $newUser->company->value_id == $listUser->company->value_id){
+
+                        // Если в компании есть руководитель, то отображаем его руководителем этого пользователя
+                        if($listUser->staff->value_id == '4'){
+                            $newUser->head = $listUser->surname->value . ' ' . $listUser->name->value;
+                            break;
+                        }
+                        // Для руководителя группы, ищем руководителя департамента в которой находиться сотрудник или выше по структуре
+                    } elseif (is_null($newUser->head)
+                        && $newUser->staff->value_id == '2'
+                        && $newUser->department->value_id == $listUser->department->value_id){
+
+                        if($listUser->staff->value_id == '3'){
+                            $newUser->head = $listUser->surname->value . ' ' . $listUser->name->value;
+                            break;
+                        }
+                    } elseif ($newUser->staff->value_id == '2' && $newUser->company->value_id == $listUser->company->value_id){
+
+                        // Если в компании есть руководитель, то отображаем его руководителем этого пользователя
+                        if($listUser->staff->value_id == '4'){
+                            $newUser->head = $listUser->surname->value . ' ' . $listUser->name->value;
+                            break;
+                        }
+                        // Для руководителя департамента, ищем руководителя компании в которой находиться сотрудник или выше по структуре
+                    } elseif (is_null($newUser->head)
+                        && $newUser->staff->value_id == '3'
+                        && $newUser->company->value_id == $listUser->company->value_id){
+
+                        // Если в компании есть руководитель, то отображаем его руководителем этого пользователя
+                        if($listUser->staff->value_id == '4'){
+                            $newUser->head = $listUser->surname->value . ' ' . $listUser->name->value;
+                            break;
+                        }
+                    }
+                }
+
+                $newUser->saved = $saved;
+                return $newUser;
+            }, $usersInStructure);
+        }
 
         $data['head'] = $infoStructure;
         $data['users'] = $usersInStructure;
@@ -427,6 +526,7 @@ class FormUserController
                 'state'         => 'default',
                 'date'          => '',
                 'sort'          => $i,
+                'value_id'      => '',
                 'new_value_id'  => ''
             ]];
         $i++;

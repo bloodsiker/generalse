@@ -27,6 +27,10 @@ class BandController
     public function actionAllBand()
     {
         $allBand = Band::getAllBand();
+        $allBand = array_map(function ($value){
+            $value['name'] = $value['id'] . ' [' . $value['band_desc'] . '] [' . $value['performance'] . '] [' . $value['salary'] . ']';
+            return $value;
+        }, $allBand);
         Response::responseJson($allBand, 200, 'OK');
         return true;
     }

@@ -17,7 +17,7 @@ class FormUser
      * @param $filter
      * @return array
      */
-    public static function getFormsUserByDepartment($filter)
+    public static function getFormsUserByDepartment($filter = '')
     {
         $db = MySQL::getConnection();
 
@@ -83,6 +83,36 @@ class FormUser
 
         $result = $db->prepare($sql);
         $result->bindParam(':id', $id_user, PDO::PARAM_INT);
+        $result->execute();
+        return $result->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * get info user
+     * @param $id_token
+     *
+     * @return mixed
+     */
+    public static function getUserByToken($id_token)
+    {
+        $db = MySQL::getConnection();
+
+        $sql = "SELECT 
+                    gu.id_user,
+                    gu.name_partner,
+                    ghuf.id,
+                    ghuf.form,
+                    ghuf.staff_id,
+                    ghuf.company_id,
+                    ghuf.department_id,
+                    ghuf.branch_id
+                FROM gs_user gu
+                    LEFT JOIN gs_hr_users_form ghuf
+                        ON gu.id_user = ghuf.user_id
+                WHERE (gu.token = :id_token)";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id_token', $id_token, PDO::PARAM_STR);
         $result->execute();
         return $result->fetch(PDO::FETCH_ASSOC);
     }

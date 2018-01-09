@@ -35,7 +35,7 @@ class AuthController
             $user = new User($auth);
             if($user->getAuthProject(['global', 'hr'])){
                 Auth::auth($user);
-                $newUser = new User($user->getId());
+                $newUser = \Umbrella\models\api\hr\User::getUserById($user->getId());
                 Response::responseJson($newUser, 200, 'OK');
             } else {
                 Response::responseJson($data = null, 403, 'Forbidden');

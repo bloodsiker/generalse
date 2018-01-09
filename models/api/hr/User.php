@@ -80,14 +80,18 @@ class User
 
         $sql = 'SELECT
                    gu.id_user,
-                   gu.name_partner
+                   gu.name_partner,
+                   gu.token,
+                   ghuf.id as form_user_id,
+                   ghuf.staff_id
                  FROM gs_user gu
+                 	LEFT JOIN gs_hr_users_form ghuf
+                 		ON gu.id_user = ghuf.user_id
                  WHERE gu.id_user = :id_user';
 
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $id_user, PDO::PARAM_INT);
-        $result->setFetchMode(PDO::FETCH_ASSOC);
         $result->execute();
-        return $result->fetch();
+        return $result->fetch(PDO::FETCH_ASSOC);
     }
 }
