@@ -19,11 +19,11 @@
                         <div class="row align-bottom">
                             <div class="medium-12 small-12 columns">
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.send', 'view')): ?>
-                                    <button class="button primary tool" id="add-request-button"><i class="fi-plus"></i> Request</button>
+                                    <button class="button primary tool" <?= $user->getUserBlockedGM() == 'blocked' ? 'disabled' : null ?>  id="add-request-button"><i class="fi-plus"></i> Request</button>
                                 <?php endif;?>
 
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.multi-request.send', 'view')): ?>
-                                    <button class="button primary tool" id="add-multi-request-button"><i class="fi-plus"></i> Multi Request</button>
+                                    <button class="button primary tool" <?= $user->getUserBlockedGM() == 'blocked' ? 'disabled' : null ?> id="add-multi-request-button"><i class="fi-plus"></i> Multi Request</button>
                                 <?php endif;?>
 
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.part_analog_gm', 'view')): ?>
@@ -31,7 +31,7 @@
                                 <?php endif;?>
 
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.import', 'view')): ?>
-                                    <button data-open="add-request-import-modal" class="button primary tool"><i class="fi-plus"></i> Import request</button>
+                                    <button data-open="add-request-import-modal" <?= $user->getUserBlockedGM() == 'blocked' ? 'disabled' : null ?> class="button primary tool"><i class="fi-plus"></i> Import request</button>
                                 <?php endif;?>
 
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.export', 'view')): ?>
@@ -294,12 +294,16 @@
 
 
 <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.send', 'view')): ?>
-    <?php require(views_path('admin/crm/request/_part/request_modal.php'))?>
+    <?php if($user->getUserBlockedGM() != 'blocked'): ?>
+        <?php require(views_path('admin/crm/request/_part/request_modal.php'))?>
+    <?php endif; ?>
 <?php endif; ?>
 
 
 <?php if (Umbrella\app\AdminBase::checkDenied('crm.multi-request.send', 'view')): ?>
-    <?php require(views_path('admin/crm/request/_part/multi_request_modal.php'))?>
+    <?php if($user->getUserBlockedGM() != 'blocked'): ?>
+        <?php require(views_path('admin/crm/request/_part/multi_request_modal.php'))?>
+    <?php endif; ?>
 <?php endif; ?>
 
 <?php if (Umbrella\app\AdminBase::checkDenied('crm.request.part_analog_gm', 'view')): ?>

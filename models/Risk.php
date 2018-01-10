@@ -32,4 +32,28 @@ class Risk
         $result->execute();
         return $result->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    /**
+     * @param $status
+     *
+     * @return bool|string
+     */
+    public static function getStatusBlockAccount($status)
+    {
+        switch($status)
+        {
+            case 0:
+                return 'Активный';
+                break;
+            case 1:
+                return 'Блокирование завтра';
+                break;
+            case 2:
+                return 'Заблокирован';
+                break;
+            default;
+                return 'Не известный статус';
+        }
+        return true;
+    }
 }

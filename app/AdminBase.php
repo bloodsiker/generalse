@@ -2,7 +2,6 @@
 
 namespace Umbrella\app;
 
-use Josantonius\Session\Session;
 use Josantonius\Url\Url;
 use Umbrella\app\Middleware\IsActiveUserMiddleware;
 use Umbrella\app\Middleware\PartnerRisksMiddleware;
@@ -36,7 +35,9 @@ abstract class AdminBase extends Controller
      * проверяем, и запрещаем посещать пользователю закрытые разделы
      * @param $section
      * @param string $param
+     *
      * @return bool
+     * @throws \Exception
      */
     public static function checkDenied($section, $param = 'view')
     {

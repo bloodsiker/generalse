@@ -52,7 +52,7 @@
     <div class="header-user-menu">
         <div class="row">
             <div class="medium-12 small-12 column text-right">
-                <?php if($user->getUserBlockedGM() == 'tomorrow'):?>
+                <?php if($user->getUserBlockedGM() == 'tomorrow' || $user->getUserBlockedGM() == 'blocked'):?>
                     <a href="/adm/risks" class="text-red">Внимание!</a>
                 <?php endif;?>
                 <span class="user-name"><?=$user->getName()?></span>

@@ -1,4 +1,4 @@
-<?php require_once ROOT . '/views/admin/layouts/header.php'; ?>
+<?php require_once views_path('admin/layouts/header.php') ?>
 
 <div class="row">
     <div class="medium-12 small-12 columns">
@@ -11,7 +11,7 @@
                     <div class="medium-12 text-left small-12 columns">
                         <ul class="menu">
 
-                            <?php require_once ROOT . '/views/admin/layouts/crm_menu.php'; ?>
+                            <?php require_once views_path('admin/layouts/crm_menu.php') ?>
 
                         </ul>
                     </div>
@@ -19,11 +19,11 @@
                         <div class="row align-bottom">
                             <div class="medium-5 small-12 columns">
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.add', 'view')): ?>
-                                    <button class="button primary tool" id="add-checkout-button"><i class="fi-plus"></i> Add</button>
+                                    <button class="button primary tool" <?= $user->getUserBlockedGM() == 'blocked' ? 'disabled' : null ?> id="add-checkout-button"><i class="fi-plus"></i> Add</button>
                                 <?php endif;?>
 
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.attach', 'view')): ?>
-                                    <button data-open="add-order-import-modal" class="button primary tool" id="add-order-file"><i class="fi-plus"></i> Attach File</button>
+                                    <button data-open="add-order-import-modal" <?= $user->getUserBlockedGM() == 'blocked' ? 'disabled' : null ?> class="button primary tool" id="add-order-file"><i class="fi-plus"></i> Attach File</button>
                                 <?php endif;?>
 
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.export', 'view')): ?>
@@ -284,368 +284,30 @@
         </div>
     </div>
 </div>
-<div class="reveal" id="add-checkout-modal" data-reveal>
-    <form action="" id="add-checkout-form" method="post" class="form" data-abide novalidate>
-        <div class="row align-bottom">
-            <div class="medium-12 small-12 columns">
-                <h3>New checkout</h3>
-            </div>
-            <?php if($user->isAdmin()):?>
 
-                <div class="medium-12 small-12 columns">
-                    <label>Partner</label>
-                    <select name="id_partner" id="id_partner" class="required" required>
-                        <option value="" selected disabled>none</option>
-                        <?php if(is_array($partnerList)):?>
-                            <?php foreach($partnerList as $partner):?>
-                                <option value="<?=$partner['id_user']?>"><?=$partner['name_partner']?></option>
-                            <?php endforeach;?>
-                        <?php endif;?>
-                    </select>
-                </div>
-
-            <?php elseif ($user->isManager() || $user->isPartner()):?>
-
-                <div class="medium-12 small-12 columns">
-                    <label><i class="fi-list"></i> Partner</label>
-                    <select name='id_partner' id='id_partner' class='required' required>
-                        <?php $user->renderSelectControlUsers($user->id_user);?>
-                    </select>
-                </div>
-
-            <?php endif;?>
-
-            <div class="medium-12 small-12 columns">
-                <label>Stock</label>
-                <select name="stock" id="stock" class="required" required>
-                    <option value="" selected disabled>none</option>
-                    <?php foreach ($user->renderSelectStocks($user->id_user, 'order') as $stock):?>
-                        <option value="<?= $stock?>"><?= $stock?></option>
-                    <?php endforeach;?>
-                </select>
-            </div>
-            <div class="medium-12 small-12 columns">
-                <label>Service Order</label>
-                <input type="text" class="required" name="service_order" required>
-            </div>
-            <div class="medium-12 small-12 columns">
-                <label>Part Number <span style="color: #4CAF50;" class="name-product"></span></label>
-                <input type="text" class="required" name="part_number" required>
-            </div>
-            <div class="medium-12 small-12 columns">
-                <label>Type</label>
-                <select name="order_type_id" class="required" required>
-                    <option value="" selected disabled>none</option>
-                    <?php foreach ($order_type as $type):?>
-                        <option value="<?= $type['id']?>"><?= $type['name']?></option>
-                    <?php endforeach;?>
-                </select>
-            </div>
-            <div class="medium-12 small-12 columns">
-                <label>Quantity <span style="color: #4CAF50;" class="quantity-product"></span></label>
-                <input type="number" value="1" min="1" max="50" class="required" name="quantity" required>
-            </div>
-            <div class="medium-12 small-12 columns hide">
-                <label>Note</label>
-                <textarea rows="3" name=""></textarea>
-            </div>
-
-            <?php if(is_array($delivery_address) && !empty($delivery_address)):?>
-                <div class="medium-12 small-12 columns">
-                    <label>Delivery address</label>
-                    <select name="note" id="note" class="required" required>
-                        <option value="" selected disabled>none</option>
-                        <?php foreach ($delivery_address as $address):?>
-                            <option value="<?= $address?>"><?= $address?></option>
-                        <?php endforeach;?>
-                    </select>
-                </div>
-            <?php endif; ?>
-            <div class="medium-12 small-12 columns">
-                <button type="submit" class="button primary">Send</button>
-            </div>
-        </div>
-    </form>
-    <button class="close-button" data-close aria-label="Close modal" type="button">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-
-
+<?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.add', 'view')): ?>
+    <?php if($user->getUserBlockedGM() != 'blocked'): ?>
+        <?php require(views_path('admin/crm/orders/_part/add_order.php'))?>
+    <?php endif; ?>
+<?php endif; ?>
 
 <!--=== EXPORT EXCEL ====-->
-<div class="reveal large" id="export-modal" data-reveal>
-    <div class="row align-bottom">
-        <div class="medium-12 small-12 columns">
-            <h3>Generate report</h3>
-        </div>
-        <div class="medium-12 small-12 columns">
-            <form action="/adm/crm/export/orders/" method="POST" id="form-generate-excel" data-abide>
-
-                <h4 style="color: #fff">Between date</h4>
-                <div class="row align-bottom" style="background: #323e48; padding-top: 10px; margin-bottom: 10px">
-                    <div class="medium-6 small-6 columns">
-                        <div class="row">
-                            <div class="medium-6 small-12 columns">
-                                <label>From Date</label>
-                                <input type="text" class="required date" name="start" required>
-                            </div>
-                            <div class="medium-6 small-12 columns">
-                                <label>To Date</label>
-                                <input type="text" class="required date" name="end" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="medium-3 small-3 columns">
-                        <label>Status</label>
-                        <select name="status_name" id="status_name">
-                            <option value="">none</option>
-                            <option value="В обработке">В обработке</option>
-                            <option value="Предварительный">Предварительный</option>
-                            <option value="Отказано">Отказано</option>
-                            <option value="Выдан">Выдан</option>
-                            <option value="Резерв">Резерв</option>
-                        </select>
-                    </div>
-                    <div class="medium-3 small-3 columns">
-                        <label>Type</label>
-                        <select name="order_type_id">
-                            <option value="">none</option>
-                            <option value="1">Гарантия</option>
-                            <option value="2">Негарантия</option>
-                        </select>
-                    </div>
-                </div>
-
-                <h4 style="color: #fff">Partners</h4>
-                <?php if($user->isAdmin()):?>
-                    <div class="row align-bottom" style="background: #323e48; padding-top: 10px">
-                        <div class="medium-12 small-12 columns">
-                            <ul class="tabs" data-deep-link="true" data-update-history="true" data-deep-link-smudge="true" data-deep-link-smudge="500" data-tabs id="deeplinked-tabs">
-                                <?php foreach ($userInGroup as $groups):?>
-                                    <li class="tabs-title">
-                                        <a href="#group-<?= $groups['group_id']?>" aria-selected="true"><?= $groups['group_name']?></a>
-                                    </li>
-                                <?php endforeach;?>
-                            </ul>
-
-                            <div class="tabs-content" data-tabs-content="deeplinked-tabs" style="background: #323e48; margin-bottom: 10px">
-                                <?php foreach ($userInGroup as $groups):?>
-                                    <div class="tabs-panel" id="group-<?= $groups['group_id']?>">
-                                        <div class="row">
-                                            <div class="medium-12 small-12 columns">
-                                                <span>
-                                                    <input type="checkbox" onclick="checkAllCheckbox(event, '#group-<?= $groups['group_id']?>')" id="id-<?= $groups['group_id']?>-all">
-                                                    <label class="check all" for="id-<?= $groups['group_id']?>-all">Выбрать всех</label>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <?php foreach($groups['users'] as $partner):?>
-                                                <div class="medium-4 small-4 columns">
-                                                <span>
-                                                    <?php $checked = Umbrella\models\Stocks::checkUser(isset($_POST['id_partner']) ? $_POST['id_partner'] : [], $partner['id_user'])?>
-                                                    <input type="checkbox" <?= ($checked ? 'checked' : '')?> onclick="checkColor(event)" id="id-<?=$partner['id_user'] ?>" name="id_partner[]" value="<?=$partner['id_user'] ?>">
-                                                    <label  class="check" for="id-<?=$partner['id_user'] ?>" style="color: <?= ($checked ? 'green' : '')?>;"><?=$partner['name_partner'] ?></label><br>
-                                                </span>
-                                                </div>
-                                            <?php endforeach; ?>
-                                        </div>
-                                    </div>
-                                <?php endforeach;?>
-                            </div>
-                        </div>
-                    </div>
-
-                <?php else: ?>
-
-                    <div class="row align-bottom" style="background: #323e48; padding-top: 10px">
-                        <div class="medium-12 small-12 columns">
-                            <input type="text" id="search" placeholder="Search" autocomplete="off">
-                        </div>
-                        <div class="medium-12 small-12 columns">
-                            <span>
-                                <input type="checkbox" onclick="checkAllCheckbox(event)" id="id-all">
-                                <label class="check all" for="id-all" >Выбрать всех</label>
-                            </span>
-                        </div>
-                        <div class="medium-12 small-12 columns">
-                            <div class="row">
-                                <?php if(is_array($partnerList)):?>
-                                    <?php foreach($partnerList as $partner):?>
-                                        <div class="medium-4 small-4 columns">
-                                            <span>
-                                                <?php $checked = Umbrella\models\Stocks::checkUser(isset($_POST['id_partner']) ? $_POST['id_partner'] : [], $partner['id_user'])?>
-                                                <?php $checkUser = $user->id_user == $partner['id_user'] ? true : false?>
-                                                <input type="checkbox" <?= ($checked || $checkUser) ? 'checked' : ''?> onclick="checkColor(event)" id="id-<?=$partner['id_user'] ?>" name="id_partner[]" value="<?=$partner['id_user'] ?>">
-                                                <label  class="check" for="id-<?=$partner['id_user'] ?>" style="color: <?= ($checked || $checkUser) ? 'green' : ''?>;"><?=$partner['name_partner'] ?></label><br>
-                                            </span>
-                                        </div>
-                                    <?php endforeach; ?>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    </div>
-                <?php endif; ?>
-
-                <div class="row align-bottom" style="padding-top: 10px; margin-top: 10px">
-                    <div class="medium-3 small-3 medium-offset-9 columns">
-                        <button type="submit" id="apply-stock-filter" class="button primary">Generate</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <button class="close-button" data-close aria-label="Close modal" type="button">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
+<?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.export', 'view')): ?>
+    <?php require(views_path('admin/crm/orders/_part/export_excel.php'))?>
+<?php endif; ?>
 
 
-<div class="reveal" id="add-supply-modal" data-reveal>
-    <form action="/adm/crm/export/batch" id="add-batch-form" method="post" class="form" enctype="multipart/form-data" data-abide
-          novalidate>
-        <div class="row align-bottom">
-            <div class="medium-12 small-12 columns">
-                <h3>Batch</h3>
-            </div>
-            <div class="medium-12 small-12 columns">
-                <div class="row">
-                    <div class="medium-12 small-12 columns">
-                        <div class="row align-bottom ">
-                            <div class="medium-12 small-12 columns">
-                                <label for="upload_file_form" class="button primary">Attach</label>
-                                <input type="file" id="upload_file_form" class="show-for-sr" name="excel_file" required>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="medium-12 small-12 columns">
-                        <div class="row">
-                            <div class="medium-6 small-12 columns">
-                                <div style="padding-bottom: 37px; color: #fff"><a
-                                            href="/upload/attach_batch/Batch Upload.xlsx" style="color: #2ba6cb"
-                                            download="">download</a> a template file to import
-                                </div>
-                            </div>
-                            <input type="hidden" name="check_butch" value="true">
-                            <div class="medium-6 small-12 columns">
-                                <button type="submit" class="button primary">Check</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
-    <button class="close-button" data-close aria-label="Close modal" type="button">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
+<?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.batch', 'view')): ?>
+    <?php require(views_path('admin/crm/orders/_part/order_batch.php'))?>
+<?php endif; ?>
 
 
-<div class="reveal" id="add-order-import-modal" data-reveal>
-    <form action="/adm/crm/orders" id="orders-excel-send" method="post" enctype="multipart/form-data" data-abide novalidate>
-        <div class="row align-bottom">
-            <div class="medium-12 small-12 columns">
-                <h3>Import orders</h3>
-            </div>
-            <div class="medium-12 small-12 columns">
-                <div class="row">
 
-                    <?php if($user->role == 'administrator' || $user->role == 'administrator-fin'):?>
-
-                        <div class="medium-12 small-12 columns">
-                            <label><i class="fi-list"></i> Partner</label>
-                            <select name="id_partner" id="id_partner_one" class="required" required>
-                                <option value="" selected disabled>none</option>
-                                <?php if(is_array($partnerList)):?>
-                                    <?php foreach($partnerList as $partner):?>
-                                        <option <?php echo (isset($id_partner) && $id_partner == $partner['id_user']) ? 'selected' : '' ?> value="<?=$partner['id_user']?>"><?=$partner['name_partner']?></option>
-                                    <?php endforeach;?>
-                                <?php endif;?>
-                            </select>
-                        </div>
-
-                    <?php elseif ($user->role == 'manager' || $user->role == 'partner'):?>
-
-                        <div class="medium-12 small-12 columns">
-                            <label><i class="fi-list"></i> Partner</label>
-                            <select name="id_partner" id="id_partner_one" class="required" required>
-                                <?php $user->renderSelectControlUsers($user->id_user);?>
-                            </select>
-                        </div>
-
-                    <?php endif;?>
-
-
-                    <div class="medium-12 small-12 columns">
-                        <label><i class="fi-list"></i> Stock
-                            <select name="stock" class="required" required>
-                                <option value="" selected disabled>none</option>
-                                <?php foreach ($user->renderSelectStocks($user->id_user, 'order') as $stock):?>
-                                    <option value="<?= $stock?>"><?= $stock?></option>
-                                <?php endforeach;?>
-                            </select>
-                        </label>
-                    </div>
-
-                    <?php if(is_array($delivery_address) && !empty($delivery_address)):?>
-                        <div class="medium-12 small-12 columns">
-                            <label>Delivery address</label>
-                            <select name="notes" id="notes" class="required" required>
-                                <option value="" selected disabled>none</option>
-                                <?php foreach ($delivery_address as $address):?>
-                                    <option value="<?= $address?>"><?= $address?></option>
-                                <?php endforeach;?>
-                            </select>
-                        </div>
-                    <?php endif; ?>
-
-                    <div class="medium-12 small-12 columns">
-                        <label>Type</label>
-                        <select name="order_type_id" class="required" required>
-                            <option value="" selected disabled>none</option>
-                            <?php foreach ($order_type as $type):?>
-                                <option value="<?= $type['id']?>"><?= $type['name']?></option>
-                            <?php endforeach;?>
-                        </select>
-                    </div>
-
-
-                    <div class="medium-12 small-12 columns">
-                        <div class="row align-bottom ">
-                            <div class="medium-12 small-12 columns">
-                                <label for="exampleFileUpload" class="button primary">Attach</label>
-                                <input type="file" id="exampleFileUpload" class="show-for-sr" name="excel_file" required>
-                            </div>
-                        </div>
-                    </div>
-                    <input type="hidden" name="send_excel_file" value="true">
-
-
-                    <div class="medium-12 small-12 columns">
-                        <div class="row">
-                            <div class="medium-6 small-12 columns">
-                                <div style="padding-bottom: 37px; color: #fff"><a
-                                            href="/upload/attach_order/orders_import.xls" style="color: #2ba6cb"
-                                            download="">download</a> a template file to import
-                                </div>
-                            </div>
-                            <div class="medium-6 small-12 columns">
-                                <button type="submit" class="button primary">Send</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
-    <button class="close-button" data-close aria-label="Close modal" type="button">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
+<?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.attach', 'view')): ?>
+    <?php if($user->getUserBlockedGM() != 'blocked'): ?>
+        <?php require(views_path('admin/crm/orders/_part/add_order_import.php'))?>
+    <?php endif; ?>
+<?php endif; ?>
 
 
 <div class="reveal large" id="show-details" data-reveal>
@@ -662,4 +324,4 @@
     </button>
 </div>
 
-<?php require_once ROOT . '/views/admin/layouts/footer.php'; ?>
+<?php require_once views_path('admin/layouts/footer.php') ?>

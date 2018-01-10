@@ -7,32 +7,36 @@
     </thead>
     <tbody>
         <tr>
+            <td>Статус</td>
+            <td><?= \Umbrella\models\Risk::getStatusBlockAccount($userInfo['blocked'])?></td>
+        </tr>
+        <tr>
             <td>Название</td>
-            <td><?= iconv('WINDOWS-1251', 'UTF-8', $userInfo['site_client_name'])?></td>
+            <td><?= $userInfo['site_client_name']?></td>
         </tr>
         <tr>
             <td>Название английское</td>
-            <td><?= iconv('WINDOWS-1251', 'UTF-8', $userInfo['name_en'])?></td>
+            <td><?= $userInfo['name_en']?></td>
         </tr>
         <tr>
             <td>Адрес</td>
-            <td><?= iconv('WINDOWS-1251', 'UTF-8', $userInfo['address'])?></td>
+            <td><?= $userInfo['address']?></td>
         </tr>
         <tr>
             <td>Адрес английский</td>
-            <td><?= iconv('WINDOWS-1251', 'UTF-8', $userInfo['address_en'])?></td>
+            <td><?= $userInfo['address_en']?></td>
         </tr>
         <tr>
             <td>Для ТТН</td>
-            <td><?= iconv('WINDOWS-1251', 'UTF-8', $userInfo['for_ttn'])?></td>
+            <td><?= $userInfo['for_ttn']?></td>
         </tr>
         <tr>
             <td>Валюта</td>
-            <td><?= iconv('WINDOWS-1251', 'UTF-8', $userInfo['ShortName'])?></td>
+            <td><?= $userInfo['ShortName']?></td>
         </tr>
         <tr>
             <td>Цена</td>
-            <td><?= iconv('WINDOWS-1251', 'UTF-8', $userInfo['PriceName'])?></td>
+            <td><?= $userInfo['PriceName']?></td>
         </tr>
         <tr>
             <td>Признак для поляков</td>
@@ -44,27 +48,27 @@
         </tr>
         <tr>
             <td>Договор</td>
-            <td><?= iconv('WINDOWS-1251', 'UTF-8', $userInfo['contract_number'])?></td>
+            <td><?= $userInfo['contract_number']?></td>
         </tr>
         <tr>
             <td>Ответственный</td>
-            <td><?= iconv('WINDOWS-1251', 'UTF-8', $userInfo['DisplayName'])?></td>
+            <td><?= $userInfo['DisplayName']?></td>
         </tr>
         <tr>
             <td>Местоположение</td>
-            <td><?= iconv('WINDOWS-1251', 'UTF-8', $userInfo['StockPlaceName'])?></td>
+            <td><?= $userInfo['StockPlaceName']?></td>
         </tr>
         <tr>
             <td>Телефон</td>
-            <td><?= iconv('WINDOWS-1251', 'UTF-8', $userInfo['phone'])?></td>
+            <td><?= $userInfo['phone']?></td>
         </tr>
         <tr>
             <td>Email</td>
-            <td><?= iconv('WINDOWS-1251', 'UTF-8', $userInfo['email'])?></td>
+            <td><?= $userInfo['email']?></td>
         </tr>
         <tr>
             <td>Регион\Город</td>
-            <td><?= iconv('WINDOWS-1251', 'UTF-8', $userInfo['mName'])?></td>
+            <td><?= $userInfo['mName']?></td>
         </tr>
     </tbody>
 </table>

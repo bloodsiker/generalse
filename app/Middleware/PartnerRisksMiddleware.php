@@ -15,6 +15,8 @@ class PartnerRisksMiddleware
      * PartnerRisksMiddleware constructor.
      *
      * @param User $user
+     *
+     * @throws \Exception
      */
     public function __construct(User $user)
     {
@@ -22,16 +24,21 @@ class PartnerRisksMiddleware
         $this->handle();
     }
 
+
+    /**
+     * @throws \Exception
+     */
     public function handle()
     {
         if($this->user instanceof User){
             // Проверка на оплаченные счета
             if(Url::getUri() != '/adm/risks'){
                 if($this->user->getUserBlockedGM() != 'active'){
-                    if($this->user->getUserBlockedGM() == 'tomorrow'){
+                    if($this->user->getUserBlockedGM() == 'tomorrow'
+                    || $this->user->getUserBlockedGM() == 'blocked'){
 
                     } else {
-                        Url::redirect('/adm/risks');
+                        Url::redirect(config('app')['url_redirect']['user_risk']);
                     }
                 }
             }

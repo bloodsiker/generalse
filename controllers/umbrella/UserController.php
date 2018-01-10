@@ -30,6 +30,7 @@ class UserController extends AdminBase
 
     /**
      * UserController constructor.
+     * @throws \Exception
      */
     public function __construct()
     {
@@ -79,8 +80,11 @@ class UserController extends AdminBase
 
     /**
      * User control
+     *
      * @param $id_user
+     *
      * @return bool
+     * @throws \Exception
      */
     public function actionUserControl($id_user)
     {
@@ -272,8 +276,11 @@ class UserController extends AdminBase
 
     /**
      * Обновление аккаунта пользователя
+     *
      * @param $id
+     *
      * @return bool
+     * @throws \Exception
      */
     public function actionUpdate($id)
     {
@@ -369,23 +376,26 @@ class UserController extends AdminBase
     /**
      * Подгружаем информацию о пользователе из GM
      * @return bool
+     * @throws \Exception
      */
     public function actionInfoGmUser()
     {
         $user_id = $_REQUEST['user_id'];
 
-        $userInfo = Admin::getInfoGmUser($user_id);
+        $userInfo = Decoder::arrayToUtf(Admin::getInfoGmUser($user_id), ['blocked']);
 
         $this->render('admin/users/info_gm_user', compact('userInfo'));
         return true;
     }
 
 
-
     /**
      * Удаление пользователя
+     *
      * @param $id
+     *
      * @return bool
+     * @throws \Exception
      */
     public function actionDelete($id)
     {
@@ -515,7 +525,9 @@ class UserController extends AdminBase
      * @param $id_user
      * @param null $p_id
      * @param null $sub_id
+     *
      * @return bool
+     * @throws \Exception
      */
     public function actionUserDenied($id_user, $p_id = null, $sub_id = null)
     {

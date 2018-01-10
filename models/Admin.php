@@ -726,8 +726,7 @@ class Admin
         $result = $db->prepare($sql);
         $result->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $result->execute();
-        $user = $result->fetch(PDO::FETCH_ASSOC);
-        return $user;
+        return $result->fetch(PDO::FETCH_ASSOC);
     }
 
 }

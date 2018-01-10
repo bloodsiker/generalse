@@ -5,12 +5,11 @@
         <div class="row body-content">
             <div class="medium-12 small-12 columns">
                 <div class="risk-message">
-                    <p>Добрый день.</p>
                     <p>К сожалению, у Вас есть просроченные платежи. <br>
                     <?php if($user->getUserBlockedGM() == 'tomorrow'):?>
-                        Доступ к личному кабинету будет заблокирован (<?= \Umbrella\components\Functions::addDays(date('Y-m-d'), '1 days')?>) до полного погашения просроченных счетов.</p>
+                        Доступ к созданию заказов будет заблокирован (<?= \Umbrella\components\Functions::addDays(date('Y-m-d'), '1 days')?>) до полного погашения просроченных счетов.</p>
                     <?php elseif ($user->getUserBlockedGM() == 'blocked'):?>
-                        Доступ к личному кабинету заблокирован. </p>
+                        Доступ к созданию заказов заблокирован пока не погасите задолженность</p>
                     <?php endif;?>
                     <p>Для дополнительной информации просьба связаться с нами по адресу: <a href="mailto:gsteam@generalse.com">gsteam@generalse.com</a>
                         и <a href="mailto:sales@generalse.com">sales@generalse.com</a></p>
