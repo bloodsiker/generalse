@@ -222,8 +222,6 @@ class DashboardController extends AdminBase
             header("Location: /adm/access_denied");
         }
 
-        $taskList = TaskList::getTaskList();
-
         $this->render('admin/dashboard/task', compact('user', 'taskList'));
         return true;
     }

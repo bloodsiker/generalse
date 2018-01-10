@@ -64,7 +64,7 @@
                 <div class="medium-12 small-12 columns purchase-file-send">
                     <form action="/adm/crm/purchase" id="purchase-excel-send" method="post" enctype="multipart/form-data">
                         <div class="row align-bottom">
-						<?php if($user->role == 'administrator' || $user->role == 'administrator-fin'):?>
+						<?php if($user->isAdmin()):?>
                                 <div class="medium-2 small-12 columns">
                                     <label><i class="fi-list"></i> Partner</label>
                                     <select name="id_partner" id="id_partner_one" class="required" required>
@@ -77,21 +77,12 @@
                                     </select>
                                 </div>
 
-                            <?php elseif ($user->role == 'manager'):?>
+                            <?php elseif ($user->isManager() || $user->isPartner()):?>
 
                                 <div class="medium-2 small-12 columns">
                                     <label><i class="fi-list"></i> Partner</label>
                                     <select name="id_partner" id="id_partner_one" class="required" required>
-                                        <?php $user->renderSelectControlUsers($user->id_user);?>
-                                    </select>
-                                </div>
-
-                            <?php elseif ($user->role == 'partner'):?>
-
-                                <div class="medium-2 small-12 columns">
-                                    <label><i class="fi-list"></i> Partner</label>
-                                    <select name="id_partner" id="id_partner_one" class="required" required>
-                                        <?php $user->renderSelectControlUsers($user->id_user);?>
+                                        <?php $user->renderSelectControlUsers($user->getId());?>
                                     </select>
                                 </div>
 
@@ -100,7 +91,7 @@
                                 <label><i class="fi-list"></i> Stock
                                     <select name="stock" class="required" required>
                                         <option value="" selected disabled>none</option>
-                                        <?php foreach ($user->renderSelectStocks($user->id_user, 'purchase') as $stock):?>
+                                        <?php foreach ($user->renderSelectStocks($user->getId(), 'purchase') as $stock):?>
                                             <option value="<?= $stock?>"><?= $stock?></option>
                                         <?php endforeach;?>
                                     </select>
@@ -147,10 +138,10 @@
                 </div>
             </div>
             <div class="row">
-                <?php if($user->role == 'partner'):?>
+                <?php if($user->isPartner()):?>
                 <table class="umbrella-table">
                     <caption>Last recordings on
-                        <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-7 days') ?> &mdash;
+                        <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-14 days') ?> &mdash;
                         <?= (isset($_GET['end']) && !empty($_GET['end'])) ? $_GET['end'] : date('Y-m-d') ?>
                         <span id="count_refund" class="text-green">(<?php if (isset($listPurchases)) echo count($listPurchases) ?>)</span>
                     </caption>
@@ -172,17 +163,17 @@
                                 <td><?= iconv('WINDOWS-1251', 'UTF-8', $purchase['site_client_name']) ?></td>
                                 <td><?= iconv('WINDOWS-1251', 'UTF-8', $purchase['stock_name'])?></td>
 								<?php $status = iconv('WINDOWS-1251', 'UTF-8', $purchase['status_name'])?>
-								<td class="<?= Umbrella\models\Purchases::getStatusRequest($status)?>"><?= ($status == NULL) ? 'Expect' : $status?></td>
+								<td class="<?= Umbrella\models\crm\Purchases::getStatusRequest($status)?>"><?= ($status == NULL) ? 'Expect' : $status?></td>
                                 <td><?=Umbrella\components\Functions::formatDate($purchase['created_on'])?></td>
                             </tr>
                         <?php endforeach;?>
                     <?php endif;?>
                     </tbody>
                 </table>
-                <?php elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+                <?php elseif($user->isAdmin() || $user->isManager()):?>
                     <table class="umbrella-table">
                         <caption>Last recordings on
-                            <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-7 days') ?> &mdash;
+                            <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-14 days') ?> &mdash;
                             <?= (isset($_GET['end']) && !empty($_GET['end'])) ? $_GET['end'] : date('Y-m-d') ?>
                             <span id="count_refund" class="text-green">(<?php if (isset($listPurchases)) echo count($listPurchases) ?>)</span>
                         </caption>
@@ -204,7 +195,7 @@
                                     <td><?= iconv('WINDOWS-1251', 'UTF-8', $purchase['site_client_name'])?></td>
                                     <td><?=iconv('WINDOWS-1251', 'UTF-8', $purchase['stock_name'])?></td>
                                     <?php $status = iconv('WINDOWS-1251', 'UTF-8', $purchase['status_name'])?>
-                                    <td class="<?= Umbrella\models\Purchases::getStatusRequest($status)?>"><?= ($status == NULL) ? 'Expect' : $status?></td>
+                                    <td class="<?= Umbrella\models\crm\Purchases::getStatusRequest($status)?>"><?= ($status == NULL) ? 'Expect' : $status?></td>
                                     <td><?=Umbrella\components\Functions::formatDate($purchase['created_on'])?></td>
                                 </tr>
                             <?php endforeach;?>
@@ -222,7 +213,7 @@
             <div class="medium-12 small-12 columns">
                 <h3>New checkout</h3>
             </div>
-			<?php if($user->role == 'administrator' || $user->role == 'administrator-fin'):?>
+			<?php if($user->isAdmin()):?>
 
             <div class="medium-12 small-12 columns">
                 <label>Partner</label>
@@ -236,21 +227,12 @@
                 </select>
             </div>
 
-            <?php elseif ($user->role == 'manager'):?>
+            <?php elseif ($user->isManager() || $user->isPartner()):?>
 
                 <div class="medium-12 small-12 columns">
                     <label><i class="fi-list"></i> Partner</label>
                     <select name='id_partner' id='id_partner' class='required' required>
-                        <?php $user->renderSelectControlUsers($user->id_user);?>
-                    </select>
-                </div>
-
-            <?php elseif ($user->role == 'partner'):?>
-
-                <div class="medium-12 small-12 columns">
-                    <label><i class="fi-list"></i> Partner</label>
-                    <select name='id_partner' id='id_partner' class='required' required>
-                        <?php $user->renderSelectControlUsers($user->id_user);?>
+                        <?php $user->renderSelectControlUsers($user->getId());?>
                     </select>
                 </div>
 
@@ -260,7 +242,7 @@
                 <label>Stock</label>
                 <select name="stock" id="stock" class="required" required>
                     <option value="" selected disabled>none</option>
-                    <?php foreach ($user->renderSelectStocks($user->id_user, 'purchase') as $stock):?>
+                    <?php foreach ($user->renderSelectStocks($user->getId(), 'purchase') as $stock):?>
                         <option value="<?= $stock?>"><?= $stock?></option>
                     <?php endforeach;?>
                 </select>
@@ -328,7 +310,7 @@
                 </div>
 
                 <h4 style="color: #fff">Partners</h4>
-                <?php if($user->role == 'administrator' || $user->role == 'fin-administrator'):?>
+                <?php if($user->isAdmin()):?>
                     <div class="row align-bottom" style="background: #323e48; padding-top: 10px">
                         <div class="medium-12 small-12 columns">
                             <ul class="tabs" data-deep-link="true" data-update-history="true" data-deep-link-smudge="true" data-deep-link-smudge="500" data-tabs id="deeplinked-tabs">
@@ -419,7 +401,7 @@
             <div class="medium-12 small-12 columns">
                 <h3>Generate report</h3>
             </div>
-            <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+            <?php if($user->isAdmin() || $user->isManager()):?>
                 <div class="medium-12 small-12 columns">
                     <div class="row">
                         <div class="medium-12 small-12 columns">

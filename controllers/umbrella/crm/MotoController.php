@@ -7,7 +7,7 @@ use Umbrella\app\User;
 use Umbrella\components\Decoder;
 use Umbrella\components\Logger;
 use Umbrella\models\Admin;
-use Umbrella\models\Moto;
+use Umbrella\models\crm\Moto;
 use Umbrella\models\Products;
 
 /**
@@ -22,6 +22,7 @@ class MotoController extends AdminBase
 
     /**
      * MotoController constructor.
+     * @throws \Exception
      */
     public function __construct()
     {
@@ -83,7 +84,7 @@ class MotoController extends AdminBase
             $lastId++;
 
             $options['site_id'] = $lastId;
-            $options['site_account_id'] = $user->id_user;
+            $options['site_account_id'] = $user->getId();
             $options['client_name'] = Decoder::strToWindows($_REQUEST['client_name']);
             $options['client_phone'] = $_REQUEST['client_phone'];
             $options['client_email'] = $_REQUEST['client_email'];
@@ -122,7 +123,7 @@ class MotoController extends AdminBase
             }
 
             if($ok){
-                Logger::getInstance()->log($user->id_user, 'создал новую заявку ремонта в Motorola ' . $_REQUEST['serial_number']);
+                Logger::getInstance()->log($user->getId(), 'создал новую заявку ремонта в Motorola ' . $_REQUEST['serial_number']);
                 header("Location: " . $_SERVER['HTTP_REFERER']);
                 Url::previous();
             }
@@ -132,7 +133,7 @@ class MotoController extends AdminBase
         // Add Parts
         if(isset($_REQUEST['add-parts']) && $_REQUEST['add-parts'] == 'true'){
             $options['site_id'] = $_REQUEST['site_id'];;
-            $options['site_account_id'] = $user->id_user;
+            $options['site_account_id'] = $user->getId();
             $options['serial_number'] = $_REQUEST['serial_num_parts'];
             $options['part_number'] = $_REQUEST['mtm'];
             $options['operation_type'] = 1;
@@ -148,7 +149,7 @@ class MotoController extends AdminBase
         // Add Local Source
         if(isset($_REQUEST['add-local-source']) && $_REQUEST['add-local-source'] == 'true'){
             $options['site_id'] = $_REQUEST['site_id'];;
-            $options['site_account_id'] = $user->id_user;
+            $options['site_account_id'] = $user->getId();
             $options['serial_number'] = $_REQUEST['serial_num_local'];
             $options['part_number'] = $_REQUEST['mtm'];
             $options['price'] = str_replace(',','.', $_REQUEST['price']);
@@ -164,7 +165,7 @@ class MotoController extends AdminBase
         // Close Repair
         if(isset($_REQUEST['close-repair']) && $_REQUEST['close-repair'] == 'true'){
             $options['site_id'] = $_REQUEST['site_id'];;
-            $options['site_account_id'] = $user->id_user;
+            $options['site_account_id'] = $user->getId();
             $options['serial_number'] = $_REQUEST['serial_num_close'];
             $options['complete_date'] = $_REQUEST['complete_date'];
             $options['repair_level'] = $_REQUEST['repair_level'];
@@ -175,7 +176,6 @@ class MotoController extends AdminBase
             if($ok){
                 Url::previous();
             }
-
         }
 
         $this->render('admin/crm/moto/moto', compact('user', 'partnerList', 'listMoto'));
@@ -196,10 +196,8 @@ class MotoController extends AdminBase
         // 5B28C02926
         $result = Products::checkPartNumberInGM($mtm);
 
-        $mName = '';
         $mName = Decoder::strToUtf($result['mName']);
         print_r($mName);
-
         return true;
     }
 
@@ -215,9 +213,8 @@ class MotoController extends AdminBase
         $serial_num = $_REQUEST['serial_number'];
         $result = 0;
         // 5B28C02926
-        $result = Products::checkMotoSerialNumber($user->id_user, $serial_num);
+        $result = Products::checkMotoSerialNumber($user->getId(), $serial_num);
         print_r(json_encode($result));
-
         return true;
     }
 

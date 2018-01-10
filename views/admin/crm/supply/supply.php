@@ -51,7 +51,7 @@
                 </div>
             </div>
             <div class="row">
-                <?php if($user->role == 'partner'):?>
+                <?php if($user->isPartner()):?>
 
                     <table class="umbrella-table">
                         <thead>
@@ -81,7 +81,7 @@
                                     <td><?=$supply['supply_id']?></td>
                                     <td><?=$supply['name']?></td>
                                     <td><?= Umbrella\components\Functions::formatDate($supply['expected_arriving_date'])?></td>
-                                    <td class="status-supply <?= Umbrella\models\Supply::getStatusSupply($status)?>"><?=$status?></td>
+                                    <td class="status-supply <?= Umbrella\models\crm\Supply::getStatusSupply($status)?>"><?=$status?></td>
                                     <?php if (Umbrella\app\AdminBase::checkDenied('crm.supply.accept', 'view')): ?>
                                         <td class="text-center hide">
                                             <?php if($status != 'Подтверждена'):?>
@@ -110,7 +110,7 @@
                         </tbody>
                     </table>
 
-                <?php elseif($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
+                <?php elseif($user->isAdmin() || $user->isManager()):?>
 
                     <table class="umbrella-table">
                         <thead>
@@ -142,7 +142,7 @@
                                     <td><?=$supply['supply_id']?></td>
                                     <td><?=$supply['name']?></td>
                                     <td><?= Umbrella\components\Functions::formatDate($supply['expected_arriving_date'])?></td>
-                                    <td class="status-supply <?= Umbrella\models\Supply::getStatusSupply($status)?>"><?=$status?></td>
+                                    <td class="status-supply <?= Umbrella\models\crm\Supply::getStatusSupply($status)?>"><?=$status?></td>
                                     <?php if (Umbrella\app\AdminBase::checkDenied('crm.supply.accept', 'view')): ?>
                                         <td class="text-center hide">
                                             <?php if($status != 'Подтверждена'):?>

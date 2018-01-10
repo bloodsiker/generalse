@@ -24,6 +24,7 @@ class OtherRequestController extends AdminBase
 
     /**
      * OtherRequestController constructor.
+     * @throws \Exception
      */
     public function __construct()
     {
@@ -34,6 +35,7 @@ class OtherRequestController extends AdminBase
 
     /**
      * @return bool
+     * @throws \Exception
      */
     public function actionIndex()
     {
@@ -46,7 +48,7 @@ class OtherRequestController extends AdminBase
             $options['part_number'] = $_POST['part_number'];
             $options['quantity'] = $_POST['quantity'];
             $part_num = Products::checkPurchasesPartNumber($_POST['part_number']);
-            $options['part_description'] = iconv('WINDOWS-1251', 'UTF-8', $part_num['mName']);
+            $options['part_description'] = Decoder::strToUtf($part_num['mName']);
             $options['so_number'] = $_POST['so_number'];
             $options['order_type'] = $_POST['order_type'];
             $options['address'] = $_POST['address'] ?? null;
@@ -56,13 +58,13 @@ class OtherRequestController extends AdminBase
             $id = OtherRequest::addRequestOrders($options);
             if($id){
                 Logger::getInstance()->log($user->getId(), ' создал заявку в Lenovo Request. partNumber:' . $options['part_number']);
-                OtherRequestMail::getInstance()->sendEmailGS($options, $user->name_partner, $id);
+                OtherRequestMail::getInstance()->sendEmailGS($options, $user->getName(), $id);
                 Url::previous();
             }
         }
 
         if($user->isPartner() || $user->isManager()){
-            $listRequests = OtherRequest::getListRequest($user->controlUsers($user->id_user));
+            $listRequests = OtherRequest::getListRequest($user->controlUsers($user->getId()));
         } elseif($user->isAdmin()){
             $listRequests = OtherRequest::getListRequestAdmin();
         }
@@ -74,6 +76,7 @@ class OtherRequestController extends AdminBase
 
     /**
      * @return bool
+     * @throws \Exception
      */
     public function actionRequestImport()
     {
@@ -87,7 +90,7 @@ class OtherRequestController extends AdminBase
                 $options['file_path'] = "/upload/attach_other_request/";
                 $randomName = substr_replace(sha1(microtime(true)), '', 5);
 
-                $randomName = $user->name_partner . '-' . $randomName . "-" . $options['name_real'];
+                $randomName = $user->getName() . '-' . $randomName . "-" . $options['name_real'];
                 $options['file_name'] = $randomName;
 
                 if (is_uploaded_file($_FILES["excel_file"]["tmp_name"])) {
@@ -115,7 +118,7 @@ class OtherRequestController extends AdminBase
                             }
                         }
 
-                        OtherRequestMail::getInstance()->sendImportEmailGS($options, $user->name_partner, count($excelArray));
+                        OtherRequestMail::getInstance()->sendImportEmailGS($options, $user->getName(), count($excelArray));
 
                         Logger::getInstance()->log($user->getId(), ' загрузил массив с excel в Lenovo Request');
                         Url::redirect('/adm/crm/other-request');

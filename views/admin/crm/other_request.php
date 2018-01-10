@@ -89,7 +89,7 @@
                                            title="<?= $request['note']?>"></i>
                                     <?php endif;?>
                                 </td>
-                                <td class="status <?= Umbrella\models\OtherRequest::getStatusRequest($request['status_name'])?>"><?= $request['status_name']?></td>
+                                <td class="status <?= Umbrella\models\crm\OtherRequest::getStatusRequest($request['status_name'])?>"><?= $request['status_name']?></td>
                                 <td><?= Umbrella\components\Functions::formatDate($request['date_create'])?></td>
                                 <td class="action-control">
                                     <?php if($request['action'] == 0):?>
@@ -161,9 +161,7 @@
                                     <td class="request-price">
                                         <span class="request_price"><?= str_replace('.',',', $request['price'])?></span>
                                         <?php if($request['action'] == 0):?>
-                                            <?php if($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'):?>
-                                                <a href="" class="button edit-price delete"><i class="fi-pencil"></i></a>
-                                            <?php endif;?>
+                                            <a href="" class="button edit-price delete"><i class="fi-pencil"></i></a>
                                         <?php endif;?>
                                     </td>
                                     <td><?= $request['address']?></td>
@@ -177,7 +175,7 @@
                                                title="<?= $request['note']?>"></i>
                                         <?php endif;?>
                                     </td>
-                                    <td class="status <?= Umbrella\models\OtherRequest::getStatusRequest($request['status_name'])?>"><?= $request['status_name']?></td>
+                                    <td class="status <?= Umbrella\models\crm\OtherRequest::getStatusRequest($request['status_name'])?>"><?= $request['status_name']?></td>
                                     <td><?= Umbrella\components\Functions::formatDate($request['date_create'])?></td>
                                     <td class="action-control">
                                         <?php if($request['action'] == 0):?>

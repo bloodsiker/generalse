@@ -1,6 +1,6 @@
 <?php
 
-namespace Umbrella\models;
+namespace Umbrella\models\crm;
 
 use PDO;
 use Umbrella\components\Db\MySQL;
@@ -16,16 +16,13 @@ class Moto
      */
     public static function addServiceObjectsMsSQL($options)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'INSERT INTO dbo.site_gm_service_objects '
             . '(site_id, site_account_id, client_name, client_phone, client_email, serial_number, part_number, problem_description, purchase_date, carry_in_date, ready)'
             . 'VALUES '
             . '(:site_id, :site_account_id, :client_name, :client_phone, :client_email, :serial_number, :part_number, :problem_description, :purchase_date, :carry_in_date, :ready)';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $options['site_id'], PDO::PARAM_INT);
         $result->bindParam(':site_account_id', $options['site_account_id'], PDO::PARAM_INT);
@@ -38,7 +35,6 @@ class Moto
         $result->bindParam(':purchase_date', $options['purchase_date'], PDO::PARAM_STR);
         $result->bindParam(':carry_in_date', $options['carry_in_date'], PDO::PARAM_STR);
         $result->bindParam(':ready', $options['ready'], PDO::PARAM_INT);
-
         return $result->execute();
     }
 
@@ -50,16 +46,13 @@ class Moto
      */
     public static function addServiceObjects($options)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'INSERT INTO gm_service_objects '
             . '(site_id, site_account_id, client_name, client_phone, client_email, serial_number, part_number, goods_name, problem_description, purchase_date, carry_in_date)'
             . 'VALUES '
             . '(:site_id, :site_account_id, :client_name, :client_phone, :client_email, :serial_number, :part_number, :goods_name, :problem_description, :purchase_date, :carry_in_date)';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $options['site_id'], PDO::PARAM_INT);
         $result->bindParam(':site_account_id', $options['site_account_id'], PDO::PARAM_INT);
@@ -72,7 +65,6 @@ class Moto
         $result->bindParam(':problem_description', $options['problem_description'], PDO::PARAM_STR);
         $result->bindParam(':purchase_date', $options['purchase_date'], PDO::PARAM_STR);
         $result->bindParam(':carry_in_date', $options['carry_in_date'], PDO::PARAM_STR);
-
         return $result->execute();
     }
 
@@ -84,17 +76,13 @@ class Moto
      */
     public static function addDocumentServiceObjectsMsSql($options)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'INSERT INTO dbo.site_gm_service_objects_documents '
             . '(site_id, file_name, file_data)'
             . 'VALUES '
             . '(:site_id, :file_name, :file_data)';
 
-        //print_r($options);
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $options['site_id'], PDO::PARAM_INT);
         $result->bindParam(':file_name', $options['file_name'], PDO::PARAM_STR);
@@ -112,22 +100,18 @@ class Moto
      */
     public static function addDocumentServiceObjects($options)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'INSERT INTO gm_service_objects_documents '
             . '(site_id, file_path, file_name, real_file_name)'
             . 'VALUES '
             . '(:site_id, :file_path, :file_name, :real_file_name)';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $options['site_id'], PDO::PARAM_INT);
         $result->bindParam(':file_path', $options['file_path'], PDO::PARAM_STR);
         $result->bindParam(':file_name', $options['file_name'], PDO::PARAM_STR);
         $result->bindParam(':real_file_name', $options['real_file_name'], PDO::PARAM_STR);
-
         return $result->execute();
     }
 
@@ -139,16 +123,13 @@ class Moto
      */
     public static function addPartsMsSQL($options)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'INSERT INTO dbo.site_gm_service_objects_elements '
             . '(site_id, site_account_id, part_number, serial_number, operation_type, ready)'
             . 'VALUES '
             . '(:site_id, :site_account_id, :part_number, :serial_number, :operation_type,  :ready)';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $options['site_id'], PDO::PARAM_INT);
         $result->bindParam(':site_account_id', $options['site_account_id'], PDO::PARAM_INT);
@@ -156,7 +137,6 @@ class Moto
         $result->bindParam(':serial_number', $options['serial_number'], PDO::PARAM_STR);
         $result->bindParam(':operation_type', $options['operation_type'], PDO::PARAM_INT);
         $result->bindParam(':ready', $options['ready'], PDO::PARAM_INT);
-
         return $result->execute();
     }
 
@@ -168,22 +148,18 @@ class Moto
      */
     public static function addParts($options)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'INSERT INTO gm_service_objects_elements '
             . '(site_id, site_account_id, part_number, price)'
             . 'VALUES '
             . '(:site_id, :site_account_id, :part_number, :price)';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $options['site_id'], PDO::PARAM_INT);
         $result->bindParam(':site_account_id', $options['site_account_id'], PDO::PARAM_INT);
         $result->bindParam(':part_number', $options['part_number'], PDO::PARAM_STR);
         $result->bindParam(':price', $options['price'], PDO::PARAM_INT);
-
         return $result->execute();
     }
 
@@ -195,16 +171,13 @@ class Moto
      */
     public static function addLocalSourceMsSQL($options)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'INSERT INTO dbo.site_gm_service_objects_elements '
             . '(site_id, site_account_id, part_number, serial_number, price, operation_type, ready)'
             . 'VALUES '
             . '(:site_id, :site_account_id, :part_number, :serial_number, :price, :operation_type,  :ready)';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $options['site_id'], PDO::PARAM_INT);
         $result->bindParam(':site_account_id', $options['site_account_id'], PDO::PARAM_INT);
@@ -213,7 +186,6 @@ class Moto
         $result->bindParam(':price', $options['price'], PDO::PARAM_STR);
         $result->bindParam(':operation_type', $options['operation_type'], PDO::PARAM_INT);
         $result->bindParam(':ready', $options['ready'], PDO::PARAM_INT);
-
         return $result->execute();
     }
 
@@ -253,8 +225,7 @@ class Moto
     {
         $db = MsSQL::getConnection();
 
-        //$sql = "SELECT site_id FROM gm_purchases ORDER BY id DESC LIMIT 1";
-        $sql = "SELECT site_id FROM site_gm_service_objects WHERE site_id = (SELECT MAX(site_id) FROM site_gm_service_objects)";
+        $sql = "SELECT MAX(site_id) FROM site_gm_service_objects";
 
         $result = $db->prepare($sql);
         $result->execute();
@@ -270,10 +241,8 @@ class Moto
      */
     public static function getAllMotoByPartner($id_partner, $status)
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT
                  sgso.site_id,
                  sgso.site_account_id,
@@ -295,16 +264,11 @@ class Moto
                  WHERE sgso.site_account_id = :id_user
                  AND sgso.object_type = 0 {$status}
                  ORDER BY sgso.id DESC";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $id_partner, PDO::PARAM_INT);
-
-        // Выполнение коменды
         $result->execute();
-
-        //
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -315,10 +279,8 @@ class Moto
      */
     public static function getAllMoto($filter = '')
     {
-        // Соединение с БД
         $db = MsSQL::getConnection();
 
-        // Получение и возврат результатов
         $sql = "SELECT
                  sgso.site_id,
                  sgso.site_account_id,
@@ -339,16 +301,10 @@ class Moto
                     ON sgso.site_account_id = sgu.site_account_id
                  WHERE sgso.object_type = 0 {$filter}
                 ORDER BY sgso.id DESC";
-        // Используется подготовленный запрос
+
         $result = $db->prepare($sql);
-        //$result->bindParam(':id_user', $id_partner, PDO::PARAM_INT);
-
-        // Выполнение коменды
         $result->execute();
-
-        //
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -366,8 +322,7 @@ class Moto
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $site_id, PDO::PARAM_INT);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
@@ -383,8 +338,7 @@ class Moto
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $site_id, PDO::PARAM_INT);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 }

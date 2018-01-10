@@ -18,7 +18,7 @@ use Umbrella\models\crm\Request;
 use Umbrella\models\crm\Currency;
 use Umbrella\models\File;
 use Umbrella\models\Orders;
-use Umbrella\models\PartAnalog;
+use Umbrella\models\crm\PartAnalog;
 use Umbrella\models\Price;
 use Umbrella\models\Products;
 use Umbrella\models\Stocks;
@@ -36,6 +36,7 @@ class RequestController extends AdminBase
 
     /**
      * RequestController constructor.
+     * @throws \Exception
      */
     public function __construct()
     {
@@ -694,8 +695,11 @@ class RequestController extends AdminBase
 
     /**
      * Delete request
+     *
      * @param $id
+     *
      * @return bool
+     * @throws \Exception
      */
     public function actionRequestDelete($id)
     {

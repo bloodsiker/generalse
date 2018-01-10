@@ -1,6 +1,6 @@
 <?php
 
-namespace Umbrella\models;
+namespace Umbrella\models\crm;
 
 use PDO;
 use Umbrella\components\Db\MySQL;
@@ -18,7 +18,7 @@ class Supply
         $db = MsSQL::getConnection();
 
         //$sql = "SELECT site_id FROM gm_purchases ORDER BY id DESC LIMIT 1";
-        $sql = "SELECT site_id FROM site_gm_supplies WHERE site_id = (SELECT MAX(site_id) FROM site_gm_supplies)";
+        $sql = "SELECT MAX(site_id) FROM site_gm_supplies";
 
         $result = $db->prepare($sql);
         $result->execute();

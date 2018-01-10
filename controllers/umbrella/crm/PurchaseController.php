@@ -4,14 +4,14 @@ namespace Umbrella\controllers\umbrella\crm;
 use Josantonius\Session\Session;
 use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
+use Umbrella\app\Group;
 use Umbrella\app\User;
 use Umbrella\components\Decoder;
 use Umbrella\components\ImportExcel;
 use Umbrella\components\Logger;
 use Umbrella\models\Admin;
-use Umbrella\models\GroupModel;
 use Umbrella\models\Products;
-use Umbrella\models\Purchases;
+use Umbrella\models\crm\Purchases;
 
 /**
  * Class PurchaseController
@@ -25,6 +25,7 @@ class PurchaseController extends AdminBase
 
     /**
      * PurchaseController constructor.
+     * @throws \Exception
      */
     public function __construct()
     {
@@ -36,6 +37,7 @@ class PurchaseController extends AdminBase
     /**
      * Покупки
      * @return bool
+     * @throws \Exception
      */
     public function actionPurchase()
     {
@@ -132,8 +134,6 @@ class PurchaseController extends AdminBase
                         // Пишем в сессию массив с ненайденными партномерами на складах
                         Session::set('error_check_stock', $arr_check_stock);
 
-//                        echo "<pre>";
-//                        print_r($insertArray);
                         // Если массив не пустой, то пишем в базу
                         if(count($insertArray) > 0){
                             $options['site_id'] = $lastId;
@@ -155,7 +155,7 @@ class PurchaseController extends AdminBase
                                         Purchases::addPurchasesElements($insert);
                                     }
                                 }
-                                Logger::getInstance()->log($user->id_user, 'загрузил массив с excel в Purchase');
+                                Logger::getInstance()->log($user->getId(), 'загрузил массив с excel в Purchase');
                             }
                         }
                     }
@@ -166,7 +166,7 @@ class PurchaseController extends AdminBase
         }
 
 
-        if($user->role == 'partner' || $user->role == 'manager') {
+        if($user->isPartner() ||  $user->isManager()) {
 
             $filter = "";
             $interval = " AND sgp.created_on >= DATEADD(day, -7, GETDATE())";
@@ -178,13 +178,13 @@ class PurchaseController extends AdminBase
                 $interval = '';
             }
             $filter .= $interval;
-            $listPurchases = Purchases::getPurchasesByPartnerMsSql($user->controlUsers($user->id_user), $filter);
+            $listPurchases = Purchases::getPurchasesByPartnerMsSql($user->controlUsers($user->getId()), $filter);
 
             // Параметры для формирование фильтров
-            $user_ids = $user->controlUsers($user->id_user);
+            $user_ids = $user->controlUsers($user->getId());
             $partnerList = Admin::getPartnerControlUsers($user_ids);
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
+        } else if ($user->isAdmin()){
 
             $filter = "";
             $interval = " AND sgp.created_on >= DATEADD(day, -7, GETDATE())";
@@ -199,21 +199,10 @@ class PurchaseController extends AdminBase
 
             $listPurchases = Purchases::getAllPurchasesMsSql($filter);
 
+            $partnerList = Admin::getAllPartner();
             // Параметры для формирование фильтров
-            $groupList = GroupModel::getGroupList();
-            $userInGroup = [];
-            $i = 0;
-            foreach ($groupList as $group) {
-                $userInGroup[$i]['group_name'] = $group['group_name'];
-                $userInGroup[$i]['group_id'] = $group['id'];
-                $userInGroup[$i]['users'] = GroupModel::getUsersByGroup($group['id']);
-                $i++;
-            }
-            // Добавляем в массив пользователей без групп
-            $userNotGroup[0]['group_name'] = 'Without group';
-            $userNotGroup[0]['group_id'] = 'without_group';
-            $userNotGroup[0]['users'] = GroupModel::getUsersWithoutGroup();
-            $userInGroup = array_merge($userInGroup, $userNotGroup);
+            $group = new Group();
+            $userInGroup = $group->groupFormationForFilter();
         }
 
         $this->render('admin/crm/purchase/purchase', compact('user', 'userInGroup', 'partnerList', 'listPurchases'));
@@ -234,10 +223,10 @@ class PurchaseController extends AdminBase
         $arr_error_pn = Session::pull('error_purchase');
         $arr_check_stock = Session::pull('error_check_stock');
 
-        if($user->role == 'partner' || $user->role == 'manager') {
+        if($user->isPartner() || $user->isManager()) {
 
             $filter = "";
-            $interval = " AND sgp.created_on >= DATEADD(day, -7, GETDATE())";
+            $interval = " AND sgp.created_on >= DATEADD(day, -14, GETDATE())";
 
             if(!empty($_GET['end']) && !empty($_GET['start'])){
                 $start = $_GET['start']. " 00:00";
@@ -246,22 +235,22 @@ class PurchaseController extends AdminBase
                 $interval = '';
             }
             $filter .= $interval;
-            $listPurchases = Purchases::getPurchasesByPartnerMsSql($user->controlUsers($user->id_user), $filter);
+            $listPurchases = Purchases::getPurchasesByPartnerMsSql($user->controlUsers($user->getId()), $filter);
 
             // Параметры для формирование фильтров
-            $user_ids = $user->controlUsers($user->id_user);
+            $user_ids = $user->controlUsers($user->getId());
             $partnerList = Admin::getPartnerControlUsers($user_ids);
-            $new_partner = array();
+            $new_partner = [];
             if(count($partnerList) > 3){
                 $new_partner = array_chunk($partnerList, (int)count($partnerList) / 3);
             } else {
                 $new_partner[] = $partnerList;
             }
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
+        } else if ($user->isAdmin()){
 
             $filter = "";
-            $interval = " AND sgp.created_on >= DATEADD(day, -7, GETDATE())";
+            $interval = " AND sgp.created_on >= DATEADD(day, -14, GETDATE())";
 
             if(!empty($_GET['end']) && !empty($_GET['start'])){
                 $start = $_GET['start']. " 00:00";
@@ -270,22 +259,23 @@ class PurchaseController extends AdminBase
                 $interval = '';
             }
             $filter .= $interval;
-            //$listPurchases = Purchases::getAllPurchases($filter);
             $listPurchases = Purchases::getAllPurchasesMsSql($filter);
 
-            // Параметры для формирование фильтров
             $partnerList = Admin::getAllPartner();
-            $new_partner = array_chunk($partnerList, (int)count($partnerList) / 3);
+            // Параметры для формирование фильтров
+            $group = new Group();
+            $userInGroup = $group->groupFormationForFilter();
         }
 
         $this->render('admin/crm/purchase/purchase', compact('user', 'new_partner',
-            'partnerList', 'listPurchases', 'arr_error_pn', 'arr_check_stock'));
+            'partnerList', 'listPurchases', 'arr_error_pn', 'arr_check_stock', 'userInGroup'));
         return true;
     }
 
 
     /**
      * @return bool
+     * @throws \Exception
      */
     public function actionPurchasePartNumAjax()
     {
@@ -346,6 +336,7 @@ class PurchaseController extends AdminBase
 
     /**
      * @return bool
+     * @throws \Exception
      */
     public function actionPurchaseAjax()
     {
@@ -387,7 +378,7 @@ class PurchaseController extends AdminBase
             //$okk = Purchases::addPurchasesElementsMsSQL($options);
             if($okk){
                 Purchases::addPurchasesElements($options);
-                Logger::getInstance()->log($user->id_user, 'совершил покупку в Purchase ' . $options['part_number']);
+                Logger::getInstance()->log($user->getId(), 'совершил покупку в Purchase ' . $options['part_number']);
             }
             //Успех
             echo 1;
@@ -396,14 +387,13 @@ class PurchaseController extends AdminBase
             //Неудача
             echo 0;
         }
-
         return true;
-
     }
 
     /**
      * Показать продукты с разборки
      * @return bool
+     * @throws \Exception
      */
     public function actionShowDetailPurchases()
     {
@@ -428,6 +418,7 @@ class PurchaseController extends AdminBase
     /**
      * генерация таблицы покупок для экспорта
      * @return bool
+     * @throws \Exception
      */
     public function actionExportPurchase()
     {
@@ -451,43 +442,32 @@ class PurchaseController extends AdminBase
     /**
      * Поиск по покупкам
      * @return bool
+     * @throws \Exception
      */
     public function actionSearch()
     {
         $user = $this->user;
 
-        if($user->role == 'partner' || $user->role == 'manager') {
+        if($user->isPartner() || $user->isManager()) {
 
             $search = Decoder::strToWindows(trim($_REQUEST['search']));
 
-            $user_ids = $user->controlUsers($user->id_user);
+            $user_ids = $user->controlUsers($user->getId());
             $partnerList = Admin::getPartnerControlUsers($user_ids);
 
             $idS = implode(',', $user_ids);
             $filter = " AND sgp.site_account_id IN ($idS)";
             $listPurchases = Purchases::getSearchInPurchase($search, $filter);
 
-        } else if($user->role == 'administrator' || $user->role == 'administrator-fin'){
+        } else if($user->isAdmin()){
 
             $search = Decoder::strToWindows(trim($_REQUEST['search']));
 
             $partnerList = Admin::getAllPartner();
 
             // Параметры для формирование фильтров
-            $groupList = GroupModel::getGroupList();
-            $userInGroup = [];
-            $i = 0;
-            foreach ($groupList as $group) {
-                $userInGroup[$i]['group_name'] = $group['group_name'];
-                $userInGroup[$i]['group_id'] = $group['id'];
-                $userInGroup[$i]['users'] = GroupModel::getUsersByGroup($group['id']);
-                $i++;
-            }
-            // Добавляем в массив пользователей без групп
-            $userNotGroup[0]['group_name'] = 'Without group';
-            $userNotGroup[0]['group_id'] = 'without_group';
-            $userNotGroup[0]['users'] = GroupModel::getUsersWithoutGroup();
-            $userInGroup = array_merge($userInGroup, $userNotGroup);
+            $group = new Group();
+            $userInGroup = $group->groupFormationForFilter();
 
             $listPurchases = Purchases::getSearchInPurchase($search);
         }
