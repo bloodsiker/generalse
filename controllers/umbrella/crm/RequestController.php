@@ -391,9 +391,10 @@ class RequestController extends AdminBase
                 $analogPrice = Products::getPricePartNumber($order_pn, $requestInfo['site_account_id']);
                 $originPrice = Products::getPricePartNumber($requestInfo['part_number'], $requestInfo['site_account_id']);
 
-                $userRequest = new User($requestInfo['site_account_id']);
+                //$userRequest = new User($requestInfo['site_account_id']);
+                $userRequest = Admin::getAdminById($requestInfo['site_account_id']);
 
-                RequestMail::getInstance()->sendEmailAnalogPartNumber($id_order, $analogPrice, $originPrice, $userRequest->email);
+                RequestMail::getInstance()->sendEmailAnalogPartNumber($id_order, $analogPrice, $originPrice, $userRequest['email']);
 
                 Logger::getInstance()->log($user->id_user, ' изменил part number в request #' . $id_order . ' на ' . $order_pn);
                 print_r(200);
@@ -678,7 +679,7 @@ class RequestController extends AdminBase
                                 $oldStatus = $requestInfo['status_name'] . ' ' . $requestInfo['expected_date'];
                                 $newStatus = $import['status_name'] . ' ' . $import['expected_date'];
                                 $partnersEmails = Admin::getAdminById($requestInfo['site_account_id']);
-                                RequestMail::getInstance()->sendEmailEditStatus($id, $oldStatus, Decoder::strToWindows($newStatus), $partnersEmails);
+                                RequestMail::getInstance()->sendEmailEditStatus($id, $oldStatus, Decoder::strToWindows($newStatus), $partnersEmails['email']);
                             }
                         }
                         Logger::getInstance()->log($user->getId(), ' изменил(а) статусы в Request с excel');
