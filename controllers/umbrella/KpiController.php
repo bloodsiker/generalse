@@ -11,7 +11,7 @@ use Umbrella\components\KPI;
 use Umbrella\components\Logger;
 use Umbrella\models\Admin;
 use Umbrella\models\kpi\Data;
-use Umbrella\models\ProblemData;
+use Umbrella\models\kpi\ProblemData;
 
 /**
  * Class KpiController

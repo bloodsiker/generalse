@@ -1,6 +1,6 @@
 <?php
 
-namespace Umbrella\models;
+namespace Umbrella\models\crm;
 
 use PDO;
 use Umbrella\components\Db\MsSQL;
@@ -109,7 +109,6 @@ class Price
         $result->bindParam(':type_1', $type[0], PDO::PARAM_STR);
         $result->bindParam(':type_2', $type[1], PDO::PARAM_STR);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 }

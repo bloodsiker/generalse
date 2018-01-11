@@ -1,6 +1,6 @@
 <?php
 
-namespace Umbrella\models;
+namespace Umbrella\models\crm;
 
 use PDO;
 use Umbrella\components\Db\MySQL;
@@ -29,7 +29,6 @@ class Orders
         $result->bindParam(':so_number', $options['so_number'], PDO::PARAM_STR);
         $result->bindParam(':ready', $options['ready'], PDO::PARAM_INT);
         $result->bindParam(':note', $options['note_mysql'], PDO::PARAM_STR);
-
         return $result->execute();
     }
 
@@ -54,7 +53,6 @@ class Orders
         $result->bindParam(':so_number', $options['so_number'], PDO::PARAM_STR);
         $result->bindParam(':stock_name', $options['stock_name'], PDO::PARAM_INT);
         $result->bindParam(':quantity', $options['quantity'], PDO::PARAM_INT);
-
         return $result->execute();
     }
 
@@ -79,7 +77,6 @@ class Orders
         $result->bindParam(':ready', $options['ready'], PDO::PARAM_INT);
         $result->bindParam(':note', $options['note'], PDO::PARAM_STR);
         $result->bindParam(':order_type_id', $options['order_type_id'], PDO::PARAM_INT);
-
         return $result->execute();
     }
 
@@ -122,8 +119,7 @@ class Orders
         $sql = "SELECT * FROM site_gm_orders_types";
         $result = $db->prepare($sql);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 	
 	/**
@@ -184,11 +180,8 @@ class Orders
                 ORDER BY sgo.id DESC";
 
         $result = $db->prepare($sql);
-        //$result->bindParam(':search', $search , PDO::PARAM_STR);
         $result->execute(array("%$search%", "%$search%", "%$search%", "%$search%", "%$search%"));
-
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 	
@@ -216,10 +209,8 @@ class Orders
                    ORDER BY sgo.id DESC";
 
         $result = $db->prepare($sql);
-        //$result->bindParam(':id_user', $id_partner, PDO::PARAM_INT);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 	
 
@@ -232,7 +223,6 @@ class Orders
     {
         $db = MsSQL::getConnection();
 
-        //$sql = "SELECT site_id FROM site_gm_orders WHERE site_id = (SELECT MAX(site_id) FROM site_gm_orders)";
         $sql = "SELECT MAX(site_id) as site_id FROM site_gm_orders";
 
         $result = $db->prepare($sql);
@@ -264,8 +254,7 @@ class Orders
         $result = $db->prepare($sql);
         $result->bindParam(':order_id', $order_id, PDO::PARAM_INT);
         $result->execute();
-        $all = $result->{$attr}(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->{$attr}(PDO::FETCH_ASSOC);
     }
 
 
@@ -315,8 +304,7 @@ class Orders
         $result->bindParam(':start', $start, PDO::PARAM_STR);
         $result->bindParam(':end', $end, PDO::PARAM_STR);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -359,8 +347,7 @@ class Orders
         $result->bindParam(':start', $start, PDO::PARAM_STR);
         $result->bindParam(':end', $end, PDO::PARAM_STR);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -409,7 +396,6 @@ class Orders
                 return 'aqua';
                 break;
         }
-
         return true;
     }
 
@@ -422,16 +408,13 @@ class Orders
      */
     public static function addReserveOrders($options)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
         $sql = 'INSERT INTO gm_orders_check '
             . '(id_user, request_id, part_number, so_number, price, note, note1, status_name, order_type_id)'
             . 'VALUES '
             . '(:id_user, :request_id, :part_number, :so_number, :price, :note, :note1, :status_name, :order_type_id)';
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $options['id_user'], PDO::PARAM_INT);
         $result->bindParam(':request_id', $options['request_id'], PDO::PARAM_INT);
@@ -442,7 +425,6 @@ class Orders
         $result->bindParam(':note1', $options['note1_mysql'], PDO::PARAM_STR);
         $result->bindParam(':status_name', $options['status_name_mysql'], PDO::PARAM_STR);
         $result->bindParam(':order_type_id', $options['order_type_id'], PDO::PARAM_INT);
-
         return $result->execute();
     }
 

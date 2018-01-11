@@ -12,9 +12,9 @@ use Umbrella\components\ImportExcel;
 use Umbrella\components\Logger;
 use Umbrella\models\Admin;
 use Umbrella\models\crm\Currency;
-use Umbrella\models\Orders;
+use Umbrella\models\crm\Orders;
 use Umbrella\models\Products;
-use Umbrella\models\Stocks;
+use Umbrella\models\crm\Stocks;
 
 /**
  * Class OrderController

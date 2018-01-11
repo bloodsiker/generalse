@@ -5,6 +5,7 @@ namespace Umbrella\models;
 use PDO;
 use Umbrella\components\Db\MySQL;
 use Umbrella\components\Db\MsSQL;
+use Umbrella\components\Decoder;
 
 class Products
 {
@@ -20,16 +21,13 @@ class Products
 
         $sql = 'SELECT partNumber FROM dbo.tbl_GoodsNames WHERE partNumber = :partNumber';
 
-        // Делаем пдготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':partNumber', $partNumber, PDO::PARAM_STR);
         $result->execute();
 
-        // Получаем ассоциативный массив
         $pn_number = $result->fetch();
 
         if ($pn_number) {
-            // Если существует массив, то возращаем partNumber
             return 1;
         }
         return 2;
@@ -46,19 +44,15 @@ class Products
     {
         $db = MsSQL::getConnection();
 
-        //$sql = 'SELECT partNumber, mName FROM gs_products WHERE partNumber = :partNumber';
         $sql = 'SELECT partNumber, mName FROM dbo.tbl_GoodsNames WHERE partNumber = :partNumber';
 
-        // Делаем пдготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':partNumber', $partNumber, PDO::PARAM_STR);
         $result->execute();
 
-        // Получаем ассоциативный массив
         $pn_number = $result->fetch(PDO::FETCH_ASSOC);
 
         if ($pn_number) {
-            // Если существует массив, то возращаем 1
             return $pn_number;
         }
         return 0;
@@ -152,7 +146,6 @@ class Products
                         sum(tbl_2_Stock_Available.quantity) > 0";
 
         // P0RM001PUA
-        // Делаем пдготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':user_id', $userId, PDO::PARAM_INT);
         $result->bindParam(':partNumber', $partNumber, PDO::PARAM_STR);
@@ -165,21 +158,21 @@ class Products
         $data['stock_name'] = $pn_number['stockName'];
 
         if ($pn_number) {
-            // Если существует массив, то возращаем 1
             return $data;
         }
         return 0;
     }
-	
 
-	
-	
-	/**
+
+    /**
      * Для заказов проверяем наличие детали на складах по партномеру
+     *
      * @param $userId
      * @param $partNumber
      * @param $stock
+     *
      * @return int
+     * @throws \Exception
      */
     public static function checkOrdersPartNumberMsSql($userId, $partNumber, $stock)
     {
@@ -235,20 +228,17 @@ class Products
                         sum(tbl_2_Stock_Available.quantity - isnull(Reserv.quantity, 0)) > 0";
 
         // P0RM001PUA
-        // Делаем пдготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':user_id', $userId, PDO::PARAM_INT);
         $result->bindParam(':partNumber', $partNumber, PDO::PARAM_STR);
         $result->bindParam(':stock', $stock, PDO::PARAM_STR);
         $result->execute();
 
-        // Получаем ассоциативный массив
         $pn_number = $result->fetch(PDO::FETCH_ASSOC);
-        $data['goods_name'] = iconv('WINDOWS-1251', 'UTF-8', $pn_number['mName']);
+        $data['goods_name'] = Decoder::strToUtf($pn_number['mName']);
         $data['quantity'] = $pn_number['quantity'];
 
         if ($pn_number) {
-            // Если существует массив, то возращаем 1
             return $data;
         }
         return 0;
@@ -289,7 +279,6 @@ class Products
     {
         $db = MsSQL::getConnection();
 
-        //$sql = 'SELECT partNumber, mName FROM gs_products WHERE partNumber = :partNumber';
         $sql = 'SELECT TOP 1
                   site_id, serial_number 
                 FROM site_gm_service_objects 
@@ -297,17 +286,13 @@ class Products
                 AND serial_number = :serial_number
                 ORDER BY id DESC';
 
-        // Делаем пдготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':site_account_id', $site_account_id, PDO::PARAM_INT);
         $result->bindParam(':serial_number', $serial_number, PDO::PARAM_STR);
         $result->execute();
-
-        // Получаем ассоциативный массив
         $pn_number = $result->fetch(PDO::FETCH_ASSOC);
 
         if ($pn_number) {
-            // Если существует массив, то возращаем 1
             return $pn_number;
         }
         return 0;
@@ -359,20 +344,16 @@ class Products
                        sum(tbl_2_Stock_Available.quantity) > 0";
 
         // P0RM001PUA
-        // Делаем пдготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':user_id', $userId, PDO::PARAM_INT);
         $result->bindParam(':partNumber', $partNumber, PDO::PARAM_STR);
         $result->execute();
-
-        // Получаем ассоциативный массив
         $pn_number = $result->fetch(PDO::FETCH_ASSOC);
         $data['mName'] = $pn_number['mName'];
         $data['quantity'] = $pn_number['quantity'];
         $data['stock_name'] = $pn_number['stockName'];
 
         if ($pn_number) {
-            // Если существует массив, то возращаем 1
             return $data;
         }
         return 0;

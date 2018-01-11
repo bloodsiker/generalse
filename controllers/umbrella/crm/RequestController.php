@@ -17,11 +17,11 @@ use Umbrella\models\Admin;
 use Umbrella\models\crm\Request;
 use Umbrella\models\crm\Currency;
 use Umbrella\models\File;
-use Umbrella\models\Orders;
+use Umbrella\models\crm\Orders;
 use Umbrella\models\crm\PartAnalog;
-use Umbrella\models\Price;
+use Umbrella\models\crm\Price;
 use Umbrella\models\Products;
-use Umbrella\models\Stocks;
+use Umbrella\models\crm\Stocks;
 use upload as FileUpload;
 
 /**

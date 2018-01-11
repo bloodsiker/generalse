@@ -1,9 +1,8 @@
 <?php
 
-namespace Umbrella\models;
+namespace Umbrella\models\crm;
 
 use PDO;
-use Umbrella\app\User;
 use Umbrella\components\Db\MySQL;
 use Umbrella\components\Db\MsSQL;
 use Umbrella\components\Decoder;
@@ -42,8 +41,7 @@ class Stocks
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $id_partner, PDO::PARAM_INT);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -80,8 +78,7 @@ class Stocks
         $result->bindParam(':id_user', $id_partner, PDO::PARAM_INT);
         $result->bindParam(':stock_name', $stock_name, PDO::PARAM_STR);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -126,8 +123,7 @@ class Stocks
 
         $result = $db->prepare($sql);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -180,8 +176,7 @@ class Stocks
         $result->bindParam(':id_partner', $id_partner, PDO::PARAM_INT);
         $result->bindParam(':part_number', $part_number, PDO::PARAM_STR);
         $result->execute();
-        $all = $result->$attr(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->$attr(PDO::FETCH_ASSOC);
     }
 
     /**
@@ -225,8 +220,7 @@ class Stocks
         $result->bindParam(':part_number', $part_number, PDO::PARAM_STR);
         $result->bindParam(':stock', $stock, PDO::PARAM_STR);
         $result->execute();
-        $all = $result->fetch(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetch(PDO::FETCH_ASSOC);
     }
 
 
@@ -258,8 +252,7 @@ class Stocks
         $result->bindParam(':id_partner', $id_partner, PDO::PARAM_INT);
         $result->bindParam(':part_number', $part_number, PDO::PARAM_STR);
         $result->execute();
-        $all = $result->fetch(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetch(PDO::FETCH_ASSOC);
     }
 
 
@@ -299,8 +292,7 @@ class Stocks
 
         $result = $db->prepare($sql);
         $result->execute(array("%$search%", "%$search%", "%$search%", "%$search%", "%$search%"));
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -315,8 +307,7 @@ class Stocks
         $sql = "SELECT * FROM gs_stocks";
         $result = $db->prepare($sql);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -331,8 +322,7 @@ class Stocks
         $sql = "SELECT * FROM site_stocks_to_partners";
         $result = $db->prepare($sql);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -433,8 +423,7 @@ class Stocks
 
         $result = $db->prepare($sql);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 

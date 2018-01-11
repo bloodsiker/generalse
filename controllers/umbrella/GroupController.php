@@ -9,7 +9,7 @@ use Umbrella\app\User;
 use Umbrella\models\Admin;
 use Umbrella\models\Denied;
 use Umbrella\models\GroupModel;
-use Umbrella\models\Stocks;
+use Umbrella\models\crm\Stocks;
 
 class GroupController extends AdminBase
 {
@@ -20,6 +20,7 @@ class GroupController extends AdminBase
 
     /**
      * GroupController constructor.
+     * @throws \Exception
      */
     public function __construct()
     {
@@ -31,10 +32,10 @@ class GroupController extends AdminBase
 
     /**
      * @return bool
+     * @throws \Exception
      */
     public function actionAddGroup()
     {
-        // Проверка доступа
         self::checkDenied('group.add', 'controller');
 
         $user = $this->user;
@@ -56,18 +57,19 @@ class GroupController extends AdminBase
 
     /**
      * View group
+     *
      * @param $id_group
+     *
      * @return bool
+     * @throws \Exception
      */
     public function actionView($id_group)
     {
-        // Проверка доступа
         self::checkDenied('group.view', 'controller');
 
         $user = $this->user;
         $group = new Group();
 
-        //$listUsers = Admin::getAllUsers();
         $listUsers = GroupModel::getUsersWithoutGroup();
         $listUserByGroup = GroupModel::getUsersByGroup($id_group);
 
@@ -90,9 +92,12 @@ class GroupController extends AdminBase
 
     /**
      * Страница просмотра складов в группе
+     *
      * @param $id_group
      * @param $section
+     *
      * @return bool
+     * @throws \Exception
      */
     public function actionStock($id_group, $section)
     {
@@ -121,9 +126,12 @@ class GroupController extends AdminBase
 
     /**
      * Delete a user from a group
+     *
      * @param $id_group
      * @param $id_user
+     *
      * @return bool
+     * @throws \Exception
      */
     public function actionDeleteUser($id_group, $id_user)
     {
@@ -131,7 +139,7 @@ class GroupController extends AdminBase
 
         $user = $this->user;
 
-        if($user->getRole() == 'administrator'){
+        if($user->isAdmin() || $user->isManager()){
             $ok = GroupModel::deleteUserFromGroup($id_group, $id_user);
             if($ok){
                 // Удаляем запрещенные страницы, которые запрещены для группы в которой находился пользователь
@@ -148,8 +156,11 @@ class GroupController extends AdminBase
 
     /**
      * Удаляем склад из группы
+     *
      * @param $id
+     *
      * @return bool
+     * @throws \Exception
      */
     public function actionDeleteStock($id)
     {
@@ -157,7 +168,7 @@ class GroupController extends AdminBase
 
         $user = $this->user;
 
-        if($user->getRole() == 'administrator'){
+        if($user->isAdmin() || $user->isManager()){
             GroupModel::deleteStockFromGroup($id);
         } else {
             echo "<script>alert('У вас нету прав на удаление')</script>";
@@ -177,7 +188,6 @@ class GroupController extends AdminBase
      */
     public function actionGroupDenied($id_group, $p_id = null, $sub_id = null)
     {
-        //self::checkDenied('user.denied', 'controller');
         $user = $this->user;
 
         $group = new Group();

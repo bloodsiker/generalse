@@ -5,7 +5,7 @@ namespace  Umbrella\app\Services\crm;
 use Josantonius\Session\Session;
 use Umbrella\app\User;
 use Umbrella\components\Decoder;
-use Umbrella\models\Stocks;
+use Umbrella\models\crm\Stocks;
 
 class StockService
 {

@@ -43,7 +43,7 @@
                 <table class="umbrella-table" id="table-to-excel">
 					<?php if(isset($_POST['stock']) && count($_POST['stock']) > 1):?>
                         <caption>Stocks is <span class="text-green">
-                                <?=implode(', ', \Umbrella\models\Stocks::replaceArrayNameStockInResultTable($_POST['stock'], $user->getRole()))?>
+                                <?=implode(', ', \Umbrella\models\crm\Stocks::replaceArrayNameStockInResultTable($_POST['stock'], $user->getRole()))?>
                             </span> is <span class="text-green"><?=(isset($allGoodsByPartner)) ? count($allGoodsByPartner) : 0?></span>  units
                         </caption>
                     <?php elseif(isset($_POST['stock']) && count($_POST['stock']) == 1):?>
@@ -113,7 +113,7 @@
                         <?php if(is_array($list_stock)):?>
                             <?php foreach($list_stock as $stock):?>
                                 <div class="medium-4 small-4 columns">
-                                    <?php $checked = Umbrella\models\Stocks::checkStocks(isset($_POST['stock']) ? $_POST['stock'] : [], $stock)?>
+                                    <?php $checked = Umbrella\models\crm\Stocks::checkStocks(isset($_POST['stock']) ? $_POST['stock'] : [], $stock)?>
                                     <input type="checkbox" <?=($checked ? 'checked' : '')?> onclick="checkColor(event)" id="<?=$stock ?>" name="stock[]" value="<?=$stock ?>">
                                     <label for="<?=$stock ?>" style="color: <?= ($checked ? 'green' : '')?>;"><?=$stock ?></label><br>
                                 </div>
@@ -170,7 +170,7 @@
                                             <?php foreach($groups['users'] as $partner):?>
                                                 <div class="medium-4 small-4 columns">
                                                 <span>
-                                                    <?php $checked = Umbrella\models\Stocks::checkUser(isset($_POST['id_partner']) ? $_POST['id_partner'] : [], $partner['id_user'])?>
+                                                    <?php $checked = Umbrella\models\crm\Stocks::checkUser(isset($_POST['id_partner']) ? $_POST['id_partner'] : [], $partner['id_user'])?>
                                                    <input type="checkbox" <?= ($checked ? 'checked' : '')?> onclick="checkColor(event)" id="id-<?=$partner['id_user'] ?>" name="id_partner[]" value="<?=$partner['id_user'] ?>">
                                                     <label  class="check" for="id-<?=$partner['id_user'] ?>" style="color: <?= ($checked ? 'green' : '')?>;"><?=$partner['name_partner'] ?></label><br>
                                                 </span>
@@ -201,8 +201,8 @@
                                     <?php foreach($partnerList as $partner):?>
                                         <div class="medium-4 small-4 columns">
                                             <span>
-                                                <?php $checked = Umbrella\models\Stocks::checkUser(isset($_POST['id_partner']) ? $_POST['id_partner'] : [], $partner['id_user'])?>
-                                                <?php $checkUser = $user->id_user == $partner['id_user'] ? true : false?>
+                                                <?php $checked = Umbrella\models\crm\Stocks::checkUser(isset($_POST['id_partner']) ? $_POST['id_partner'] : [], $partner['id_user'])?>
+                                                <?php $checkUser = $user->getId() == $partner['id_user'] ? true : false?>
                                                 <input type="checkbox" <?= ($checked || $checkUser) ? 'checked' : '' ?> onclick="checkColor(event)" id="id-<?=$partner['id_user'] ?>" name="id_partner[]" value="<?=$partner['id_user'] ?>">
                                                 <label  class="check" for="id-<?=$partner['id_user'] ?>" style="color: <?= ($checked || $checkUser) ? 'green' : ''?>;"><?=$partner['name_partner'] ?></label><br>
                                             </span>

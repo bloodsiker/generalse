@@ -205,7 +205,7 @@
                                 </td>
 
                                 <?php $status_name = $order['status_name']?>
-								<td class="<?= Umbrella\models\Orders::getStatusRequest($status_name);?>">
+								<td class="<?= Umbrella\models\crm\Orders::getStatusRequest($status_name);?>">
                                     <?= $status_name?>
                                     <?php if($status_name == 'Отказано'):?>
                                         <i class="fi-info has-tip [tip-top]" style="font-size: 16px;"
@@ -291,7 +291,7 @@
                                     </td>
 
                                     <?php $status_name = $order['status_name']?>
-                                    <td class="<?=Umbrella\models\Orders::getStatusRequest($status_name);?>">
+                                    <td class="<?=Umbrella\models\crm\Orders::getStatusRequest($status_name);?>">
                                         <?= $status_name?>
                                         <?php if($status_name == 'Отказано'):?>
                                             <i class="fi-info has-tip [tip-top]" style="font-size: 16px;"

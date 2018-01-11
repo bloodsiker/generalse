@@ -16,7 +16,7 @@ use Umbrella\models\DeliveryAddress;
 use Umbrella\models\Denied;
 use Umbrella\models\GroupModel;
 use Umbrella\models\Log;
-use Umbrella\models\Stocks;
+use Umbrella\models\crm\Stocks;
 
 /**
  * Class UserController

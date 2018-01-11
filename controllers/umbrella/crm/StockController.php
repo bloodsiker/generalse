@@ -9,7 +9,7 @@ use Umbrella\components\Decoder;
 use Umbrella\models\Admin;
 use Umbrella\models\crm\Currency;
 use Umbrella\models\GroupModel;
-use Umbrella\models\Stocks;
+use Umbrella\models\crm\Stocks;
 
 /**
  * Class StockController
