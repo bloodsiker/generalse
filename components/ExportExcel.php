@@ -3,8 +3,11 @@
 namespace Umbrella\components;
 
 use ExportDataExcel;
+use ExportDataExcelTest;
+use FluidXml\FluidXml;
 use PHPExcel;
 use PHPExcel_IOFactory;
+use Umbrella\models\crm\Stocks;
 
 /**
  * Class ExportExcel
@@ -117,5 +120,54 @@ class ExportExcel
 
         $exporter->finalize(); // writes the footer, flushes remaining data to browser.
         exit(); // all done
+    }
+
+    public static function xml()
+    {
+        require_once 'fluidxml/source/FluidXml.php';
+
+        $myFile = ROOT . "/storage/test.xml";
+        $fh = fopen($myFile, 'w') or die("can't open file");
+
+        $productsInStock = Stocks::getGoodsInStockByPartner(15, 'OK (KVAZAR)');
+
+        $arrayToXml = [];
+        $i = 0;
+        foreach ($productsInStock as $product){
+            $arrayToXml[$i] = [
+                'item' => [
+                    'id'                => ['@' => $product['goods_name_id']],
+                    'categoryId'        => ['@' => $product['stock_id']],
+                    'art'               => ['@' => $product['part_number']],
+                    'vendor'            => ['@' => ''],
+                    'name'              => ['@' => Decoder::strToUtf($product['goods_name'])],
+                    'price'             => ['@' => round($product['price'], 0)],
+                    'priceCurrency'     => ['@' => 'UAH'],
+                    'amount'            => ['@' => $product['quantity']],
+                ],
+            ];
+            $i++;
+        }
+
+        echo "<pre>";
+        print_r($arrayToXml);
+
+        $book = new FluidXml(null);
+
+        $book->add([
+            'date' => date('d.m.Y H:i:s'),
+            'firmName' => 'Generalse Services Inc.',
+            'currencies' => [
+                'currency' => [
+                    '@id' => 'USD',
+                    '@rate' => 27
+                ]
+            ],
+            'items' => [
+                $arrayToXml
+            ]]);
+
+        fwrite($fh, $book->xml());
+        fclose($fh);
     }
 }

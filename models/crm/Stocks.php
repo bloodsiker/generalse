@@ -55,6 +55,7 @@ class Stocks
     {
         $db = MsSQL::getConnection();
         $sql = "SELECT
+                 sgt.goods_name_id,
                  sgt.stock_name,
                  sgt.goods_name,
                  sgt.goods_name_id,
