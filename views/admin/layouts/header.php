@@ -69,7 +69,7 @@
         <div class="medium-8 small-12 columns">
             <ul class="menu align-right">
                 <?php if (Umbrella\app\AdminBase::checkDenied('adm.dashboard', 'view')): ?>
-                    <li><a href="/adm/dashboard" class="<?= Umbrella\components\Url::IsActive('/dashboard', 'active') ?>">Dashboard</a></li>
+                    <li><a href="/adm/dashboard" class="hide <?= Umbrella\components\Url::IsActive('/dashboard', 'active') ?>">Dashboard</a></li>
                 <?php endif; ?>
 
                 <?php if (Umbrella\app\AdminBase::checkDenied('adm.users', 'view')): ?>
@@ -98,6 +98,10 @@
 
                 <?php if (Umbrella\app\AdminBase::checkDenied('adm.psr', 'view')): ?>
                     <li><a href="/adm/psr/ua"  class="<?= Umbrella\components\Url::IsActive('/adm/psr', 'active')?>">PSR</a></li>
+                <?php endif; ?>
+
+                <?php if (Umbrella\app\AdminBase::checkDenied('adm.engineers', 'view')): ?>
+                    <li><a href="/adm/engineers"  class="<?= Umbrella\components\Url::IsActive('/adm/engineers', 'active')?>">Engineers</a></li>
                 <?php endif; ?>
             </ul>
         </div>

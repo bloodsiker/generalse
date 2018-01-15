@@ -2,6 +2,19 @@
 
 return [
 
+
+    /*********** ENGINEERS  ***********/
+    'adm/engineers/dashboard' => 'umbrella/engineers/Dashboard@index',
+
+    'adm/engineers/repairs' => 'umbrella/engineers/Repairs@index',
+
+    'adm/engineers/returns' => 'umbrella/engineers/Returns@index',
+
+    'adm/engineers/disassembly' => 'umbrella/engineers/Disassembly@index',
+
+    'adm/engineers' => 'umbrella/engineers/Engineers@index',
+
+
     'adm/innovation/ajax_action' => 'umbrella/Innovation@ajaxAction',
 
     /*********** LOG  ***********/
