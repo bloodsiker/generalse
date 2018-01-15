@@ -2,6 +2,12 @@
 
 return [
 
+    /*********** Umbrella  ***********/
+    'api/umbrella/currency/rate/([a-z0-9-_?&]+)' => 'api/umbrella/Currency@rate/$1',
+
+
+
+    /*********** HR Matrix  ***********/
     'api/form-users/achievements/add' => 'api/hr/FormUserAchievements@addAchievements',
 
     'api/form-users/comment/delete([a-z0-9-_?&]+)' => 'api/hr/FormUserComment@deleteComment/$1',
