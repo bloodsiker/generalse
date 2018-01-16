@@ -18,7 +18,7 @@
                                 <form action="" method="post" class="form" data-abide novalidate>
                                     <div class="row align-bottom">
 
-                                        <?php if ($user->role == 'administrator' || $user->role == 'administrator-fin' || $user->role == 'manager'): ?>
+                                        <?php if ($user->isAdmin() || $user->isManager()): ?>
 
                                             <div class="medium-4 small-12 columns">
                                                 <label><i class="fi-list"></i> Partner
@@ -34,11 +34,11 @@
                                                 </label>
                                             </div>
 
-                                        <?php elseif ($user->role == 'partner'): ?>
+                                        <?php elseif ($user->isPartner()): ?>
                                             <div class="medium-4 small-12 columns">
                                                 <label><i class="fi-list"></i> Partner</label>
                                                 <select name='id_partner'>
-                                                    <?php $user->renderSelectControlUsers($user->id_user); ?>
+                                                    <?php $user->renderSelectControlUsers($user->getId()); ?>
                                                 </select>
                                             </div>
                                         <?php endif; ?>
@@ -75,54 +75,62 @@
         <!-- body -->
         <div class="body-content checkout">
             <div class="row">
-                <?php if (isset($bomList) && count($bomList) > 0): ?>
-                    <?php if (is_array($bomList)): ?>
-                        <span>Specify the reason for disassembly device</span>
-                        <textarea name="note" id="note" cols="30" rows="3" class="required"></textarea>
-                        <span id="count_rows_info">At least <strong style="color: red;">5</strong> lines must be marked and correctly filled for request sending</span>
-                        <table class="umbrella-table" id="result_disassembly">
-                            <thead>
-                            <tr>
-                                <th></th>
-                                <th>Part Number</th>
-                                <th>Desription</th>
-                                <th>Stock</th>
-                                <th>Quantity</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <?php foreach ($bomList as $bom): ?>
-                                <tr data-sn="<?= $_POST['serial_number'] ?>"
-                                    data-pn="<?= iconv('WINDOWS-1251', 'UTF-8', $bom['dev_part_number']) ?>"
-                                    data-name="<?= iconv('WINDOWS-1251', 'UTF-8', $bom['dev_mName']) ?>"
-                                    data-stock="SWAP">
-                                    <td width="50" class="selectInTable">
-                                        <label class="checkbox-label ">
-                                            <input class="checkbox" type="checkbox">
-                                        </label>
-                                    </td>
-                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $bom['PartNumber']) ?></td>
-                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $bom['mName']) ?></td>
-                                    <td width="200" class="selectInTable">
-                                        <select name="stock" class="required">
-                                            <option value="" selected="" disabled="">none</option>
-                                            <?php foreach ($user->renderSelectStocks($user->id_user, 'disassembly') as $stock): ?>
-                                                <option value="<?= $stock ?>"><?= $stock ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </td>
-                                    <td width="100" class="price selectInTable" contenteditable>
-                                        <input type="number" value="1" min="1" max="5">
-                                    </td>
+                <?php if(!empty($isSerialNumber)): ?>
+                    <?php if (isset($bomList) && count($bomList) > 0): ?>
+                        <?php if (is_array($bomList)): ?>
+                            <span>Specify the reason for disassembly device</span>
+                            <textarea name="note" id="note" cols="30" rows="3" class="required"></textarea>
+                            <span id="count_rows_info">At least <strong style="color: red;">5</strong> lines must be marked and correctly filled for request sending</span>
+                            <table class="umbrella-table" id="result_disassembly">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Part Number</th>
+                                    <th>Desription</th>
+                                    <th>Stock</th>
+                                    <th>Quantity</th>
                                 </tr>
-                            <?php endforeach; ?>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                <?php foreach ($bomList as $bom): ?>
+                                    <tr data-sn="<?= $_POST['serial_number'] ?>"
+                                        data-pn="<?= iconv('WINDOWS-1251', 'UTF-8', $bom['dev_part_number']) ?>"
+                                        data-name="<?= iconv('WINDOWS-1251', 'UTF-8', $bom['dev_mName']) ?>"
+                                        data-stock="SWAP">
+                                        <td width="50" class="selectInTable">
+                                            <label class="checkbox-label ">
+                                                <input class="checkbox" type="checkbox">
+                                            </label>
+                                        </td>
+                                        <td><?= iconv('WINDOWS-1251', 'UTF-8', $bom['PartNumber']) ?></td>
+                                        <td><?= iconv('WINDOWS-1251', 'UTF-8', $bom['mName']) ?></td>
+                                        <td width="200" class="selectInTable">
+                                            <select name="stock" class="required">
+                                                <option value="" selected="" disabled="">none</option>
+                                                <?php foreach ($user->renderSelectStocks($user->id_user, 'disassembly') as $stock): ?>
+                                                    <option value="<?= $stock ?>"><?= $stock ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </td>
+                                        <td width="100" class="price selectInTable" contenteditable>
+                                            <input type="number" value="1" min="1" max="5">
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        <?php endif; ?>
+                    <?php elseif (isset($bomList)): ?>
+                        <div class="thank_you_page">
+                            <h3>The device with the
+                                SN <?= (!empty($_POST['serial_number'])) ? $_POST['serial_number'] : '' ?><br> not found
+                            </h3>
+                        </div>
                     <?php endif; ?>
-                <?php elseif (isset($bomList)): ?>
+                <?php elseif(isset($isSerialNumber)): ?>
                     <div class="thank_you_page">
                         <h3>The device with the
-                            SN <?= (!empty($_POST['serial_number'])) ? $_POST['serial_number'] : '' ?><br> not found
+                            SN <?= (!empty($_POST['serial_number'])) ? $_POST['serial_number'] : '' ?><br> not found in your stock
                         </h3>
                     </div>
                 <?php endif; ?>

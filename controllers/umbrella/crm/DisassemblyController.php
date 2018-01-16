@@ -8,6 +8,7 @@ use Umbrella\components\Decoder;
 use Umbrella\components\Logger;
 use Umbrella\models\Admin;
 use Umbrella\models\crm\Disassembly;
+use Umbrella\models\crm\Stocks;
 
 /**
  * Class DisassemblyController
@@ -43,11 +44,17 @@ class DisassemblyController extends AdminBase
             $serial_number = $_POST['serial_number'];
             $id_partner = $_POST['id_partner'];
 
-            //QB08242887
-            $bomList = Disassembly::getRequestByPartner($id_partner, $serial_number);
+            $isSerialNumber = Stocks::getSerialNumberInStockByPartner($id_partner, 'SWAP', $serial_number);
+            if($isSerialNumber){
+                //QB08242887
+                $bomList = Disassembly::getRequestByPartner($id_partner, $serial_number);
+            } else {
+                $bomList = null;
+            }
         }
 
-        $this->render('admin/crm/disassemble/disassemble', compact('user', 'partnerList', 'bomList'));
+        $this->render('admin/crm/disassemble/disassemble',
+            compact('user', 'partnerList', 'bomList', 'isSerialNumber', 'serial_number'));
         return true;
     }
 

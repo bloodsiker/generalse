@@ -29,8 +29,7 @@ class Disassembly
 
         $result = $db->prepare($sql);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
@@ -97,8 +96,7 @@ class Disassembly
         $result->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $result->bindParam(':serial_number', $serialNumber, PDO::PARAM_STR);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -121,7 +119,6 @@ class Disassembly
         $result->bindParam(':part_number', $options['part_number'], PDO::PARAM_STR);
         $result->bindParam(':stock_name', $options['stock_name'], PDO::PARAM_STR);
         $result->bindParam(':quantity', $options['quantity'], PDO::PARAM_INT);
-
         return $result->execute();
     }
 
@@ -300,8 +297,7 @@ class Disassembly
 
         $result = $db->prepare($sql);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -336,8 +332,7 @@ class Disassembly
         $result = $db->prepare($sql);
         $result->execute(array("%$search%", "%$search%", "%$search%", "%$search%"));
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -364,8 +359,7 @@ class Disassembly
         $result->bindParam(':part_number', $part_number, PDO::PARAM_STR);
         $result->bindParam(':serial_number', $serial_number, PDO::PARAM_STR);
         $result->execute();
-        $status = $result->fetch();
-        return $status;
+        return $result->fetch(PDO::FETCH_ASSOC);
     }
 
 
@@ -389,8 +383,7 @@ class Disassembly
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $site_id, PDO::PARAM_INT);
         $result->execute();
-        $status = $result->fetch();
-        return $status;
+        return $result->fetch(PDO::FETCH_ASSOC);
     }
 
     /**
@@ -410,8 +403,7 @@ class Disassembly
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $site_id, PDO::PARAM_INT);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
@@ -428,10 +420,16 @@ class Disassembly
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $site_id, PDO::PARAM_INT);
         $result->execute();
-        $status = $result->fetch();
-        return $status;
+        return $result->fetch(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * @param $array_id
+     * @param $start
+     * @param $end
+     *
+     * @return array
+     */
     public static function getExportDisassemblyByPartner($array_id, $start, $end)
     {
         $db = MySQL::getConnection();
@@ -464,8 +462,7 @@ class Disassembly
         $result->bindParam(':start', $start, PDO::PARAM_STR);
         $result->bindParam(':end', $end, PDO::PARAM_STR);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -497,8 +494,7 @@ class Disassembly
         $result->bindParam(':start', $start, PDO::PARAM_STR);
         $result->bindParam(':end', $end, PDO::PARAM_STR);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 

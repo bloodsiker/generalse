@@ -84,6 +84,38 @@ class Stocks
 
 
     /**
+     * find serial number by stocks
+     * @param $id_partner
+     * @param $stock_name
+     * @param $serial_number
+     *
+     * @return mixed
+     */
+    public static function getSerialNumberInStockByPartner($id_partner, $stock_name, $serial_number)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "SELECT
+                 sgt.serial_number
+                FROM site_gm_stocks sgt
+                INNER JOIN tbl_Users tu 
+                    ON sgt.site_account_id = tu.site_gs_account_id
+                INNER JOIN site_gm_users sgu 
+                    ON sgu.id = tu.site_gs_account_id
+                WHERE sgu.site_account_id = :id_user
+                AND stock_name = :stock_name
+                AND sgt.serial_number = :serial_number";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id_user', $id_partner, PDO::PARAM_INT);
+        $result->bindParam(':stock_name', $stock_name, PDO::PARAM_STR);
+        $result->bindParam(':serial_number', $serial_number, PDO::PARAM_STR);
+        $result->execute();
+        return $result->fetch(PDO::FETCH_ASSOC);
+    }
+
+
+    /**
      * Возвращаем детали по складам для выбранных партнеров и выбранных складов
      *
      * @param $id_partners
