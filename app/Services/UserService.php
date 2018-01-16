@@ -2,7 +2,7 @@
 
 namespace Umbrella\app\Services;
 
-use Umbrella\models\Lithographer;
+use Umbrella\models\lithographer\Lithographer;
 
 /**
  * Class UserService

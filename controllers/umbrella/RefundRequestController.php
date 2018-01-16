@@ -65,7 +65,7 @@ class RefundRequestController extends AdminBase
                         $i = 0;
                         while ($row = fgetcsv($input, 1024, ',')) {
 
-                            $options[$i]['id_user'] = $user->id_user;
+                            $options[$i]['id_user'] = $user->getId();
                             $options[$i]['Request_Country'] = $_POST['Request_Country'];
                             $options[$i]['Request_Type'] = $_POST['Request_Type'];
                             $options[$i]['Requestor_First_Name'] = $_POST['Requestor_First_Name'];
@@ -141,7 +141,7 @@ class RefundRequestController extends AdminBase
                 // Если чекбокс не поставлен - пише данные с формы
 				$arr_error_pn = [];
 				
-                $options['id_user'] = $user->id_user;
+                $options['id_user'] = $user->getId();
                 $options['Request_Country'] = $_POST['Request_Country'];
                 $options['Request_Type'] = $_POST['Request_Type'];
                 $options['Requestor_First_Name'] = $_POST['Requestor_First_Name'];
@@ -364,7 +364,6 @@ class RefundRequestController extends AdminBase
             }
             echo json_encode($status);
         }
-
         return true;
     }
 
@@ -380,13 +379,13 @@ class RefundRequestController extends AdminBase
         $allPartner = Admin::getAllPartner();
         $countryList = Country::getAllCountry();
 
-        if($user->getRole() == 'partner'){
+        if($user->isPartner()){
 
             $requestByPartner = Warranty::getRequestByPartner($user->id_user);
 
             $this->render('admin/refund_request/view_request_partner', compact('user','allPartner', 'countryList', 'requestByPartner'));
 
-        } else if($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin' || $user->getRole() == 'manager'){
+        } else if($user->isAdmin() || $user->isManager()){
             $allRequest = Warranty::getAllRequest(0);
 
             $this->render('admin/refund_request/view_request_admin', compact('user','allPartner', 'countryList', 'allRequest'));
@@ -406,7 +405,7 @@ class RefundRequestController extends AdminBase
         $allPartner = Admin::getAllPartner();
         $countryList = Country::getAllCountry();
 
-        if($user->getRole() == 'partner'){
+        if($user->isPartner()){
 
             if(empty($_GET['start']) &&
                 empty($_GET['end'])){
@@ -428,7 +427,7 @@ class RefundRequestController extends AdminBase
 
             $this->render('admin/refund_request/view_request_partner', compact('user','allPartner', 'countryList', 'requestByPartner'));
 
-        } else if($user->getRole() == 'administrator' || $user->getRole() == 'administrator-fin' || $user->getRole() == 'manager'){
+        } else if($user->isAdmin() || $user->isManager()){
             // Фильтрация
 
             if(empty($_GET['Request_Country']) &&
@@ -477,7 +476,7 @@ class RefundRequestController extends AdminBase
         $user = $this->user;
 
         $log = "отправил запрос на списание (Warranty Exception Registration)";
-        Log::addLog($user->id_user, $log);
+        Log::addLog($user->getId(), $log);
 
         $this->render('admin/refund_request/thank_you_page', compact('user'));
         return true;

@@ -13,7 +13,6 @@ use Umbrella\models\File;
 use Umbrella\models\GroupModel;
 use Umbrella\models\api\hr\Auth;
 use Umbrella\models\Innovation;
-use Umbrella\models\Stocks;
 
 /**
  * Class User
