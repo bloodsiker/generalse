@@ -5,6 +5,7 @@ namespace Umbrella\controllers\umbrella;
 use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
 use Umbrella\app\User;
+use Umbrella\components\Decoder;
 use Umbrella\models\Admin;
 use Umbrella\models\Country;
 use Umbrella\models\File;
@@ -234,6 +235,7 @@ class RefundRequestController extends AdminBase
     /**
      * Подгружаем список прикрепенный файлов к заявке
      * @return bool
+     * @throws \Exception
      */
     public function actionRequestAjax()
     {
@@ -263,7 +265,7 @@ class RefundRequestController extends AdminBase
                     ($req['lenovo_ok'] == 0) ? $check_lenovo = 'check_lenovo' : $check_lenovo = 'uncheck_lenovo';
                     // Получаем статус и id из GS MANAGER
                     $status_all = Warranty::checkStatusRequest($req['SN'], $req['PN_MTM'], $req['site_id']);
-                    $id_gs = iconv('WINDOWS-1251', 'UTF-8', $status_all['purchase_id']);
+                    $id_gs = Decoder::strToUtf($status_all['purchase_id']);
 
                     $html .= "<tr class='goods ". $check_lenovo_ok . "' data-id='" . $req['id_warrantry'] . "' data-gm-id='" . $status_all['id'] . "'>";
                     //$html .= "<td class='" . $check_lenovo . "'>" . $req['site_id'] . "</td>";
@@ -289,9 +291,9 @@ class RefundRequestController extends AdminBase
                     <a href='' class='add-lenovo-num'><i class='fi-comments'></i></a><br>
                     <span class='text-lenovo-num'>" .$req['lenovo_num'] . "</span><br>" . $count_comment . "</td>";
 
-                    $status = iconv('WINDOWS-1251', 'UTF-8', $status_all['status_name']);
+                    $status = Decoder::strToUtf($status_all['status_name']);
                     ($status == NULL) ? $status = 'Expect' : $status;
-                    $date_write = iconv('WINDOWS-1251', 'UTF-8', $status_all['writeoff_status_on']);
+                    $date_write = Decoder::strToUtf($status_all['writeoff_status_on']);
                     $html .= "<td class='" . Warranty::getStatusRequest($status) . "'>" . $status . "<br>" . $date_write . "</td>";
                     $html .= "<td>" . $req['date_create_request'] . "</td>";
                     $html .= "<td class='action-control'>";
@@ -352,7 +354,7 @@ class RefundRequestController extends AdminBase
 
         if($_REQUEST['action'] == 'dismiss'){
             $refund_id = $_REQUEST['refund_id'];
-            $comment = iconv('UTF-8', 'WINDOWS-1251', $_REQUEST['comment']);
+            $comment = Decoder::strToWindows($_REQUEST['comment']);
             $ok = Warranty::updateStatusRefundGM($refund_id, 2, $comment);
             if($ok){
                 $status['ok'] = 1;
@@ -381,14 +383,17 @@ class RefundRequestController extends AdminBase
 
         if($user->isPartner()){
 
-            $requestByPartner = Warranty::getRequestByPartner($user->id_user);
+            $filter = " AND gw.date_create_request >= DATE(NOW()) - INTERVAL 30 DAY";
+            $requestByPartner = Warranty::getRequestByPartner($user->getId(), $filter);
 
-            $this->render('admin/refund_request/view_request_partner', compact('user','allPartner', 'countryList', 'requestByPartner'));
+            $this->render('admin/refund_request/view_request_partner',
+                compact('user','allPartner', 'countryList', 'requestByPartner'));
 
         } else if($user->isAdmin() || $user->isManager()){
             $allRequest = Warranty::getAllRequest(0);
 
-            $this->render('admin/refund_request/view_request_admin', compact('user','allPartner', 'countryList', 'allRequest'));
+            $this->render('admin/refund_request/view_request_admin',
+                compact('user','allPartner', 'countryList', 'allRequest'));
         }
         return true;
     }
@@ -412,7 +417,7 @@ class RefundRequestController extends AdminBase
 
                 //$allRequest = null;
                 $filter = "";
-                $requestByPartner = Warranty::getRequestByPartner($user->id_user, $filter);
+                $requestByPartner = Warranty::getRequestByPartner($user->getId(), $filter);
             } else {
 
                 $filter = "";
@@ -422,10 +427,11 @@ class RefundRequestController extends AdminBase
                     $end = $_GET['end']. " 23:59";
                     $filter .= " AND gw.date_create_request BETWEEN '$start' AND '$end'";
                 }
-                $requestByPartner = Warranty::getRequestByPartner($user->id_user, $filter);
+                $requestByPartner = Warranty::getRequestByPartner($user->getId(), $filter);
             }
 
-            $this->render('admin/refund_request/view_request_partner', compact('user','allPartner', 'countryList', 'requestByPartner'));
+            $this->render('admin/refund_request/view_request_partner',
+                compact('user','allPartner', 'countryList', 'requestByPartner'));
 
         } else if($user->isAdmin() || $user->isManager()){
             // Фильтрация
@@ -461,7 +467,8 @@ class RefundRequestController extends AdminBase
 
                 $allRequest = Warranty::getFilterRequest($filter);
             }
-            $this->render('admin/refund_request/view_request_admin', compact('user','allPartner', 'countryList', 'allRequest'));
+            $this->render('admin/refund_request/view_request_admin',
+                compact('user','allPartner', 'countryList', 'allRequest'));
         }
         return true;
     }

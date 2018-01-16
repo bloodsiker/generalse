@@ -27,6 +27,7 @@
                             <button type="submit" class="button primary">apply filter</button>
                         </div>
                         <div class="medium-6 small-12 text-right columns">
+                            <button class="button primary tool" onclick="tableToExcel('request', 'W3C Example Table')" style="width: inherit;"><i class="fi-page-export"></i> Export to Excel</button>
                             <a href="/adm/refund_request/registration" class="button primary tool"><i class="fi-pencil"></i> Registration</a>
                             <a href="/adm/refund_request/view" class="button primary tool active-req"><i class="fi-eye"></i> Show requests</a>
                         </div>
@@ -37,10 +38,13 @@
 
             <div class="row body-content">
                 <div class="medium-12 small-12 columns">
-                    <h2 class="text-center">List requests <span class="text-green">(<?=count($requestByPartner)?>)</span></h2>
-                    <button class="button primary float-right" onclick="tableToExcel('request', 'W3C Example Table')" style="width: inherit;"><i class="fi-page-export"></i> Export to Excel</button>
                     <div id="request">
-                        <table id="table_refund" class="umbrella-table table" border="1" cellspacing="0" cellpadding="5">
+                        <table id="table_refund" class="umbrella-table">
+                            <caption>Last recordings on
+                                <?= (isset($_GET['start']) && !empty($_GET['start'])) ? $_GET['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-30 days') ?> &mdash;
+                                <?= (isset($_GET['end']) && !empty($_GET['end'])) ? $_GET['end'] : date('Y-m-d') ?>
+                                <span id="count_refund" class="text-green">(<?php if (isset($requestByPartner)) echo count($requestByPartner) ?>)</span>
+                            </caption>
                             <thead>
                             <tr>
 								<th>ID</th>

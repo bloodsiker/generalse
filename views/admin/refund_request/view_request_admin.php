@@ -57,6 +57,7 @@
                                     <input type="text" id="goods_search" class="search-input" placeholder="Search..." name="search">
                                 </div>
                                 <div class="medium-12 small-12 text-right columns">
+                                    <button class="button primary tool" onclick="tableToExcel('request', 'W3C Example Table')" style="width: inherit;"><i class="fi-page-export"></i> Export to Excel</button>
                                     <a href="/adm/refund_request/registration" class="button primary tool"><i class="fi-pencil"></i> Registration</a>
                                     <a href="/adm/refund_request/view" class="button primary tool active-req"><i class="fi-eye"></i> Show requests</a>
                                 </div>
@@ -70,10 +71,11 @@
 
             <div class="row body-content">
                 <div class="medium-12 small-12 columns">
-                    <h2 class="text-center">List requests <span id="count_refund" class="text-green">(<?=count($allRequest)?>)</span></h2>
-                    <button class="button primary float-right" onclick="tableToExcel('request', 'W3C Example Table')" style="width: inherit;"><i class="fi-page-export"></i> Export to Excel</button>
                     <div id="request">
-                        <table id="table_refund" class="umbrella-table table" border="1" cellspacing="0" cellpadding="5">
+                        <table id="table_refund" class="umbrella-table">
+                            <caption>Last recordings on
+                                List requests <span id="count_refund" class="text-green">(<?=count($allRequest)?>)</span>
+                            </caption>
                             <thead>
                             <tr>
 								<th>ID</th>
