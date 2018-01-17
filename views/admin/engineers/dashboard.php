@@ -180,12 +180,12 @@
                         </tr>
                         <tr>
                             <th>Бренд</th>
-                            <th>Тип  техники</th>
-                            <th>Предварительная  разборка</th>
+                            <th>Тип техники</th>
+                            <th>Предварительная разборка</th>
                             <th>Разобрано</th>
                             <th>Принятая разборка</th>
-                            <th>Запчасти  Б/У</th>
-                            <th>Запчасти  BAD</th>
+                            <th>Запчасти Б/У</th>
+                            <th>Запчасти BAD</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -293,8 +293,8 @@
                         </tr>
                         <tr>
                             <th class="text-center">Наименование техники</th>
-                            <th class="text-center">Открытые  ремонты</th>
-                            <th class="text-center">Закрытые  ремонты</th>
+                            <th class="text-center">Открытые ремонты</th>
+                            <th class="text-center">Закрытые ремонты</th>
                         </tr>
                         </thead>
                         <tbody>

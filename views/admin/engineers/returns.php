@@ -31,13 +31,13 @@
                     <table class="umbrella-table margin-bottom">
                         <thead>
                         <tr>
-                            <th>Open/ Closed</th>
-                            <th>Номер  возврата</th>
-                            <th>Номер к витанции</th>
-                            <th>Партномер  ЗИП</th>
-                            <th>Описание  ЗИП</th>
+                            <th>Open/Closed</th>
+                            <th>Номер возврата</th>
+                            <th>Номер квитанции</th>
+                            <th>Партномер ЗИП</th>
+                            <th>Описание ЗИП</th>
                             <th>Бренд</th>
-                            <th>Склад  выписки</th>
+                            <th>Склад выписки</th>
                             <th>Исполнитель</th>
                             <th>ТАТ</th>
                         </tr>

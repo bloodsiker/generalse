@@ -31,9 +31,9 @@
                     <table class="umbrella-table margin-bottom">
                         <thead>
                         <tr>
-                            <th>№  разборки</th>
-                            <th>Партномер  техники</th>
-                            <th>Тип  техники</th>
+                            <th>№ разборки</th>
+                            <th>Партномер техники</th>
+                            <th>Тип техники</th>
                             <th>Бренд</th>
                         </tr>
                         </thead>
