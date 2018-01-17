@@ -41,7 +41,8 @@ if (Umbrella\components\Url::Is_url(['/adm/lithographer', '/adm/ccc/tree_knowled
   <script src='/template/admin/js/lithographer.js?v1.5.2'></script>
   <script src='/template/admin/plugins/ckeditor/ckeditor.js'></script>
   ";
-
+if (Umbrella\components\Url::Is_url('/engineers')) echo "<script src='https://www.gstatic.com/charts/loader.js'></script>
+    <script src='/template/admin/js/engineers/engineers.js'></script>";
 ?>
 
 <script>

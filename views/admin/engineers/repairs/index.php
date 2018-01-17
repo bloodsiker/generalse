@@ -25,9 +25,17 @@
         </div>
 
         <!-- body -->
-        <div class="body-content checkout">
+        <div class="body-content">
             <div class="row">
+                <div class="medium-6 small-12 columns">
+                    <div id="repair_diagram"></div>
+                </div>
+                <div class="medium-6 small-12 columns">
+                    <h2 id="repair_result"></h2>
+                </div>
+                <div class="medium-12 small-12 columns" id="show_repairs">
 
+                </div>
             </div>
         </div>
 

@@ -17,6 +17,9 @@ hr{
 .no-margin{
   margin: 0!important;
 }
+.margin-bottom{
+  margin-bottom: 35px!important;
+}
 .tooltip {
   max-width: 16rem !important;
   opacity: 1 !important;
@@ -1318,4 +1321,13 @@ td select {
 }
 .lith_files ul{
     list-style-type: none;
+}
+
+/******** ENGINEERS **********/
+.umbrella-tr-td{
+  background-color: #495a68;
+  color: #fff;
+}
+g[column-id]:hover{
+  cursor: pointer;
 }

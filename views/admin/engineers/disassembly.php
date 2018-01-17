@@ -27,10 +27,42 @@
         <!-- body -->
         <div class="body-content checkout">
             <div class="row">
-
+                <div class="medium-12 small-12 columns">
+                    <table class="umbrella-table margin-bottom">
+                        <thead>
+                        <tr>
+                            <th>№  разборки</th>
+                            <th>Партномер  техники</th>
+                            <th>Тип  техники</th>
+                            <th>Бренд</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
     </div>
 </div>
+
 <?php require_once ROOT . '/views/admin/layouts/footer.php'; ?>

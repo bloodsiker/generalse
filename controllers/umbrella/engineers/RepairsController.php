@@ -35,7 +35,34 @@ class RepairsController extends  AdminBase
     {
         $user = $this->user;
 
-        $this->render('admin/engineers/repairs', compact('user'));
+        $this->render('admin/engineers/repairs/index', compact('user'));
+        return true;
+    }
+
+    /**
+     *
+     */
+    public function actionAjax()
+    {
+        if(isset($_REQUEST['action'])){
+
+            if( $_REQUEST['action'] == 'get_data_for_diagram'){
+                $array = [
+                    ['Type', 'Count'],
+                    ['Диагностика', 11],
+                    ['Согласование', 2],
+                    ['Ожидает запчасти', 2],
+                    ['Отказ', 2],
+                    ['Ремонт', 7],
+                ];
+                print_r(json_encode($array));
+            }
+
+            if($_REQUEST['action'] == 'show_repairs'){
+                $diagram_value = $_REQUEST['diagram_value'];
+                $this->render('admin/engineers/repairs/_part/show_repairs', compact('diagram_value'));
+            }
+        }
         return true;
     }
 

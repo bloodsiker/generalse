@@ -6,6 +6,7 @@ return [
     /*********** ENGINEERS  ***********/
     'adm/engineers/dashboard' => 'umbrella/engineers/Dashboard@index',
 
+    'adm/engineers/repairs/ajax([a-z0-9-_?&]+)' => 'umbrella/engineers/Repairs@ajax/$1',
     'adm/engineers/repairs' => 'umbrella/engineers/Repairs@index',
 
     'adm/engineers/returns' => 'umbrella/engineers/Returns@index',
