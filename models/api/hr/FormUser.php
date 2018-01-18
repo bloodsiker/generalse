@@ -36,7 +36,7 @@ class FormUser
                 FROM gs_hr_users_form ghuf
                 INNER JOIN gs_hr_structure ghs
                     ON ghuf.company_id = ghs.id
-                INNER JOIN gs_hr_structure ghs1
+                LEFT JOIN gs_hr_structure ghs1
                     ON ghuf.department_id = ghs1.id
                 LEFT JOIN gs_hr_structure ghs2
                     ON ghuf.branch_id = ghs2.id
@@ -71,9 +71,9 @@ class FormUser
                     ghb.language_lvl,
                     ghb.trigger_action
                 FROM gs_hr_users_form ghuf
-                INNER JOIN gs_hr_structure ghs
+                LEFT JOIN gs_hr_structure ghs
                     ON ghuf.company_id = ghs.id
-                INNER JOIN gs_hr_structure ghs1
+                LEFT JOIN gs_hr_structure ghs1
                     ON ghuf.department_id = ghs1.id
                 LEFT JOIN gs_hr_structure ghs2
                     ON ghuf.branch_id = ghs2.id

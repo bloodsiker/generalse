@@ -25,30 +25,6 @@ class StructureController
 
     public function actionStructure()
     {
-//        $filter = '';
-//        $listStructure = [];
-//        if(isset($_GET['structure']) && $_GET['structure'] == 'company'){
-//            $filter .= ' AND is_company = 1';
-//            $listStructure = Structure::getStructureList($filter);
-//        }
-//
-//        if(isset($_GET['structure']) && $_GET['structure'] == 'department'){
-//            $companyId = (int)$_GET['company_id'];
-//            $filter .= " AND is_department = 1 AND p_id = {$companyId}";
-//            $listStructure = Structure::getStructureList($filter);
-//        }
-//
-//        if(isset($_GET['structure']) && $_GET['structure'] == 'branch'){
-//            $departmentId = (int)$_GET['department_id'];
-//            $filter .= " AND is_branch = 1 AND p_id = {$departmentId}";
-//            $listStructure = Structure::getStructureList($filter);
-//            $listStructure = array_map(function ($value){
-//
-//                $value['company_id'] = Structure::getCompanyBranch($value['id']);
-//                return $value;
-//            }, $listStructure);
-//        }
-
         $structure = new StructureService();
         $listStructure = $structure->buildStructure();
 
