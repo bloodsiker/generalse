@@ -2,6 +2,17 @@
 
 return [
 
+    /*********** REPAIRS REE   =>   CRM  ***********/
+    'adm/repairs_ree/crm/s/([a-z0-9-_?&]+)' => 'umbrella/repairs_ree/Crm@search/$1',
+    'adm/repairs_ree/crm/([a-z0-9-_?&]+)' => 'umbrella/repairs_ree/Crm@index/$1',
+    'adm/repairs_ree/crm' => 'umbrella/repairs_ree/Crm@index',
+
+    /*********** REPAIRS REE   =>   MDS  ***********/
+    'adm/repairs_ree/mds/s/([a-z0-9-_?&]+)' => 'umbrella/repairs_ree/Mds@search/$1',
+    'adm/repairs_ree/mds/([a-z0-9-_?&]+)' => 'umbrella/repairs_ree/Mds@index/$1',
+    'adm/repairs_ree/mds' => 'umbrella/repairs_ree/Mds@index',
+
+    'adm/repairs_ree' => 'umbrella/repairs_ree/Repairs@index',
 
     /*********** ENGINEERS  ***********/
     'adm/engineers/dashboard' => 'umbrella/engineers/Dashboard@index',

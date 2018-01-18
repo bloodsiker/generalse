@@ -1,15 +1,12 @@
 <?php
-namespace Umbrella\controllers\umbrella\engineers;
+
+namespace Umbrella\controllers\umbrella\repairs_ree;
 
 use Umbrella\app\AdminBase;
 use Umbrella\app\User;
 use Umbrella\models\Admin;
 
-
-/**
- * Class CrmController
- */
-class EngineersController extends  AdminBase
+class MdsController extends AdminBase
 {
     /**
      * @var User
@@ -17,16 +14,15 @@ class EngineersController extends  AdminBase
     private $user;
 
     /**
-     * BatchController constructor.
-     * @throws \Exception
+     * PsrController constructor.
      */
     public function __construct()
     {
         parent::__construct();
-        self::checkDenied('adm.engineers', 'controller');
+        //self::checkDenied('adm.psr.activity', 'controller');
         $this->user = new User(Admin::CheckLogged());
-
     }
+
 
     /**
      * @return bool
@@ -35,8 +31,15 @@ class EngineersController extends  AdminBase
     {
         $user = $this->user;
 
-        $this->render('admin/engineers/index', compact('user'));
+        $this->render('admin/repairs_ree/mds/mds', compact('user'));
         return true;
     }
 
+    public function actionSearch()
+    {
+        $user = $this->user;
+
+        $this->render('admin/repairs_ree/mds/mds', compact('user'));
+        return true;
+    }
 }

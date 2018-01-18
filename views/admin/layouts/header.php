@@ -103,6 +103,10 @@
                 <?php if (Umbrella\app\AdminBase::checkDenied('adm.engineers', 'view')): ?>
                     <li><a href="/adm/engineers"  class="<?= Umbrella\components\Url::IsActive('/adm/engineers', 'active')?>">Engineers</a></li>
                 <?php endif; ?>
+
+                <?php if (Umbrella\app\AdminBase::checkDenied('adm.repairs_ree', 'view')): ?>
+                    <li><a href="/adm/repairs_ree"  class="<?= Umbrella\components\Url::IsActive('/adm/repairs_ree', 'active')?>">Repairs REE</a></li>
+                <?php endif; ?>
             </ul>
         </div>
         <div class="medium-2 small-12 text-right columns">
