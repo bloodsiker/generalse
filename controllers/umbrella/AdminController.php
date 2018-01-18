@@ -2,6 +2,7 @@
 
 namespace Umbrella\controllers\umbrella;
 
+use Josantonius\Request\Request;
 use Josantonius\Session\Session;
 use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
@@ -23,9 +24,9 @@ class AdminController extends AdminBase
      */
     public function actionAuth(){
 
-        if($_REQUEST['action'] == 'login'){
-            $login = $_REQUEST['login'];
-            $password = Functions::hashPass($_REQUEST['password']);
+        if(Request::post('action') == 'login'){
+            $login = Request::post('login');
+            $password = Functions::hashPass(Request::post('password'));
 
             //$server = 'down'; // down || up
             if(config('app')['server'] == 'up'){

@@ -14,12 +14,14 @@
         "sort-packages": true
     },
     "require": {
-        "verot/class.upload.php": "dev-master",
-        "josegonzalez/dotenv": "^3.2",
+        "Josantonius/File": "^1.1",
+        "Josantonius/Request": "^1.1",
         "Josantonius/Session": "^1.1",
         "Josantonius/Url": "^1.1",
+        "josegonzalez/dotenv": "^3.2",
         "nesbot/carbon": "^1.22",
-        "roave/security-advisories":"dev-master"
+        "roave/security-advisories": "dev-master",
+        "verot/class.upload.php": "dev-master"
     },
     "autoload": {
         "psr-4": {

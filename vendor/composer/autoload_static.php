@@ -28,6 +28,8 @@ class ComposerStaticInit757ae5c9dd284343ce5a49deba304424
         array (
             'Josantonius\\Url\\' => 16,
             'Josantonius\\Session\\' => 20,
+            'Josantonius\\Request\\' => 20,
+            'Josantonius\\File\\' => 17,
         ),
         'C' => 
         array (
@@ -59,6 +61,14 @@ class ComposerStaticInit757ae5c9dd284343ce5a49deba304424
         'Josantonius\\Session\\' => 
         array (
             0 => __DIR__ . '/..' . '/josantonius/session/src',
+        ),
+        'Josantonius\\Request\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/josantonius/request/src',
+        ),
+        'Josantonius\\File\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/josantonius/file/src',
         ),
         'Carbon\\' => 
         array (

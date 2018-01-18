@@ -14,7 +14,7 @@ use Umbrella\components\Functions;
 use Umbrella\components\ImportExcel;
 use Umbrella\components\Logger;
 use Umbrella\models\Admin;
-use Umbrella\models\crm\Request;
+use Umbrella\models\crm\CrmRequest;
 use Umbrella\models\crm\Currency;
 use Umbrella\models\File;
 use Umbrella\models\crm\Orders;
@@ -128,7 +128,7 @@ class RequestController extends AdminBase
                     $options['so_number'] = $so_number . ' (' . $i . ')';
                 }
 
-                $ok = Request::addReserveOrdersMsSQL($options);
+                $ok = CrmRequest::addReserveOrdersMsSQL($options);
 
                 if($ok){
                     $options['request_id'] = $ok;
@@ -146,28 +146,28 @@ class RequestController extends AdminBase
 
         if($user->isPartner() || $user->isManager()){
 
-            $listCheckOrders = Request::getReserveOrdersByPartnerMsSQL($user->controlUsers($user->getId()), 0, 1);
+            $listCheckOrders = CrmRequest::getReserveOrdersByPartnerMsSQL($user->controlUsers($user->getId()), 0, 1);
             $listCheckOrders = Functions::getUniqueArray('number', $listCheckOrders);
             $listCheckOrders = array_map(function ($value) use ($rateCurrencyEuro){
                 $value['price_euro'] = round($value['price'] / $rateCurrencyEuro, 2);
                 return $value;
             }, $listCheckOrders);
 
-            $listRemovedRequest = Decoder::arrayToUtf(Request::getReserveOrdersByPartnerMsSQL($user->controlUsers($user->getId()), 0, 0));
+            $listRemovedRequest = Decoder::arrayToUtf(CrmRequest::getReserveOrdersByPartnerMsSQL($user->controlUsers($user->getId()), 0, 0));
             //$listRemovedRequest = [];
 
             $partnerList = Admin::getPartnerControlUsers($user->controlUsers($user->getId()));
 
         } elseif($user->isAdmin()){
 
-            $listCheckOrders = Request::getAllReserveOrdersMsSQL(0, 1);
+            $listCheckOrders = CrmRequest::getAllReserveOrdersMsSQL(0, 1);
             $listCheckOrders = Functions::getUniqueArray('number', $listCheckOrders);
             $listCheckOrders = array_map(function ($value) use ($rateCurrencyEuro){
                 $value['price_euro'] = round($value['price'] / $rateCurrencyEuro, 2);
                 return $value;
             }, $listCheckOrders);
             //$listCheckOrders = [];
-            $listRemovedRequest = Decoder::arrayToUtf(Request::getAllReserveOrdersMsSQL(0, 0));
+            $listRemovedRequest = Decoder::arrayToUtf(CrmRequest::getAllReserveOrdersMsSQL(0, 0));
             //$listRemovedRequest = [];
 
             // Параметры для формирование фильтров
@@ -259,7 +259,7 @@ class RequestController extends AdminBase
                                     if ($quantity > 1) {
                                         $options['so_number'] = $so_number . ' (' . $i . ')';
                                     }
-                                    Request::addReserveOrdersMsSQL($options);
+                                    CrmRequest::addReserveOrdersMsSQL($options);
                                 }
                             }
                         }
@@ -385,9 +385,9 @@ class RequestController extends AdminBase
             $id_order = $_REQUEST['id_order'];
             $order_pn = trim($_REQUEST['order_pn']);
 
-            $requestInfo = Request::getOrderRequestInfo($id_order);
+            $requestInfo = CrmRequest::getOrderRequestInfo($id_order);
 
-            $ok = Request::editPartNumberFromCheckOrdersById($id_order, $order_pn);
+            $ok = CrmRequest::editPartNumberFromCheckOrdersById($id_order, $order_pn);
             if($ok){
                 $analogPrice = Products::getPricePartNumber($order_pn, $requestInfo['site_account_id']);
                 $originPrice = Products::getPricePartNumber($requestInfo['part_number'], $requestInfo['site_account_id']);
@@ -407,7 +407,7 @@ class RequestController extends AdminBase
             $id_order = $_REQUEST['id_order'];
             $order_so = trim(Decoder::strToWindows($_REQUEST['order_so']));
 
-            $ok = Request::editSoNumberFromCheckOrdersById($id_order, $order_so);
+            $ok = CrmRequest::editSoNumberFromCheckOrdersById($id_order, $order_so);
             if($ok){
                 Logger::getInstance()->log($user->getId(), ' изменил so number в request #' . $id_order . ' на ' . $order_so);
                 print_r(200);
@@ -419,7 +419,7 @@ class RequestController extends AdminBase
             $id_order = $_REQUEST['id_order'];
             $goods_name = null;
 
-            $ok = Request::clearGoodsNameFromCheckOrdersById($id_order, $goods_name);
+            $ok = CrmRequest::clearGoodsNameFromCheckOrdersById($id_order, $goods_name);
             if($ok){
                 Logger::getInstance()->log($user->getId(), ' очистил(а) название part_number в request #' . $id_order);
                 print_r(200);
@@ -431,9 +431,9 @@ class RequestController extends AdminBase
             $order_status = trim(Decoder::strToWindows($_REQUEST['order_status']));
             $expected_date = !empty($_REQUEST['expected_date']) ? $_REQUEST['expected_date'] : null;
 
-            $requestInfo = Request::getOrderRequestInfo($id_order);
+            $requestInfo = CrmRequest::getOrderRequestInfo($id_order);
 
-            $ok = Request::editStatusFromCheckOrdersById($id_order, $order_status, $expected_date);
+            $ok = CrmRequest::editStatusFromCheckOrdersById($id_order, $order_status, $expected_date);
             if($ok){
                 $userRequest = Admin::getAdminById($requestInfo['site_account_id']);
                 $oldStatus = $requestInfo['status_name'] . ' ' . $requestInfo['expected_date'];
@@ -469,7 +469,7 @@ class RequestController extends AdminBase
             $options['created_on'] = date('Y-m-d H:i:s');
             $options['active'] = 1;
 
-            $ok = Request::moveRequestInList($id_request, $options);
+            $ok = CrmRequest::moveRequestInList($id_request, $options);
             if($ok){
                 Logger::getInstance()->log($user->getId(), ' переместил request id #' . $id_request . ' с корзины');
                 print_r(200);
@@ -482,7 +482,7 @@ class RequestController extends AdminBase
                 $arrayInCart = Session::get('multi_request_cart');
                 $lastNumber = array_shift($arrayInCart)['number'];
             } else {
-                $lastNumber = Request::generateNumber();
+                $lastNumber = CrmRequest::generateNumber();
             }
 
             $saveToCart = [];
@@ -571,7 +571,7 @@ class RequestController extends AdminBase
                         $options['stock_id'] = null;
                         $options['status_name'] = Decoder::strToWindows('Ожидает появления позиции на складах или в разборках');
                     }
-                    Request::addMultiRequestMsSQL($options);
+                    CrmRequest::addMultiRequestMsSQL($options);
                 }
             }
             Session::set('add_request', 'Request is forming');
@@ -583,7 +583,7 @@ class RequestController extends AdminBase
         //Удаляем элемент с корзины
         if($_REQUEST['action'] == 'show-multi-request'){
             $number = $_REQUEST['number'];
-            $listRequests = Request::getMultiRequestsByNumber($number);
+            $listRequests = CrmRequest::getMultiRequestsByNumber($number);
             $listRequests = Decoder::arrayToUtf($listRequests);
 
             $html = "";
@@ -606,7 +606,7 @@ class RequestController extends AdminBase
         // Удаляем реквест в корзину
         if($_REQUEST['action'] == 'delete_request'){
             $id_request = $_REQUEST['id_request'];
-            $ok = Request::moveRequest($id_request, 0);
+            $ok = CrmRequest::moveRequest($id_request, 0);
             if($ok){
                 Logger::getInstance()->log($user->getId(), ' удалил request id #' . $id_request . ' в корзину');
                 print_r(200);
@@ -674,8 +674,8 @@ class RequestController extends AdminBase
                             $id = $import['id'];
                             $status_name = Decoder::strToWindows($import['status_name']);
                             $expected_date = Decoder::strToWindows($import['expected_date']);
-                            $requestInfo = Request::getOrderRequestInfo($id);
-                            $ok = Request::editStatusFromCheckOrdersById($id, $status_name, $expected_date);
+                            $requestInfo = CrmRequest::getOrderRequestInfo($id);
+                            $ok = CrmRequest::editStatusFromCheckOrdersById($id, $status_name, $expected_date);
                             if($ok){
                                 $oldStatus = $requestInfo['status_name'] . ' ' . $requestInfo['expected_date'];
                                 $newStatus = $import['status_name'] . ' ' . $import['expected_date'];
@@ -705,7 +705,7 @@ class RequestController extends AdminBase
     {
         $user = $this->user;
         self::checkDenied('crm.request.delete', 'controller');
-        $ok =  Request::moveRequest($id, 0);
+        $ok =  CrmRequest::moveRequest($id, 0);
 
         if($ok){
             Logger::getInstance()->log($user->getId(), 'переместил в корзину request #' . $id);
@@ -819,7 +819,7 @@ class RequestController extends AdminBase
         }
 
         $id_partners = isset($_REQUEST['id_partner']) ? $_REQUEST['id_partner'] : [];
-        $listExport = Decoder::arrayToUtf(Request::getExportRequestsByPartners($id_partners, $start, $end, $filter));
+        $listExport = Decoder::arrayToUtf(CrmRequest::getExportRequestsByPartners($id_partners, $start, $end, $filter));
 
         $this->render('admin/crm/export/requests', compact('user', 'listExport'));
         return true;

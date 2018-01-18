@@ -5,7 +5,7 @@ namespace Umbrella\models\crm;
 use PDO;
 use Umbrella\components\Db\MsSQL;
 
-class Request
+class CrmRequest
 {
 
     /**

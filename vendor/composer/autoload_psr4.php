@@ -12,5 +12,7 @@ return array(
     'M1\\Env\\' => array($vendorDir . '/m1/env/src'),
     'Josantonius\\Url\\' => array($vendorDir . '/josantonius/url/src'),
     'Josantonius\\Session\\' => array($vendorDir . '/josantonius/session/src'),
+    'Josantonius\\Request\\' => array($vendorDir . '/josantonius/request/src'),
+    'Josantonius\\File\\' => array($vendorDir . '/josantonius/file/src'),
     'Carbon\\' => array($vendorDir . '/nesbot/carbon/src/Carbon'),
 );
