@@ -96,11 +96,7 @@ class BatchController extends  AdminBase
                                         $order_array['quantity'] = 1;
 
                                         Orders::addOrdersMsSQL($order_array);
-                                        Orders::addOrders($order_array);
                                         Orders::addOrdersElementsMsSql($order_array);
-                                        Orders::addOrdersElements($order_array);
-//                                        echo "<pre>";
-//                                        print_r($order_array);
 
                                         $new_array[$i]['AO'] = 'L';
                                     } else {
@@ -128,11 +124,7 @@ class BatchController extends  AdminBase
                                         $order_array['quantity'] = 1;
 
                                         Orders::addOrdersMsSQL($order_array);
-                                        Orders::addOrders($order_array);
                                         Orders::addOrdersElementsMsSql($order_array);
-                                        Orders::addOrdersElements($order_array);
-//                                        echo "<pre>";
-//                                        print_r($order_array);
 
                                         $new_array[$i]['AW'] = 'L';
                                     } else {
@@ -160,11 +152,7 @@ class BatchController extends  AdminBase
                                         $order_array['quantity'] = 1;
 
                                         Orders::addOrdersMsSQL($order_array);
-                                        Orders::addOrders($order_array);
                                         Orders::addOrdersElementsMsSql($order_array);
-                                        Orders::addOrdersElements($order_array);
-//                                        echo "<pre>";
-//                                        print_r($order_array);
 
                                         $new_array[$i]['BE'] = 'L';
                                     } else {
@@ -192,11 +180,7 @@ class BatchController extends  AdminBase
                                         $order_array['quantity'] = 1;
 
                                         Orders::addOrdersMsSQL($order_array);
-                                        Orders::addOrders($order_array);
                                         Orders::addOrdersElementsMsSql($order_array);
-                                        Orders::addOrdersElements($order_array);
-//                                        echo "<pre>";
-//                                        print_r($order_array);
 
                                         $new_array[$i]['BM'] = 'L';
                                     } else {
@@ -224,11 +208,7 @@ class BatchController extends  AdminBase
                                         $order_array['quantity'] = 1;
 
                                         Orders::addOrdersMsSQL($order_array);
-                                        Orders::addOrders($order_array);
                                         Orders::addOrdersElementsMsSql($order_array);
-                                        Orders::addOrdersElements($order_array);
-//                                        echo "<pre>";
-//                                        print_r($order_array);
 
                                         $new_array[$i]['BU'] = 'L';
                                     } else {
@@ -237,7 +217,7 @@ class BatchController extends  AdminBase
                                 }
                                 $i++;
                             }
-                            Logger::getInstance()->log($user->id_user, 'воспользовался функцией Batch');
+                            Logger::getInstance()->log($user->getId(), 'воспользовался функцией Batch');
                         }
                     }
                 }

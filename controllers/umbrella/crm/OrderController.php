@@ -139,7 +139,6 @@ class OrderController extends AdminBase
                                 $options['note_mysql'] = $note_mysql;
                                 $options['ready'] = 1;
                                 Orders::addOrdersMsSQL($options);
-                                Orders::addOrders($options);
 
                                 $options['part_number'] = $insert['part_number'];
                                 $options['goods_mysql_name'] = $insert['goods_name'];
@@ -147,9 +146,8 @@ class OrderController extends AdminBase
                                 $options['stock_name'] = $stock;
                                 $options['quantity'] = $insert['quantity'];
                                 Orders::addOrdersElementsMsSql($options);
-                                Orders::addOrdersElements($options);
                             }
-                            Logger::getInstance()->log($user->id_user, 'импортировал массив с excel в Orders');
+                            Logger::getInstance()->log($user->getId(), 'импортировал массив с excel в Orders');
                         } else {
                             Session::set('error_orders_text', 'Заказы не созданы, так как не один парт номер не найден на складе ' . $stock . ':');
                         }
@@ -187,11 +185,11 @@ class OrderController extends AdminBase
             $filter .= $interval;
             $filter .= $status;
 
-            $allOrders = Orders::getOrdersByPartnerMsSql($user->controlUsers($user->id_user), $filter);
+            $allOrders = Orders::getOrdersByPartnerMsSql($user->controlUsers($user->getId()), $filter);
             $allOrders = Decoder::arrayToUtf($allOrders);
 
             // Параметры для формирование фильтров
-            $user_ids = $user->controlUsers($user->id_user);
+            $user_ids = $user->controlUsers($user->getId());
             $partnerList = Admin::getPartnerControlUsers($user_ids);
 
         } else if($user->isAdmin()){
@@ -264,10 +262,10 @@ class OrderController extends AdminBase
             $filter .= $interval;
             $filter .= $status;
 
-            $allOrders = Orders::getOrdersByPartnerMsSql($user->controlUsers($user->id_user), $filter);
+            $allOrders = Orders::getOrdersByPartnerMsSql($user->controlUsers($user->getId()), $filter);
 
             // Параметры для формирование фильтров
-            $user_ids = $user->controlUsers($user->id_user);
+            $user_ids = $user->controlUsers($user->getId());
             $partnerList = Admin::getPartnerControlUsers($user_ids);
 
         } else if($user->isAdmin()){
@@ -301,6 +299,7 @@ class OrderController extends AdminBase
     /**
      * Проверка парт номера
      * @return bool
+     * @throws \Exception
      */
     public function actionOrdersPartNumAjax()
     {
@@ -352,7 +351,6 @@ class OrderController extends AdminBase
         $options['ready'] = 1;
 
         $ok = Orders::addOrdersMsSQL($options);
-        Orders::addOrders($options);
 
         if($ok){
             $options['stock_name'] = Decoder::strToWindows($data_json['stock']);
@@ -366,8 +364,7 @@ class OrderController extends AdminBase
                 $options['quantity'] = $data_json['quantity'];
             }
             Orders::addOrdersElementsMsSql($options);
-            Orders::addOrdersElements($options);
-            Logger::getInstance()->log($user->id_user, 'совершил новый заказ в Orders ' . $options['part_number']);
+            Logger::getInstance()->log($user->getId(), 'совершил новый заказ в Orders ' . $options['part_number']);
             //Успех
             echo 1;
         } else {
@@ -543,12 +540,12 @@ class OrderController extends AdminBase
 
             $search = Decoder::strToWindows(trim($_REQUEST['search']));
 
-            $idS = implode(',', $user->controlUsers($user->id_user));
+            $idS = implode(',', $user->controlUsers($user->getId()));
             $filter = " AND sgo.site_account_id IN($idS)";
             $allOrders = Decoder::arrayToUtf(Orders::getSearchInOrders($search, $filter));
 
             // Параметры для формирование фильтров
-            $user_ids = $user->controlUsers($user->id_user);
+            $user_ids = $user->controlUsers($user->getId());
             $partnerList = Admin::getPartnerControlUsers($user_ids);
 
         } else if($user->isAdmin()){
