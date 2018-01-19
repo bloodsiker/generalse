@@ -260,6 +260,8 @@ return [
 
     'adm/risks' => 'umbrella/Risk@risks',
     'adm/access_denied' => 'umbrella/Admin@access',
+    'adm/return_my_account' => 'umbrella/Admin@returnMyAccount',
+    'adm/re-login' => 'umbrella/Admin@reLogin',
     'adm/logout' => 'umbrella/Admin@logout',
     'auth' => 'umbrella/Admin@auth',
 

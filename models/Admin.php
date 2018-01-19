@@ -284,6 +284,16 @@ class Admin
             $user->setToken($genToken);
             Session::set('user', $user->getId());
             Session::set('_token', $genToken);
+            if ($user->isAdmin() || $user->isManager()){
+                $access = 1;
+            } else {
+                $access = 0;
+            }
+            Session::set('re_login', [
+                'id'            => $user->getId(),
+                'access'        => $access,  // доступ к re=login разрешен
+                'my_account'    => 1   // признак того, находиться ли пользователь в своем аккаунте или нет
+            ]);
             Logger::getInstance()->log($user->getId(), 'вошел(а) в кабинет');
         }
     }

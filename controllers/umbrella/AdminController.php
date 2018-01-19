@@ -93,18 +93,75 @@ class AdminController extends AdminBase
         return true;
     }
 
+    /**
+     * Авторизируем админа\менеджера в кабинет партнера без запроса пароля
+     * @return bool
+     */
+    public function actionReLogin()
+    {
+        $userId = Admin::CheckLogged();
+        $user = new User($userId);
+
+        $listPartner = Admin::getAllPartner();
+        $error = false;
+
+        if($user->isAdmin() || $user->isManager() || $user->getReLogin()['access'] == 1){
+            if(Request::post('re-login') == 'true'){
+                $idPartner = Request::post('id_partner');
+                Session::destroy('user');
+                Session::destroy('info_user');
+                $userPartner = new User($idPartner);
+                Session::set('user', $userPartner->getId());
+
+                $reLogin = Session::get('re_login');
+                $reLogin['my_account'] = 0;
+                Session::set('re_login', $reLogin);
+                Url::redirect('/' . $userPartner->getUrlAfterLogin());
+            }
+        } else {
+            $error = true;
+        }
+
+        $this->render('admin/re_login', compact('user', 'listPartner', 'error'));
+        return true;
+    }
+
+    /**
+     * Возвращаем админа\менеджера в свой кабинет
+     * @return bool
+     */
+    public function actionReturnMyAccount()
+    {
+        Admin::CheckLogged();
+
+        if(Session::get('re_login')['my_account'] == 0){
+
+            $reLogin = Session::get('re_login');
+            Session::destroy('user');
+            Session::destroy('info_user');
+            $user = new User($reLogin['id']);
+            Session::set('user', $user->getId());
+            $reLogin['my_account'] = 1;
+            Session::set('re_login', $reLogin);
+            Url::redirect('/' . $user->getUrlAfterLogin());
+        } else {
+            Url::previous();
+        }
+        return true;
+    }
+
 
     /**
      *
      */
     public function actionLogout()
     {
-        self::checkAdmin();
         $userId = Admin::CheckLogged();
 
         Session::destroy('user');
         Session::destroy('_token');
         Session::destroy('info_user');
+        Session::destroy('re_login');
         Auth::updateToken($userId, null);
 
         Logger::getInstance()->log($userId, 'вышел(а) с кабинета');

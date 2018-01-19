@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="/template/admin/css/app.css">
     <link rel="stylesheet" href="/template/admin/css/fonts.css">
     <link rel="stylesheet" href="/template/admin/fonts/foundation-icons/foundation-icons.css">
-    <link rel="stylesheet" href="/template/admin/css/style.css?v.2.0.8">
+    <link rel="stylesheet" href="/template/admin/css/style.css?v.2.0.9">
     <link rel="stylesheet" href="/template/admin/font-awesome/css/font-awesome.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/5.0.0/video-js.min.css" rel="stylesheet">
 
@@ -56,6 +56,9 @@
                     <a href="/adm/risks" class="text-red">Внимание!</a>
                 <?php endif;?>
                 <span class="user-name"><?=$user->getName()?></span>
+                <?php if($user->isAdmin() || $user->isManager() || (isset($user->getReLogin()['access']) && $user->getReLogin()['access'] == 1)): ?>
+                    <a href="/adm/re-login" class="re-login">Re-Login</a>
+                <?php endif;?>
             </div>
         </div>
     </div>
@@ -129,6 +132,7 @@
                 <?php foreach ($listInnovation as $innovation):?>
                     <div class="list-changes">
                         <time class="float-right">Дата: <?= \Umbrella\components\Functions::formatDate($innovation['created_at'])?></time>
+                        <br>
                         <?= $innovation['new_content']?>
                         <button class="view-ok click-view-ok float-right" data-innovation-id="<?= $innovation['id']?>"><i class="fi-check"></i> Ознакомлен(а)</button>
                         <div class="clearfix"></div>

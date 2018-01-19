@@ -226,6 +226,20 @@ class User
 
 
     /**
+     * @return mixed|null
+     */
+    public function getReLogin()
+    {
+        if(Session::get('re_login') && !empty(Session::get('re_login'))){
+            $reLogin = Session::get('re_login');
+        } else {
+            $reLogin = false;
+        }
+        return $reLogin;
+    }
+
+
+    /**
      * information about user from GM
      * @return mixed
      */

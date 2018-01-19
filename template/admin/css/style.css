@@ -92,6 +92,16 @@ hr{
   -o-animation:      gs 5s infinite; /* Opera 12+ */
   animation:         gs 5s infinite; /* IE 10+, Fx 29+ */
 }
+.re-login{
+  background: rgba(0,0,0, 0.5);
+  color: #fff;
+  padding: 3px 8px;
+  margin-left: 5px;
+  font-size: 13px;
+}
+.re-login:hover{
+  color: #fff;
+}
 .umbrella-table td {padding: 3px 5px!important;}
 .umbrella-table caption {text-align: center; color: #0a0a0a}
 td.alt { background-color: rgba(23, 194, 232, 0.5)!important; }
