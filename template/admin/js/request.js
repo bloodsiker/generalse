@@ -154,46 +154,52 @@ $('[name="part_number"]').keyup(function(e) {
         success: function (response) {
             console.log(response);
             var obj = JSON.parse(response);
-            if(obj.result == 1){
-                $("[name='part_number']").removeClass('error_part');
-                $('.name-product').text(obj.mName).css('color', '#4CAF50');
-                $("[name='price']").val(obj.price);
-                if(obj.in_stock == 1){
-                    $(".group-stocks").removeClass('hide');
-                    $('.name-stock').text(obj.stock).css('color', '#4CAF50');
-                    $("[name='quantity']").val(obj.quantity);
-                } else {
-                    $(".group-stocks").addClass('hide');
-                }
-            } else {
-                $('.name-product').text('not found').css('color', 'red');
-                $("[name='price']").val('0');
-                $(".group-stocks").addClass('hide');
-                $('.name-stock').text('');
-                $("[name='quantity']").val('');
-                $('.pn-analog').text('');
-                $("[name='part-analog']").val('');
-                $("[name='analog-price']").val('');
-                $(".group-analog").addClass('hide');
-            }
-
-            if(obj.is_available == 1){
-                $('.pn-analog').text(obj.comment);
+            // Запрет на заказ партномеров начинающихся на ...
+            if(obj.is_number_disabled == 1){
                 $("[name='part_number']").addClass('error_part');
+                $('.name-product').text(obj.comment_number_disabled).css('color', 'orange');
             } else {
-                $('.pn-analog').text('');
-                $("[name='part_number']").removeClass('error_part');
-
-                if(obj.is_analog == 1){
-                    $('.pn-analog').text(obj.message + obj.analog);
-                    $("[name='part-analog']").val(obj.analog);
-                    $("[name='analog-price']").val(obj.analog_price);
-                    $('.group-analog').removeClass('hide');
+                if(obj.result == 1){
+                    $("[name='part_number']").removeClass('error_part');
+                    $('.name-product').text(obj.mName).css('color', '#4CAF50');
+                    $("[name='price']").val(obj.price);
+                    if(obj.in_stock == 1){
+                        $(".group-stocks").removeClass('hide');
+                        $('.name-stock').text(obj.stock).css('color', '#4CAF50');
+                        $("[name='quantity']").val(obj.quantity);
+                    } else {
+                        $(".group-stocks").addClass('hide');
+                    }
                 } else {
+                    $('.name-product').text('not found').css('color', 'red');
+                    $("[name='price']").val('0');
+                    $(".group-stocks").addClass('hide');
+                    $('.name-stock').text('');
+                    $("[name='quantity']").val('');
                     $('.pn-analog').text('');
                     $("[name='part-analog']").val('');
                     $("[name='analog-price']").val('');
                     $(".group-analog").addClass('hide');
+                }
+
+                if(obj.is_available == 1){
+                    $('.pn-analog').text(obj.comment);
+                    $("[name='part_number']").addClass('error_part');
+                } else {
+                    $('.pn-analog').text('');
+                    $("[name='part_number']").removeClass('error_part');
+
+                    if(obj.is_analog == 1){
+                        $('.pn-analog').text(obj.message + obj.analog);
+                        $("[name='part-analog']").val(obj.analog);
+                        $("[name='analog-price']").val(obj.analog_price);
+                        $('.group-analog').removeClass('hide');
+                    } else {
+                        $('.pn-analog').text('');
+                        $("[name='part-analog']").val('');
+                        $("[name='analog-price']").val('');
+                        $(".group-analog").addClass('hide');
+                    }
                 }
             }
         }

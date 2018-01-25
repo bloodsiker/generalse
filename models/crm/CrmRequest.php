@@ -4,6 +4,7 @@ namespace Umbrella\models\crm;
 
 use PDO;
 use Umbrella\components\Db\MsSQL;
+use Umbrella\components\Db\MySQL;
 
 class CrmRequest
 {
@@ -287,9 +288,77 @@ class CrmRequest
         return $result->execute();
     }
 
+    /**
+     * add mysql deleted request_id
+     * @param $user_id
+     * @param $request_id
+     *
+     * @return bool
+     */
+    public static function deleteRequestMySQL($user_id, $request_id)
+    {
+        $db = MySQL::getConnection();
+
+        $sql = 'INSERT INTO gm_request_deleted '
+            . '(user_id, request_id)'
+            . 'VALUES '
+            . '(:user_id, :request_id)';
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $result->bindParam(':request_id', $request_id, PDO::PARAM_STR);
+        return $result->execute();
+    }
+
 
     /**
-     * Вернуть с корзины в реквест с новымой атой и периодом
+     * Список удаленных реквестов из mysql
+     *
+     * @return array
+     */
+    public static function getDeletedRequestMySQL()
+    {
+        $db = MySQL::getConnection();
+
+        $sql = "SELECT 
+                grd.*,
+                gu.name_partner 
+                FROM gm_request_deleted grd
+                  LEFT JOIN gs_user gu 
+                    ON grd.user_id = gu.id_user
+                WHERE grd.restore = 0 
+                ORDER BY grd.id DESC";
+
+        $result = $db->prepare($sql);
+        $result->execute();
+        return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    /**
+     * @param $request_id
+     * @param $restore
+     *
+     * @return bool
+     */
+    public static function restoreRequestMySQL($request_id, $restore)
+    {
+        $db = MySQL::getConnection();
+
+        $sql = "UPDATE gm_request_deleted
+            SET
+                restore = :restore
+            WHERE request_id = :request_id";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':request_id', $request_id, PDO::PARAM_INT);
+        $result->bindParam(':restore', $restore, PDO::PARAM_INT);
+        return $result->execute();
+    }
+
+
+    /**
+     * Вернуть с корзины в реквест с новымой датой и периодом
      * @param $id
      * @param $options
      * @return bool
@@ -328,8 +397,7 @@ class CrmRequest
         $result = $db->prepare($sql);
         $result->bindParam(':number', $number, PDO::PARAM_INT);
         $result->execute();
-        $row = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $row;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 

@@ -14,8 +14,10 @@
                     <th>Part Description</th>
                     <th>SO Number</th>
                     <th>Price</th>
-                    <th>Note</th>
+                    <th>Type</th>
                     <th>Date create</th>
+                    <th>Date delete</th>
+                    <th>User</th>
                     <th width="70"></th>
                 </tr>
                 </thead>
@@ -29,8 +31,10 @@
                             <td><?= $removedRequest['goods_name']?></td>
                             <td><?= $removedRequest['so_number']?></td>
                             <td><?= round($removedRequest['price'], 2)?></td>
-                            <td><?= $removedRequest['note1']?></td>
+                            <td><?= $removedRequest['type_name']?></td>
                             <td><?= Umbrella\components\Functions::formatDate($removedRequest['created_on'])?></td>
+                            <td><?= $removedRequest['deleted_on']?></td>
+                            <td><?= $removedRequest['user_name']?></td>
                             <td><button data-reqid="<?= $removedRequest['id']?>" class="delete restored">restore</button></td>
                         </tr>
                     <?php endforeach;?>

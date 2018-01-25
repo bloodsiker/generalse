@@ -1,6 +1,7 @@
 <?php
 namespace Umbrella\controllers\umbrella\crm;
 
+use Carbon\Carbon;
 use Josantonius\Session\Session;
 use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
@@ -80,14 +81,15 @@ class RequestController extends AdminBase
                 }
             }
             $options['id_user'] = $user->getId();
+            $partNumber = preg_replace('~\D~','',trim($_POST['part_number']));
 
-            $partAnalog = PartAnalog::getAnalogByPartNumber($_POST['part_number']);
+            $partAnalog = PartAnalog::getAnalogByPartNumber($partNumber);
             //если имееться аналог парт номера, заменяем его
             if($partAnalog && $partAnalog['type_part']== 'analog'){
                 $options['part_number'] = Decoder::strToWindows($partAnalog['part_analog']);
-                Session::set('replace_by_analog', "Part number {$_POST['part_number']} is replaced by an analog {$partAnalog['part_analog']}");
+                Session::set('replace_by_analog', "Part number {$partNumber} is replaced by an analog {$partAnalog['part_analog']}");
             } else {
-                $options['part_number'] = Decoder::strToWindows(trim($_POST['part_number']));
+                $options['part_number'] = Decoder::strToWindows($partNumber);
             }
 
             $options['pn_name_rus'] = isset($_POST['pn_name_rus']) ? Decoder::strToWindows(trim($_POST['pn_name_rus'])) : null;
@@ -154,7 +156,20 @@ class RequestController extends AdminBase
             }, $listCheckOrders);
 
             $listRemovedRequest = Decoder::arrayToUtf(CrmRequest::getReserveOrdersByPartnerMsSQL($user->controlUsers($user->getId()), 0, 0));
-            //$listRemovedRequest = [];
+            $listDeletedRequestMySQL = CrmRequest::getDeletedRequestMySQL();
+            $listRemovedRequest = array_map(function ($value) use ($listDeletedRequestMySQL){
+
+                $key = array_search($value['id'], array_column($listDeletedRequestMySQL, 'request_id'));
+                if($key){
+                    $request = $listDeletedRequestMySQL[$key];
+                    $value['user_name'] = $request['name_partner'];
+                    $value['deleted_on'] = Functions::formatDate($request['deleted_at']);
+                } else {
+                    $value['user_name'] = null;
+                    $value['deleted_on'] = null;
+                }
+                return $value;
+            }, $listRemovedRequest);
 
             $partnerList = Admin::getPartnerControlUsers($user->controlUsers($user->getId()));
 
@@ -168,7 +183,20 @@ class RequestController extends AdminBase
             }, $listCheckOrders);
             //$listCheckOrders = [];
             $listRemovedRequest = Decoder::arrayToUtf(CrmRequest::getAllReserveOrdersMsSQL(0, 0));
-            //$listRemovedRequest = [];
+            $listDeletedRequestMySQL = CrmRequest::getDeletedRequestMySQL();
+            $listRemovedRequest = array_map(function ($value) use ($listDeletedRequestMySQL){
+
+                $key = array_search($value['id'], array_column($listDeletedRequestMySQL, 'request_id'));
+                if($key){
+                    $request = $listDeletedRequestMySQL[$key];
+                    $value['user_name'] = $request['name_partner'];
+                    $value['deleted_on'] = Functions::formatDate($request['deleted_at']);
+                } else {
+                    $value['user_name'] = null;
+                    $value['deleted_on'] = null;
+                }
+                return $value;
+            }, $listRemovedRequest);
 
             // Параметры для формирование фильтров
             $userInGroup = $group->groupFormationForFilter();
@@ -217,13 +245,14 @@ class RequestController extends AdminBase
                             }
                             $options['id_user'] = $user->getId();
 
-                            $partAnalog = PartAnalog::getAnalogByPartNumber($import['part_number']);
+                            $partNumber = preg_replace('~\D~','',trim($import['part_number']));
+                            $partAnalog = PartAnalog::getAnalogByPartNumber($partNumber);
                             //если имееться аналог парт номера, заменяем его
                             if($partAnalog && $partAnalog['type_part']== 'analog'){
                                 $options['part_number'] = Decoder::strToWindows($partAnalog['part_analog']);
-                                array_push($arrayReplaceAnalog, "[{$import['part_number']}] => [{$partAnalog['part_analog']}]");
+                                array_push($arrayReplaceAnalog, "[{$partNumber}] => [{$partAnalog['part_analog']}]");
                             } else {
-                                $options['part_number'] = Decoder::strToWindows(trim($import['part_number']));
+                                $options['part_number'] = Decoder::strToWindows($partNumber);
                             }
 
                             $options['so_number'] = Decoder::strToWindows(trim($import['so_number']));
@@ -292,6 +321,15 @@ class RequestController extends AdminBase
         // Для electrolux
         if($_REQUEST['action'] == 'part-price') {
             $part_number = $_REQUEST['part_number'];
+
+            // Запрет на заказ партномеров начинающихся на ...
+            if(strlen($part_number) > 2){
+                $check = mb_substr($part_number, 0, 3);
+                if($check == '973'){
+                    $data['is_number_disabled'] = 1;
+                    $data['comment_number_disabled'] = 'К сожалению, Вы не можете заказать данную деталь. Попробуйте заказать аналог, либо уточните информацию у менеджера';
+                }
+            }
 
             $stocks_group = $group->stocksFromGroup($user->idGroupUser($user->getId()), 'name', 'request');
 
@@ -471,6 +509,7 @@ class RequestController extends AdminBase
 
             $ok = CrmRequest::moveRequestInList($id_request, $options);
             if($ok){
+                CrmRequest::restoreRequestMySQL($id_request, 1);
                 Logger::getInstance()->log($user->getId(), ' переместил request id #' . $id_request . ' с корзины');
                 print_r(200);
             }
@@ -608,6 +647,7 @@ class RequestController extends AdminBase
             $id_request = $_REQUEST['id_request'];
             $ok = CrmRequest::moveRequest($id_request, 0);
             if($ok){
+                CrmRequest::deleteRequestMySQL($user->getId(), $id_request);
                 Logger::getInstance()->log($user->getId(), ' удалил request id #' . $id_request . ' в корзину');
                 print_r(200);
             }
@@ -708,6 +748,7 @@ class RequestController extends AdminBase
         $ok =  CrmRequest::moveRequest($id, 0);
 
         if($ok){
+            CrmRequest::deleteRequestMySQL($user->getId(), $id);
             Logger::getInstance()->log($user->getId(), 'переместил в корзину request #' . $id);
             Url::previous();
         }

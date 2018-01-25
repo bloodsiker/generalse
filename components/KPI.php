@@ -28,7 +28,7 @@ class KPI
     const Refund_Rate = 5;
     const LS_Rate = 40;
 
-    private $name;
+    public $name;
     private $start;
     private $end;
 
