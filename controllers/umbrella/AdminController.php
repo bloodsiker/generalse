@@ -116,6 +116,7 @@ class AdminController extends AdminBase
                 $reLogin = Session::get('re_login');
                 $reLogin['my_account'] = 0;
                 Session::set('re_login', $reLogin);
+                Logger::getInstance()->log($user->getReLogin()['id'], 'зашел в кабинет партнера ' . $userPartner->getName());
                 Url::redirect('/' . $userPartner->getUrlAfterLogin());
             }
         } else {

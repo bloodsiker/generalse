@@ -56,7 +56,7 @@
 
                     <thead>
                     <tr>
-                        <th class="sort">Partner</th>
+                        <th>Partner</th>
                         <th>Part Number</th>
                         <th class="sort">Description</th>
                         <th class="sort">Stock name</th>
@@ -68,7 +68,7 @@
                             </select>
                         </th>
                         <th>Serial Number</th>
-                        <th class="sort">Price</th>
+                        <th>Price</th>
                     </tr>
                     </thead>
                     <tbody>

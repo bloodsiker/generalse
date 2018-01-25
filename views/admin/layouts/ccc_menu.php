@@ -8,6 +8,9 @@
     <li><a href="/adm/ccc/kpi" class="<?= Umbrella\components\Url::IsActive('/ccc/kpi', 'active') ?>">KPI CCC</a></li>
 <?php endif; ?>
 
+<?php if (Umbrella\app\AdminBase::checkDenied('ccc.debtors', 'view')): ?>
+    <li><a href="/adm/ccc/debtors" class="<?= Umbrella\components\Url::IsActive('/ccc/debtors', 'active') ?>">Debtors EL UA</a></li>
+<?php endif; ?>
 
 <?php if (Umbrella\app\AdminBase::checkDenied('ccc.crm', 'view')): ?>
     <li><a href="/adm/ccc/crm" class="<?= Umbrella\components\Url::IsActive('/ccc/crm', 'active') ?>">CRM</a></li>

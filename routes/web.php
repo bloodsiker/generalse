@@ -130,6 +130,13 @@ return [
     'adm/ccc/kpi/import-kpi' => 'umbrella/ccc/Kpi@importKpi',
     'adm/ccc/kpi' => 'umbrella/ccc/Kpi@index',
 
+    'adm/ccc/debtors/call_is_over' => 'umbrella/ccc/Debtors@callIsOver',
+    'adm/ccc/debtors/delete_comment' => 'umbrella/ccc/Debtors@deleteComment',
+    'adm/ccc/debtors/add_comment' => 'umbrella/ccc/Debtors@addComment',
+    'adm/ccc/debtors/show_comments' => 'umbrella/ccc/Debtors@showComments',
+    'adm/ccc/debtors/filter([a-z0-9-_?&]+)' => 'umbrella/ccc/Debtors@index/$1',
+    'adm/ccc/debtors' => 'umbrella/ccc/Debtors@index',
+
     'adm/ccc' => 'umbrella/ccc/CustomerCareCenter@index',
 
 

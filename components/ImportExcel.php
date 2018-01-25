@@ -552,6 +552,49 @@ class ImportExcel
         return $pushArray;
     }
 
+
+    /**
+     * @param $file
+     *
+     * @return array
+     * @throws \PHPExcel_Exception
+     * @throws \PHPExcel_Reader_Exception
+     */
+    public static function importDebtors($file)
+    {
+        include_once 'PHPExcel/Classes/PHPExcel/IOFactory.php';
+
+        $inputFileName = $_SERVER['DOCUMENT_ROOT'] . $file;
+        $objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
+
+        $sheetData = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);
+
+        // Убираем нулевой елемент массива - заголовки
+        $newArray = array_splice($sheetData, 1);
+        // Формируем новый массив с ассоциативныи ключами
+        $pushArray = [];
+        $i = 0;
+        foreach($newArray as $data){
+            $pushArray[$i]['user_id'] = 1;
+            $pushArray[$i]['name_partner'] = $data['A'];
+            $pushArray[$i]['order_number'] = $data['B'];
+            $pushArray[$i]['sum_order'] = str_replace(',', '', $data['C']);
+            $pushArray[$i]['snipped_on'] = $data['D'];
+            $pushArray[$i]['bill_number'] = $data['E'];
+            $pushArray[$i]['bill_summa'] = str_replace(',', '', $data['F']);
+            $pushArray[$i]['bill_date'] = $data['G'];
+            $pushArray[$i]['bill_status'] = $data['H'];
+            $pushArray[$i]['payment_to_date'] = $data['I'];
+            $pushArray[$i]['payment_sum'] = str_replace(',', '', $data['J']);
+            $pushArray[$i]['payment_date'] = $data['K'];
+            $pushArray[$i]['deferment'] = $data['L'];
+            $pushArray[$i]['deferment_day'] = $data['M'];
+            $pushArray[$i]['phones'] = $data['N'];
+            $i++;
+        }
+        return $pushArray;
+    }
+
 }
 
 //$ddd = ImportExcel::importPurchase(true);

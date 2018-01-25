@@ -102,10 +102,14 @@ hr{
 .re-login:hover{
   color: #fff;
 }
-.umbrella-table td {padding: 3px 5px!important;}
-.umbrella-table caption {text-align: center; color: #0a0a0a}
+.umbrella-table td{
+    padding: 3px 5px!important;
+}
+.umbrella-table caption {
+    text-align: center; color: #0a0a0a
+}
 td.alt { background-color: rgba(23, 194, 232, 0.5)!important; }
-table tr:hover{
+.umbrella-table tbody tr:hover{
   background: rgba(154, 152, 152, 0.2)!important;
 }
 .red {
@@ -1340,4 +1344,63 @@ td select {
 }
 g[column-id]:hover{
   cursor: pointer;
+}
+
+/*********  CCC  ****************/
+.comment_block{
+    position: relative;
+    background: #eeeeee;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 10px 10px 5px;
+    margin: 10px 0;
+}
+.btn-add-comment{
+    width: 100%;
+    text-align: center;
+    background: #dad8d8;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 7px;
+}
+.btn-add-comment:hover{
+    background: #c5c5c5;
+}
+.comment-date{
+    font-size: 11px;
+    font-style: italic;
+}
+.form-add-comment{
+    background: #eeeeee;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 10px 10px 5px;
+    margin: 10px 0;
+}
+.form-add-comment textarea {
+    color: #000!important;
+    font-size: 13px;
+}
+.btn-send-comment{
+    width: 49%;
+    text-align: center;
+    border-radius: 3px;
+    padding: 7px;
+    margin-right: 3px;
+}
+.btn-cancel-comment{
+    width: 49%;
+    text-align: center;
+    border-radius: 3px;
+    padding: 7px;
+    margin-left: 3px;
+}
+.comment_block .comment-delete{
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    padding: 2px 3px;
+    background: #eeeeee;
+    border: 1px solid #c5c5c5;
+    border-radius: 3px;
 }

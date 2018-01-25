@@ -4,6 +4,7 @@
     <tr>
         <th>№ Квитанции</th>
         <th>Партномер техники</th>
+        <th>Вид работ</th>
         <th>Бренд</th>
         <th>Тип техники</th>
         <th>ТАТ</th>
@@ -18,6 +19,7 @@
     <tr>
         <td>23453</td>
         <td>******</td>
+        <td>******</td>
         <td>Lenovo</td>
         <td>Смартфон</td>
         <td>1</td>
@@ -30,6 +32,7 @@
     <tr>
         <td>23564</td>
         <td>*****</td>
+        <td>*****</td>
         <td>Samsung</td>
         <td>Планшет</td>
         <td>0,6</td>
@@ -41,6 +44,7 @@
     </tr>
     <tr>
         <td>24112</td>
+        <td>*****</td>
         <td>*****</td>
         <td>Apple</td>
         <td>Смартфон</td>
@@ -62,9 +66,11 @@
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
     </tr>
     <tr>
         <td>&nbsp;</td>
+        <td></td>
         <td></td>
         <td></td>
         <td></td>

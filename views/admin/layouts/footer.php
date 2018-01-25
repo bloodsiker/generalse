@@ -5,7 +5,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <script src="/template/admin/js/vendor/jquery.js"></script>
 <script src="/template/admin/js/vendor/js-ui.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="/template/admin/js/calendar-local-eng.js"></script>
 <script src="/template/admin/js/vendor/what-input.js"></script>
 <script src="/template/admin/js/vendor/foundation.min.js"></script>
@@ -36,6 +36,7 @@ if (Umbrella\components\Url::Is_url('/crm/request')) echo "<script src='/templat
 <script src='/template/admin/js/request.js?v.2.1.7'></script>";
 if (Umbrella\components\Url::Is_url('/crm/other-request')) echo "<script src='/template/admin/js/other_request.js?v.1.5.0'></script>";
 if (Umbrella\components\Url::Is_url('/ccc')) echo "<script src='/template/admin/js/ccc/knowledge.js'></script>";
+if (Umbrella\components\Url::Is_url('/ccc/debtors')) echo "<script src='/template/admin/js/ccc/debtors.js'></script>";
 if (Umbrella\components\Url::Is_url(['/adm/lithographer', '/adm/ccc/tree_knowledge/article'])) echo "
   <script src='https://cdnjs.cloudflare.com/ajax/libs/video.js/5.0.0/video.min.js'></script>
   <script src='/template/admin/js/lithographer.js?v1.5.2'></script>

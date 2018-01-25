@@ -7,7 +7,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GS Umbrella</title>
-    <?php if (Umbrella\components\Url::Is_url(['/adm/crm/request', '/adm/psr'])): ?>
+    <?php if (Umbrella\components\Url::Is_url(['/adm/crm/request', '/adm/psr', '/adm/ccc/'])): ?>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
     <?php endif; ?>
@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="/template/admin/css/app.css">
     <link rel="stylesheet" href="/template/admin/css/fonts.css">
     <link rel="stylesheet" href="/template/admin/fonts/foundation-icons/foundation-icons.css">
-    <link rel="stylesheet" href="/template/admin/css/style.css?v.2.0.9">
+    <link rel="stylesheet" href="/template/admin/css/style.css?v.2.1.0">
     <link rel="stylesheet" href="/template/admin/font-awesome/css/font-awesome.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/5.0.0/video-js.min.css" rel="stylesheet">
 
@@ -28,12 +28,10 @@
         .yellow {
             background: #FFFF6D;
         }
-
         .red {
-            background: #c1433c;
+            background: #c1433c!important;
             color: #fff;
         }
-
         .green {
             background: #66bb6a;
             color: #fff;

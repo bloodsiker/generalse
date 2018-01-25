@@ -49,7 +49,7 @@
         </div>
 
         <!-- body -->
-        <div class="body-content checkout">
+        <div class="body-content">
             <div class="row">
                 <div class="medium-12 small-12 columns">
                     <table class="umbrella-table margin-bottom">
