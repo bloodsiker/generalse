@@ -7,11 +7,11 @@
 
             <div class="medium-12 small-12 columns" style="margin-bottom: 10px">
                 <label>Партнер</label>
-                <select name="user_id" id="user_id_analog" class="selectpicker" data-live-search="true">
-                    <option value=""></option>
+                <select name="client_name" id="user_id_analog" class="selectpicker" data-live-search="true">
+                    <option value="">Все партнеры</option>
                     <?php if(is_array($partnerList)):?>
                         <?php foreach($partnerList as $partner): ?>
-                            <option data-tokens="<?= $partner['name_partner'] ?><" value="<?= $partner['name_partner'] ?>"><?= $partner['name_partner'] ?></option>
+                            <option data-tokens="<?= $partner['client_name'] ?><" value="<?= $partner['client_name'] ?>"><?= $partner['client_name'] ?></option>
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </select>
@@ -19,21 +19,25 @@
 
             <div class="medium-12 small-12 columns">
                 <label>Статус</label>
-                <select name="bill_status" id="">
+                <select name="order_status" id="">
                     <option value="">Все</option>
-                    <option value="просрочен">Просрочен</option>
-                    <option value="не оплачен">Не оплачен</option>
-                    <option value="частично оплачен">Частично оплачен</option>
+                    <?php if(is_array($orderStatus)):?>
+                        <?php foreach ($orderStatus as $status): ?>
+                            <option value="<?= $status['order_status'] ?>"><?= $status['order_status'] ?></option>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </select>
             </div>
 
             <div class="medium-12 small-12 columns">
                 <label>Отсрочка</label>
-                <select name="deferment" id="">
+                <select name="order_delay" id="">
                     <option value=""></option>
-                    <?php foreach ($deferments as $deferment): ?>
-                        <option value="<?= $deferment['deferment'] ?>"><?= $deferment['deferment'] ?></option>
-                    <?php endforeach; ?>
+                    <?php if(is_array($orderDelay)):?>
+                        <?php foreach ($orderDelay as $delay): ?>
+                            <option value="<?= $delay['order_delay'] ?>"><?= $delay['order_delay'] ?></option>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </select>
             </div>
             <div class="medium-12 small-12 columns" style="margin-bottom: 20px">

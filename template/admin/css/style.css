@@ -57,6 +57,14 @@ hr{
   text-align: center;
   margin: 15% auto;
 }
+.fixtable-fixed {
+    position: fixed;
+    top: 0;
+    z-index: 101;
+    border-bottom: 1px solid #323e48;
+    background-color: #495a68;
+    color: #fff;
+}
 
 @-webkit-keyframes gs {
   0%   { opacity: 0; width: 20%; }

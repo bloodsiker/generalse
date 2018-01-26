@@ -2,6 +2,7 @@
 namespace Umbrella\models\ccc;
 
 use PDO;
+use Umbrella\components\Db\MsSQL;
 use Umbrella\components\Db\MySQL;
 
 class Debtors
@@ -41,16 +42,11 @@ class Debtors
     }
 
 
-    /**
-     * @param string $filter
-     *
-     * @return mixed
-     */
     public static function getAll($filter = '')
     {
-        $db = MySQL::getConnection();
+        $db = MsSQL::getConnection();
 
-        $sql = "SELECT * FROM gs_ccc_debtors WHERE 1 = 1 {$filter} ORDER BY name_partner";
+        $sql = "SELECT * FROM site_gm_not_payment WHERE actual = 1 {$filter} ORDER BY client_name";
 
         $result = $db->prepare($sql);
         $result->execute();
@@ -62,13 +58,13 @@ class Debtors
      */
     public static function getAllPartners()
     {
-        $db = MySQL::getConnection();
+        $db = MsSQL::getConnection();
 
         $sql = "SELECT
-                name_partner 
-                FROM gs_ccc_debtors 
-                GROUP BY name_partner 
-                ORDER BY name_partner";
+                client_name 
+                FROM site_gm_not_payment 
+                GROUP BY client_name 
+                ORDER BY client_name";
 
         $result = $db->prepare($sql);
         $result->execute();
@@ -78,14 +74,31 @@ class Debtors
     /**
      * @return array
      */
-    public static function getDeferment()
+    public static function getOrderDelay()
     {
-        $db = MySQL::getConnection();
+        $db = MsSQL::getConnection();
 
         $sql = "SELECT
-                deferment 
-                FROM gs_ccc_debtors 
-                GROUP BY deferment";
+                order_delay 
+                FROM site_gm_not_payment 
+                GROUP BY order_delay";
+
+        $result = $db->prepare($sql);
+        $result->execute();
+        return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * @return array
+     */
+    public static function getOrderStatus()
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "SELECT
+                order_status 
+                FROM site_gm_not_payment 
+                GROUP BY order_status";
 
         $result = $db->prepare($sql);
         $result->execute();

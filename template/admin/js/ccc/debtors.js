@@ -1,20 +1,22 @@
-let showComments = (user_id) => {
+let showComments = (user_id, name_partner) => {
     $.ajax({
         url: "/adm/ccc/debtors/show_comments",
         type: "POST",
         data: {action : 'show_comments', user_id : user_id},
         cache: false,
         success: function (response) {
-            $('#show-comments').foundation('open');
+            let modal = $('#show-comments');
+            modal.foundation('open');
             $('#container-comments').html(response);
-            $('#show-comments').find('#partner_id').attr('data-user-id', user_id);
+            modal.find('#name_partner').text(name_partner);
+            modal.find('#partner_id').attr('data-user-id', user_id);
+            modal.find('#partner_id').attr('data-user-name', name_partner);
         }
     });
     return false;
 };
 
 let addComments = (e) => {
-    console.log(e);
     $(e.target).siblings('.form-add-comment').show();
 };
 
@@ -22,6 +24,7 @@ let sendComments = (e, week, year) => {
     e.preventDefault();
     let comment = $('#comment-' + week).val();
     let partner_id = $('#partner_id').attr('data-user-id');
+    let name_partner = $('#partner_id').attr('data-user-name');
     if(comment.length < 1){
         $('#comment-' + week).css('background', '#ff00002e');
     } else {
@@ -35,7 +38,7 @@ let sendComments = (e, week, year) => {
                 if(response == 200){
                     showNotification('Comment added','success');
                     hideComments(e);
-                    showComments(partner_id);
+                    showComments(partner_id, name_partner);
                 }
             }
         });
@@ -46,6 +49,7 @@ let sendComments = (e, week, year) => {
 let deleteComments = (e, id) => {
     e.preventDefault();
     let partner_id = $('#partner_id').attr('data-user-id');
+    let name_partner = $('#partner_id').attr('data-user-name');
     $.ajax({
         url: "/adm/ccc/debtors/delete_comment",
         type: "POST",
@@ -54,7 +58,7 @@ let deleteComments = (e, id) => {
         success: function (response) {
             if(response == 200){
                 showNotification('Comment deleted','success');
-                showComments(partner_id);
+                showComments(partner_id, name_partner);
             }
         }
     });

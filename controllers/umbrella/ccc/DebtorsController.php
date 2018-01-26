@@ -7,6 +7,7 @@ use Josantonius\Request\Request;
 use Umbrella\app\AdminBase;
 use Umbrella\app\Mail\CCCDebtorsMail;
 use Umbrella\app\User;
+use Umbrella\components\Decoder;
 use Umbrella\components\ImportExcel;
 use Umbrella\models\Admin;
 use Umbrella\models\ccc\Debtors;
@@ -34,34 +35,48 @@ class DebtorsController extends AdminBase
     /**
      * KPI
      * @return bool
+     * @throws \Exception
      */
     public function actionIndex()
     {
         $user = $this->user;
 
-        $partnerList = Debtors::getAllPartners();
-        $deferments  = Debtors::getDeferment();
+        $partnerList = Decoder::arrayToUtf(Debtors::getAllPartners());
+        $orderDelay  = Debtors::getOrderDelay();
+        $orderStatus  = Decoder::arrayToUtf(Debtors::getOrderStatus());
 
         $filter = '';
-        if(!empty(Request::get('user_id'))){
-            $namePartner = Request::get('user_id');
-            $filter .= " AND name_partner = '{$namePartner}'";
+        if(!empty(Request::get('client_name'))){
+            $nameClient = Decoder::strToWindows(Request::get('client_name'));
+            $filter .= " AND client_name = '{$nameClient}'";
         }
 
-        if(!empty(Request::get('bill_status'))){
-            $status = Request::get('bill_status');
-            $filter .= " AND bill_status = '{$status}'";
+        if(!empty(Request::get('order_status'))){
+            $status = Decoder::strToWindows(Request::get('order_status'));
+            $filter .= " AND order_status = '{$status}'";
         }
 
-        if(!empty(Request::get('deferment'))){
-            $deferment = Request::get('deferment');
-            $filter .= " AND deferment = '{$deferment}'";
+        if(!empty(Request::get('order_delay'))){
+            $delay = Request::get('order_delay');
+            $filter .= " AND order_delay = '{$delay}'";
         }
 
-        $allDebtors = Debtors::getAll($filter);
+        $date = new \DateTime( date('Y-m-d'));
+        $week = $date->modify('this week')->format('W');
+        $year = $date->modify('this week')->format('Y');
+        $allCommentsForWeek = DebtorsComment::getAllCommentsForWeek((int)$week, $year);
+        $allDebtors = Decoder::arrayToUtf(Debtors::getAll($filter));
+        $allDebtors = array_map(function ($value) use ($allCommentsForWeek) {
+            if(in_array($value['site_account_id'], array_column($allCommentsForWeek, 'partner_id'))){
+                $value['call_is_over'] = 1;
+            } else {
+                $value['call_is_over'] = 0;
+            }
+            return $value;
+        }, $allDebtors);
 
         $this->render('admin/ccc/debtors/index',
-            compact('user', 'allDebtors', 'partnerList', 'deferments'));
+            compact('user', 'allDebtors', 'partnerList', 'orderDelay', 'orderStatus'));
         return true;
     }
 

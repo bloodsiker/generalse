@@ -75,4 +75,28 @@ class DebtorsComment
         $result->bindParam(':id', $id, PDO::PARAM_INT);
         return $result->execute();
     }
+
+
+    /**
+     * @param $week
+     * @param $year
+     *
+     * @return mixed
+     */
+    public static function getAllCommentsForWeek($week, $year)
+    {
+        $db = MySQL::getConnection();
+
+        $sql = "SELECT 
+                    *
+                FROM gs_ccc_debtors_comment
+                WHERE week = :week 
+                AND year = :year";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':week', $week, PDO::PARAM_INT);
+        $result->bindParam(':year', $year, PDO::PARAM_INT);
+        $result->execute();
+        return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

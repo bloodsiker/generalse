@@ -27,7 +27,7 @@
         <div class="body-content">
             <div class="row">
                 <div class="medium-12 small-12 columns">
-                    <table id="goods_data" class="umbrella-table">
+                    <table id="goods_data" class="umbrella-table fixtable">
                         <thead>
                         <tr>
                             <th>Клиент</th>
@@ -44,26 +44,31 @@
                             <th>Отсрочка</th>
                             <th>Дней до погашения</th>
                             <th>Телефоны</th>
+                            <th>Адрес доставки</th>
                         </tr>
                         </thead>
                         <tbody>
                         <?php if(is_array($allDebtors)): ?>
                             <?php foreach ($allDebtors as $debtor): ?>
-                                <tr ondblclick="showComments(<?= $debtor['user_id'] ?>)" class="goods <?= $debtor['bill_status'] == 'просрочен' ? 'red' : null ?>">
-                                    <td><?= $debtor['name_partner'] ?></td>
+                                <tr ondblclick="showComments(<?= $debtor['site_account_id'] ?>, '<?= $debtor['client_name'] ?>')"
+                                    class="goods <?= $debtor['order_status'] == 'просрочен' ? 'red' : null ?>">
+                                    <td class="<?= $debtor['call_is_over'] == 1 ? 'blue' : null ?>">
+                                        <?= $debtor['client_name'] ?>
+                                    </td>
                                     <td><?= $debtor['order_number'] ?></td>
-                                    <td><?= $debtor['sum_order'] ?></td>
-                                    <td><?= $debtor['snipped_on'] ?></td>
+                                    <td><?= $debtor['summa_order'] ?></td>
+                                    <td><?= $debtor['order_shiped_on'] ?></td>
                                     <td><?= $debtor['bill_number'] ?></td>
                                     <td><?= $debtor['bill_summa'] ?></td>
-                                    <td><?= $debtor['bill_date'] ?></td>
-                                    <td><?= $debtor['bill_status'] ?></td>
-                                    <td><?= $debtor['payment_to_date'] ?></td>
-                                    <td><?= $debtor['payment_sum'] ?></td>
-                                    <td><?= $debtor['payment_date'] ?></td>
-                                    <td><?= $debtor['deferment'] ?></td>
-                                    <td><?= $debtor['deferment_day'] ?></td>
+                                    <td><?= $debtor['bill_created_on'] ?></td>
+                                    <td><?= $debtor['order_status'] ?></td>
+                                    <td><?= $debtor['order_payment_to'] ?></td>
+                                    <td><?= $debtor['payment_summa'] ?></td>
+                                    <td><?= $debtor['payment_dates'] ?></td>
+                                    <td><?= $debtor['order_delay'] ?></td>
+                                    <td><?= $debtor['days'] ?></td>
                                     <td><?= $debtor['phones'] ?></td>
+                                    <td><?= $debtor['address'] ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         <?php endif; ?>

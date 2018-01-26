@@ -100,7 +100,7 @@
                                     <tr class="goods <?= (Umbrella\components\Functions::calcDiffSec($order['created_on']) < 120) ? 'check_lenovo_ok' : ''?>"
                                         <?= is_null($order['number'])? null : 'data-number=' . $order['number']?>>
                                         <td><?= is_null($order['number'])? $order['id'] : 'Multi-request ' . $order['number']?></td>
-                                        <td><?= \Umbrella\components\Decoder::strToUtf($order['site_client_name'])?></td>
+                                        <td><?= Umbrella\components\Decoder::strToUtf($order['site_client_name'])?></td>
                                         <td><?= Umbrella\components\Functions::formatDate($order['created_on'])?></td>
                                     </tr>
                                 <?php endforeach;?>
@@ -195,7 +195,7 @@
                             <th>Partner</th>
                             <th>Partner status</th>
                             <th>Part Number</th>
-                            <th class="sort">Part Description</th>
+                            <th>Part Description</th>
                             <th>Subtype</th>
                             <th>SO Number</th>
                             <th>Price uah</th>
