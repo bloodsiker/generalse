@@ -1,9 +1,9 @@
-<div class="reveal large" id="show-comments" data-user-id="" data-user-name="" data-reveal>
+<div class="reveal large" id="show-comments" data-reveal>
     <div class="row align-bottom">
         <div class="medium-12 small-12 columns">
             <h3>Comments «<span id="name_partner"></span>»</h3>
         </div>
-        <div id="partner_id" data-user-id=""></div>
+        <div id="partner_id" data-user-id="" data-user-name=""></div>
 
         <div class="medium-12 small-12 columns">
             <div class="row">

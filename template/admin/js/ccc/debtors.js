@@ -1,4 +1,4 @@
-let showComments = (user_id, name_partner) => {
+let showComments = (user_id) => {
     $.ajax({
         url: "/adm/ccc/debtors/show_comments",
         type: "POST",
@@ -8,6 +8,7 @@ let showComments = (user_id, name_partner) => {
             let modal = $('#show-comments');
             modal.foundation('open');
             $('#container-comments').html(response);
+            let name_partner = $('#info_partner').text();
             modal.find('#name_partner').text(name_partner);
             modal.find('#partner_id').attr('data-user-id', user_id);
             modal.find('#partner_id').attr('data-user-name', name_partner);

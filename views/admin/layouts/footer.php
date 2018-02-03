@@ -36,7 +36,7 @@ if (Umbrella\components\Url::Is_url('/crm/request')) echo "<script src='/templat
 <script src='/template/admin/js/request.js?v.2.1.8'></script>";
 if (Umbrella\components\Url::Is_url('/crm/other-request')) echo "<script src='/template/admin/js/other_request.js?v.1.5.0'></script>";
 if (Umbrella\components\Url::Is_url('/ccc')) echo "<script src='/template/admin/js/ccc/knowledge.js'></script>";
-if (Umbrella\components\Url::Is_url('/ccc/debtors')) echo "<script src='/template/admin/js/ccc/debtors.js?v.1.5.1'></script>";
+if (Umbrella\components\Url::Is_url('/ccc/debtors')) echo "<script src='/template/admin/js/ccc/debtors.js?v.1.5.2'></script>";
 if (Umbrella\components\Url::Is_url(['/adm/lithographer', '/adm/ccc/tree_knowledge/article'])) echo "
   <script src='https://cdnjs.cloudflare.com/ajax/libs/video.js/5.0.0/video.min.js'></script>
   <script src='/template/admin/js/lithographer.js?v1.5.2'></script>

@@ -11,7 +11,7 @@
                     <option value="">Все партнеры</option>
                     <?php if(is_array($partnerList)):?>
                         <?php foreach($partnerList as $partner): ?>
-                            <option data-tokens="<?= $partner['client_name'] ?><" value="<?= $partner['client_name'] ?>"><?= $partner['client_name'] ?></option>
+                            <option data-tokens="<?= htmlentities($partner['client_name']) ?><" value="<?= htmlentities($partner['client_name']) ?>"><?= $partner['client_name'] ?></option>
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </select>

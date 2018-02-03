@@ -50,7 +50,7 @@
                         <tbody>
                         <?php if(is_array($allDebtors)): ?>
                             <?php foreach ($allDebtors as $debtor): ?>
-                                <tr ondblclick="showComments(<?= $debtor['site_account_id'] ?>, '<?= $debtor['client_name'] ?>')"
+                                <tr ondblclick="showComments(<?= $debtor['site_account_id'] ?>)"
                                     class="goods <?= $debtor['order_status'] == 'просрочен' ? 'red' : null ?>">
                                     <td class="<?= $debtor['call_is_over'] == 1 ? 'blue' : null ?>">
                                         <?= $debtor['client_name'] ?>

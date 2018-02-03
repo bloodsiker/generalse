@@ -87,6 +87,7 @@ class DebtorsController extends AdminBase
 
         if(Request::post('action') == 'show_comments'){
             $partnerId = Request::post('user_id');
+            $namePartner = Admin::getNameById($partnerId);
             $date = new \DateTime( date('Y-m-d'));
 
             $interval = [
@@ -119,7 +120,8 @@ class DebtorsController extends AdminBase
                 return $value;
             }, $interval);
 
-            $this->render('admin/ccc/debtors/_part/comments_container', compact('interval', 'user'));
+            $this->render('admin/ccc/debtors/_part/comments_container',
+                compact('interval', 'user', 'namePartner'));
         }
         return true;
     }

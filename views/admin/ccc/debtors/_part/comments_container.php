@@ -1,3 +1,4 @@
+<p class="hide" id="info_partner"><?= $namePartner ?></p>
 <table class="comments-table">
     <thead>
     <tr>
