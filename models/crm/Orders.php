@@ -227,7 +227,7 @@ class Orders
 
         $result = $db->prepare($sql);
         $result->execute();
-        $row = $result->fetch();
+        $row = $result->fetch(PDO::FETCH_ASSOC);
         return $row['site_id'];
     }
 

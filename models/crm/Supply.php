@@ -18,11 +18,11 @@ class Supply
         $db = MsSQL::getConnection();
 
         //$sql = "SELECT site_id FROM gm_purchases ORDER BY id DESC LIMIT 1";
-        $sql = "SELECT MAX(site_id) FROM site_gm_supplies";
+        $sql = "SELECT MAX(site_id) as site_id FROM site_gm_supplies";
 
         $result = $db->prepare($sql);
         $result->execute();
-        $row = $result->fetch();
+        $row = $result->fetch(PDO::FETCH_ASSOC);
         return $row['site_id'];
     }
 
@@ -129,8 +129,7 @@ class Supply
 
         $result = $db->prepare($sql);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -158,8 +157,7 @@ class Supply
 
         $result = $db->prepare($sql);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
@@ -185,8 +183,7 @@ class Supply
 
         $result = $db->prepare($sql);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
@@ -205,8 +202,7 @@ class Supply
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $site_id, PDO::PARAM_INT);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -228,26 +224,7 @@ class Supply
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $site_id, PDO::PARAM_INT);
         $result->execute();
-        $count = $result->fetch(PDO::FETCH_ASSOC);
-        return $count;
-    }
-
-    /**
-     * Получаем id партнера по имени
-     * @param $name_partner
-     * @return mixed
-     */
-    public static function getUsersIdByName($name_partner)
-    {
-        $db = MySQL::getConnection();
-
-        $sql = "SELECT id_user FROM gs_user WHERE name_partner = :name_partner";
-
-        $result = $db->prepare($sql);
-        $result->bindParam(':name_partner', $name_partner, PDO::PARAM_INT);
-        $result->execute();
-        $user = $result->fetch(PDO::FETCH_ASSOC);
-        return $user['id_user'];
+        return $result->fetch(PDO::FETCH_ASSOC);
     }
 
     /**
@@ -371,8 +348,7 @@ class Supply
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $site_id, PDO::PARAM_INT);
         $result->execute();
-        $all = $result->fetch(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetch(PDO::FETCH_ASSOC);
     }
 
 
@@ -421,8 +397,7 @@ class Supply
 
         $result = $db->prepare($sql);
         $result->execute();
-        $row =  $result->fetchAll(PDO::FETCH_ASSOC);
-        return $row;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 }

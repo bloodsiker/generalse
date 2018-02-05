@@ -15,8 +15,8 @@
                     </div>
                     <div class="medium-12 small-12 columns">
                         <div class="row align-bottom">
-                            <div class="medium-3 small-12 columns">
-
+                            <div class="medium-12 small-12 columns">
+                                <button data-open="filter-modal" class="button primary tool"><i class="fi-filter"></i> Filter</button>
                             </div>
                         </div>
                     </div>
@@ -26,6 +26,45 @@
 
         <!-- body -->
         <div class="body-content">
+            <div class="row">
+                <div class="medium-12 small-12 columns">
+                    <table class="umbrella-table margin-bottom">
+                        <thead>
+                        <tr>
+                            <th class="text-center" colspan="9">ДВИЖЕНИЕ ТЕХНИКИ (<?= \Umbrella\models\engineer\Dashboard::nameMonth($month) ?>/<?= $year ?>)</th>
+                        </tr>
+                        <tr>
+                            <th>Название товара</th>
+                            <th>PartNumber</th>
+                            <th>Производитель</th>
+                            <th>Тип товара</th>
+                            <th>Классификатор</th>
+                            <th>Подтип товара</th>
+                            <th>Поступление к-во</th>
+                            <th>Выход к-во</th>
+                            <th>Остаток к-во</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php if(is_array($movementDevices)): ?>
+                            <?php foreach ($movementDevices as $value): ?>
+                                <tr>
+                                    <td><?= $value['goods_name'] ?></td>
+                                    <td><?= $value['part_number'] ?></td>
+                                    <td><?= $value['produser_name'] ?></td>
+                                    <td><?= $value['goodstype_name'] ?></td>
+                                    <td><?= $value['classifier_name'] ?></td>
+                                    <td><?= $value['subtype_name'] ?></td>
+                                    <td><?= $value['quantity_in'] ?></td>
+                                    <td><?= $value['quantity_out'] ?></td>
+                                    <td><?= $value['quantity_stock'] ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <div class="row">
                 <div class="medium-7 small-12 columns">
                     <table class="umbrella-table margin-bottom">
@@ -346,4 +385,7 @@
 
     </div>
 </div>
+
+<?php require(views_path('admin/engineers/dashboard/_part/filter.php'))?>
+
 <?php require_once ROOT . '/views/admin/layouts/footer.php'; ?>
