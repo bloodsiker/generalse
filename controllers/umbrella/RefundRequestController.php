@@ -35,6 +35,7 @@ class RefundRequestController extends AdminBase
 
     /**
      * @return bool
+     * @throws \Exception
      */
     public function actionIndex()
     {

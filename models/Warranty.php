@@ -5,6 +5,7 @@ namespace Umbrella\models;
 use PDO;
 use Umbrella\components\Db\MySQL;
 use Umbrella\components\Db\MsSQL;
+use Umbrella\components\Decoder;
 
 class Warranty
 {
@@ -104,12 +105,17 @@ class Warranty
 
     /**
      * Запись в gm_manager в mssql
+     *
      * @param $options
+     *
      * @return int|string
+     * @throws \Exception
      */
     public static function addWarrantyRegistrationMsSql($options)
     {
         $db = MsSQL::getConnection();
+
+        $options['Lenovo_SO'] = Decoder::strToWindows($options['Lenovo_SO']);
 
         $sql = 'INSERT INTO dbo.site_gm_tasks '
             . '(site_id, site_account_id, so_number, mtm, serial_number, ready)'
