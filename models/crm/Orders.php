@@ -296,8 +296,7 @@ class Orders
                         ON sgo.site_account_id = sgu.site_account_id
                     LEFT JOIN site_gm_orders_types sgot
                         ON sgot.id = sgo.order_type_id
-                    WHERE sgo.site_account_id IN({$idS})
-                    AND sgo.created_on BETWEEN :start AND :end {$filter}
+                    WHERE sgo.site_account_id IN({$idS}) {$filter}
                     ORDER BY sgo.id DESC";
 
         $result = $db->prepare($sql);

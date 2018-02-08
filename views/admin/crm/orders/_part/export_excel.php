@@ -8,7 +8,15 @@
 
                 <h4 style="color: #fff">Between date</h4>
                 <div class="row align-bottom" style="background: #323e48; padding-top: 10px; margin-bottom: 10px">
-                    <div class="medium-6 small-6 columns">
+                    <div class="medium-4 small-2 columns">
+                        <label>Date Type</label>
+                        <select name="type_date">
+                            <option value="created_on">Дата создания заказа</option>
+                            <option value="shipped_on">Дата выдачи заказа</option>
+                            <option value="request_date">Дата создания Request</option>
+                        </select>
+                    </div>
+                    <div class="medium-4 small-4 columns">
                         <div class="row">
                             <div class="medium-6 small-12 columns">
                                 <label>From Date</label>
@@ -20,7 +28,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="medium-3 small-3 columns">
+                    <div class="medium-2 small-2 columns">
                         <label>Status</label>
                         <select name="status_name" id="status_name">
                             <option value="">none</option>
@@ -31,7 +39,7 @@
                             <option value="Резерв">Резерв</option>
                         </select>
                     </div>
-                    <div class="medium-3 small-3 columns">
+                    <div class="medium-2 small-2 columns">
                         <label>Type</label>
                         <select name="order_type_id">
                             <option value="">none</option>

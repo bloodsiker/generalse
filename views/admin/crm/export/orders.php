@@ -57,7 +57,8 @@
             <th style="text-align: center;">Type</th>
             <th style="text-align: center;">Note</th>
             <th style="text-align: center;">Status</th>
-            <th style="text-align: center;">Date</th>
+            <th style="text-align: center;">Date order</th>
+            <th style="text-align: center;">Date shipped</th>
             <th style="text-align: center;">Date request</th>
             <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.request_id', 'view')): ?>
                 <th style="text-align: center;">Request id</th>
@@ -81,15 +82,16 @@
                     <td style="text-align: center;"><?= $export['note1']?></td>
                     <td style="text-align: center;">
                         <?= $export['status_name'] ?>
-                        <?php if($user->group_name == 'Electrolux' && $export['status_name'] == 'Выдан'):?>
-                            <br>
-                            <?= Umbrella\components\Functions::formatDate($export['shipped_on'])?>
-                        <?php endif;?>
                     </td>
                     <td style="text-align: center;">
-                        <?= Umbrella\components\Functions::formatDate($export['created_on'])?>
+                        <?= !empty($export['created_on']) ? \Carbon\Carbon::parse($export['created_on'])->format('Y-m-d') : null ?>
                     </td>
-                    <td style="text-align: center;"><?= isset($export['request_date']) ? Umbrella\components\Functions::formatDate($export['request_date']) : null?></td>
+                    <td>
+                        <?= !empty($export['shipped_on']) ? \Carbon\Carbon::parse($export['shipped_on'])->format('Y-m-d') : null ?>
+                    </td>
+                    <td style="text-align: center;">
+                        <?= !empty($export['request_date']) ? \Carbon\Carbon::parse($export['request_date'])->format('Y-m-d') : null?>
+                    </td>
                     <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.request_id', 'view')): ?>
                         <td style="text-align: center;"><?= $export['request_id']?></td>
                     <?php endif?>

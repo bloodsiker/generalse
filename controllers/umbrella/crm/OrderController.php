@@ -28,6 +28,7 @@ class OrderController extends AdminBase
 
     /**
      * OrderController constructor.
+     * @throws \Exception
      */
     public function __construct()
     {
@@ -512,6 +513,10 @@ class OrderController extends AdminBase
         $filter = '';
         $start =  isset($_POST['start']) ? $_POST['start'] .' 00:00' : '';
         $end =  isset($_POST['end']) ? $_POST['end'] .' 23:59' : '';
+        if(!empty($_POST['type_date'])){
+            $type_date = $_POST['type_date'];
+            $filter .= " AND sgo.{$type_date} BETWEEN '{$start}' AND '{$end}'";
+        }
         if(!empty($_POST['status_name'])){
             $status = Decoder::strToWindows(trim($_POST['status_name']));
             $filter .= " AND sgo.status_name = '$status'";
