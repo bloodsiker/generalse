@@ -1,18 +1,22 @@
 <?php
 
-namespace Umbrella\controllers;
-
+namespace Umbrella\controllers\site;
 
 use Umbrella\app\Services\Language;
 
+/**
+ * Class LanguageController
+ * @package Umbrella\controllers\site
+ */
 class LanguageController
 {
+    /**
+     * @return bool
+     */
     public function actionChangeLang()
     {
         $url = new Language();
-        echo "<pre>";
-        print_r($url);
-
+        $url->changeLang();
         return true;
     }
 }

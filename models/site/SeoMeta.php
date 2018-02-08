@@ -5,35 +5,20 @@ namespace Umbrella\models\site;
 use PDO;
 use Umbrella\components\Db\MySQL;
 
-class Client
+class SeoMeta
 {
-
     /**
-     * Registration new Client
-     * @param $options
+     * @param $pagename
      *
-     * @return bool
+     * @return mixed
      */
-    public static function registrationClient($options)
+    public static function getSeoForPage($pagename)
     {
         $db = MySQL::getConnection();
-
-        $sql = 'INSERT INTO client '
-            . '(country, fio, company, email, login, phone, address, group_products, message, page)'
-            . 'VALUES '
-            . '(:country, :fio, :company, :email, :login, :phone, :address, :group_products, :message, :page)';
-
+        $sql = 'SELECT * FROM site_seo_meta WHERE pagename = :pagename LIMIT 1';
         $result = $db->prepare($sql);
-        $result->bindParam(':country', $options['country'], PDO::PARAM_INT);
-        $result->bindParam(':fio', $options['fio'], PDO::PARAM_STR);
-        $result->bindParam(':company', $options['company'], PDO::PARAM_STR);
-        $result->bindParam(':email', $options['email'], PDO::PARAM_STR);
-        $result->bindParam(':login', $options['login'], PDO::PARAM_STR);
-        $result->bindParam(':phone', $options['phone'], PDO::PARAM_STR);
-        $result->bindParam(':address', $options['address'], PDO::PARAM_STR);
-        $result->bindParam(':group_products', $options['group_products'], PDO::PARAM_STR);
-        $result->bindParam(':message', $options['message'], PDO::PARAM_STR);
-        $result->bindParam(':page', $options['page'], PDO::PARAM_STR);
-        return $result->execute();
+        $result->bindParam(':pagename', $pagename, PDO::PARAM_STR);
+        $result->execute();
+        return $result->fetch(PDO::FETCH_ASSOC);
     }
 }

@@ -1,8 +1,8 @@
-<?php require_once ROOT .'/views/new_site/layouts/head.php'; ?>
+<?php require_once ROOT . '/views/new_site/en/layouts/head.php'; ?>
 
 <div class="main">
 
-    <?php require_once ROOT . '/views/new_site/layouts/header.php'; ?>
+    <?php require_once ROOT . '/views/new_site/en/layouts/header.php'; ?>
 
 
     <main class="container">
@@ -97,7 +97,7 @@
                             <figcaption>
                                 <h3>For Retailers and Distributors</h3>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                <a href="services_for_retailers.php">View more</a>
+                                <a href="../../../index.php">View more</a>
                             </figcaption>
                         </figure>
                     </div>
@@ -109,7 +109,7 @@
                             <figcaption>
                                 <h3>For manufacturers</h3>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                <a href="services_for_manufacturers.php">View more</a>
+                                <a href="../../../index.php">View more</a>
                             </figcaption>
                         </figure>
                     </div>
@@ -121,7 +121,7 @@
                             <figcaption>
                                 <h3>For End-users</h3>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                <a href="services_for_enterprises.php">View more</a>
+                                <a href="../../../index.php">View more</a>
                             </figcaption>
                         </figure>
                     </div>
@@ -142,7 +142,7 @@
                             <figcaption>
                                 <h3>Depot Center</h3>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                <a href="services_for_retailers.php">View more</a>
+                                <a href="../../../index.php">View more</a>
                             </figcaption>
                         </figure>
                     </div>
@@ -154,7 +154,7 @@
                             <figcaption>
                                 <h3>Sell your defective assets</h3>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                <a href="services_for_manufacturers.php">View more</a>
+                                <a href="../../../index.php">View more</a>
                             </figcaption>
                         </figure>
                     </div>
@@ -166,7 +166,7 @@
                             <figcaption>
                                 <h3>Shop parts online</h3>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                <a href="services_for_enterprises.php">View more</a>
+                                <a href="../../../index.php">View more</a>
                             </figcaption>
                         </figure>
                     </div>
@@ -177,7 +177,7 @@
 </div>
 
 
-<?php require_once ROOT . '/views/new_site/layouts/footer.php'; ?>
+<?php require_once ROOT . '/views/new_site/en/layouts/footer.php'; ?>
 
 
 

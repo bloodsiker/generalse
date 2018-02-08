@@ -11,7 +11,7 @@
                     04116, Kiev, Ukraine<br>
                     0 800 501 279 <br>
                     044 338 25 59 <br>
-                    <a href="mailTo: es@generalse.com">es@generalse.com</a>
+                    <a href="../../../../index.php">es@generalse.com</a>
                 </p>
             </div>
             <div class="col-md-3">
@@ -33,7 +33,7 @@
                     Estonia <br>
                     4, Narva mnt, Tallin <br>
                     10117, Estonia <br>
-                    <a href="mailTo: ee@generalse.com">ee@generalse.com</a>
+                    <a href="../../../../index.php">ee@generalse.com</a>
                 </p>
             </div>
             <div class="col-md-2">
@@ -50,13 +50,13 @@
                         <ul class="nav">
 
                             <li class="menu-item">
-                                <a target="_blank" href="#">
+                                <a target="_blank" href="https://www.facebook.com/generalservicesua/?timeline_context_item_type=intro_card_work&timeline_context_item_source=100001806222604&pnref=lhc">
                                     <img style="background-color: #fff;" src="/template/new_site/img/icon-facebook.svg" width="30px" alt="">
                                 </a>
                             </li>
 
                             <li class="menu-item">
-                                <a target="_blank" href="#">
+                                <a target="_blank" href="https://www.linkedin.com/company/general-services-europe/">
                                     <img src="/template/new_site/img/icon-linkedin.svg" width="30px" alt="">
                                 </a>
                             </li>

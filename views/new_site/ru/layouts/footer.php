@@ -50,13 +50,13 @@
                         <ul class="nav">
 
                             <li class="menu-item">
-                                <a target="_blank" href="#">
+                                <a target="_blank" href="https://www.facebook.com/generalservicesua/?timeline_context_item_type=intro_card_work&timeline_context_item_source=100001806222604&pnref=lhc">
                                     <img style="background-color: #fff;" src="/template/new_site/img/icon-facebook.svg" width="30px" alt="">
                                 </a>
                             </li>
 
                             <li class="menu-item">
-                                <a target="_blank" href="#">
+                                <a target="_blank" href="https://www.linkedin.com/company/general-services-europe/">
                                     <img src="/template/new_site/img/icon-linkedin.svg" width="30px" alt="">
                                 </a>
                             </li>

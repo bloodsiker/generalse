@@ -25,10 +25,10 @@
                         <a class="nav-link dropdown-toggle" href="#" id="aboutDropdown" role="button" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">About</a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="aboutDropdown">
-                            <a class="dropdown-item" href="/new/company-information">Company information</a>
-                            <a class="dropdown-item" href="/new/geography">Geography</a>
-                            <a class="dropdown-item" href="../responsibility.php">Responsibility</a>
-                            <a class="dropdown-item" href="../certificates.php">Certificates</a>
+                            <a class="dropdown-item" href="/new/about/company-information">Company information</a>
+                            <a class="dropdown-item" href="/new/about/geography">Geography</a>
+                            <a class="dropdown-item" href="/new/about/responsibility">Responsibility</a>
+                            <a class="dropdown-item" href="/new/about/certificates">Certificates</a>
                         </div>
                     </li>
 
@@ -36,21 +36,20 @@
                         <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">Services</a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="servicesDropdown">
-                            <a class="dropdown-item" href="../services_for_manufacturers.php">For manufacturers</a>
-                            <a class="dropdown-item" href="../services_for_retailers.php">For retailers</a>
-                            <a class="dropdown-item" href="../services_for_repair_centers.php">For repair centers</a>
-                            <a class="dropdown-item" href="../services_for_enterprises.php">For enterprises</a>
+                            <a class="dropdown-item" href="/new/services/manufacturers">For manufacturers</a>
+                            <a class="dropdown-item" href="/new/services/retailers">For retailers</a>
+                            <a class="dropdown-item" href="/new/services/repair-centers">For repair centers</a>
+                            <a class="dropdown-item" href="/new/services/enterprises">For enterprises</a>
                         </div>
                     </li>
 
-                    <li class="nav-item"><a class="nav-link" href="#">Recycling</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../news.php">News</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../career.php">Career</a></li>
+                    <li class="nav-item d-none"><a class="nav-link" href="#">Recycling</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/new/news">News</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/new/career">Career</a></li>
 
 
-
-                    <li class="nav-item"><a class="nav-link" href="../suppliers.php">Suppliers</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../contacts.php">Contacts</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/new/suppliers">Suppliers</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/new/contacts">Contacts</a></li>
 
                     <li class="nav-item dropdown login-item-menu">
                         <a class="nav-link dropdown-toggle" href="#" id="careerDropdown" role="button" data-toggle="dropdown"
@@ -77,10 +76,10 @@
                     </li>
 
                     <li class="nav-item dropdown ml-4 nav-langs">
-                        <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-toggle="dropdown"
+                        <a class="nav-link dropdown-toggle" href="/lang/en" id="servicesDropdown" role="button" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">Eng</a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="servicesDropdown">
-                            <a class="dropdown-item" href="#">Рус</a>
+                            <a class="dropdown-item" href="/lang/ru">Рус</a>
                         </div>
                     </li>
 

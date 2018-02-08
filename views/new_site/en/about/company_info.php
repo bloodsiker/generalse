@@ -1,8 +1,8 @@
-<?php require_once ROOT .'/views/new_site/layouts/head.php'; ?>
+<?php require_once ROOT . '/views/new_site/en/layouts/head.php'; ?>
 
 <div class="main">
 
-    <?php require_once ROOT . '/views/new_site/layouts/header.php'; ?>
+    <?php require_once ROOT . '/views/new_site/en/layouts/header.php'; ?>
 
     <main class="container" style="padding-bottom: 0;">
 
@@ -168,5 +168,5 @@
 </div>
 
 
-<?php require_once ROOT . '/views/new_site/layouts/footer.php'; ?>
+<?php require_once ROOT . '/views/new_site/en/layouts/footer.php'; ?>
 

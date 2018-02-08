@@ -1,8 +1,21 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru" prefix="og: http://ogp.me/ns#">
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title><?= $seo_page['title'] ?></title>
+    <link rel="icon" href="" type="image/x-icon"/>
+    <link rel="shortcut icon" href="" type="image/x-icon"/>
+    <meta name="description" content="<?= $seo_page['description'] ?>">
+    <meta name="keywords" content="<?= $seo_page['keywords'] ?>">
+
+    <meta property="og:site_name" content="Generalse Inc." />
+    <meta property="og:title" content="<?= $seo_page['title'] ?>" />
+    <meta property="og:description" content="<?= $seo_page['description'] ?>"/>
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="<?= \Josantonius\Url\Url::getBaseUrl() ?>" />
+    <meta property="og:image:url" content="" />
 
     <link rel="stylesheet" href="/template/new_site/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">

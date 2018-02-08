@@ -1,7 +1,7 @@
 <header>
     <nav class="navbar navbar-expand-lg navbar-light box-shadow scrolled">
         <div class="container  align-items-end">
-            <a class="navbar-brand" href="/new/">
+            <a class="navbar-brand" href="/ru/new">
                 <img class="site-logo" src="/template/new_site/img/logo.svg" alt="generalse">
             </a>
             <div class="d-flex align-items-center">
@@ -23,63 +23,63 @@
 
                     <li class="nav-item dropdown active">
                         <a class="nav-link dropdown-toggle" href="#" id="aboutDropdown" role="button" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">About</a>
+                           aria-haspopup="true" aria-expanded="false">О нас</a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="aboutDropdown">
-                            <a class="dropdown-item" href="/new/about/company-information">Company information</a>
-                            <a class="dropdown-item" href="/new/about/geography">Geography</a>
-                            <a class="dropdown-item" href="/new/about/responsibility">Responsibility</a>
-                            <a class="dropdown-item" href="/new/about/certificates">Certificates</a>
+                            <a class="dropdown-item" href="/ru/new/about/company-information">Информация о компании</a>
+                            <a class="dropdown-item" href="/ru/new/about/geography">Георграфия</a>
+                            <a class="dropdown-item" href="/ru/new/about/responsibility">Обязанности</a>
+                            <a class="dropdown-item" href="/ru/new/about/certificates">Сертификаты</a>
                         </div>
                     </li>
 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">Services</a>
+                           aria-haspopup="true" aria-expanded="false">Сервисы</a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="servicesDropdown">
-                            <a class="dropdown-item" href="/new/services/manufacturers">For manufacturers</a>
-                            <a class="dropdown-item" href="/new/services/retailers">For retailers</a>
-                            <a class="dropdown-item" href="/new/services/repair-centers">For repair centers</a>
-                            <a class="dropdown-item" href="/new/services/enterprises">For enterprises</a>
+                            <a class="dropdown-item" href="/ru/new/services/manufacturers">Для производителей</a>
+                            <a class="dropdown-item" href="/ru/new/services/retailers">Для розничной торговли</a>
+                            <a class="dropdown-item" href="/ru/new/services/repair-centers">Для ремонтных центров</a>
+                            <a class="dropdown-item" href="/ru/new/services/enterprises">Для предприятий</a>
                         </div>
                     </li>
 
-                    <li class="nav-item"><a class="nav-link" href="#">Recycling</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/new/news">News</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/new/career">Career</a></li>
+                    <li class="nav-item d-none"><a class="nav-link" href="#">Переработка</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/ru/new/news">Новости</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/ru/new/career">Карьера</a></li>
 
 
-                    <li class="nav-item"><a class="nav-link" href="/new/suppliers">Suppliers</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/new/contacts">Contacts</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/ru/new/suppliers">Поставщики</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/ru/new/contacts">Контакты</a></li>
 
                     <li class="nav-item dropdown login-item-menu">
                         <a class="nav-link dropdown-toggle" href="#" id="careerDropdown" role="button" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">
-                            Login in
+                            Войти
                         </a>
                         <div class="dropdown-menu dropdown-menu-right p-3 hidden-md-down" aria-labelledby="careerDropdown">
                             <form action="" style="width: 250px;">
-                                <strong >Login to Umbrella Project</strong>
+                                <strong >Войти в Umbrella</strong>
                                 <div class="mt-3 form-group">
-                                    <label for="login">Login</label>
+                                    <label for="login">Логин</label>
                                     <input type="text" class="form-control" name="login">
                                 </div>
                                 <div class="form-group">
-                                    <label for="login">Password</label>
+                                    <label for="login">Пароль</label>
                                     <input type="password" class="form-control" name="password">
                                 </div>
                                 <div class="d-flex">
-                                    <button class="btn btn-white w-100 mr-2" type="button" data-toggle="modal" data-target="#registrationModal">Registrations</button>
-                                    <button class="btn btn-red" type="submit">Login</button>
+                                    <button class="btn btn-white w-100 mr-2" type="button" data-toggle="modal" data-target="#registrationModal">Регистрация</button>
+                                    <button class="btn btn-red" type="submit">Войти</button>
                                 </div>
                             </form>
                         </div>
                     </li>
 
                     <li class="nav-item dropdown ml-4 nav-langs">
-                        <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">Eng</a>
+                        <a class="nav-link dropdown-toggle" href="/lang/ru" id="servicesDropdown" role="button" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">Рус</a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="servicesDropdown">
-                            <a class="dropdown-item" href="#">Рус</a>
+                            <a class="dropdown-item" href="/lang/en">Eng</a>
                         </div>
                     </li>
 

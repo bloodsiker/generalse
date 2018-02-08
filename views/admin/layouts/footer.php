@@ -19,6 +19,7 @@
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script src='/template/admin/plugins/ckeditor/ckeditor.js'></script>
 
 <!-- switch  -->
 <?php
@@ -40,7 +41,6 @@ if (Umbrella\components\Url::Is_url('/ccc/debtors')) echo "<script src='/templat
 if (Umbrella\components\Url::Is_url(['/adm/lithographer', '/adm/ccc/tree_knowledge/article'])) echo "
   <script src='https://cdnjs.cloudflare.com/ajax/libs/video.js/5.0.0/video.min.js'></script>
   <script src='/template/admin/js/lithographer.js?v1.5.2'></script>
-  <script src='/template/admin/plugins/ckeditor/ckeditor.js'></script>
   ";
 if (Umbrella\components\Url::Is_url('/engineers')) echo "<script src='https://www.gstatic.com/charts/loader.js'></script>
     <script src='/template/admin/js/engineers/engineers.js'></script>";
@@ -93,15 +93,11 @@ if (Umbrella\components\Url::Is_url('/engineers')) echo "<script src='https://ww
     });
 </script>
 
-
-<?php if(Umbrella\components\Url::Is_url(['/adm/lithographer', '/adm/ccc/tree_knowledge/article'])):?>
-    <script>
-        CKEDITOR.replace('ck_article');
-        CKEDITOR.replace('edit');
-    </script>
-<?php endif;?>
-
-
+<script>
+    CKEDITOR.replace('ck_article');
+    CKEDITOR.replace('edit');
+    CKEDITOR.replace('add');
+</script>
 
 <script>
 $("#date-start").datepicker({

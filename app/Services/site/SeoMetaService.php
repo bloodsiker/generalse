@@ -2,7 +2,9 @@
 
 namespace Umbrella\app\Services\site;
 
-class SeoMeta
+use Umbrella\models\site\SeoMeta;
+
+class SeoMetaService
 {
     private $lang;
 
@@ -11,9 +13,20 @@ class SeoMeta
         $this->lang = $lang;
     }
 
-    public function getSeoForPage()
-    {
 
+    /**
+     * @param $pagename
+     *
+     * @return mixed
+     */
+    public function getSeoForPage($pagename)
+    {
+        $seo = SeoMeta::getSeoForPage($pagename);
+
+        $result['title'] = $seo[$this->lang .'_title'];
+        $result['description'] = $seo[$this->lang .'_description'];
+        $result['keywords'] = $seo[$this->lang .'_keywords'];
+        return $result;
     }
 
 }
