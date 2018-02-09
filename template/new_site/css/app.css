@@ -58,18 +58,21 @@ nav {
 .numbers-box {
   margin-bottom: 0; }
 
+.dropdown-not-hover .dropdown-toggle::after {
+  display: none; }
+
 .dropdown {
   font-family: 'GothamProMedium'; }
   .dropdown:hover .nav-link {
     color: #c1433c !important; }
   @media screen and (min-width: 769px) {
-    .dropdown:hover .dropdown-menu {
+    .dropdown:hover:not(.dropdown-not-hover) .dropdown-menu {
       top: 35px;
       display: block;
       border-radius: 0 !important;
       border: none !important;
       box-shadow: 0 0 7px rgba(0, 0, 0, 0.1); }
-      .dropdown:hover .dropdown-menu .dropdown-item:active {
+      .dropdown:hover:not(.dropdown-not-hover) .dropdown-menu .dropdown-item:active {
         background-color: #c1433c !important;
         color: #ffffff; } }
   @media screen and (max-width: 992px) {

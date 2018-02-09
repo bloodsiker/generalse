@@ -19,7 +19,7 @@ $(document).ready(function () {
         }
     });
 
-    $('.dropdown').on('show.bs.dropdown', event => event.preventDefault());
+    $('.dropdown:not(.dropdown-not-hover)').on('show.bs.dropdown', event => event.preventDefault());
 
     if ($(document).find('.tlt').length) {
         $('.tlt').textillate({

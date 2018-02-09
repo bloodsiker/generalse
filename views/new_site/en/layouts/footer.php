@@ -70,9 +70,7 @@
         <div class="text-center">Copyright © 2018 General Services LLC</div>
     </div>
 
-
 </footer>
-
 
 <div class="modal fade" id="registrationModal" tabindex="-1" role="dialog" aria-labelledby="registrationModal" aria-hidden="true">
     <div class="modal-dialog" role="document">

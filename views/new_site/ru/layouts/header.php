@@ -51,12 +51,12 @@
                     <li class="nav-item"><a class="nav-link" href="/ru/new/suppliers">Поставщики</a></li>
                     <li class="nav-item"><a class="nav-link" href="/ru/new/contacts">Контакты</a></li>
 
-                    <li class="nav-item dropdown login-item-menu">
+                    <li class="nav-item dropdown dropdown-not-hover ml-4  login-item-menu">
                         <a class="nav-link dropdown-toggle" href="#" id="careerDropdown" role="button" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">
                             Войти
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right p-3 hidden-md-down" aria-labelledby="careerDropdown">
+                        <div style="border-radius: 0px;border: none;box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);" class="dropdown-menu dropdown-menu-right p-3 hidden-md-down" aria-labelledby="careerDropdown">
                             <form action="" style="width: 250px;">
                                 <strong >Войти в Umbrella</strong>
                                 <div class="mt-3 form-group">

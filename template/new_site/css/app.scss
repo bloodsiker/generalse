@@ -67,10 +67,6 @@ nav {
   .nav-link {
     font-family: 'GothamProMedium';
     color: #212529 !important;
-    //&:after,
-    //.dropdown-toggle:after {
-    //  content: none;
-    //}
     &:hover {
       color: $red;
     }
@@ -84,8 +80,12 @@ nav {
 .numbers-box {
   margin-bottom: 0;
 }
-.dropdown-toggle::after {
-  //border: none !important;
+
+
+.dropdown-not-hover {
+  .dropdown-toggle::after {
+      display: none;
+  }
 }
 .dropdown {
   font-family: 'GothamProMedium';
@@ -93,21 +93,26 @@ nav {
     .nav-link {
       color: $red;
     }
-    .dropdown-menu {
-      @media screen and (min-width: 769px) {
-        top: 35px;
-        display: block;
-        border-radius: 0 !important;
-        border: none !important;
-        box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);
-        .dropdown-item {
-          &:active {
-            background-color: $red;
-            color: #ffffff;
+    
+    &:not(.dropdown-not-hover) {
+      .dropdown-menu {
+        @media screen and (min-width: 769px) {
+          top: 35px;
+          display: block;
+          border-radius: 0 !important;
+          border: none !important;
+          box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);
+          .dropdown-item {
+            &:active {
+              background-color: $red;
+              color: #ffffff;
+            }
           }
         }
-      }
+      
     }
+    }
+    
 
   }
   .dropdown-menu {
