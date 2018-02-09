@@ -23,6 +23,7 @@
                     <div class="medium-3 small-3 columns">
                         <label>Status</label>
                         <select name="processed" id="processed">
+                            <option value="all">All</option>
                             <option value="0">Not completed</option>
                             <option value="1">Completed</option>
                         </select>

@@ -59,6 +59,7 @@
             <th>Address</th>
             <th style="text-align: center;">Type</th>
             <th style="text-align: center;">Note</th>
+            <th>Processed</th>
             <th>Status</th>
             <th style="text-align: center;">Date</th>
         </tr>
@@ -67,17 +68,18 @@
         <?php if(isset($listExport) && is_array($listExport)):?>
             <?php foreach ($listExport as $export):?>
                 <tr>
-                    <td><?=$export['id']?></td>
+                    <td><?= $export['id']?></td>
                     <td><?= $export['site_client_name']?></td>
                     <td><?= $export['site_client_status']?></td>
-                    <td><?=$export['part_number']?></td>
-                    <td><?=$export['goods_name']?></td>
-                    <td><?=$export['subtype_name']?></td>
-                    <td><?=$export['so_number']?></td>
+                    <td><?= $export['part_number']?></td>
+                    <td><?= $export['goods_name']?></td>
+                    <td><?= $export['subtype_name']?></td>
+                    <td><?= $export['so_number']?></td>
                     <td style="text-align: center;"><?= round($export['price'], 2)?></td>
                     <td><?= $export['note']?></td>
-                    <td style="text-align: center;"><?=$export['type_name']?></td>
-                    <td style="text-align: center;"><?=$export['note1']?></td>
+                    <td style="text-align: center;"><?= $export['type_name']?></td>
+                    <td style="text-align: center;"><?= $export['note1']?></td>
+                    <td style="text-align: center;"><?= $export['processed'] == 1 ? 'Order' : 'Request'?></td>
                     <td><?= $export['status_name'] . Umbrella\components\Functions::formatDate($export['expected_date'])?></td>
                     <td style="text-align: center;"><?= Umbrella\components\Functions::formatDate($export['created_on'])?></td>
                 </tr>

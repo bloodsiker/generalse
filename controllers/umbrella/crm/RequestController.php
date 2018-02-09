@@ -849,9 +849,11 @@ class RequestController extends AdminBase
         $start =  isset($_REQUEST['start']) ? $_REQUEST['start'] .' 00:00' : '';
         $end =  isset($_REQUEST['end']) ? $_REQUEST['end'] .' 23:59' : '';
 
-        $processed = (int)$_REQUEST['processed'];
+        $processed = trim(htmlspecialchars($_REQUEST['processed']));
         if(isset($processed)){
-            $filter .= " AND sgog.processed = {$processed}";
+            if($processed != 'all'){
+                $filter .= " AND sgog.processed = {$processed}";
+            }
         }
 
         $type = (int)$_REQUEST['order_type_id'];

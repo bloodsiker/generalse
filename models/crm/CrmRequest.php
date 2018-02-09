@@ -128,8 +128,7 @@ class CrmRequest
         $result->bindParam(':processed', $completed, PDO::PARAM_INT);
         $result->bindParam(':active', $active, PDO::PARAM_INT);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -174,8 +173,7 @@ class CrmRequest
         $result->bindParam(':processed', $completed, PDO::PARAM_INT);
         $result->bindParam(':active', $active, PDO::PARAM_INT);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -193,8 +191,7 @@ class CrmRequest
         $result = $db->prepare($sql);
         $result->bindParam(':number', $number, PDO::PARAM_INT);
         $result->execute();
-        $row = $result->fetch();
-        return $row;
+        return $result->fetch(PDO::FETCH_ASSOC);
     }
 
 
@@ -239,6 +236,7 @@ class CrmRequest
                  sgog.note,
                  sgog.status_name,
                  sgog.created_on,
+                 sgog.processed,
                  sgog.note1,
                  sgog.subtype_name,
                  sgog.period,
@@ -262,8 +260,7 @@ class CrmRequest
         $result->bindParam(':start', $start, PDO::PARAM_STR);
         $result->bindParam(':end', $end, PDO::PARAM_STR);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -418,8 +415,7 @@ class CrmRequest
         $result = $db->prepare($sql);
         $result->bindParam(':id', $id_order, PDO::PARAM_INT);
         $result->execute();
-        $res = $result->fetch(PDO::FETCH_ASSOC);
-        return $res;
+        return $result->fetch(PDO::FETCH_ASSOC);
     }
 
     /**
