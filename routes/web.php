@@ -277,6 +277,12 @@ return [
 
 
     /*********** Admin site  ***********/
+
+    'adm/site/news/delete/([a-z0-9-_?&\.]+)' => 'umbrella/site/News@delete/$1',
+    'adm/site/news/edit/([a-z0-9-_?&\.]+)' => 'umbrella/site/News@edit/$1',
+    'adm/site/news/add' => 'umbrella/site/News@add',
+    'adm/site/news' => 'umbrella/site/News@allNews',
+
     'adm/site/vacancy/delete/([a-z0-9-_?&\.]+)' => 'umbrella/site/Vacancy@delete/$1',
     'adm/site/vacancy/edit/([a-z0-9-_?&\.]+)' => 'umbrella/site/Vacancy@edit/$1',
     'adm/site/vacancy/add' => 'umbrella/site/Vacancy@add',

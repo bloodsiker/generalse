@@ -34,7 +34,7 @@ class Vacancy
     {
         $db = MySQL::getConnection();
 
-        $sql = 'SELECT * FROM site_vacancy WHERE published = 1 AND slug = :slug LIMIT 1';
+        $sql = 'SELECT * FROM site_vacancy WHERE slug = :slug LIMIT 1';
 
         $result = $db->prepare($sql);
         $result->bindParam(':slug', $slug, PDO::PARAM_STR);

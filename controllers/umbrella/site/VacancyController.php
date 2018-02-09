@@ -138,8 +138,6 @@ class VacancyController extends AdminBase
             Session::set('message', 'Vacancy not found!');
             Url::redirect('/adm/site/vacancy');
         }
-
-        $this->render('admin/site/vacancy/index', compact('user', 'all_vacancy'));
         return true;
     }
 }

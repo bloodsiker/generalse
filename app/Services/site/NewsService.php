@@ -23,7 +23,7 @@ class NewsService
      */
     public function getAllNews()
     {
-        $news = News::getAllNews();
+        $news = News::getAllNewsFoSite();
 
         $result = [];
         $i = 0;
