@@ -2,4 +2,6 @@ User-agent: *
 Disallow:
 
 Disallow: /adm/
+Disallow: /new/
+Disallow: /ru/new/
 Host: generalse.com/

@@ -50,8 +50,13 @@
         </div>
 
         <!-- body -->
-        <div class="body-content checkout">
+        <div class="body-content">
             <div class="row">
+                <?php if(isset($message) && !empty($message)):?>
+                    <div class="medium-12 small-12 columns" style="text-align: center">
+                        <div class="alert-success" style="margin: 20px auto;"><?=$message?></div>
+                    </div>
+                <?php endif;?>
                 <div class="medium-12 small-12 columns">
                     <table class="umbrella-table margin-bottom">
                         <thead>
@@ -63,7 +68,7 @@
                             <th>Partner Job Order</th>
                             <th>Defective PN</th>
                             <th>Replaced PN</th>
-                            <th>Stock/th>
+                            <th>Stock</th>
                             <th>Order Number</th>
                             <th>Status SO</th>
                             <th>Creation Date</th>
@@ -71,62 +76,24 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+                        <?php if(is_array($allMds)): ?>
+                            <?php foreach ($allMds as $mds): ?>
+                            <tr>
+                                <td><?= $mds['site_client_name'] ?></td>
+                                <td></td>
+                                <td><?= $mds['so'] ?></td>
+                                <td><?= $mds['IMEIorSN'] ?></td>
+                                <td><?= $mds['PartnerJobOrder'] ?></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><?= $mds['SOStatus'] ?></td>
+                                <td><?= $mds['created_on'] ?></td>
+                                <td></td>
+                            </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
