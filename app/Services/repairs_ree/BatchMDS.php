@@ -174,9 +174,9 @@ class BatchMDS
             $array[$i]['NewSN'] = $value['AV'];
             $array[$i]['NewSoftwareVersion'] = $value['AW'];
             $array[$i]['PartStatus'] = null; ////////////
-            $array[$i]['RepairFinishiTime'] = !empty($value['AX']) ? Carbon::parse($value['AX'])->format('Y.m.d H:i') : null;
+            $array[$i]['RepairFinishiTime'] = !empty($value['AX']) ? Carbon::parse($value['AX'])->format('Y-m-d H:i') : null;
             $array[$i]['TrackingNumberOut'] = $value['AY'];
-            $array[$i]['PickupTime'] = !empty($value['AX']) ? Carbon::parse($value['BB'])->format('Y.m.d H:i') : null;
+            $array[$i]['PickupTime'] = !empty($value['AX']) ? Carbon::parse($value['BB'])->format('Y-m-d H:i') : null;
 
             $i++;
         }

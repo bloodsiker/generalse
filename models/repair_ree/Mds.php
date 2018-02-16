@@ -37,9 +37,11 @@ class Mds
 
 
     /**
+     * @param $filter
+     *
      * @return array
      */
-    public static function getAll()
+    public static function getAll($filter)
     {
         $db = MsSQL::getConnection();
 
@@ -49,14 +51,15 @@ class Mds
                 sgm.PartnerJobOrder,
                 sgm.SOStatus,
                 sgm.IMEIorSN,
+                sgm.RepairFinishiTime,
                 sgu.site_client_name
                 FROM site_gm_mds sgm
                   INNER JOIN site_gm_users sgu
                     ON sgm.site_account_id = sgu.site_account_id
+                WHERE 1 = 1 {$filter}
                 ORDER BY sgm.id DESC";
 
         $result = $db->prepare($sql);
-        $result->bindParam(':id_group', $id_group, PDO::PARAM_INT);
         $result->execute();
         return $result->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -67,7 +70,7 @@ class Mds
      *
      * @return array
      */
-    public static function getAllByPartner($array_id)
+    public static function getAllByPartner($array_id, $filter)
     {
         $db = MsSQL::getConnection();
 
@@ -79,11 +82,12 @@ class Mds
                 sgm.PartnerJobOrder,
                 sgm.SOStatus,
                 sgm.IMEIorSN,
+                sgm.RepairFinishiTime,
                 sgu.site_client_name
                 FROM site_gm_mds sgm
                   INNER JOIN site_gm_users sgu
                     ON sgm.site_account_id = sgu.site_account_id
-                WHERE sgm.site_account_id IN({$idS}) 
+                WHERE sgm.site_account_id IN({$idS}) {$filter}
                 ORDER BY sgm.id DESC";
 
         $result = $db->prepare($sql);
