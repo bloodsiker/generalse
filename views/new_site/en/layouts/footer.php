@@ -160,6 +160,23 @@
     </div>
 </div>
 
+<div class="modal fade" id="thank" tabindex="-1" role="dialog" aria-labelledby="thank" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div style="padding: 30px; text-align: center">
+                    <h5>Заявка отправлена! <br> Ожидайте, с Вами свяжуться в ближайшее время</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.10.0/js/lightbox-plus-jquery.min.js"></script>
 
@@ -181,9 +198,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/textillate/0.4.0/jquery.textillate.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.13/jquery.mask.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
-<script src="/template/new_site/js/app.js"></script>
-
+<script src="/template/new_site/js/object.js"></script>
 <script src="/template/new_site/js/app.js"></script>
 
 </body>

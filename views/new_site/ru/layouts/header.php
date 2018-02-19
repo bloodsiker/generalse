@@ -23,23 +23,23 @@
 
                     <li class="nav-item dropdown active">
                         <a class="nav-link dropdown-toggle" href="#" id="aboutDropdown" role="button" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">О нас</a>
+                           aria-haspopup="true" aria-expanded="false">О компании</a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="aboutDropdown">
-                            <a class="dropdown-item" href="/ru/new/about/company-information">Информация о компании</a>
+                            <a class="dropdown-item" href="/ru/new/about/company-information">Профайл</a>
                             <a class="dropdown-item" href="/ru/new/about/geography">Георграфия</a>
-                            <a class="dropdown-item" href="/ru/new/about/responsibility">Обязанности</a>
+                            <a class="dropdown-item" href="/ru/new/about/responsibility">Ответственность</a>
                             <a class="dropdown-item" href="/ru/new/about/certificates">Сертификаты</a>
                         </div>
                     </li>
 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">Сервисы</a>
+                           aria-haspopup="true" aria-expanded="false">Услуги</a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="servicesDropdown">
-                            <a class="dropdown-item" href="/ru/new/services/manufacturers">Для производителей</a>
-                            <a class="dropdown-item" href="/ru/new/services/retailers">Для розничной торговли</a>
-                            <a class="dropdown-item" href="/ru/new/services/repair-centers">Для ремонтных центров</a>
-                            <a class="dropdown-item" href="/ru/new/services/enterprises">Для предприятий</a>
+                            <a class="dropdown-item" href="/ru/new/services/manufacturers">Производителям</a>
+                            <a class="dropdown-item" href="/ru/new/services/retailers">Розничным сетям</a>
+                            <a class="dropdown-item" href="/ru/new/services/repair-centers">Корпоративным клиентам</a>
+                            <a class="dropdown-item" href="/ru/new/services/enterprises">Сервисным центрам</a>
                         </div>
                     </li>
 
@@ -48,34 +48,40 @@
                     <li class="nav-item"><a class="nav-link" href="/ru/new/career">Карьера</a></li>
 
 
-                    <li class="nav-item"><a class="nav-link" href="/ru/new/suppliers">Поставщики</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/ru/new/suppliers">Поставщикам</a></li>
                     <li class="nav-item"><a class="nav-link" href="/ru/new/contacts">Контакты</a></li>
 
-                    <li class="nav-item dropdown dropdown-not-hover ml-4  login-item-menu">
-                        <a class="nav-link dropdown-toggle" href="#" id="careerDropdown" role="button" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
-                            Войти
-                        </a>
-                        <div style="border-radius: 0px;border: none;box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);" class="dropdown-menu dropdown-menu-right p-3 hidden-md-down" aria-labelledby="careerDropdown">
-                            <form action="" style="width: 250px;">
-                                <strong >Войти в Umbrella</strong>
-                                <div class="mt-3 form-group">
-                                    <label for="login">Логин</label>
-                                    <input type="text" class="form-control" name="login">
-                                </div>
-                                <div class="form-group">
-                                    <label for="login">Пароль</label>
-                                    <input type="password" class="form-control" name="password">
-                                </div>
-                                <div class="d-flex">
-                                    <button class="btn btn-white w-100 mr-2" type="button" data-toggle="modal" data-target="#registrationModal">Регистрация</button>
-                                    <button class="btn btn-red" type="submit">Войти</button>
-                                </div>
-                            </form>
-                        </div>
-                    </li>
+                    <?php if(\Josantonius\Session\Session::get('user')):?>
+                        <li class="nav-item"><a class="nav-link" href="/adm/crm/">Кабинет</a></li>
+                    <?php else:?>
+                        <li class="nav-item dropdown dropdown-not-hover ml-4  login-item-menu">
+                            <a class="nav-link dropdown-toggle" href="#" id="careerDropdown" role="button" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                Войти
+                            </a>
+                            <div style="border-radius: 0px;border: none;box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);" class="dropdown-menu dropdown-menu-right p-3 hidden-md-down" aria-labelledby="careerDropdown">
+                                <form action="" method="post" id="form-auth" style="width: 250px;">
+                                    <strong >Войти в Umbrella</strong>
+                                    <div class="mt-3 form-group">
+                                        <label for="login">Логин</label>
+                                        <input type="text" class="form-control login_umbrella" name="login" autocomplete="off">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="login">Пароль</label>
+                                        <input type="password" class="form-control password_umbrella" name="password">
+                                    </div>
+                                    <div class="d-flex">
+                                        <input type="hidden" name="lang" value="ru">
+                                        <button class="btn btn-white w-100 mr-2" type="button" data-toggle="modal" data-target="#registrationModal">Регистрация</button>
+                                        <button class="btn btn-red" id="login_umbrella" type="submit">Войти</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+                    <?php endif;?>
 
-                    <li class="nav-item dropdown ml-4 nav-langs">
+
+                    <li class="nav-item dropdown ml-4 nav-langs d-none">
                         <a class="nav-link dropdown-toggle" href="/lang/ru" id="servicesDropdown" role="button" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">Рус</a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="servicesDropdown">

@@ -7,29 +7,19 @@
     <main class="container" style="padding-bottom: 0;">
 
         <section>
-            <h1 class="text-uppercase mb-5">General services europe</h1>
+            <h1 class="text-uppercase mb-5">General Services Europe (GSE)</h1>
             <div class="row align-items-center">
-                <div class="col-md-6">
-                    <img class="mw-100" src="http://generalse.com/template/site/img/About/3TJ6NCTIRT.jpg" alt="">
-                </div>
-                <div class="col-md-6">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi nemo odit sunt vero vitae voluptatem! Amet
-                        est
-                        et, excepturi, ipsam itaque maiores, nisi non quod ratione repellendus sequi tempora veniam? Lorem ipsum
-                        dolor
-                        sit amet, consectetur adipisicing elit. Aliquam doloremque eius nam omnis quaerat quia suscipit!
-                        Accusantium
-                        sit amet, consectetur adipisicing elit. Aliquam doloremque eius nam omnis quaerat quia suscipit!
-                        Accusantium
-                        sit amet, consectetur adipisicing elit. Aliquam doloremque eius nam omnis quaerat quia suscipit!
-                        Accusantium
-                        cumque, exercitationem incidunt natus possimus quae soluta totam voluptatum. Ab fugiat ipsum optio?</p>
+                <div class="col-md-12">
+                    <img width="500px" class="mr-4 mb-2" align="left" src="http://generalse.com/template/site/img/About/3TJ6NCTIRT.jpg" alt="">
+                    <p><b>General Services Europe (GSE)</b> – это международный провайдер услуг для обеспечения послепродажного обслуживания продукции компаний-производителей потребительских электронных товаров. Основанная в 2006 году, компания осуществляет полный спектр логистических операций с запасными частями и комплектующими, ремонт продукции любой сложности, переработку и утилизацию неремонтопригодной техники, услуги аутсорсингового колл-центра. </p>
+                    <p>Инфраструктура General Services Inc. включает 3 депот-центра национального масштаба в Украине, Беларуси и Грузии, 55 центров обслуживания клиентов в 7 странах, логистическую компанию полного цикла, и компанию по переработке электронных отходов.</p>
+                    <p>Клиентами General Services Europe являются крупнейшие производители компьютерной, бытовой и офисной техники, средств мобильной связи, а также ряд дистрибуторов и розничных сетей национального масштаба. Мы обеспечиваем своих заказчиков профессиональными услугами по построению комплексной инфраструктуры послепродажного обслуживания; планированию и процессу закупок запасных частей, полного цикла их логистики, складского хранения и дистрибуции комплектующих; ремонтом техники в гарантийный и послегарантийных период, а также другими техническими услугами; технической и информационной поддержке клиентов; минимизация расходов на сервисное обслуживание. Портфолио наших услуг полностью решает проблему послепродажного обслуживания наших клиентов, позволяя им концентрироваться на своем бизнесе.</p>
                 </div>
             </div>
         </section>
 
         <section>
-            <h2 class="tlt text-center">With more than 1,500 employees in Europe and more than 14,000 worldwide, we are a strong partner for our customers and an attractive employer.</h2>
+            <h2 class="tlt text-center">География General Services охватывает Эстонию, Украину, Беларусь, Молдову, Грузию, Армению, что является наиболее широким покрытием среди всех сервис-провайдеров Восточной Европы.</h2>
             <div class="row mt-5">
                 <div class="col-6 mt-5">
                     <div class="row icon-box">
@@ -37,11 +27,9 @@
                             <img class="mw-100" src="http://generalse.com/template/site/img/Directions/OurDirectionsicons/tie.svg" alt="">
                         </div>
                         <div class="col-8">
-                            <div class="icon-box-title">Management</div>
+                            <div class="icon-box-title">Менеджмент</div>
                             <div class="icon-box-text">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam blanditiis doloremque eaque, eum
-                                labore laboriosam, laudantium nemo qui reiciendis, rerum temporibus totam? Accusamus architecto culpa
-                                deserunt doloribus ipsum natus ratione!
+                                Мы имеем наиболее профессиональный, амбициозный и целеориентированый подбор высшего упавляющего состава среди всех сервисных компаний на рынке. В сочетании с энергичной молодой командой и рядом собственных ИТ-решений по контролю бизнес-процессов, комплексный менеджмент является нашим главным преимуществом, благодаря которому General Services является самой динамически развивающейся сервисной компанией в регионе СНГ.
                             </div>
                         </div>
                     </div>
@@ -52,11 +40,9 @@
                             <img class="mw-100" src="http://generalse.com/template/site/img/Directions/OurDirectionsicons/web-development.svg" alt="">
                         </div>
                         <div class="col-8">
-                            <div class="icon-box-title">End-to-end service</div>
+                            <div class="icon-box-title">Сервис полного цикла</div>
                             <div class="icon-box-text">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam blanditiis doloremque eaque, eum
-                                labore laboriosam, laudantium nemo qui reiciendis, rerum temporibus totam? Accusamus architecto culpa
-                                deserunt doloribus ipsum natus ratione!
+                                General Services предоставляет своим клиентам комплексные решения, которые полностью решают проблему послепродажного гарантийного обслуживания, включая: полное построение архитектуры сервиса, логистику и другие операции с запасными запчастями, ремонт техники любой сложности, услуги колл-центра. В зависимости от требований клиента, наше исчерпивающее решение может строится как на основе стандартного бизнес-процесса General Services, так внедрения действующего алгоритма нашего заказчика.
                             </div>
                         </div>
                     </div>
@@ -67,11 +53,9 @@
                             <img class="mw-100" src="http://generalse.com/template/site/img/Directions/OurDirectionsicons/improvement.svg" alt="">
                         </div>
                         <div class="col-8">
-                            <div class="icon-box-title">Independence</div>
+                            <div class="icon-box-title">Независимость</div>
                             <div class="icon-box-text">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam blanditiis doloremque eaque, eum
-                                labore laboriosam, laudantium nemo qui reiciendis, rerum temporibus totam? Accusamus architecto culpa
-                                deserunt doloribus ipsum natus ratione!
+                                Будучи мульти-брендовым сервис-провайдером, сконцентрированным на послепродажном обслуживании, мы обслуживаем различных клиентов из различных индустрий и ниш бизнеса. General Services Europe является полностью независимой от торговых организаций структурой, а все наши услуги и решения разработаны по исключительному требованию наших заказчиков.
                             </div>
                         </div>
                     </div>
@@ -82,11 +66,9 @@
                             <img class="mw-100" src="http://generalse.com/template/site/img/Directions/OurDirectionsicons/improvement.svg" alt="">
                         </div>
                         <div class="col-8">
-                            <div class="icon-box-title">Green technologies</div>
+                            <div class="icon-box-title">Зеленые технологии</div>
                             <div class="icon-box-text">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam blanditiis doloremque eaque, eum
-                                labore laboriosam, laudantium nemo qui reiciendis, rerum temporibus totam? Accusamus architecto culpa
-                                deserunt doloribus ipsum natus ratione!
+                                General Services заботится об экологии, предотвращая попадание тонн вредных отходов в окружающую среду ежегодно. Наша программа утилизации позволяет обрабатывать свыше 20,000 единиц нерабочей или устаревшей техники в год, для повторного использования в качестве восстановленной продукции, запасных частей или вторсырья. Компания предлагает своим заказчикам выкуп неликвидного оборудования, для защиты окружающей среды и частичного возврата стоимости материальных активов.
                             </div>
                         </div>
                     </div>
@@ -95,69 +77,83 @@
         </section>
         <section class="numbers-box">
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-12">
+                    <div class="counter-block">
+                        <h2>General Services в цифрах</h2>
+                    </div>
+                </div>
+                <div class="col-md-4">
                     <div class="counter-block">
                         <div class="icon"><img
                                 src="http://generalse.com/template/site/img/About/OurDirectionsicons/1market-analysis.svg" alt=""></div>
-                        <div class="number" data-number="2334">0</div>
-                        <div class="text">logistics transactions every year in millions worldwide</div>
+                        <div class="number" data-number="3">0</div>
+                        <div class="text">депот-центра</div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="counter-block">
                         <div class="icon"><img
                                 src="http://generalse.com/template/site/img/About/OurDirectionsicons/1market-analysis.svg" alt=""></div>
-                        <div class="number" data-number="66">0</div>
-                        <div class="text">logistics transactions every year in millions worldwide</div>
+                        <div class="number" data-number="55123">0</div>
+                        <div class="text">отремонтированных устройств</div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="counter-block">
-                        <div class="icon"><img
-                                src="http://generalse.com/template/site/img/About/OurDirectionsicons/logistics-delivery-truck-and-clock.svg"
-                                alt=""></div>
-                        <div class="number" data-number="234">0</div>
-                        <div class="text">logistics transactions every year in millions worldwide</div>
-                    </div>
-                </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="counter-block">
                         <div class="icon"><img
                                 src="http://generalse.com/template/site/img/About/OurDirectionsicons/1market-analysis.svg" alt=""></div>
-                        <div class="number" data-number="4654">0</div>
-                        <div class="text">logistics transactions every year in millions worldwide</div>
+                        <div class="number" data-number="12">0</div>
+                        <div class="text">лет опыта в бизнессе</div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="counter-block">
                         <div class="icon"><img
                                 src="http://generalse.com/template/site/img/About/OurDirectionsicons/1market-analysis.svg" alt=""></div>
-                        <div class="number" data-number="4654">0</div>
-                        <div class="text">logistics transactions every year in millions worldwide</div>
+                        <div class="number" data-number="55">0</div>
+                        <div class="text">центров обслуживания</div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="counter-block">
                         <div class="icon"><img
                                 src="http://generalse.com/template/site/img/About/OurDirectionsicons/1market-analysis.svg" alt=""></div>
-                        <div class="number" data-number="4654">0</div>
-                        <div class="text">logistics transactions every year in millions worldwide</div>
+                        <div class="number" data-number="25924">0</div>
+                        <div class="text">поставленных запчастей</div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="counter-block">
                         <div class="icon"><img
                                 src="http://generalse.com/template/site/img/About/OurDirectionsicons/1market-analysis.svg" alt=""></div>
-                        <div class="number" data-number="4654">0</div>
-                        <div class="text">logistics transactions every year in millions worldwide</div>
+                        <div class="number" data-number="4">0</div>
+                        <div class="text">бизнес-дивизиона</div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="counter-block">
                         <div class="icon"><img
                                 src="http://generalse.com/template/site/img/About/OurDirectionsicons/1market-analysis.svg" alt=""></div>
-                        <div class="number" data-number="4654">0</div>
-                        <div class="text">logistics transactions every year in millions worldwide</div>
+                        <div class="number" data-number="7">0</div>
+                        <div class="text">Присутствие в 7 странах</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="counter-block">
+                        <div class="icon"><img
+                                    src="http://generalse.com/template/site/img/About/OurDirectionsicons/logistics-delivery-truck-and-clock.svg"
+                                    alt=""></div>
+                        <div class="number" data-number="45135">0</div>
+                        <div class="text">утилизированных устройств</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="counter-block">
+                        <div class="icon"><img
+                                    src="http://generalse.com/template/site/img/About/OurDirectionsicons/logistics-delivery-truck-and-clock.svg"
+                                    alt=""></div>
+                        <div class="number" data-number="45135">0</div>
+                        <div class="text">утилизированных устройств</div>
                     </div>
                 </div>
             </div>

@@ -23,314 +23,37 @@
             </div>
         </section>
 
-        <section data-country="ua">
-            <h2>UKRAINE</h2>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th class="text-nowrap">Company name</th>
-                    <th width="10%">City</th>
-                    <th  width="30%">Address</th>
-                    <th>Telephone</th>
-                    <th>Specialization</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>General</td>
-                    <td>Kyiv</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit</td>
-                    <td class="text-nowrap">+38 (068) 760 00 994</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi aspernatur assumenda at, atque cupiditate dignissimos eos explicabo fugit iusto magnam molestias quae quas quibusdam repellat voluptas voluptate! Incidunt, mollitia.</td>
-                </tr>
-                <tr>
-                    <td>General</td>
-                    <td>Kyiv</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit</td>
-                    <td class="text-nowrap">+38 (068) 760 00 994</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi aspernatur assumenda at, atque cupiditate dignissimos eos explicabo fugit iusto magnam molestias quae quas quibusdam repellat voluptas voluptate! Incidunt, mollitia.</td>
-                </tr>
-                <tr>
-                    <td>General</td>
-                    <td>Kyiv</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit</td>
-                    <td class="text-nowrap">+38 (068) 760 00 994</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi aspernatur assumenda at, atque cupiditate dignissimos eos explicabo fugit iusto magnam molestias quae quas quibusdam repellat voluptas voluptate! Incidunt, mollitia.</td>
-                </tr>
-                <tr>
-                    <td>General</td>
-                    <td>Kyiv</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit</td>
-                    <td class="text-nowrap">+38 (068) 760 00 994</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi aspernatur assumenda at, atque cupiditate dignissimos eos explicabo fugit iusto magnam molestias quae quas quibusdam repellat voluptas voluptate! Incidunt, mollitia.</td>
-                </tr>
-                </tbody>
-            </table>
-        </section>
-        <section data-country="by">
-            <h2>Belarus</h2>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th class="text-nowrap">Company name</th>
-                    <th width="10%">City</th>
-                    <th  width="30%">Address</th>
-                    <th>Telephone</th>
-                    <th>Specialization</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>General</td>
-                    <td>Kyiv</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit</td>
-                    <td class="text-nowrap">+38 (068) 760 00 994</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi aspernatur assumenda at, atque cupiditate dignissimos eos explicabo fugit iusto magnam molestias quae quas quibusdam repellat voluptas voluptate! Incidunt, mollitia.</td>
-                </tr>
-                <tr>
-                    <td>General</td>
-                    <td>Kyiv</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit</td>
-                    <td class="text-nowrap">+38 (068) 760 00 994</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi aspernatur assumenda at, atque cupiditate dignissimos eos explicabo fugit iusto magnam molestias quae quas quibusdam repellat voluptas voluptate! Incidunt, mollitia.</td>
-                </tr>
-                <tr>
-                    <td>General</td>
-                    <td>Kyiv</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit</td>
-                    <td class="text-nowrap">+38 (068) 760 00 994</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi aspernatur assumenda at, atque cupiditate dignissimos eos explicabo fugit iusto magnam molestias quae quas quibusdam repellat voluptas voluptate! Incidunt, mollitia.</td>
-                </tr>
-                <tr>
-                    <td>General</td>
-                    <td>Kyiv</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit</td>
-                    <td class="text-nowrap">+38 (068) 760 00 994</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi aspernatur assumenda at, atque cupiditate dignissimos eos explicabo fugit iusto magnam molestias quae quas quibusdam repellat voluptas voluptate! Incidunt, mollitia.</td>
-                </tr>
-                </tbody>
-            </table>
-        </section>
-        <section data-country="ge">
-            <h2>Georgia</h2>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th class="text-nowrap">Company name</th>
-                    <th width="10%">City</th>
-                    <th  width="30%">Address</th>
-                    <th>Telephone</th>
-                    <th>Specialization</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>General</td>
-                    <td>Kyiv</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit</td>
-                    <td class="text-nowrap">+38 (068) 760 00 994</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi aspernatur assumenda at, atque cupiditate dignissimos eos explicabo fugit iusto magnam molestias quae quas quibusdam repellat voluptas voluptate! Incidunt, mollitia.</td>
-                </tr>
-                <tr>
-                    <td>General</td>
-                    <td>Kyiv</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit</td>
-                    <td class="text-nowrap">+38 (068) 760 00 994</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi aspernatur assumenda at, atque cupiditate dignissimos eos explicabo fugit iusto magnam molestias quae quas quibusdam repellat voluptas voluptate! Incidunt, mollitia.</td>
-                </tr>
-                <tr>
-                    <td>General</td>
-                    <td>Kyiv</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit</td>
-                    <td class="text-nowrap">+38 (068) 760 00 994</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi aspernatur assumenda at, atque cupiditate dignissimos eos explicabo fugit iusto magnam molestias quae quas quibusdam repellat voluptas voluptate! Incidunt, mollitia.</td>
-                </tr>
-                <tr>
-                    <td>General</td>
-                    <td>Kyiv</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit</td>
-                    <td class="text-nowrap">+38 (068) 760 00 994</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi aspernatur assumenda at, atque cupiditate dignissimos eos explicabo fugit iusto magnam molestias quae quas quibusdam repellat voluptas voluptate! Incidunt, mollitia.</td>
-                </tr>
-                </tbody>
-            </table>
-        </section>
-        <section data-country="am">
-            <h2>Armenia</h2>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th class="text-nowrap">Company name</th>
-                    <th width="10%">City</th>
-                    <th  width="30%">Address</th>
-                    <th>Telephone</th>
-                    <th>Specialization</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>General</td>
-                    <td>Kyiv</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit</td>
-                    <td class="text-nowrap">+38 (068) 760 00 994</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi aspernatur assumenda at, atque cupiditate dignissimos eos explicabo fugit iusto magnam molestias quae quas quibusdam repellat voluptas voluptate! Incidunt, mollitia.</td>
-                </tr>
-                <tr>
-                    <td>General</td>
-                    <td>Kyiv</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit</td>
-                    <td class="text-nowrap">+38 (068) 760 00 994</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi aspernatur assumenda at, atque cupiditate dignissimos eos explicabo fugit iusto magnam molestias quae quas quibusdam repellat voluptas voluptate! Incidunt, mollitia.</td>
-                </tr>
-                <tr>
-                    <td>General</td>
-                    <td>Kyiv</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit</td>
-                    <td class="text-nowrap">+38 (068) 760 00 994</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi aspernatur assumenda at, atque cupiditate dignissimos eos explicabo fugit iusto magnam molestias quae quas quibusdam repellat voluptas voluptate! Incidunt, mollitia.</td>
-                </tr>
-                <tr>
-                    <td>General</td>
-                    <td>Kyiv</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit</td>
-                    <td class="text-nowrap">+38 (068) 760 00 994</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi aspernatur assumenda at, atque cupiditate dignissimos eos explicabo fugit iusto magnam molestias quae quas quibusdam repellat voluptas voluptate! Incidunt, mollitia.</td>
-                </tr>
-                </tbody>
-            </table>
-        </section>
-        <section data-country="az">
-            <h2>Azerbaijan</h2>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th class="text-nowrap">Company name</th>
-                    <th width="10%">City</th>
-                    <th  width="30%">Address</th>
-                    <th>Telephone</th>
-                    <th>Specialization</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>General</td>
-                    <td>Kyiv</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit</td>
-                    <td class="text-nowrap">+38 (068) 760 00 994</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi aspernatur assumenda at, atque cupiditate dignissimos eos explicabo fugit iusto magnam molestias quae quas quibusdam repellat voluptas voluptate! Incidunt, mollitia.</td>
-                </tr>
-                <tr>
-                    <td>General</td>
-                    <td>Kyiv</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit</td>
-                    <td class="text-nowrap">+38 (068) 760 00 994</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi aspernatur assumenda at, atque cupiditate dignissimos eos explicabo fugit iusto magnam molestias quae quas quibusdam repellat voluptas voluptate! Incidunt, mollitia.</td>
-                </tr>
-                <tr>
-                    <td>General</td>
-                    <td>Kyiv</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit</td>
-                    <td class="text-nowrap">+38 (068) 760 00 994</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi aspernatur assumenda at, atque cupiditate dignissimos eos explicabo fugit iusto magnam molestias quae quas quibusdam repellat voluptas voluptate! Incidunt, mollitia.</td>
-                </tr>
-                <tr>
-                    <td>General</td>
-                    <td>Kyiv</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit</td>
-                    <td class="text-nowrap">+38 (068) 760 00 994</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi aspernatur assumenda at, atque cupiditate dignissimos eos explicabo fugit iusto magnam molestias quae quas quibusdam repellat voluptas voluptate! Incidunt, mollitia.</td>
-                </tr>
-                </tbody>
-            </table>
-        </section>
-        <section data-country="md">
-            <h2>Moldova</h2>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th class="text-nowrap">Company name</th>
-                    <th width="10%">City</th>
-                    <th  width="30%">Address</th>
-                    <th>Telephone</th>
-                    <th>Specialization</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>General</td>
-                    <td>Kyiv</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit</td>
-                    <td class="text-nowrap">+38 (068) 760 00 994</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi aspernatur assumenda at, atque cupiditate dignissimos eos explicabo fugit iusto magnam molestias quae quas quibusdam repellat voluptas voluptate! Incidunt, mollitia.</td>
-                </tr>
-                <tr>
-                    <td>General</td>
-                    <td>Kyiv</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit</td>
-                    <td class="text-nowrap">+38 (068) 760 00 994</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi aspernatur assumenda at, atque cupiditate dignissimos eos explicabo fugit iusto magnam molestias quae quas quibusdam repellat voluptas voluptate! Incidunt, mollitia.</td>
-                </tr>
-                <tr>
-                    <td>General</td>
-                    <td>Kyiv</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit</td>
-                    <td class="text-nowrap">+38 (068) 760 00 994</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi aspernatur assumenda at, atque cupiditate dignissimos eos explicabo fugit iusto magnam molestias quae quas quibusdam repellat voluptas voluptate! Incidunt, mollitia.</td>
-                </tr>
-                <tr>
-                    <td>General</td>
-                    <td>Kyiv</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit</td>
-                    <td class="text-nowrap">+38 (068) 760 00 994</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi aspernatur assumenda at, atque cupiditate dignissimos eos explicabo fugit iusto magnam molestias quae quas quibusdam repellat voluptas voluptate! Incidunt, mollitia.</td>
-                </tr>
-                </tbody>
-            </table>
-        </section>
-        <section data-country="ee">
-            <h2>Estonia</h2>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th class="text-nowrap">Company name</th>
-                    <th width="10%">City</th>
-                    <th  width="30%">Address</th>
-                    <th>Telephone</th>
-                    <th>Specialization</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>General</td>
-                    <td>Kyiv</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit</td>
-                    <td class="text-nowrap">+38 (068) 760 00 994</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi aspernatur assumenda at, atque cupiditate dignissimos eos explicabo fugit iusto magnam molestias quae quas quibusdam repellat voluptas voluptate! Incidunt, mollitia.</td>
-                </tr>
-                <tr>
-                    <td>General</td>
-                    <td>Kyiv</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit</td>
-                    <td class="text-nowrap">+38 (068) 760 00 994</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi aspernatur assumenda at, atque cupiditate dignissimos eos explicabo fugit iusto magnam molestias quae quas quibusdam repellat voluptas voluptate! Incidunt, mollitia.</td>
-                </tr>
-                <tr>
-                    <td>General</td>
-                    <td>Kyiv</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit</td>
-                    <td class="text-nowrap">+38 (068) 760 00 994</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi aspernatur assumenda at, atque cupiditate dignissimos eos explicabo fugit iusto magnam molestias quae quas quibusdam repellat voluptas voluptate! Incidunt, mollitia.</td>
-                </tr>
-                <tr>
-                    <td>General</td>
-                    <td>Kyiv</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit</td>
-                    <td class="text-nowrap">+38 (068) 760 00 994</td>
-                    <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab animi aspernatur assumenda at, atque cupiditate dignissimos eos explicabo fugit iusto magnam molestias quae quas quibusdam repellat voluptas voluptate! Incidunt, mollitia.</td>
-                </tr>
-                </tbody>
-            </table>
-        </section>
+        <?php if(is_array($serviceInCountry)): ?>
+            <?php foreach ($serviceInCountry as $country): ?>
+                <section data-country="<?= $country['country_code']?>">
+                    <h2><?= $country['country_ru']?></h2>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th class="text-nowrap">Company name</th>
+                            <th width="10%">City</th>
+                            <th width="30%">Address</th>
+                            <th>Telephone</th>
+                            <th>Specialization</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($country['service_center'] as $service): ?>
+
+                            <tr>
+                                <td><?= $service['company_name'] ?></td>
+                                <td><?= $service['city_ru'] ?></td>
+                                <td><?= $service['address_ru'] ?></td>
+                                <td><?= $service['phone'] ?></td>
+                                <td><?= $service['specialization_ru'] ?></td>
+                            </tr>
+
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </section>
+            <?php endforeach; ?>
+        <?php endif; ?>
 
 
     </main>

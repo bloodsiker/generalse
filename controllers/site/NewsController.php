@@ -47,6 +47,7 @@ class NewsController extends Controller
 
         $news = new NewsService($this->curr_lang);
         $info_news = $news->findBySlug($slug);
+        $seo_page['title'] .= ' – ' . $info_news['title'];
 
         $this->render("new_site/{$this->curr_lang}/news/show_new", compact('seo_page', 'info_news'));
         return true;

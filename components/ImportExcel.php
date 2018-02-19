@@ -551,11 +551,4 @@ class ImportExcel
         }
         return $pushArray;
     }
-
 }
-
-//$ddd = ImportExcel::importPurchase(true);
-//echo "<pre>";
-//print_r($ddd);
-
-?>

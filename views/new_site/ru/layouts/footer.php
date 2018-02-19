@@ -3,26 +3,25 @@
     <div class="container">
         <div class="row align-justify">
             <div class="col-md-4">
-                <h5><b>General Services Inc. – International
-                        Parts Logistics, Repair & Recycling</b></h5>
-                <p>
+                <h5><b>General Services Europe – международный сервисный провайдер</b></h5>
+                <p class="d-none">
                     General Services Ukraine LLC<br>
                     1-3, Severosuretskaya street, <br>
                     04116, Kiev, Ukraine<br>
                     0 800 501 279 <br>
                     044 338 25 59 <br>
-                    <a href="../../../../index.php">es@generalse.com</a>
+                    <a href="mailto:es@generalse.com">es@generalse.com</a>
                 </p>
             </div>
             <div class="col-md-3">
-                <h5><b>Services</b></h5>
+                <h5><b>Услуги</b></h5>
                 <ul class="mb-3">
-                    <li><a href="#">Parts logistics</a></li>
-                    <li><a href="#">Repair services</a></li>
-                    <li><a href="#">Recycling</a></li>
-                    <li><a href="#">Sell your device</a></li>
-                    <li><a href="#">Contact Center</a></li>
-                    <li><a href="#">Shop online</a></li>
+                    <li><a href="/ru/new/services/manufacturers">Логистика запасных частей</a></li>
+                    <li><a href="/ru/new/services/repair-centers">Ремонт техники</a></li>
+                    <li><a href="/ru/new/services/retailers">Утилизация</a></li>
+                    <li><a href="/ru/new/services/enterprises">Выкуп оборудования</a></li>
+                    <li><a href="/ru/new/services/manufacturers">Услуги колл-центра</a></li>
+                    <li><a href="http://pex.com.ua/" target="_blank">Интернет-магазин</a></li>
                 </ul>
             </div>
             <div class="col-md-3">
@@ -30,19 +29,18 @@
                     <b>General Services Europe</b>
                 </h5>
                 <p>
-                    Estonia <br>
-                    4, Narva mnt, Tallin <br>
-                    10117, Estonia <br>
-                    <a href="../../../../index.php">ee@generalse.com</a>
+                    4, Нарвская дорога,<br>
+                    Таллин, Эстония<br>
+                    Тел: 044-338-25-59 <br>
+                    <a href="mailto:hq@generalse.com">hq@generalse.com</a>
                 </p>
             </div>
             <div class="col-md-2">
 
                 <h5>
-                    <b>Connect with us!</b>
+                    <b>Следуйте за нами!</b>
                 </h5>
-                <p>Stay in touch with our most useful
-                    Insights personally for you</p>
+                <p>Будьте в курсе наших новых идей, созданных специально для вас.</p>
                 <div class="socialMenu">
 
                     <div class="social-menu">
@@ -67,7 +65,7 @@
             </div>
         </div>
 
-        <div class="text-center">Copyright © 2018 General Services LLC</div>
+        <div class="text-center">General Services Europe. 2016</div>
     </div>
 
 
@@ -121,10 +119,8 @@
                         <label>Комментарий</label>
                         <textarea name="message" class="form-control" cols="30" rows="2"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-red float-right">Отправить</button>
-
                     <input type="hidden" name="sign_up" value="true">
-
+                    <button type="submit" class="btn btn-red float-right">Отправить</button>
                 </form>
             </div>
         </div>
@@ -162,6 +158,23 @@
     </div>
 </div>
 
+<div class="modal fade" id="thank" tabindex="-1" role="dialog" aria-labelledby="thank" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div style="padding: 30px; text-align: center">
+                    <h5>Заявка отправлена! <br> Ожидайте, с Вами свяжуться в ближайшее время</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.10.0/js/lightbox-plus-jquery.min.js"></script>
 
@@ -183,9 +196,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/textillate/0.4.0/jquery.textillate.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.13/jquery.mask.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
-<script src="/template/new_site/js/app.js"></script>
-
+<script src="/template/new_site/js/object.js"></script>
 <script src="/template/new_site/js/app.js"></script>
 
 </body>

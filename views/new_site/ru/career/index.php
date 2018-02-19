@@ -18,7 +18,7 @@
 
                                 <ul class="list-group list-group-flush career-box-list">
                                     <li class="list-group-item justify-content-lg-between d-flex">
-                                        <div class="text-danger w-100">Положение:</div>
+                                        <div class="text-danger w-100">Стана:</div>
                                         <div><?= $vacancy['location'] ?></div>
                                     </li>
                                     <li class="list-group-item justify-content-lg-between d-flex">
@@ -26,7 +26,7 @@
                                         <div class="text-right"><?= $vacancy['department'] ?></div>
                                     </li>
                                     <li class="list-group-item justify-content-lg-between d-flex">
-                                        <div class="text-danger w-100">Вид занятости:</div>
+                                        <div class="text-danger w-100">Тип занятости:</div>
                                         <div class="text-right"><?= $vacancy['employment'] ?></div>
                                     </li>
                                 </ul>

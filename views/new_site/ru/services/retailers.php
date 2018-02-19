@@ -9,8 +9,8 @@
 
         <div class="services-head" style="background-image: url('http://generalse.com/template/site/img/About/3TJ6NCTIRT.jpg');">
             <div class="container">
-                <h1>Services for retailers</h1>
-                <h4>Optimization of expenses and defective assets cost recovery for Sales Channel Partners</h4>
+                <h1>Услуги для розничных сетей</h1>
+                <h4>Оптимизация расходов и компенсация стоимости основных средств для розничных сетей и дистрибуторов</h4>
                 <div class="row mt-5">
                     <div class="col-md-4 p-2">
                         <div data-scroll data-scroll-link="section-1" class="services-head-link">
@@ -18,7 +18,7 @@
                                 <img class="mw-100" src="http://generalse.com/template/site/img/About/OurDirectionsicons/1market-analysis.svg" alt="">
                             </div>
                             <div>
-                                Logistics and Fulfillment
+                                Ремонт и технические услуги
                             </div>
                         </div>
                     </div>
@@ -28,7 +28,7 @@
                                 <img class="mw-100" src="http://generalse.com/template/site/img/About/OurDirectionsicons/improvement.svg" alt="">
                             </div>
                             <div>
-                                Repair and Technical Services
+                                Утилизация оборудования
                             </div>
                         </div>
                     </div>
@@ -38,7 +38,7 @@
                                 <img class="mw-100" src="http://generalse.com/template/site/img/About/OurDirectionsicons/1market-analysis.svg" alt="">
                             </div>
                             <div>
-                                Hardware Recycling
+                                Логистика
                             </div>
                         </div>
                     </div>
@@ -53,8 +53,16 @@
                     <img class="mw-100" src="http://generalse.com/template/site/img/About/3TJ6NCTIRT.jpg" alt="">
                 </div>
                 <div class="col-md-6">
-                    <h2 class="text-uppercase mb-5">Logistics and Fulfillment</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores facere illum optio possimus vel. A adipisci aspernatur exercitationem. Adipisci aspernatur doloremque ducimus ea eius fugiat impedit inventore nam quae unde?</p>
+                    <h2 class="text-uppercase mb-2">Ремонт и технические услуги</h2>
+                    <p>На протяжении 12 лет инженеры General Services проводят ремонты различных устройств, как для производителей, так и для розничных сетей и дистрибуторов.  Наши услуги интересны в первую очередь тем торговым организациям, которые занимаются реализацией продукции, не имеющей официальной гарантийной поддержки компании-производителя. Наш сертификат качества ISO:9001 подтверждает стабильно высокое качество, основанное на хорошо спланированных и реализованных процессах. Три депот-центра и 55 центров обслуживания клиентов в 7 странах позволяют обрабатывать до тринадцати тысяч устройств в месяц. Основные технические услуги General Services:</p>
+                    <ul>
+                        <li>Тестирование</li>
+                        <li>Программный и аппаратный ремонт оборудования</li>
+                        <li>Замена электронных компонентов</li>
+                        <li>Разборка техники</li>
+                        <li>Восстановление техники</li>
+                        <li>Утилизация неремонтопригодного оборудования</li>
+                    </ul>
                 </div>
             </div>
         </section>
@@ -65,9 +73,8 @@
                     <img class="mw-100" src="http://generalse.com/template/site/img/About/3TJ6NCTIRT.jpg" alt="">
                 </div>
                 <div class="col-md-6">
-                    <h2 class="text-uppercase mb-5">Repair and Technical Services</h2>
-
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores facere illum optio possimus vel. A adipisci aspernatur exercitationem. Adipisci aspernatur doloremque ducimus ea eius fugiat impedit inventore nam quae unde?</p>
+                    <h2 class="text-uppercase mb-2">Утилизация оборудования</h2>
+                    <p>General Services заботится об экологии, предотвращая попадание тонн вредных отходов в окружающую среду ежегодно. Мы помогаем компаниям-дистрибуторам и ритейлерам не только принять вместе с нами участие в очищении планеты, но и вернуть часть стоимости неремонтопригодного или страхового оборудования. Наша программа утилизации позволяет обрабатывать свыше 20,000 единиц нерабочей или устаревшей техники в год, для повторного использования в качестве восстановленной продукции, запасных частей или вторсырья. General Services предлагает торговым организациям конкурентные цены на стоки некондиционного, неремонтопригодного, устаревшего оборудования. Общая сумма экономии наших клиентов уже превысила 1,2 миллиона долларов, а попадания в окружающую среду избежали более 30 тонн вредных веществ.</p>
                 </div>
             </div>
         </section>
@@ -78,8 +85,15 @@
                     <img class="mw-100" src="http://generalse.com/template/site/img/About/3TJ6NCTIRT.jpg" alt="">
                 </div>
                 <div class="col-md-6">
-                    <h2 class="text-uppercase mb-5">Hardware Recycling</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores facere illum optio possimus vel. A adipisci aspernatur exercitationem. Adipisci aspernatur doloremque ducimus ea eius fugiat impedit inventore nam quae unde?</p>
+                    <h2 class="text-uppercase mb-2">Логистика</h2>
+                    <p>General Services является профессиональным логистическим провайдером в сегменте запасных частей и комлектующих для потребительской электроники. Мы обеспечиваем полный цикл цепочки поставок, от завода до сервисного центра. Но кроме этого, мы предоставляем услуги возвратной логистики для торговых сетей: сбор нерабочей техники из точек продажи и их доставка в сервисный центр производителя. Наши логистические услуги для розничных сетей включают:</p>
+                    <ul>
+                        <li>Сбор клиентской техники в точках продажи</li>
+                        <li>Проверку и диагностику оборудования</li>
+                        <li>Доставку в сервисные центры производителя</li>
+                        <li>Возвратную логистику рабочей техники для выдачи клиентам</li>
+                    </ul>
+                    <p>В зависимости от требований заказчика, General Services также обеспечивает ремонт нерабочей техники в 55-ти профессиональных сервисных центрах на территории 7 стран СНГ.</p>
                 </div>
             </div>
         </section>

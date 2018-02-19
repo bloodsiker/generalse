@@ -51,29 +51,34 @@
                     <li class="nav-item"><a class="nav-link" href="/new/suppliers">Suppliers</a></li>
                     <li class="nav-item"><a class="nav-link" href="/new/contacts">Contacts</a></li>
 
-                    <li class="nav-item dropdown dropdown-not-hover ml-4  login-item-menu">
-                        <a class="nav-link dropdown-toggle" href="#" id="careerDropdown" role="button" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
-                            Login in
-                        </a>
-                        <div style="border-radius: 0px;border: none;box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);" class="dropdown-menu dropdown-menu-right p-3 hidden-md-down" aria-labelledby="careerDropdown">
-                            <form action="" style="width: 250px;">
-                                <strong >Login to Umbrella Project</strong>
-                                <div class="mt-3 form-group">
-                                    <label for="login">Login</label>
-                                    <input type="text" class="form-control" name="login">
-                                </div>
-                                <div class="form-group">
-                                    <label for="login">Password</label>
-                                    <input type="password" class="form-control" name="password">
-                                </div>
-                                <div class="d-flex">
-                                    <button class="btn btn-white w-100 mr-2" type="button" data-toggle="modal" data-target="#registrationModal">Registrations</button>
-                                    <button class="btn btn-red" type="submit">Login</button>
-                                </div>
-                            </form>
-                        </div>
-                    </li>
+                    <?php if(\Josantonius\Session\Session::get('user')):?>
+                        <li class="nav-item"><a class="nav-link" href="/adm/crm/">Cabinet</a></li>
+                    <?php else:?>
+                        <li class="nav-item dropdown dropdown-not-hover ml-4  login-item-menu">
+                            <a class="nav-link dropdown-toggle" href="#" id="careerDropdown" role="button" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                Login in
+                            </a>
+                            <div style="border-radius: 0px;border: none;box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);" class="dropdown-menu dropdown-menu-right p-3 hidden-md-down" aria-labelledby="careerDropdown">
+                                <form action="" method="post" id="form-auth" style="width: 250px;">
+                                    <strong >Login to Umbrella Project</strong>
+                                    <div class="mt-3 form-group">
+                                        <label for="login">Login</label>
+                                        <input type="text" class="form-control login_umbrella" name="login" autocomplete="off">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="login">Password</label>
+                                        <input type="password" class="form-control password_umbrella" name="password">
+                                    </div>
+                                    <div class="d-flex">
+                                        <input type="hidden" name="lang" value="en">
+                                        <button class="btn btn-white w-100 mr-2" type="button" data-toggle="modal" data-target="#registrationModal">Registrations</button>
+                                        <button class="btn btn-red" id="login_umbrella" type="submit">Login</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+                    <?php endif;?>
 
                     <li class="nav-item dropdown ml-4 nav-langs">
                         <a class="nav-link dropdown-toggle" href="/lang/en" id="servicesDropdown" role="button" data-toggle="dropdown"

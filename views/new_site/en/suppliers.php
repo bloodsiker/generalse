@@ -17,7 +17,7 @@
                 </p>
             </div>
             <div class="col-md-6">
-                <form class="form mb-3">
+                <form action="" method="post" id="form-suppliers" class="form mb-3">
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" class="form-control" id="name" aria-describedby="name" placeholder="Enter name">
@@ -43,8 +43,9 @@
                         <small id="fileHelp" class="form-text text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni quasi repellat rerum sequi ut! Corporis eaque error quia quos reprehenderit unde.</small>
                     </div>
                     <div class="text-right">
-                        <button type="submit" class="btn btn-red">Submit</button>
-
+                        <input type="hidden" name="lang" value="en">
+                        <input type="hidden" name="suppliers" value="true">
+                        <button type="submit" id="send-suppliers" class="btn btn-red">Submit</button>
                     </div>
                 </form>
             </div>

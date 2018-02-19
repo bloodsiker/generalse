@@ -10,7 +10,7 @@
             <h1><?= $info_news['title'] ?></h1>
             <div class="text-muted mb-2"><?= $info_news['created_at'] ?></div>
             <div class="new-content">
-                <img style="width: 300px;" class="mb-4 ml-4" align="right" src="<?= $info_news['image'] ?>" alt="<?= $info_news['title'] ?>">
+                <img style="width: 400px;" class="mb-4 ml-4" align="right" src="<?= $info_news['image'] ?>" alt="<?= $info_news['title'] ?>">
                 <?= $info_news['text'] ?>
             </div>
 

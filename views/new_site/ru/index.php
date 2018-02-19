@@ -21,10 +21,9 @@
                         <img class="d-block w-100" src="/template/new_site/img/black-and-white-city-man-people.jpg" alt="First slide">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
-                        <h2>End-to-end Aftersale Service for IT, Mobile and MDA industries</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquid commodi consequatur dignissimos, expedita hic itaque laudantium minus modi mollitia nemo odit optio repudiandae sequi sint sit unde veritatis vero!</p>
+                        <h2>Комплексное послепродажное обслуживание техники</h2>
                         <div class="w-100 text-right">
-                            <a class="btn btn-red btn-lg mt-2 text-uppercase">lean more</a>
+                            <a class="btn btn-red btn-lg mt-2">Читать далее...</a>
                         </div>
                     </div>
                 </div>
@@ -33,10 +32,9 @@
                         <img class="d-block w-100" src="/template/new_site/img/black-and-white-city-man-people.jpg" alt="First slide">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
-                        <h2>Parts Logistics and distribution</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquid commodi consequatur dignissimos, expedita hic itaque laudantium minus modi mollitia nemo odit optio repudiandae sequi sint sit unde veritatis vero!</p>
+                        <h2>Логистика и дистрибуция запасных частей </h2>
                         <div class="w-100 text-right">
-                            <a class="btn btn-red btn-lg mt-2 text-uppercase">lean more</a>
+                            <a class="btn btn-red btn-lg mt-2">Читать далее...</a>
                         </div>
                     </div>
                 </div>
@@ -45,10 +43,9 @@
                         <img class="d-block w-100" src="/template/new_site/img/black-and-white-city-man-people.jpg" alt="First slide">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
-                        <h2>Engineering and technical services</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquid commodi consequatur dignissimos, expedita hic itaque laudantium minus modi mollitia nemo odit optio repudiandae sequi sint sit unde veritatis vero!</p>
+                        <h2>Инжениринг и технические услуги</h2>
                         <div class="w-100 text-right">
-                            <a class="btn btn-red btn-lg mt-2 text-uppercase">lean more</a>
+                            <a class="btn btn-red btn-lg mt-2">Читать далее...</a>
                         </div>
                     </div>
                 </div>
@@ -57,10 +54,9 @@
                         <img class="d-block w-100" src="/template/new_site/img/black-and-white-city-man-people.jpg" alt="First slide">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
-                        <h2>Hardware recycling</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquid commodi consequatur dignissimos, expedita hic itaque laudantium minus modi mollitia nemo odit optio repudiandae sequi sint sit unde veritatis vero!</p>
+                        <h2>Переработка электронных отходов</h2>
                         <div class="w-100 text-right">
-                            <a class="btn btn-red btn-lg mt-2 text-uppercase">lean more</a>
+                            <a class="btn btn-red btn-lg mt-2">Читать далее...</a>
                         </div>
                     </div>
                 </div>
@@ -79,13 +75,12 @@
 
         <section>
             <h1 class="text-uppercase mb-5">General services europe</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi nemo odit sunt vero vitae voluptatem! Amet est
-                et, excepturi, ipsam itaque maiores, nisi non quod ratione repellendus sequi tempora veniam? Lorem ipsum dolor
-                sit amet, consectetur adipisicing elit. Aliquam doloremque eius nam omnis quaerat quia suscipit! Accusantium
-                sit amet, consectetur adipisicing elit. Aliquam doloremque eius nam omnis quaerat quia suscipit! Accusantium
-                sit amet, consectetur adipisicing elit. Aliquam doloremque eius nam omnis quaerat quia suscipit! Accusantium
-                cumque, exercitationem incidunt natus possimus quae soluta totam voluptatum. Ab fugiat ipsum optio?</p>
-
+            <p>General Services Europe (GSE) – это международный сервис-провайдер услуг для компаний-производителей
+                потребительских электронных товаров. Основанная в 2006 году, компания осуществляет полный спектр
+                логистических операций с запасными частями и комплектующими, ремонт продукции любой сложности,
+                переработку и утилизацию неремонтопригодной техники, услуги аутсорсингового колл-центра.
+                География General Services охватывает Эстонию, Украину, Беларусь, Молдову, Грузию, Армению,
+                а клиентами компании являются крупнейшие производители и дистрибуторы компьютерной и бытовой техники.</p>
         </section>
 
         <section>
@@ -94,10 +89,10 @@
                     <div class="grid">
                         <figure class="effect-sarah">
                             <img src="/template/new_site/img/pexels-photo-128193.jpeg" alt="img13">
-                            <figcaption>
-                                <h3>For Retailers and Distributors</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                <a href="../../../index.php">View more</a>
+                            <figcaption style="padding: 2em 1em">
+                                <h3>Производителям</h3>
+                                <p></p>
+                                <a href="/ru/new/services/manufacturers">View more</a>
                             </figcaption>
                         </figure>
                     </div>
@@ -107,9 +102,9 @@
                         <figure class="effect-sarah">
                             <img src="/template/new_site/img/pexels-photo-128193.jpeg" alt="img13">
                             <figcaption>
-                                <h3>For manufacturers</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                <a href="../../../index.php">View more</a>
+                                <h3>Розничным сетям</h3>
+                                <p></p>
+                                <a href="/ru/new/services/retailers">View more</a>
                             </figcaption>
                         </figure>
                     </div>
@@ -118,10 +113,10 @@
                     <div class="grid">
                         <figure class="effect-sarah">
                             <img src="/template/new_site/img/pexels-photo-128193.jpeg" alt="img13">
-                            <figcaption>
-                                <h3>For End-users</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                <a href="../../../index.php">View more</a>
+                            <figcaption style="padding: 2em 1em">
+                                <h3>Корпоративным клиентам</h3>
+                                <p></p>
+                                <a href="/ru/new/services/repair-centers">View more</a>
                             </figcaption>
                         </figure>
                     </div>
@@ -140,9 +135,9 @@
                         <figure class="effect-sarah">
                             <img src="/template/new_site/img/pexels-photo-128193.jpeg" alt="img13">
                             <figcaption>
-                                <h3>Depot Center</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                <a href="../../../index.php">View more</a>
+                                <h3>Продать нерабочее устройство</h3>
+                                <p></p>
+                                <a href="">View more</a>
                             </figcaption>
                         </figure>
                     </div>
@@ -152,9 +147,9 @@
                         <figure class="effect-sarah">
                             <img src="/template/new_site/img/pexels-photo-128193.jpeg" alt="img13">
                             <figcaption>
-                                <h3>Sell your defective assets</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                <a href="../../../index.php">View more</a>
+                                <h3>Купить запасные части</h3>
+                                <p></p>
+                                <a href="http://pex.com.ua/" target="_blank">View more</a>
                             </figcaption>
                         </figure>
                     </div>
@@ -164,9 +159,9 @@
                         <figure class="effect-sarah">
                             <img src="/template/new_site/img/pexels-photo-128193.jpeg" alt="img13">
                             <figcaption>
-                                <h3>Shop parts online</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                <a href="../../../index.php">View more</a>
+                                <h3>Стать партнером</h3>
+                                <p></p>
+                                <a href="/ru/new/suppliers">View more</a>
                             </figcaption>
                         </figure>
                     </div>

@@ -25,8 +25,12 @@ class AdminController extends AdminBase
     public function actionAuth(){
 
         if(Request::post('action') == 'login'){
+            $lang = 'ru';
             $login = Request::post('login');
             $password = Functions::hashPass(Request::post('password'));
+            $lang = Request::post('lang');
+            //$lang = ($current_lang == 'ru' || $current_lang == 'en') ? $current_lang : $default_lang;
+
 
             //$server = 'down'; // down || up
             if(config('app')['server'] == 'up'){
@@ -34,7 +38,8 @@ class AdminController extends AdminBase
                 $userId = Admin::checkAdminData($login, $password);
 
                 if($userId == false){
-                    $errors['log'] = config('app')['notification']['login_false'];
+                    //$errors['log'] = $lang;
+                    $errors['log'] = config('app')['notification'][$lang]['login_false'];
                     $errors['code'] = 1;
                     echo json_encode($errors);
                 } else {
@@ -53,7 +58,7 @@ class AdminController extends AdminBase
                                 echo json_encode($succusse);
                             } elseif ($user->isActive() == 0) {
                                 Session::destroy('info_user');
-                                $errors['log'] = config('app')['notification']['user_is_active'];
+                                $errors['log'] = config('app')['notification'][$lang]['user_is_active'];
                                 $errors['code'] = 3;
                                 echo json_encode($errors);
                             }
@@ -64,13 +69,13 @@ class AdminController extends AdminBase
                             echo json_encode($succusse);
                         }
                     } else {
-                        $errors['log'] = config('app')['notification']['project_denied'];
+                        $errors['log'] = config('app')['notification'][$lang]['project_denied'];
                         $errors['code'] = 3;
                         echo json_encode($errors);
                     }
                 }
             } else {
-                $errors['log'] = config('app')['notification']['server_down'];
+                $errors['log'] = config('app')['notification'][$lang]['server_down'];
                 $errors['code'] = 3;
                 echo json_encode($errors);
             }

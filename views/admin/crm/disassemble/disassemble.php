@@ -122,9 +122,7 @@
                         <?php endif; ?>
                     <?php elseif (isset($bomList)): ?>
                         <div class="thank_you_page">
-                            <h3>The device with the
-                                SN <?= (!empty($_POST['serial_number'])) ? $_POST['serial_number'] : '' ?><br> not found
-                            </h3>
+                            <h3>Not found bom-list device with SN <?= (!empty($_POST['serial_number'])) ? $_POST['serial_number'] : '' ?></h3>
                         </div>
                     <?php endif; ?>
                 <?php elseif(isset($isSerialNumber)): ?>

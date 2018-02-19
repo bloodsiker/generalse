@@ -146,8 +146,176 @@ $(document).ready(function () {
                 scrollTo($(e.target).parents('[data-scroll]').data('scroll-link'));
             }
         })
-    })()
+    })();
 
+
+
+
+    $(document).ready(function () {
+        $('#form-auth').on('click', '#login_umbrella', function (e) {
+
+            let error_login = false;
+
+            let login = $('.login_umbrella').val();
+            if (login.length == "") {
+                error_login = true;
+                $(".login_umbrella").css({'border-color':'red', 'background': '#ff00001a'});
+            } else {
+                $(".login_umbrella").removeAttr('style');
+            }
+
+            let password = $('.password_umbrella').val();
+            if (password.length == "") {
+                error_login = true;
+                $(".password_umbrella").css({'border-color':'red', 'background': '#ff00001a'});
+            } else {
+                $(".password_umbrella").removeAttr('style')
+            }
+
+            if (error_login == false) {
+
+                let lang = $('#form-auth').find("input[name='lang']").val();
+                //let data = "action=login&login=" + login + "&password=" + password;
+
+                $.ajax({
+                    url: "/auth",
+                    type: "POST",
+                    data: {action: 'login', login: login, password: password, lang: lang},
+                    cache: false,
+                    success: function(data){
+                        let obj = jQuery.parseJSON(data);
+                        if(obj.code == 1){
+
+                            showNotification(obj.log, 'error');
+
+                            $(".password_umbrella").val("");
+
+                        } else if(obj.code == 3) {
+
+                            showNotification(obj.log, 'warning');
+
+                        } else {
+                            window.location = '/' + obj.log;
+                        }
+                    }
+                });
+                return false;
+            }
+            e.preventDefault();
+        });
+    });
+
+
+    // Sign Up
+    $('#sign-up-form').submit(function(e) {
+        e.preventDefault();
+        if ($('#sign-up-form input').hasClass('is-invalid-input')) {
+            return false;
+        } else {
+            let newForm = $(this).serializeObject(); // получение данных в объекте
+            let json = JSON.stringify(newForm); // json
+            console.log(json); // send to server json AJAX
+            $.ajax({
+                url: "/sign_up",
+                type: "POST",
+                data: {json : json},
+                cache: false,
+                success: function (response) {
+                    console.log(response);
+                    if(response == 1){
+                        setTimeout(function () {
+                            $('#sign-up').foundation('close');
+                            $('#sign-up-form').trigger("reset");
+                        }, 500);
+                        var html_error = "<div class='umbrella-alert'>"
+                            + "<span>Ваша заявка отправлена на рассмотрение. Наш менеджер свяжется с Вами в ближайшее время</span>"
+                            + "</div>";
+
+                        $('body').append(html_error);
+
+                        setTimeout(remove_elem, 10000);
+                    } else if(response == 0){
+
+                        var html_error = "<div class='umbrella-alert'>"
+                            + "<span>Произошла ошибка при отправке заявки. Свяжитесь пожалуйста с нами по адресу <a href='mailto:sales@generalse.com'>sales@generalse.com</a></span>"
+                            + "</div>";
+
+                        $('body').append(html_error);
+
+                        setTimeout(remove_elem, 10000);
+                    }
+                }
+            });
+            return false;
+        }
+    });
+
+    toastr.options.timeOut = '15000';
+    let showNotification = function (message, type) {
+        switch (type) {
+            case 'success':
+                toastr.success(message);
+                break;
+            case 'error':
+                toastr.error(message);
+                break;
+            case 'warning':
+                toastr.warning(message);
+                break;
+            case 'info':
+                toastr.info(message);
+                break;
+            default:
+                toastr.warning('Не известная ошибка!');
+        }
+    };
+});
+
+
+$('#form-suppliers').submit(function (e) {
+    e.preventDefault();
+    let error = false;
+
+    if ($("input[name='fio']").val() == "") {
+        error = true;
+        $("input[name='fio']").css({'border-color':'red', 'background': '#ff00001a'});
+    } else {
+        $("input[name='fio']").removeAttr('style');
+    }
+
+    if ($("input[name='company']").val() == "") {
+        error = true;
+        $("input[name='company']").css({'border-color':'red', 'background': '#ff00001a'});
+    } else {
+        $("input[name='company']").removeAttr('style');
+    }
+
+    if ($("input[name='email']").val() == "") {
+        error = true;
+        $("input[name='email']").css({'border-color':'red', 'background': '#ff00001a'});
+    } else {
+        $("input[name='email']").removeAttr('style');
+    }
+
+    if (error == false) {
+
+        $("#form-suppliers").submit(function () {
+            let newForm = $(this).serializeObject(); // получение данных в объекте
+            let json = JSON.stringify(newForm); // json
+            $.ajax({
+                url: "/ru/new/suppliers/send_form",
+                type: "POST",
+                data: {json : json},
+                cache: false,
+                success: function (response) {
+                    console.log(response);
+                    $('#thank').modal('show');
+                    $('#form-suppliers').trigger("reset");
+                }
+            });
+            return false;
+        });
+    }
 });
 
 

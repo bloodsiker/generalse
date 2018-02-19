@@ -77,7 +77,7 @@
                         <div class="row">
                             <div class="large-12 columns">
                                 <label>Image
-                                    <input type="file" name="new_image" class="required" required>
+                                    <input type="file" name="new_image">
                                 </label>
                             </div>
                         </div>

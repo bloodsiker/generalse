@@ -2,6 +2,8 @@
 namespace Umbrella\controllers\site;
 
 use Umbrella\app\Services\site\SeoMetaService;
+use Umbrella\components\ImportExcel;
+use Umbrella\models\site\ServiceCenter;
 use Umbrella\vendor\controller\Controller;
 
 class AboutController extends Controller
@@ -39,7 +41,22 @@ class AboutController extends Controller
     {
         $seo_page = $this->seo->getSeoForPage('geography');
 
-        $this->render("new_site/{$this->curr_lang}/about/geography", compact('seo_page'));
+        $country = ServiceCenter::getCountrySC();
+        $allServiceCenter = ServiceCenter:: getAllServiceCenter();
+        $serviceInCountry = array_map(function ($value) use ($allServiceCenter){
+
+            foreach ($allServiceCenter as $service){
+                if($value['country_code'] == $service['country_code']){
+                    $value['service_center'][] = $service;
+                }
+            }
+            return $value;
+        },$country);
+
+//        echo "<pre>";
+//        print_r($serviceInCountry);
+
+        $this->render("new_site/{$this->curr_lang}/about/geography", compact('seo_page', 'serviceInCountry'));
         return true;
     }
 

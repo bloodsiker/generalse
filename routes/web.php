@@ -293,6 +293,7 @@ return [
 
     'ru/new/contacts' => 'site/Contacts@index',
 
+    'ru/new/suppliers/send_form' => 'site/Suppliers@sendForm',
     'ru/new/suppliers' => 'site/Suppliers@index',
 
     'ru/new/career/([a-z0-9-_?&\.]+)' => 'site/Career@show/$1',
@@ -316,7 +317,7 @@ return [
     /*********** NEW SITE EN  ***********/
 
     'new/contacts' => 'site/Contacts@index',
-
+    
     'new/suppliers' => 'site/Suppliers@index',
 
     'new/career/([a-z0-9-_?&\.]+)' => 'site/Career@show/$1',

@@ -247,3 +247,9 @@ footer {
   background-color: #fff; }
 
 /*# sourceMappingURL=app.css.map */
+
+.sertificate-box{
+  border: 1px solid #ddd;}
+  .sertificate-box:hover{
+    box-shadow: 2px 2px 3px #ddd;
+  }

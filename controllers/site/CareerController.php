@@ -45,6 +45,7 @@ class CareerController extends Controller
         $seo_page = $this->seo->getSeoForPage('show_vacancy');
         $vacancy = new VacancyService($this->curr_lang);
         $info_vacancy = $vacancy->findBySlug($slug);
+        $seo_page['title'] .= ' – ' . $info_vacancy['title'];
 
         $this->render("new_site/{$this->curr_lang}/career/show_vacancy", compact('seo_page', 'info_vacancy'));
         return true;

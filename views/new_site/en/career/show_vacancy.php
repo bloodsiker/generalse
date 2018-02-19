@@ -10,7 +10,7 @@
 
         <div class="row mt-5 mb-5">
             <div class="col-md-4 p-3">
-                <div class="card h-100" style="width: 20rem;">
+                <div class="card" style="width: 20rem;">
                     <div class="card-block p-3">
                         <ul class="list-group list-group-flush career-box-list">
                             <li class="list-group-item justify-content-lg-between d-flex">

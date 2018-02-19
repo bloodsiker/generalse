@@ -8,16 +8,16 @@
 
         <div class="services-head" style="background-image: url('http://generalse.com/template/site/img/About/3TJ6NCTIRT.jpg');">
             <div class="container">
-                <h1>Services for Enterprises</h1>
-                <h4>Optimization of expenses and defective assets cost recovery for Enterprises customers</h4>
-                <div class="row mt-5">
+                <h1>Сотрудничество с сервисными центрами</h1>
+                <h4>Покупайте и продавайте вместе с General Services</h4>
+                <div class="row justify-content-center mt-5">
                     <div class="col-md-4">
                         <div data-scroll data-scroll-link="section-1" class="services-head-link">
                             <div class="services-head-image-box">
                                 <img class="mw-100" src="http://generalse.com/template/site/img/About/OurDirectionsicons/1market-analysis.svg" alt="">
                             </div>
                             <div>
-                                Buy original parts
+                                Оригинальные комплектующие
                             </div>
                         </div>
                     </div>
@@ -27,17 +27,7 @@
                                 <img class="mw-100" src="http://generalse.com/template/site/img/About/OurDirectionsicons/improvement.svg" alt="">
                             </div>
                             <div>
-                                Repair and Technical Services
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div data-scroll data-scroll-link="section-3" class="services-head-link">
-                            <div class="services-head-image-box">
-                                <img class="mw-100" src="http://generalse.com/template/site/img/About/OurDirectionsicons/1market-analysis.svg" alt="">
-                            </div>
-                            <div>
-                                Hardware Recycling
+                                Покупка оверстоков
                             </div>
                         </div>
                     </div>
@@ -52,8 +42,12 @@
                     <img class="mw-100" src="http://generalse.com/template/site/img/About/3TJ6NCTIRT.jpg" alt="">
                 </div>
                 <div class="col-md-6">
-                    <h2 class="text-uppercase mb-5">Buy original parts</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores facere illum optio possimus vel. A adipisci aspernatur exercitationem. Adipisci aspernatur doloremque ducimus ea eius fugiat impedit inventore nam quae unde?</p>
+                    <h2 class="text-uppercase mb-2">Оригинальные комплектующие</h2>
+                    <p>General Services является дистрибютором оригинальных запасных частей и комплектующих с более чем 12-летним опытом работы в Украине и на рынках Восточной Европы. Мы дорожим эффектиностью работы оборудования своих клиентов и своей репутацией, поэтому предлагаем исключительно оригинальные товары мировых производителей. Наличие широкого ассортимента запасных частей для ноутбуков, десктопов, смартфонов на наших складах в различных странах позволяет поставлять необходимую деталь в кратчайшие сроки. General Services предлагает сервисным центрам партнерские взаимовыгодные отношения, конкурентные цены, высокое качество запчастей, профессиональную поддержку менеджеров Отдела Продаж и удобную систему заказов онлайн. Зарегистрируйтесь в системе Umbrella на корпоративном сайте
+                        <a href="http://generalse.com">www.generalse.com</a>, и получите доступ к просмотру наличия товара и дилерским ценам.</p>
+                    <p>Контакты для связи с Отделом Продаж комплектующих: <br>
+                        Телефон: 0800-501-279 <br>
+                        Email: <a href="mailto:sales@generalse.com">sales@generalse.com</a></p>
                 </div>
             </div>
         </section>
@@ -64,21 +58,8 @@
                     <img class="mw-100" src="http://generalse.com/template/site/img/About/3TJ6NCTIRT.jpg" alt="">
                 </div>
                 <div class="col-md-6">
-                    <h2 class="text-uppercase mb-5">Repair and Technical Services</h2>
-
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores facere illum optio possimus vel. A adipisci aspernatur exercitationem. Adipisci aspernatur doloremque ducimus ea eius fugiat impedit inventore nam quae unde?</p>
-                </div>
-            </div>
-        </section>
-
-        <section data-scroll-div="section-3" class="container">
-            <div class="row ">
-                <div class="col-md-6">
-                    <img class="mw-100" src="http://generalse.com/template/site/img/About/3TJ6NCTIRT.jpg" alt="">
-                </div>
-                <div class="col-md-6">
-                    <h2 class="text-uppercase mb-5">Hardware Recycling</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores facere illum optio possimus vel. A adipisci aspernatur exercitationem. Adipisci aspernatur doloremque ducimus ea eius fugiat impedit inventore nam quae unde?</p>
+                    <h2 class="text-uppercase mb-2">Покупка оверстоков</h2>
+                    <p>Мы предлагаем сервисным центрам возможность реализации своих товарных остатков: запасных частей и готовой техники. Любое даже сверхточное планирование не гарантирует 100%-ого использования приобретенных комплектующих, поэтому каждый сервисный бизнесс рано или поздно сталкивается с проблемой оверстоков: материальных активов, которые со временем превращаются в пассивы. Кроме этого, длительное хранение неремонтопригодной техники влечет за собой высокие расходы на содержание необорочиваемых товаров, а также их стабильное постепенное обесценивание. Вопрос списания товарных остатков имеет множество юридических и бухгалтерских нюансов, поэтому General Services не только помогает решить данную проблему, но и компенсирует часть стоимости необорачиваемых запасных частей и оборудования. Наша программа утилизации позволяет обрабатывать свыше 20,000 единиц нерабочей или устаревшей техники в год, для повторного использования в качестве восстановленной продукции, запасных частей или вторсырья. General Services предлагает сервисным центрам конкурентные цены на стоки некондиционного, неремонтопригодного оборудования, а также неиспользованных комплектующих. Общая сумма экономии наших клиентов уже превысила 1,2 миллиона долларов, а попадания в окружающую среду избежали более 30 тонн вредных веществ.</p>
                 </div>
             </div>
         </section>
