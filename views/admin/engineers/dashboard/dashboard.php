@@ -27,45 +27,6 @@
         <!-- body -->
         <div class="body-content">
             <div class="row">
-                <div class="medium-12 small-12 columns">
-                    <table class="umbrella-table margin-bottom">
-                        <thead>
-                        <tr>
-                            <th class="text-center" colspan="9">ДВИЖЕНИЕ ТЕХНИКИ (<?= \Umbrella\models\engineer\Dashboard::nameMonth($month) ?>/<?= $year ?>)</th>
-                        </tr>
-                        <tr>
-                            <th>Название товара</th>
-                            <th>PartNumber</th>
-                            <th>Производитель</th>
-                            <th>Тип товара</th>
-                            <th>Классификатор</th>
-                            <th>Подтип товара</th>
-                            <th>Поступление к-во</th>
-                            <th>Выход к-во</th>
-                            <th>Остаток к-во</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php if(is_array($movementDevices)): ?>
-                            <?php foreach ($movementDevices as $value): ?>
-                                <tr>
-                                    <td><?= $value['goods_name'] ?></td>
-                                    <td><?= $value['part_number'] ?></td>
-                                    <td><?= $value['produser_name'] ?></td>
-                                    <td><?= $value['goodstype_name'] ?></td>
-                                    <td><?= $value['classifier_name'] ?></td>
-                                    <td><?= $value['subtype_name'] ?></td>
-                                    <td><?= $value['quantity_in'] ?></td>
-                                    <td><?= $value['quantity_out'] ?></td>
-                                    <td><?= $value['quantity_stock'] ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="row">
                 <div class="medium-7 small-12 columns">
                     <table class="umbrella-table margin-bottom">
                         <thead>
@@ -218,8 +179,8 @@
                             <th class="text-center" colspan="7">РАЗБОРКА</th>
                         </tr>
                         <tr>
-                            <th>Бренд</th>
-                            <th>Тип техники</th>
+                            <th>Производитель</th>
+                            <th>Тип товара</th>
                             <th>Предварительная разборка</th>
                             <th>Разобрано</th>
                             <th>Принятая разборка</th>
@@ -270,60 +231,74 @@
 
                 <div class="medium-5 small-12 columns">
 
-                    <table class="umbrella-table margin-bottom">
-                        <thead>
-                        <tr>
-                            <th class="text-center" colspan="3">ДВИЖЕНИЕ ТЕХНИКИ</th>
-                        </tr>
-                        <tr>
-                            <th class="text-center">Наименование техники</th>
-                            <th class="text-center">Вход на участок</th>
-                            <th class="text-center">Выход с участка</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td class="umbrella-tr-td">Смартфоны</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="umbrella-tr-td">Планшеты</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="umbrella-tr-td">Ноутбуки</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="umbrella-tr-td">Моноблоки</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="umbrella-tr-td">Матерински платы</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="umbrella-tr-td">Дисплеи</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="umbrella-tr-td">Бытовая техника</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="umbrella-tr-td text-center">Всего:</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <div class="medium-12 small-12 columns">
+                        <table class="umbrella-table margin-bottom">
+                            <thead>
+                            <tr>
+                                <th class="text-center" colspan="4">ДВИЖЕНИЕ ТЕХНИКИ (<?= \Umbrella\models\engineer\Dashboard::nameMonth($month) ?>/<?= $year ?>) - Производитель</th>
+                            </tr>
+                            <tr>
+                                <th class="text-center">Наименование техники</th>
+                                <th class="text-center">Вход на участок</th>
+                                <th class="text-center">Выход с участка</th>
+                                <th class="text-center">Остаток к-во</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php if(is_array($movementDevicesProducer)): ?>
+                                <?php foreach ($movementDevicesProducer as $value): ?>
+                                    <tr>
+                                        <td class="umbrella-tr-td"><?= $value['produser_name'] ?></td>
+                                        <td><?= $value['quantity_in'] ?></td>
+                                        <td><?= $value['quantity_out'] ?></td>
+                                        <td><?= $value['quantity_stock'] ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+
+                            <tr>
+                                <td class="umbrella-tr-td text-center">Всего:</td>
+                                <td><?= $totalDeviceProducer['quantity_in'] ?></td>
+                                <td><?= $totalDeviceProducer['quantity_out'] ?></td>
+                                <td><?= $totalDeviceProducer['quantity_stock'] ?></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="medium-12 small-12 columns">
+                        <table class="umbrella-table margin-bottom">
+                            <thead>
+                            <tr>
+                                <th class="text-center" colspan="4">ДВИЖЕНИЕ ТЕХНИКИ (<?= \Umbrella\models\engineer\Dashboard::nameMonth($month) ?>/<?= $year ?>) - Классификатор</th>
+                            </tr>
+                            <tr>
+                                <th class="text-center">Наименование техники</th>
+                                <th class="text-center">Вход на участок</th>
+                                <th class="text-center">Выход с участка</th>
+                                <th class="text-center">Остаток к-во</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php if(is_array($movementDevicesClassifier)): ?>
+                                <?php foreach ($movementDevicesClassifier as $value): ?>
+                                    <tr>
+                                        <td class="umbrella-tr-td"><?= $value['classifier_name'] ?></td>
+                                        <td><?= $value['quantity_in'] ?></td>
+                                        <td><?= $value['quantity_out'] ?></td>
+                                        <td><?= $value['quantity_stock'] ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+
+                            <tr>
+                                <td class="umbrella-tr-td text-center">Всего:</td>
+                                <td><?= $totalDeviceClassifier['quantity_in'] ?></td>
+                                <td><?= $totalDeviceClassifier['quantity_out'] ?></td>
+                                <td><?= $totalDeviceClassifier['quantity_stock'] ?></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
                     <table class="umbrella-table margin-bottom">
                         <thead>

@@ -7,15 +7,53 @@ use Umbrella\components\Db\MsSQL;
 class Dashboard
 {
 
-    public static function getMovementDevices($month, $year)
+    /**
+     * @param $month
+     * @param $year
+     *
+     * @return array
+     */
+    public static function getMovementDevicesProducer($month, $year)
     {
         $db = MsSQL::getConnection();
 
-        $sql = "SELECT 
-                * 
-                FROM site_gm_depot_data_01 
+        $sql = "SELECT
+                    produser_name,
+                    SUM(quantity_in) as quantity_in,
+                    SUM(quantity_out) as quantity_out,
+                    SUM(quantity_stock) as quantity_stock
+                FROM site_gm_depot_data_01
                 WHERE month = :month 
-                AND year = :year";
+                AND year = :year
+                GROUP BY produser_name";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':month', $month, PDO::PARAM_INT);
+        $result->bindParam(':year', $year, PDO::PARAM_INT);
+        $result->execute();
+        return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    /**
+     * @param $month
+     * @param $year
+     *
+     * @return array
+     */
+    public static function getMovementDevicesClassifier($month, $year)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "SELECT
+                    classifier_name,
+                    SUM(quantity_in) as quantity_in,
+                    SUM(quantity_out) as quantity_out,
+                    SUM(quantity_stock) as quantity_stock
+                FROM site_gm_depot_data_01
+                WHERE month = :month 
+                AND year = :year
+                GROUP BY classifier_name";
 
         $result = $db->prepare($sql);
         $result->bindParam(':month', $month, PDO::PARAM_INT);
