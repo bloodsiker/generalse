@@ -492,4 +492,58 @@ class Stocks
     }
 
 
+    /**
+     * Список продуктов в базе данных
+     * @return array
+     */
+    public static function getListProducts()
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "SELECT
+                  tbl_GoodsNames.mName,
+                  tbl_GoodsNames.PartNumber,
+                  tbl_GoodsNames.ClassifierID,
+                  GoodsSubType.shortName as subType,
+                  tbl_Classifier.mName as classifier
+                FROM tbl_GoodsNames
+                    INNER JOIN GoodsSubType
+                      ON tbl_GoodsNames.subType = GoodsSubType.id
+                    INNER JOIN tbl_Classifier
+                      ON tbl_GoodsNames.ClassifierID = tbl_Classifier.I_D
+                WHERE ClassifierID IN (86, 91)";
+
+        $result = $db->prepare($sql);
+        $result->execute();
+        return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * @param $search
+     *
+     * @return array
+     */
+    public static function searchListProducts($search)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "SELECT
+                  tbl_GoodsNames.mName,
+                  tbl_GoodsNames.PartNumber,
+                  tbl_GoodsNames.ClassifierID,
+                  GoodsSubType.shortName as subType,
+                  tbl_Classifier.mName as classifier
+                FROM tbl_GoodsNames
+                    INNER JOIN GoodsSubType
+                      ON tbl_GoodsNames.subType = GoodsSubType.id
+                    INNER JOIN tbl_Classifier
+                      ON tbl_GoodsNames.ClassifierID = tbl_Classifier.I_D
+                WHERE ClassifierID IN (86, 91)
+                    AND (tbl_GoodsNames.mName LIKE ?
+                    OR tbl_GoodsNames.PartNumber LIKE ?)";
+
+        $result = $db->prepare($sql);
+        $result->execute(array("%$search%", "%$search%"));
+        return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

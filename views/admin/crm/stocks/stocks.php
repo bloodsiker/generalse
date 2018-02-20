@@ -26,6 +26,11 @@
                         <?php if(isset($allGoodsByPartner) && count($allGoodsByPartner) > 0):?>
                             <button class="button primary tool" onclick="tableToExcel('table-to-excel', 'W3C Example Table')" style="width: inherit;"><i class="fi-page-export"></i> Export to Excel</button>
                         <?php endif;?>
+
+                        <?php if (Umbrella\app\AdminBase::checkDenied('crm.stocks.list_products', 'view')): ?>
+                            <a href="/adm/crm/stocks/list_products/" class="button primary tool">List products</a>
+                        <?php endif;?>
+
                     </div>
 
                      <div class="medium-3 small-12 columns form">

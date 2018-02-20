@@ -2,6 +2,7 @@
 
 namespace Umbrella\controllers\umbrella\crm;
 
+use Josantonius\Request\Request;
 use Umbrella\app\AdminBase;
 use Umbrella\app\Services\crm\StockService;
 use Umbrella\app\User;
@@ -138,6 +139,40 @@ class StockController extends AdminBase
 
         $this->render('admin/crm/stocks/stocks_search', compact('user','partnerList',
             'allGoodsByPartner', 'userInGroup', 'list_stock', 'search'));
+        return true;
+    }
+
+
+    /**
+     * @return bool
+     * @throws \Exception
+     */
+    public function actionListProducts()
+    {
+        self::checkDenied('crm.stocks.list_products', 'controller');
+        $user = $this->user;
+
+        $listProduct = Decoder::arrayToUtf(Stocks::getListProducts());
+
+        $this->render('admin/crm/stocks/list_products', compact('user', 'listProduct'));
+        return true;
+    }
+
+
+    /**
+     * @return bool
+     * @throws \Exception
+     */
+    public function actionSearchListProducts()
+    {
+        self::checkDenied('crm.stocks.list_products', 'controller');
+        $user = $this->user;
+
+        $search = Decoder::strToWindows(Request::get('search'));
+
+        $listProduct = Decoder::arrayToUtf(Stocks::searchListProducts($search));
+
+        $this->render('admin/crm/stocks/search_list_products', compact('user', 'listProduct', 'search'));
         return true;
     }
 
