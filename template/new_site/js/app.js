@@ -272,7 +272,9 @@ $(document).ready(function () {
 });
 
 
-$('#form-suppliers').submit(function (e) {
+// Send email with suppliers form
+$("#form-suppliers").submit(function (e) {
+//$('#send-suppliers').on('click', function (e) {
     e.preventDefault();
     let error = false;
 
@@ -299,22 +301,23 @@ $('#form-suppliers').submit(function (e) {
 
     if (error == false) {
 
-        $("#form-suppliers").submit(function () {
-            let newForm = $(this).serializeObject(); // получение данных в объекте
-            let json = JSON.stringify(newForm); // json
-            $.ajax({
-                url: "/ru/new/suppliers/send_form",
-                type: "POST",
-                data: {json : json},
-                cache: false,
-                success: function (response) {
-                    console.log(response);
-                    $('#thank').modal('show');
-                    $('#form-suppliers').trigger("reset");
-                }
-            });
-            return false;
+        let $that = $(this),
+            formData = new FormData($that.get(0));
+
+        $.ajax({
+            url: "/ru/new/suppliers/send_form",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            cache: false,
+            success: function (response) {
+                console.log(response);
+                $('#thank').modal('show');
+                $('#form-suppliers').trigger("reset");
+            }
         });
+        return false;
     }
 });
 

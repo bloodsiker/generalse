@@ -11,7 +11,7 @@ class SendCareer
     protected function __clone() {}
 
     /**
-     * @return null|RegisterClient
+     * @return null|SendCareer
      */
     public static function getInstance() {
         if(self::$instance === null) {

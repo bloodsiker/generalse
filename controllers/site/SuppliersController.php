@@ -2,9 +2,12 @@
 namespace Umbrella\controllers\site;
 
 use Josantonius\Request\Request;
-use Umbrella\app\Mail\Site\SendCareer;
+use Josantonius\Url\Url;
+use Umbrella\app\Mail\Site\SendSupplier;
 use Umbrella\app\Services\site\SeoMetaService;
+use Umbrella\components\Functions;
 use Umbrella\vendor\controller\Controller;
+use upload as FileUpload;
 
 class SuppliersController extends Controller
 {
@@ -39,11 +42,31 @@ class SuppliersController extends Controller
      */
     public function actionSendForm()
     {
-        $data = Request::post('json');
-        $data_json = json_decode($data, true);
-        print_r($data_json);
+        $options['fio'] = Request::post('fio');
+        $options['email'] = Request::post('email');
+        $options['company'] = Request::post('company');
+        $options['message'] = Request::post('message');
 
-        SendCareer::getInstance()->sendEmailSuppliers($data_json);
+        if (!empty(Request::files('file-price'))) {
+            $handle = new FileUpload(Request::files('file-price'));
+            if ($handle->uploaded) {
+                $handle->file_overwrite = true;
+                $handle->file_new_name_body = Functions::strUrl($options['company']) . '-' . strtotime(date('Y-m-d H:i:s'));
+                $file_name = $handle->file_new_name_body . '.' . $handle->file_src_name_ext;
+                $path = '/upload/site/attach_suppliers/';
+                $handle->process(ROOT . $path);
+                if ($handle->processed) {
+                    $handle->clean();
+                    $options['file'] = Url::getDomain() . $path . $file_name;
+                    $options['upload_file'] = 200;
+                } else {
+                    $options['upload_file'] = 400;
+                    $options['upload_error'] = $handle->error;
+                }
+            }
+        }
+
+        SendSupplier::getInstance()->sendEmailSuppliers($options);
 
         return true;
     }

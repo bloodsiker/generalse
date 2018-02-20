@@ -36,6 +36,9 @@ class SendSupplier
         $mailToManager .= "<b>Название компании поставщика:</b> {$options['company']} <br>";
         $mailToManager .= "<b>Email:</b> {$options['email']} <br>";
         $mailToManager .= "<b>Сообщение:</b> {$options['message']} <br>";
+        if($options['upload_file'] == 200){
+            $mailToManager .= "<b>Прайс лист:</b> <a href='{$options['file']}' download>Скачать</a><br>";
+        }
 
         mail('do@generalse.com', 'Нова заявка на сотрудничество', $mailToManager, $headers);
         return true;

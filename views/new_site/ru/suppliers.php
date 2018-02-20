@@ -27,7 +27,7 @@
                 <p>Если ваша компания является производителем или поставщиком одной из указанных товарных групп, заполните запрос в Форме Поставщика на данной станице, и мы ответим вам в случае наличия интереса.</p>
             </div>
             <div class="col-md-6">
-                <form action="" method="post" id="form-suppliers" class="form mb-3">
+                <form action="" method="post" enctype="multipart/form-data" id="form-suppliers" class="form mb-3">
                     <div class="form-group">
                         <label for="name">Имя и фамилия</label>
                         <input type="text" class="form-control" name="fio" id="name" aria-describedby="name" placeholder="Имя и фамилия">
@@ -48,8 +48,8 @@
                         <textarea class="form-control" name="message" id="exampleTextarea" rows="3"></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputFile">Прикрепить прайс-лист</label>
-                        <input type="file" class="form-control-file" name="file" id="exampleInputFile" aria-describedby="fileHelp">
+                        <label for="file_price">Прикрепить прайс-лист</label>
+                        <input type="file" class="form-control-file" name="file-price" id="file_price" aria-describedby="fileHelp">
                         <small id="fileHelp" class="form-text text-muted">Размер загружаемого файла не должен превышать 10 мб</small>
                     </div>
                     <div class="text-right">
