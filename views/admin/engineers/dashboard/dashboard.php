@@ -28,6 +28,85 @@
         <div class="body-content">
             <div class="row">
                 <div class="medium-7 small-12 columns">
+
+                    <table class="umbrella-table margin-bottom">
+                        <thead>
+                        <tr>
+                            <th class="text-center" colspan="7">РАЗБОРКА - Производитель</th>
+                        </tr>
+                        <tr>
+                            <th>Производитель</th>
+                            <th>Предварительная разборка</th>
+                            <th>Разобрано</th>
+                            <th>Принятая разборка</th>
+                            <th>Запчасти Б/У</th>
+                            <th>Запчасти BAD</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php if(is_array($disassemblyProducer)): ?>
+                            <?php foreach ($disassemblyProducer as $value): ?>
+                                <tr>
+                                    <td class="umbrella-tr-td"><?= $value['produser_name'] ?></td>
+                                    <td><?= $value['quantity_prev'] ?></td>
+                                    <td><?= $value['quantity_decompiled'] ?></td>
+                                    <td><?= $value['quantity_shipped'] ?></td>
+                                    <td><?= $value['quantity_ok'] ?></td>
+                                    <td><?= $value['quantity_bad'] ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+
+                        <tr>
+                            <td class="umbrella-tr-td text-center">Всего:</td>
+                            <td><?= $totalDisassemblyProducer['quantity_prev'] ?></td>
+                            <td><?= $totalDisassemblyProducer['quantity_decompiled'] ?></td>
+                            <td><?= $totalDisassemblyProducer['quantity_shipped'] ?></td>
+                            <td><?= $totalDisassemblyProducer['quantity_ok'] ?></td>
+                            <td><?= $totalDisassemblyProducer['quantity_bad'] ?></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <table class="umbrella-table margin-bottom">
+                        <thead>
+                        <tr>
+                            <th class="text-center" colspan="7">РАЗБОРКА - Классификатор</th>
+                        </tr>
+                        <tr>
+                            <th>Тип товара</th>
+                            <th>Предварительная разборка</th>
+                            <th>Разобрано</th>
+                            <th>Принятая разборка</th>
+                            <th>Запчасти Б/У</th>
+                            <th>Запчасти BAD</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php if(is_array($disassemblyClassifier)): ?>
+                            <?php foreach ($disassemblyClassifier as $value): ?>
+                                <tr>
+                                    <td class="umbrella-tr-td"><?= $value['class_name'] ?></td>
+                                    <td><?= $value['quantity_prev'] ?></td>
+                                    <td><?= $value['quantity_decompiled'] ?></td>
+                                    <td><?= $value['quantity_shipped'] ?></td>
+                                    <td><?= $value['quantity_ok'] ?></td>
+                                    <td><?= $value['quantity_bad'] ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+
+                        <tr>
+                            <td class="umbrella-tr-td text-center">Всего:</td>
+                            <td><?= $totalDisassemblyClassifier['quantity_prev'] ?></td>
+                            <td><?= $totalDisassemblyClassifier['quantity_decompiled'] ?></td>
+                            <td><?= $totalDisassemblyClassifier['quantity_shipped'] ?></td>
+                            <td><?= $totalDisassemblyClassifier['quantity_ok'] ?></td>
+                            <td><?= $totalDisassemblyClassifier['quantity_bad'] ?></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
                     <table class="umbrella-table margin-bottom">
                         <thead>
                         <tr>
@@ -164,61 +243,6 @@
                         </tr>
                         <tr>
                             <td class="umbrella-tr-td">Кацапчук Е.</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        </tbody>
-                    </table>
-
-                    <table class="umbrella-table margin-bottom">
-                        <thead>
-                        <tr>
-                            <th class="text-center" colspan="7">РАЗБОРКА</th>
-                        </tr>
-                        <tr>
-                            <th>Производитель</th>
-                            <th>Тип товара</th>
-                            <th>Предварительная разборка</th>
-                            <th>Разобрано</th>
-                            <th>Принятая разборка</th>
-                            <th>Запчасти Б/У</th>
-                            <th>Запчасти BAD</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>

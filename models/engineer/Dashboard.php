@@ -71,7 +71,7 @@ class Dashboard
 
         $sql = "SELECT
                   DISTINCT month
-                FROM site_gm_depot_data_01
+                FROM site_gm_depot_data_02
                 ORDER BY month";
 
         $result = $db->prepare($sql);
@@ -85,7 +85,7 @@ class Dashboard
 
         $sql = "SELECT
                   DISTINCT year
-                FROM site_gm_depot_data_01
+                FROM site_gm_depot_data_02
                 ORDER BY year DESC";
 
         $result = $db->prepare($sql);
@@ -142,5 +142,68 @@ class Dashboard
                 $name = 'Не изместный месяц';
         }
         return $name;
+    }
+
+
+    /*************  Разборка   *******************/
+
+
+     /*
+     *
+     * @param $month
+     * @param $year
+     *
+     * @return array
+     */
+    public static function getDisassemblyProducer($month, $year)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "SELECT
+                    produser_name,
+                    SUM(quantity_prev) as quantity_prev,
+                    SUM(quantity_decompiled) as quantity_decompiled,
+                    SUM(quantity_shipped) as quantity_shipped,
+                    SUM(quantity_ok) as quantity_ok,
+                    SUM(quantity_bad) as quantity_bad
+                FROM site_gm_depot_data_02
+                WHERE month = :month 
+                AND year = :year
+                GROUP BY produser_name";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':month', $month, PDO::PARAM_INT);
+        $result->bindParam(':year', $year, PDO::PARAM_INT);
+        $result->execute();
+        return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * @param $month
+     * @param $year
+     *
+     * @return array
+     */
+    public static function getDisassemblyClassifier($month, $year)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "SELECT
+                    class_name,
+                    SUM(quantity_prev) as quantity_prev,
+                    SUM(quantity_decompiled) as quantity_decompiled,
+                    SUM(quantity_shipped) as quantity_shipped,
+                    SUM(quantity_ok) as quantity_ok,
+                    SUM(quantity_bad) as quantity_bad
+                FROM site_gm_depot_data_02
+                WHERE month = :month 
+                AND year = :year
+                GROUP BY class_name";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':month', $month, PDO::PARAM_INT);
+        $result->bindParam(':year', $year, PDO::PARAM_INT);
+        $result->execute();
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 }

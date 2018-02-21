@@ -48,11 +48,29 @@ class DashboardController extends  AdminBase
         $totalDeviceProducer['quantity_in'] = array_sum(array_column($movementDevicesProducer, 'quantity_in'));
         $totalDeviceProducer['quantity_out'] = array_sum(array_column($movementDevicesProducer, 'quantity_out'));
         $totalDeviceProducer['quantity_stock'] = array_sum(array_column($movementDevicesProducer, 'quantity_stock'));
+
         $movementDevicesClassifier = Decoder::arrayToUtf(Dashboard::getMovementDevicesClassifier($month, $year),
             ['quantity_in', 'quantity_out', 'quantity_stock']);
         $totalDeviceClassifier['quantity_in'] = array_sum(array_column($movementDevicesClassifier, 'quantity_in'));
         $totalDeviceClassifier['quantity_out'] = array_sum(array_column($movementDevicesClassifier, 'quantity_out'));
         $totalDeviceClassifier['quantity_stock'] = array_sum(array_column($movementDevicesClassifier, 'quantity_stock'));
+
+
+        $disassemblyProducer = Decoder::arrayToUtf(Dashboard::getDisassemblyProducer($month, $year),
+            ['quantity_prev', 'quantity_decompiled', 'quantity_shipped', 'quantity_ok', 'quantity_bad']);
+        $totalDisassemblyProducer['quantity_prev'] = array_sum(array_column($disassemblyProducer, 'quantity_prev'));
+        $totalDisassemblyProducer['quantity_decompiled'] = array_sum(array_column($disassemblyProducer, 'quantity_decompiled'));
+        $totalDisassemblyProducer['quantity_shipped'] = array_sum(array_column($disassemblyProducer, 'quantity_shipped'));
+        $totalDisassemblyProducer['quantity_ok'] = array_sum(array_column($disassemblyProducer, 'quantity_ok'));
+        $totalDisassemblyProducer['quantity_bad'] = array_sum(array_column($disassemblyProducer, 'quantity_bad'));
+
+        $disassemblyClassifier = Decoder::arrayToUtf(Dashboard::getDisassemblyClassifier($month, $year),
+            ['quantity_prev', 'quantity_decompiled', 'quantity_shipped', 'quantity_ok', 'quantity_bad']);
+        $totalDisassemblyClassifier['quantity_prev'] = array_sum(array_column($disassemblyClassifier, 'quantity_prev'));
+        $totalDisassemblyClassifier['quantity_decompiled'] = array_sum(array_column($disassemblyClassifier, 'quantity_decompiled'));
+        $totalDisassemblyClassifier['quantity_shipped'] = array_sum(array_column($disassemblyClassifier, 'quantity_shipped'));
+        $totalDisassemblyClassifier['quantity_ok'] = array_sum(array_column($disassemblyClassifier, 'quantity_ok'));
+        $totalDisassemblyClassifier['quantity_bad'] = array_sum(array_column($disassemblyClassifier, 'quantity_bad'));
 
         $intervalYears = Dashboard::getYears();
         $intervalMonths = Dashboard::getMonths();
@@ -63,7 +81,8 @@ class DashboardController extends  AdminBase
 
         $this->render('admin/engineers/dashboard/dashboard',
             compact('user', 'movementDevicesProducer', 'movementDevicesClassifier', 'intervalYears',
-                'intervalMonths', 'year', 'month', 'totalDeviceClassifier', 'totalDeviceProducer'));
+                'intervalMonths', 'year', 'month', 'totalDeviceClassifier', 'totalDeviceProducer', 'disassemblyProducer',
+                'disassemblyClassifier', 'totalDisassemblyProducer', 'totalDisassemblyClassifier'));
         return true;
     }
 
