@@ -44,16 +44,18 @@ class DashboardController extends  AdminBase
         }
 
         $movementDevicesProducer = Decoder::arrayToUtf(Dashboard::getMovementDevicesProducer($month, $year),
-            ['quantity_in', 'quantity_out', 'quantity_stock']);
+            ['quantity_in', 'quantity_out', 'quantity_stock', 'quantity_decompile']);
         $totalDeviceProducer['quantity_in'] = array_sum(array_column($movementDevicesProducer, 'quantity_in'));
         $totalDeviceProducer['quantity_out'] = array_sum(array_column($movementDevicesProducer, 'quantity_out'));
         $totalDeviceProducer['quantity_stock'] = array_sum(array_column($movementDevicesProducer, 'quantity_stock'));
+        $totalDeviceProducer['quantity_decompile'] = array_sum(array_column($movementDevicesProducer, 'quantity_decompile'));
 
         $movementDevicesClassifier = Decoder::arrayToUtf(Dashboard::getMovementDevicesClassifier($month, $year),
-            ['quantity_in', 'quantity_out', 'quantity_stock']);
+            ['quantity_in', 'quantity_out', 'quantity_stock', 'quantity_decompile']);
         $totalDeviceClassifier['quantity_in'] = array_sum(array_column($movementDevicesClassifier, 'quantity_in'));
         $totalDeviceClassifier['quantity_out'] = array_sum(array_column($movementDevicesClassifier, 'quantity_out'));
         $totalDeviceClassifier['quantity_stock'] = array_sum(array_column($movementDevicesClassifier, 'quantity_stock'));
+        $totalDeviceClassifier['quantity_decompile'] = array_sum(array_column($movementDevicesClassifier, 'quantity_decompile'));
 
 
         $disassemblyProducer = Decoder::arrayToUtf(Dashboard::getDisassemblyProducer($month, $year),

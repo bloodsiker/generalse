@@ -21,7 +21,8 @@ class Dashboard
                     produser_name,
                     SUM(quantity_in) as quantity_in,
                     SUM(quantity_out) as quantity_out,
-                    SUM(quantity_stock) as quantity_stock
+                    SUM(quantity_stock) as quantity_stock,
+                    SUM(quantity_decompile) as quantity_decompile
                 FROM site_gm_depot_data_01
                 WHERE month = :month 
                 AND year = :year
@@ -49,7 +50,8 @@ class Dashboard
                     classifier_name,
                     SUM(quantity_in) as quantity_in,
                     SUM(quantity_out) as quantity_out,
-                    SUM(quantity_stock) as quantity_stock
+                    SUM(quantity_stock) as quantity_stock,
+                    SUM(quantity_decompile) as quantity_decompile
                 FROM site_gm_depot_data_01
                 WHERE month = :month 
                 AND year = :year

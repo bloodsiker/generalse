@@ -9,7 +9,9 @@ class CCCDebtorsMail
 
     private function __construct() {}
 
-    protected function __clone() {}
+    private function __clone() {}
+
+    private function __wakeup() {}
 
     /**
      * @return CCCDebtorsMail
@@ -36,9 +38,8 @@ class CCCDebtorsMail
 
         $mailToManager = "$text";
 
-        mail('atk@generalse.com', 'Еженедельный обзвон Debtors EL UA', $mailToManager, $headers);
-        mail('ata@generalse.com', 'Еженедельный обзвон Debtors EL UA', $mailToManager, $headers);
         mail('asv@generalse.com', 'Еженедельный обзвон Debtors EL UA', $mailToManager, $headers);
+        mail('call@generalse.com', 'Еженедельный обзвон Debtors EL UA', $mailToManager, $headers);
         //mail('do@generalse.com', 'Еженедельный обзвон Debtors EL UA', $mailToManager, $headers);
         return true;
     }

@@ -32,7 +32,7 @@
                     <table class="umbrella-table margin-bottom">
                         <thead>
                         <tr>
-                            <th class="text-center" colspan="7">РАЗБОРКА - Производитель</th>
+                            <th class="text-center" colspan="7">РАЗБОРКА (<?= \Umbrella\models\engineer\Dashboard::nameMonth($month) ?>/<?= $year ?>) - Производитель</th>
                         </tr>
                         <tr>
                             <th>Производитель</th>
@@ -71,7 +71,7 @@
                     <table class="umbrella-table margin-bottom">
                         <thead>
                         <tr>
-                            <th class="text-center" colspan="7">РАЗБОРКА - Классификатор</th>
+                            <th class="text-center" colspan="7">РАЗБОРКА (<?= \Umbrella\models\engineer\Dashboard::nameMonth($month) ?>/<?= $year ?>) - Классификатор</th>
                         </tr>
                         <tr>
                             <th>Тип товара</th>
@@ -259,13 +259,14 @@
                         <table class="umbrella-table margin-bottom">
                             <thead>
                             <tr>
-                                <th class="text-center" colspan="4">ДВИЖЕНИЕ ТЕХНИКИ (<?= \Umbrella\models\engineer\Dashboard::nameMonth($month) ?>/<?= $year ?>) - Производитель</th>
+                                <th class="text-center" colspan="5">ДВИЖЕНИЕ ТЕХНИКИ (<?= \Umbrella\models\engineer\Dashboard::nameMonth($month) ?>/<?= $year ?>) - Производитель</th>
                             </tr>
                             <tr>
                                 <th class="text-center">Наименование техники</th>
                                 <th class="text-center">Вход на участок</th>
                                 <th class="text-center">Выход с участка</th>
                                 <th class="text-center">Остаток к-во</th>
+                                <th class="text-center">Принято разборок</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -276,6 +277,7 @@
                                         <td><?= $value['quantity_in'] ?></td>
                                         <td><?= $value['quantity_out'] ?></td>
                                         <td><?= $value['quantity_stock'] ?></td>
+                                        <td><?= $value['quantity_decompile'] ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php endif; ?>
@@ -285,6 +287,7 @@
                                 <td><?= $totalDeviceProducer['quantity_in'] ?></td>
                                 <td><?= $totalDeviceProducer['quantity_out'] ?></td>
                                 <td><?= $totalDeviceProducer['quantity_stock'] ?></td>
+                                <td><?= $totalDeviceProducer['quantity_decompile'] ?></td>
                             </tr>
                             </tbody>
                         </table>
@@ -293,13 +296,14 @@
                         <table class="umbrella-table margin-bottom">
                             <thead>
                             <tr>
-                                <th class="text-center" colspan="4">ДВИЖЕНИЕ ТЕХНИКИ (<?= \Umbrella\models\engineer\Dashboard::nameMonth($month) ?>/<?= $year ?>) - Классификатор</th>
+                                <th class="text-center" colspan="5">ДВИЖЕНИЕ ТЕХНИКИ (<?= \Umbrella\models\engineer\Dashboard::nameMonth($month) ?>/<?= $year ?>) - Классификатор</th>
                             </tr>
                             <tr>
                                 <th class="text-center">Наименование техники</th>
                                 <th class="text-center">Вход на участок</th>
                                 <th class="text-center">Выход с участка</th>
                                 <th class="text-center">Остаток к-во</th>
+                                <th class="text-center">Принято разборок</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -310,6 +314,7 @@
                                         <td><?= $value['quantity_in'] ?></td>
                                         <td><?= $value['quantity_out'] ?></td>
                                         <td><?= $value['quantity_stock'] ?></td>
+                                        <td><?= $value['quantity_decompile'] ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php endif; ?>
@@ -319,6 +324,7 @@
                                 <td><?= $totalDeviceClassifier['quantity_in'] ?></td>
                                 <td><?= $totalDeviceClassifier['quantity_out'] ?></td>
                                 <td><?= $totalDeviceClassifier['quantity_stock'] ?></td>
+                                <td><?= $totalDeviceClassifier['quantity_decompile'] ?></td>
                             </tr>
                             </tbody>
                         </table>
