@@ -36,8 +36,10 @@ class CCCDebtorsMail
 
         $mailToManager = "$text";
 
-        mail('gsteam@generalse.com', 'Еженедельный обзвон Debtors EL UA', $mailToManager, $headers);
-        mail('do@generalse.com', 'Еженедельный обзвон Debtors EL UA', $mailToManager, $headers);
+        mail('atk@generalse.com', 'Еженедельный обзвон Debtors EL UA', $mailToManager, $headers);
+        mail('ata@generalse.com', 'Еженедельный обзвон Debtors EL UA', $mailToManager, $headers);
+        mail('asv@generalse.com', 'Еженедельный обзвон Debtors EL UA', $mailToManager, $headers);
+        //mail('do@generalse.com', 'Еженедельный обзвон Debtors EL UA', $mailToManager, $headers);
         return true;
     }
 }

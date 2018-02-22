@@ -152,9 +152,15 @@ class StockController extends AdminBase
         self::checkDenied('crm.stocks.list_products', 'controller');
         $user = $this->user;
 
-        $listProduct = Decoder::arrayToUtf(Stocks::getListProducts());
+        $currencyUsd = Currency::getRatesCurrency('usd');
 
-        $this->render('admin/crm/stocks/list_products', compact('user', 'listProduct'));
+        if($user->isPartner()){
+            $listProduct = Decoder::arrayToUtf(Stocks::getListProducts($user->getId()));
+        } elseif ($user->isAdmin() || $user->isManager()){
+            $listProduct = Decoder::arrayToUtf(Stocks::getListProductsAdmin());
+        }
+
+        $this->render('admin/crm/stocks/list_products', compact('user', 'listProduct', 'currencyUsd'));
         return true;
     }
 

@@ -496,24 +496,131 @@ class Stocks
      * Список продуктов в базе данных
      * @return array
      */
-    public static function getListProducts()
+    public static function getListProductsAdmin()
     {
         $db = MsSQL::getConnection();
 
-        $sql = "SELECT
-                  tbl_GoodsNames.mName,
-                  tbl_GoodsNames.PartNumber,
-                  tbl_GoodsNames.ClassifierID,
-                  GoodsSubType.shortName as subType,
-                  tbl_Classifier.mName as classifier
-                FROM tbl_GoodsNames
-                    INNER JOIN GoodsSubType
-                      ON tbl_GoodsNames.subType = GoodsSubType.id
-                    INNER JOIN tbl_Classifier
-                      ON tbl_GoodsNames.ClassifierID = tbl_Classifier.I_D
-                WHERE ClassifierID IN (86, 91)";
+        $sql = "select
+           tbl_GoodsNames.PartNumber as partNumber
+          ,tbl_GoodsNames.mName as mName
+          ,tbl_Classifier.mName as classifier
+          ,GoodsSubType.shortName as subType
+          ,tbl_Produsers.shortName as producer
+          ,tbl_GoodsTypes.mName as goodsType
+          ,convert(float, tbl_ABCDPrices_RoznNew.price) / 100 as rozNew
+          ,convert(float, tbl_ABCDPrices_RoznBu.price) / 100 as rozBu
+          ,convert(float, tbl_ABCDPrices_Partner.price) / 100 as partnerNew
+          ,convert(float, tbl_ABCDPrices_PartnerBu.price) / 100 as partnerBu
+          ,convert(float, tbl_ABCDPrices_Opt.price) / 100 as optNew
+          ,convert(float, tbl_ABCDPrices_OptBu.price) / 100 as optBu
+          ,convert(float, tbl_ABCDPrices_Vip.price) / 100 as vipNew
+          ,convert(float, tbl_ABCDPrices_VipBu.price) / 100 as vipBu
+        from tbl_GoodsNames with (nolock)
+        
+          left outer join tbl_Classifier with (nolock)
+            on tbl_Classifier.i_d = tbl_GoodsNames.classifierID
+          left outer join GoodsSubType with (nolock)
+            on GoodsSubType.id = tbl_GoodsNames.subType
+          left outer join tbl_Produsers with (nolock)
+            on tbl_Produsers.i_d = tbl_GoodsNames.produserID
+          left outer join tbl_GoodsTypes with (nolock)
+            on tbl_GoodsTypes.i_d = tbl_GoodsNames.goodsTypeID
+        
+          left outer join tbl_ABCDPrices tbl_ABCDPrices_RoznNew with (nolock)
+            on tbl_ABCDPrices_RoznNew.goodsNameID = tbl_GoodsNames.i_d
+               and tbl_ABCDPrices_RoznNew.depatmentID = 1
+               and tbl_ABCDPrices_RoznNew.namePriceID = 1
+          left outer join tbl_ABCDPrices tbl_ABCDPrices_RoznBu with (nolock)
+            on tbl_ABCDPrices_RoznBu.goodsNameID = tbl_GoodsNames.i_d
+               and tbl_ABCDPrices_RoznBu.depatmentID = 1
+               and tbl_ABCDPrices_RoznBu.namePriceID = 15
+        
+          left outer join tbl_ABCDPrices tbl_ABCDPrices_Partner with (nolock)
+            on tbl_ABCDPrices_Partner.goodsNameID = tbl_GoodsNames.i_d
+               and tbl_ABCDPrices_Partner.depatmentID = 1
+               and tbl_ABCDPrices_Partner.namePriceID = 5
+          left outer join tbl_ABCDPrices tbl_ABCDPrices_PartnerBu with (nolock)
+            on tbl_ABCDPrices_PartnerBu.goodsNameID = tbl_GoodsNames.i_d
+               and tbl_ABCDPrices_PartnerBu.depatmentID = 1
+               and tbl_ABCDPrices_PartnerBu.namePriceID = 20
+        
+          left outer join tbl_ABCDPrices tbl_ABCDPrices_Opt with (nolock)
+            on tbl_ABCDPrices_Opt.goodsNameID = tbl_GoodsNames.i_d
+               and tbl_ABCDPrices_Opt.depatmentID = 1
+               and tbl_ABCDPrices_Opt.namePriceID = 18
+          left outer join tbl_ABCDPrices tbl_ABCDPrices_OptBu with (nolock)
+            on tbl_ABCDPrices_OptBu.goodsNameID = tbl_GoodsNames.i_d
+               and tbl_ABCDPrices_OptBu.depatmentID = 1
+               and tbl_ABCDPrices_OptBu.namePriceID = 23
+        
+          left outer join tbl_ABCDPrices tbl_ABCDPrices_Vip with (nolock)
+            on tbl_ABCDPrices_Vip.goodsNameID = tbl_GoodsNames.i_d
+               and tbl_ABCDPrices_Vip.depatmentID = 1
+               and tbl_ABCDPrices_Vip.namePriceID = 6
+          left outer join tbl_ABCDPrices tbl_ABCDPrices_VipBu with (nolock)
+            on tbl_ABCDPrices_VipBu.goodsNameID = tbl_GoodsNames.i_d
+               and tbl_ABCDPrices_VipBu.depatmentID = 1
+               and tbl_ABCDPrices_VipBu.namePriceID = 22
+        where
+          tbl_GoodsNames.ClassifierID IN (86, 91)
+          AND
+          (isnull(convert(float, tbl_ABCDPrices_RoznNew.price) / 100, 0) != 0
+           or
+           isnull(convert(float, tbl_ABCDPrices_RoznBu.price) / 100, 0) != 0
+           or
+           isnull(convert(float, tbl_ABCDPrices_Partner.price) / 100, 0) != 0
+           or
+           isnull(convert(float, tbl_ABCDPrices_PartnerBu.price) / 100, 0) != 0
+           or
+           isnull(convert(float, tbl_ABCDPrices_Opt.price) / 100, 0) != 0
+           or
+           isnull(convert(float, tbl_ABCDPrices_OptBu.price) / 100, 0) != 0
+           or
+           isnull(convert(float, tbl_ABCDPrices_Vip.price) / 100, 0) != 0
+           or
+           isnull(convert(float, tbl_ABCDPrices_VipBu.price) / 100, 0) != 0)
+        order by
+          tbl_GoodsNames.PartNumber
+          ,tbl_GoodsNames.mName";
 
         $result = $db->prepare($sql);
+        $result->execute();
+        return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+
+    public static function getListProducts($user_id)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "select
+                  tbl_GoodsNames.partNumber
+                  ,tbl_GoodsNames.mName
+                  ,dbo.ufn_Curencys_Rate_Output_Cross(1, tbl_Produsers.curency_id, tbl_Clients.curency_id, dbo.ufn_Date_Current_Short()) * convert(float, tbl_ABCDPrices.price) / 100 as price
+                  ,GoodsSubType.shortName as subType,
+                  tbl_Classifier.mName as classifier
+                from tbl_ABCDPrices
+                  inner join tbl_GoodsNames
+                    on tbl_GoodsNames.i_d =  tbl_ABCDPrices.goodsNameID
+                  inner join tbl_Produsers
+                    on tbl_Produsers.i_d = tbl_GoodsNames.produserID
+                  INNER JOIN GoodsSubType
+                    ON tbl_GoodsNames.subType = GoodsSubType.id
+                  INNER JOIN tbl_Classifier
+                    ON tbl_GoodsNames.ClassifierID = tbl_Classifier.I_D
+                  inner join tbl_Clients
+                    on tbl_Clients.abcd_id = tbl_ABCDPrices.namePriceID
+                  inner join tbl_Users
+                    on tbl_Users.client_id = tbl_Clients.i_d
+                  inner join site_gm_users
+                    on site_gm_users.id = tbl_Users.site_gs_account_id
+                where
+                  tbl_GoodsNames.ClassifierID IN (86, 91)
+                  and site_gm_users.site_account_id = :user_id";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $result->execute();
         return $result->fetchAll(PDO::FETCH_ASSOC);
     }
