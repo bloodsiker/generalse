@@ -13,6 +13,7 @@
                             <th>Address</th>
                             <th>Phone</th>
                             <th width="100">Edit</th>
+                            <th width="60">Default</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -24,6 +25,23 @@
                                     <td>
                                         <button data-id="<?= $address['id']?>" class="button no-margin small edit-address"><i class="fi-pencil"></i></button>
                                         <a href="/adm/user/address/delete/<?= $address['id']?>" class="button no-margin small" onclick="return confirm('Вы уверены что хотите удалить адрес?') ? true : false;"><i class="fi-x"></i></a>
+                                    </td>
+                                    <td>
+                                        <?php if($address['is_default'] == 1):?>
+                                        <form action="" method="post">
+                                            <input type="hidden" name="id" value="<?= $address['id'] ?>">
+                                            <input type="hidden" name="is_default" value="0">
+                                            <input type="hidden" name="change" value="true">
+                                            <button class="button no-margin red small"><i class="fa fa-check-square"></i></button>
+                                        </form>
+                                    <?php elseif ($address['is_default'] == 0): ?>
+                                        <form action="" method="post">
+                                            <input type="hidden" name="id" value="<?= $address['id'] ?>">
+                                            <input type="hidden" name="is_default" value="1">
+                                            <input type="hidden" name="change" value="true">
+                                            <button class="button no-margin small"><i class="fa fa-check-square"></i></button>
+                                        </form>
+                                    <?php endif; ?>
                                     </td>
                                 </tr>
                             <?php endforeach;?>

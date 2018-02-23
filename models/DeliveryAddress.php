@@ -11,47 +11,6 @@ use Umbrella\components\Db\MySQL;
  */
 class DeliveryAddress
 {
-
-    /**
-     * @param $id_user
-     * @return array
-     */
-    public static function getAddressByPartner($id_user)
-    {
-        $db = MySQL::getConnection();
-
-        $sql = "SELECT 
-                  *
-                FROM gs_user_delivery_address guda
-                WHERE guda.id_user = :id_user";
-
-        $result = $db->prepare($sql);
-        $result->bindParam(':id_user', $id_user, PDO::PARAM_INT);
-        $result->setFetchMode(PDO::FETCH_ASSOC);
-        $result->execute();
-        return $result->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-
-    /**
-     * Find Address by id
-     * @param $id
-     * @return mixed
-     */
-    public static function getAddressById($id)
-    {
-        $db = MySQL::getConnection();
-
-        $sql = 'SELECT * FROM gs_user_delivery_address WHERE id = :id';
-
-        $result = $db->prepare($sql);
-        $result->bindParam(':id', $id, PDO::PARAM_INT);
-        $result->setFetchMode(PDO::FETCH_ASSOC);
-        $result->execute();
-        return $result->fetch();
-    }
-
-
     /**
      * @param $id_user
      * @param $address
@@ -72,50 +31,6 @@ class DeliveryAddress
         $result->bindParam(':address', $address, PDO::PARAM_STR);
         $result->bindParam(':phone', $phone, PDO::PARAM_STR);
         $result->bindParam(':id_user', $id_user, PDO::PARAM_INT);
-        return $result->execute();
-    }
-
-
-    /**
-     * Update user address
-     *
-     * @param $id
-     * @param $address
-     * @param $phone
-     *
-     * @return bool
-     */
-    public static function updateAddress($id, $address, $phone)
-    {
-        $db = MySQL::getConnection();
-
-        $sql = "UPDATE gs_user_delivery_address
-            SET
-                address = :address,
-                phone = :phone
-            WHERE id = :id";
-
-        $result = $db->prepare($sql);
-        $result->bindParam(':id', $id, PDO::PARAM_INT);
-        $result->bindParam(':address', $address, PDO::PARAM_STR);
-        $result->bindParam(':phone', $phone, PDO::PARAM_STR);
-        return $result->execute();
-    }
-
-
-    /**
-     * Delete User address
-     * @param $id
-     * @return bool
-     */
-    public static function deleteUserAddress($id)
-    {
-        $db = MySQL::getConnection();
-
-        $sql = 'DELETE FROM gs_user_delivery_address WHERE id = :id';
-
-        $result = $db->prepare($sql);
-        $result->bindParam(':id', $id, PDO::PARAM_INT);
         return $result->execute();
     }
 
@@ -208,6 +123,52 @@ class DeliveryAddress
         $result->bindParam(':id', $options['id'], PDO::PARAM_INT);
         $result->bindParam(':address', $options['address'], PDO::PARAM_STR);
         $result->bindParam(':phone', $options['phone'], PDO::PARAM_STR);
+        return $result->execute();
+    }
+
+    /**
+     * update default address
+     *
+     * @param $id
+     * @param $isDefault
+     *
+     * @return bool
+     */
+    public static function updateDefaultAddressMsSQL($id, $isDefault)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "UPDATE site_gm_clients_stocks
+            SET
+                is_default = :is_default
+            WHERE id = :id";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $id, PDO::PARAM_INT);
+        $result->bindParam(':is_default', $isDefault, PDO::PARAM_INT);
+        return $result->execute();
+    }
+
+
+    /**
+     * clear default address by user
+     * @param $userId
+     * @param int $isDefault
+     *
+     * @return bool
+     */
+    public static function clearDefaultAddressMsSQL($userId, $isDefault = 0)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "UPDATE site_gm_clients_stocks
+            SET
+                is_default = :is_default
+            WHERE site_account_id = :site_account_id";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':site_account_id', $userId, PDO::PARAM_INT);
+        $result->bindParam(':is_default', $isDefault, PDO::PARAM_INT);
         return $result->execute();
     }
 

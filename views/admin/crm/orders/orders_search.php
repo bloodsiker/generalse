@@ -121,7 +121,7 @@
                                     <select name="notes" id="notes" class="required" required>
                                         <option value="" selected disabled>none</option>
                                         <?php foreach ($delivery_address as $address):?>
-                                            <option value="<?= $address?>"><?= $address?></option>
+                                            <option value="<?= $address['address']?>" <?= $address['is_default'] == 1 ? 'selected' : null ?>><?= $address['address']?></option>
                                         <?php endforeach;?>
                                     </select>
                                 </div>

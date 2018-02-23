@@ -53,7 +53,7 @@
                     <option value="" selected disabled>none</option>
                     <?php if(is_array($delivery_address)):?>
                         <?php foreach ($delivery_address as $address):?>
-                            <option value="<?= $address?>"><?= $address?></option>
+                            <option value="<?= $address['address']?>" <?= $address['is_default'] == 1 ? 'selected' : null ?>><?= $address['address']?></option>
                         <?php endforeach;?>
                     <?php endif; ?>
                     <option value="other_address">Write another address</option>

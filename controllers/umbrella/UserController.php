@@ -1,6 +1,7 @@
 <?php
 namespace Umbrella\controllers\umbrella;
 
+use Josantonius\Request\Request;
 use Josantonius\Session\Session;
 use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
@@ -297,11 +298,9 @@ class UserController extends AdminBase
             $roleList = Admin::getRoleList();
             $countryList = Country::getAllCountry();
 
-            // Получаем данные о конкретной пользователе
             $userInfo = Admin::getAdminById($id);
             $userProjects = !empty($userInfo['project']) ? json_decode($userInfo['project']) : [];
 
-            // Обработка формы
             if (isset($_POST['update'])) {
 
                 if($_POST['_token'] == Session::get('_token')){
@@ -309,7 +308,6 @@ class UserController extends AdminBase
                     if($options['role'] == 2){
                         $options['name_partner'] = $userInfo['name_partner'];
                     } else {
-                        //$options['name_partner'] = $_POST['name_partner'];
                         $options['name_partner'] = $userInfo['name_partner'];
                     }
                     $options['id_country'] = $_POST['id_country'];
@@ -319,7 +317,6 @@ class UserController extends AdminBase
                     $options['kpi_view'] = $_POST['kpi_view'];
                     $options['project'] = (isset($_POST['project']) && is_array($_POST['project'])) ? json_encode($_POST['project']) : null;
 
-                    // Сохраняем изменения
                     $ok = Admin::updateUserById($id, $options);
 
                     if($ok){
@@ -335,10 +332,8 @@ class UserController extends AdminBase
 
             if (isset($_POST['update_password'])) {
                 if($_POST['_token'] == Session::get('_token')){
-                    //$options['password'] = Functions::hashPass($_POST['password']);
                     $options['password'] = Functions::hashPass($_POST['password']);
 
-                    // Сохраняем изменения
                     $ok = Admin::updateUserPassword($id, $options);
 
                     if($ok){
@@ -447,6 +442,15 @@ class UserController extends AdminBase
                 Url::previous();
             }
         }
+
+        if(Request::post('change') && Request::post('change') == 'true'){
+            $idAddress = Request::post('id');
+            $isDefault = Request::post('is_default');
+            DeliveryAddress::clearDefaultAddressMsSQL($id_user, 0);
+            DeliveryAddress::updateDefaultAddressMsSQL($idAddress, $isDefault);
+            Url::previous();
+        }
+
         $this->render('admin/users/address/index', compact('user', 'listAddress', 'selectUser'));
         return true;
     }

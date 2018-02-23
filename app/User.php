@@ -427,7 +427,7 @@ class User
     public function getDeliveryAddress()
     {
         $delivery_address = Decoder::arrayToUtf(DeliveryAddress::getAddressByPartnerMsSQL($this->id_user));
-        return array_column($delivery_address, 'address');
+        return $delivery_address;
     }
 
 
