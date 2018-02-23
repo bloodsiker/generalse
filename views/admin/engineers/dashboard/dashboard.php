@@ -333,7 +333,7 @@
                     <table class="umbrella-table margin-bottom">
                         <thead>
                         <tr>
-                            <th class="text-center" colspan="3">РЕМОНТЫ</th>
+                            <th class="text-center" colspan="3">РЕМОНТЫ (<?= \Umbrella\models\engineer\Dashboard::nameMonth($month) ?>/<?= $year ?>)</th>
                         </tr>
                         <tr>
                             <th class="text-center">Наименование техники</th>
@@ -342,45 +342,21 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td class="umbrella-tr-td">Смартфоны</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="umbrella-tr-td">Планшеты</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="umbrella-tr-td">Ноутбуки</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="umbrella-tr-td">Моноблоки</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="umbrella-tr-td">Матерински платы</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="umbrella-tr-td">Дисплеи</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="umbrella-tr-td">Бытовая техника</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+
+                        <?php if(is_array($repairs)): ?>
+                            <?php foreach ($repairs as $value): ?>
+                                <tr>
+                                    <td class="umbrella-tr-td"><?= $value['class_name'] ?></td>
+                                    <td><?= $value['quantity_open'] ?></td>
+                                    <td><?= $value['quantity_close'] ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+
                         <tr>
                             <td class="umbrella-tr-td text-center">Всего:</td>
-                            <td></td>
-                            <td></td>
+                            <td><?= $totalRepairs['quantity_open'] ?></td>
+                            <td><?= $totalRepairs['quantity_close'] ?></td>
                         </tr>
                         </tbody>
                     </table>

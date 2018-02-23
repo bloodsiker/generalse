@@ -74,6 +74,10 @@ class DashboardController extends  AdminBase
         $totalDisassemblyClassifier['quantity_ok'] = array_sum(array_column($disassemblyClassifier, 'quantity_ok'));
         $totalDisassemblyClassifier['quantity_bad'] = array_sum(array_column($disassemblyClassifier, 'quantity_bad'));
 
+        $repairs = Decoder::arrayToUtf(Dashboard::getRepairs($month, $year), ['quantity_open', 'quantity_close']);
+        $totalRepairs['quantity_open'] = array_sum(array_column($repairs, 'quantity_open'));
+        $totalRepairs['quantity_close'] = array_sum(array_column($repairs, 'quantity_close'));
+
         $intervalYears = Dashboard::getYears();
         $intervalMonths = Dashboard::getMonths();
         $intervalMonths = array_map(function ($value) {
@@ -84,7 +88,7 @@ class DashboardController extends  AdminBase
         $this->render('admin/engineers/dashboard/dashboard',
             compact('user', 'movementDevicesProducer', 'movementDevicesClassifier', 'intervalYears',
                 'intervalMonths', 'year', 'month', 'totalDeviceClassifier', 'totalDeviceProducer', 'disassemblyProducer',
-                'disassemblyClassifier', 'totalDisassemblyProducer', 'totalDisassemblyClassifier'));
+                'disassemblyClassifier', 'totalDisassemblyProducer', 'totalDisassemblyClassifier', 'repairs', 'totalRepairs'));
         return true;
     }
 

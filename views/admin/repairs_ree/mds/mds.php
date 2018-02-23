@@ -28,7 +28,7 @@
                                     <select name="SOStatus" id="">
                                         <option <?=(isset($_POST['SOStatus']) && $_POST['SOStatus'] == 'All') ? 'selected' : null?> value="All">All</option>
                                         <option <?=(isset($_POST['SOStatus']) && $_POST['SOStatus'] == 'Closed') ? 'selected' : null?> value="Closed">Closed</option>
-                                        <option <?=(isset($_POST['SOStatus']) && $_POST['SOStatus'] == 'In Progress') ? 'selected' : null?> value="In Progress">In Progress</option>
+                                        <option <?=(isset($_POST['SOStatus']) && $_POST['SOStatus'] == 'Repair In Progress') ? 'selected' : null?> value="Repair In Progress">In Progress</option>
                                     </select>
                                 </div>
                                 <div class="medium-3 text-left small-12 columns">

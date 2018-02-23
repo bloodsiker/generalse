@@ -151,7 +151,7 @@ class Dashboard
 
 
      /*
-     *
+     * Разборка
      * @param $month
      * @param $year
      *
@@ -181,6 +181,7 @@ class Dashboard
     }
 
     /**
+     * Разборка
      * @param $month
      * @param $year
      *
@@ -208,4 +209,34 @@ class Dashboard
         $result->execute();
         return $result->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    /*************  Ремонт   *******************/
+
+
+    /**
+     * @param $month
+     * @param $year
+     *
+     * @return array
+     */
+    public static function getRepairs($month, $year)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "SELECT
+                    class_name,
+                    SUM(quantity_open) as quantity_open,
+                    SUM(quantity_close) as quantity_close
+                FROM site_gm_depot_data_03
+                WHERE month = :month 
+                AND year = :year
+                GROUP BY class_name";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':month', $month, PDO::PARAM_INT);
+        $result->bindParam(':year', $year, PDO::PARAM_INT);
+        $result->execute();
+        return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }
