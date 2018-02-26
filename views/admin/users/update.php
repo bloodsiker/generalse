@@ -98,6 +98,21 @@
 
                         <div class="row">
                             <div class="large-12 columns">
+                                <label>Тип ремонта (для подставления в реквесте по умолчанию)
+                                    <select name="type_repair">
+                                        <option value=""></option>
+                                        <?php if(is_array($orderType)): ?>
+                                            <?php foreach ($orderType as $type): ?>
+                                                <option value="<?= $type['id'] ?>" <?php if($userInfo['type_repair'] == $type['id']) echo 'selected'?>><?= $type['name'] ?></option>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="large-12 columns">
                                 <input type="submit" name="update" class="button small float-right" value="Сохранить">
                                 <a href="/adm/users" class="button small info"> Назад</a>
                             </div>

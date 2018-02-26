@@ -388,9 +388,9 @@ class Admin
         $db = MySQL::getConnection();
 
         $sql = 'INSERT INTO gs_user '
-            . '(id_role, name_partner, id_country, login, email, password, login_url, kpi_view, date_create, project)'
+            . '(id_role, name_partner, id_country, login, email, password, login_url, kpi_view, date_create, project, type_repair)'
             . 'VALUES '
-            . '(:id_role, :name_partner, :id_country, :login, :email, :password, :login_url, :kpi_view, :date_create, :project)';
+            . '(:id_role, :name_partner, :id_country, :login, :email, :password, :login_url, :kpi_view, :date_create, :project, :type_repair)';
 
         $result = $db->prepare($sql);
         $result->bindParam(':id_role', $options['id_role'], PDO::PARAM_INT);
@@ -403,6 +403,7 @@ class Admin
         $result->bindParam(':kpi_view', $options['kpi_view'], PDO::PARAM_INT);
         $result->bindParam(':date_create', $options['date_create'], PDO::PARAM_STR);
         $result->bindParam(':project', $options['project'], PDO::PARAM_STR);
+        $result->bindParam(':type_repair', $options['type_repair'], PDO::PARAM_INT);
 
         if ($result->execute()) {
             return $db->lastInsertId();
@@ -505,7 +506,8 @@ class Admin
                 email = :email,
                 login_url = :login_url,
                 kpi_view = :kpi_view,
-                project = :project
+                project = :project,
+                type_repair = :type_repair
             WHERE id_user = :id_user";
 
         $result = $db->prepare($sql);
@@ -518,6 +520,7 @@ class Admin
         $result->bindParam(':id_country', $options['id_country'], PDO::PARAM_INT);
         $result->bindParam(':kpi_view', $options['kpi_view'], PDO::PARAM_INT);
         $result->bindParam(':project', $options['project'], PDO::PARAM_STR);
+        $result->bindParam(':type_repair', $options['type_repair'], PDO::PARAM_INT);
         return $result->execute();
     }
 

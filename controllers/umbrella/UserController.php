@@ -13,6 +13,7 @@ use Umbrella\components\Functions;
 use Umbrella\models\Admin;
 use Umbrella\models\Branch;
 use Umbrella\models\Country;
+use Umbrella\models\crm\Orders;
 use Umbrella\models\DeliveryAddress;
 use Umbrella\models\Denied;
 use Umbrella\models\GroupModel;
@@ -187,6 +188,7 @@ class UserController extends AdminBase
 
             $countryList = Country::getAllCountry();
             $groupList = GroupModel::getGroupList();
+            $orderType = Decoder::arrayToUtf(Orders::getAllOrderTypes());
 
             // Обработка формы
             if (isset($_POST['add_user']) && $_POST['add_user'] == 'true') {
@@ -201,6 +203,7 @@ class UserController extends AdminBase
                     $options['kpi_view'] = $_POST['kpi_view'];
                     $options['date_create'] = date("Y-m-d H:i");
                     $options['project'] = (isset($_POST['project']) && is_array($_POST['project'])) ? json_encode($_POST['project']) : json_encode(['umbrella']);
+                    $options['type_repair'] = !empty($_POST['type_repair']) ? $_POST['type_repair'] : null;
 
                     // Сохраняем изменения
                     $id_user = Admin::addUser($options);
@@ -252,7 +255,7 @@ class UserController extends AdminBase
                 }
             }
             $this->render('admin/users/create', compact('user', 'roleList', 'countryList', 'groupList',
-                'currencyList', 'ADBCPriceList', 'staffList', 'stockPlaceList', 'regionList', 'stocksToPartners'));
+                'currencyList', 'ADBCPriceList', 'staffList', 'stockPlaceList', 'regionList', 'stocksToPartners', 'orderType'));
         }
         return true;
     }
@@ -301,6 +304,8 @@ class UserController extends AdminBase
             $userInfo = Admin::getAdminById($id);
             $userProjects = !empty($userInfo['project']) ? json_decode($userInfo['project']) : [];
 
+            $orderType = Decoder::arrayToUtf(Orders::getAllOrderTypes());
+
             if (isset($_POST['update'])) {
 
                 if($_POST['_token'] == Session::get('_token')){
@@ -316,6 +321,7 @@ class UserController extends AdminBase
                     $options['login_url'] = $_POST['login_url'];
                     $options['kpi_view'] = $_POST['kpi_view'];
                     $options['project'] = (isset($_POST['project']) && is_array($_POST['project'])) ? json_encode($_POST['project']) : null;
+                    $options['type_repair'] = !empty($_POST['type_repair']) ? $_POST['type_repair'] : null;
 
                     $ok = Admin::updateUserById($id, $options);
 
@@ -346,7 +352,7 @@ class UserController extends AdminBase
             }
             // Подключаем вид
             $this->render('admin/users/update', compact('user','userInfo', 'roleList',
-                'branchList', 'countryList', 'userProjects'));
+                'branchList', 'countryList', 'userProjects', 'orderType'));
         }
         return true;
     }

@@ -35,10 +35,12 @@ class User
     private $infoUser;
 
 
-
     /**
      * User constructor.
+     *
      * @param $id_user
+     *
+     * @throws \Exception
      */
     public function __construct($id_user){
         $this->id_user = $id_user;

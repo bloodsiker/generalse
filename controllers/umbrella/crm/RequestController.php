@@ -61,7 +61,15 @@ class RequestController extends AdminBase
         $request_message['replace_by_analog'] = Session::pull('replace_by_analog');
 
         $partnerList = Admin::getAllPartner();
-        $order_type = Orders::getAllOrderTypes();
+        $order_type = Decoder::arrayToUtf(Orders::getAllOrderTypes());
+        $order_type = array_map(function ($value) use ($user){
+            $value['selected'] = '';
+            if($value['id'] == $user->getInfoUser()['type_repair']){
+                $value['selected'] = 'selected';
+            }
+            return $value;
+        }, $order_type);
+
         $delivery_address = $user->getDeliveryAddress();
 
         $arrayPartNumber = array_column(PartAnalog::getListPartAnalog(" AND type_part = 'analog' "), 'part_number');

@@ -42,7 +42,7 @@
                 <select name="order_type_id" class="required" required>
                     <option value="" selected disabled>none</option>
                     <?php foreach ($order_type as $type):?>
-                        <option value="<?= $type['id']?>"><?= iconv('WINDOWS-1251', 'UTF-8', $type['name'])?></option>
+                        <option value="<?= $type['id']?>"  <?= $type['selected']?>><?= $type['name']?></option>
                     <?php endforeach;?>
                 </select>
             </div>

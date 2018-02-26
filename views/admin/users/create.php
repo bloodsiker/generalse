@@ -125,6 +125,21 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <label>Тип ремонта (для подставления в реквесте по умолчанию)
+                                    <select name="type_repair">
+                                        <option value=""></option>
+                                        <?php if(is_array($orderType)): ?>
+                                            <?php foreach ($orderType as $type): ?>
+                                                <option value="<?= $type['id'] ?>"><?= $type['name'] ?></option>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
                     </div>
 
 
