@@ -18,10 +18,10 @@
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <div class="img-box">
-                        <img class="d-block w-100" src="/template/new_site/img/black-and-white-city-man-people.jpg" alt="First slide">
+                        <img class="d-block w-100" src="/template/new_site/img/slider/257736.jpg" alt="Комплексные решения">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
-                        <h2>Комплексное послепродажное обслуживание техники</h2>
+                        <h2>Комплексные решения</h2>
                         <div class="w-100 text-right">
                             <a class="btn btn-red btn-lg mt-2">Читать далее...</a>
                         </div>
@@ -29,10 +29,10 @@
                 </div>
                 <div class="carousel-item">
                     <div class="img-box">
-                        <img class="d-block w-100" src="/template/new_site/img/black-and-white-city-man-people.jpg" alt="First slide">
+                        <img class="d-block w-100" src="/template/new_site/img/slider/75.jpg" alt="Логистика запчастей">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
-                        <h2>Логистика и дистрибуция запасных частей </h2>
+                        <h2>Логистика запчастей</h2>
                         <div class="w-100 text-right">
                             <a class="btn btn-red btn-lg mt-2">Читать далее...</a>
                         </div>
@@ -40,10 +40,10 @@
                 </div>
                 <div class="carousel-item">
                     <div class="img-box">
-                        <img class="d-block w-100" src="/template/new_site/img/black-and-white-city-man-people.jpg" alt="First slide">
+                        <img class="d-block w-100" src="/template/new_site/img/slider/132700.jpeg" alt="Ремонты">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
-                        <h2>Инжениринг и технические услуги</h2>
+                        <h2>Ремонты</h2>
                         <div class="w-100 text-right">
                             <a class="btn btn-red btn-lg mt-2">Читать далее...</a>
                         </div>
@@ -51,10 +51,10 @@
                 </div>
                 <div class="carousel-item">
                     <div class="img-box">
-                        <img class="d-block w-100" src="/template/new_site/img/black-and-white-city-man-people.jpg" alt="First slide">
+                        <img class="d-block w-100" src="/template/new_site/img/slider/825262.jpg" alt="Утилизация">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
-                        <h2>Переработка электронных отходов</h2>
+                        <h2>Утилизация</h2>
                         <div class="w-100 text-right">
                             <a class="btn btn-red btn-lg mt-2">Читать далее...</a>
                         </div>
@@ -88,7 +88,7 @@
                 <div class="col col-lg-4">
                     <div class="grid">
                         <figure class="effect-sarah">
-                            <img src="/template/new_site/img/pexels-photo-128193.jpeg" alt="img13">
+                            <img src="/template/new_site/img/main-block/ForManufacturers.jpeg" alt="Производителям">
                             <figcaption style="padding: 2em 1em">
                                 <h3>Производителям</h3>
                                 <p></p>
@@ -100,7 +100,7 @@
                 <div class="col col-lg-4">
                     <div class="grid">
                         <figure class="effect-sarah">
-                            <img src="/template/new_site/img/pexels-photo-128193.jpeg" alt="img13">
+                            <img src="/template/new_site/img/main-block/forRetailers.jpg" alt="Розничным сетям">
                             <figcaption>
                                 <h3>Розничным сетям</h3>
                                 <p></p>
@@ -112,7 +112,7 @@
                 <div class="col col-lg-4">
                     <div class="grid">
                         <figure class="effect-sarah">
-                            <img src="/template/new_site/img/pexels-photo-128193.jpeg" alt="img13">
+                            <img src="/template/new_site/img/main-block/forEnterprise.jpg" alt="Корпоративным клиентам">
                             <figcaption style="padding: 2em 1em">
                                 <h3>Корпоративным клиентам</h3>
                                 <p></p>
@@ -133,7 +133,7 @@
                 <div class="col col-lg-4">
                     <div class="grid">
                         <figure class="effect-sarah">
-                            <img src="/template/new_site/img/pexels-photo-128193.jpeg" alt="img13">
+                            <img src="/template/new_site/img/main-block/288479.jpeg" alt="Продать нерабочее устройство">
                             <figcaption>
                                 <h3>Продать нерабочее устройство</h3>
                                 <p></p>
@@ -145,7 +145,7 @@
                 <div class="col col-lg-4">
                     <div class="grid">
                         <figure class="effect-sarah">
-                            <img src="/template/new_site/img/pexels-photo-128193.jpeg" alt="img13">
+                            <img src="/template/new_site/img/main-block/117729.jpeg" alt="Купить запасные части">
                             <figcaption>
                                 <h3>Купить запасные части</h3>
                                 <p></p>
@@ -157,7 +157,7 @@
                 <div class="col col-lg-4">
                     <div class="grid">
                         <figure class="effect-sarah">
-                            <img src="/template/new_site/img/pexels-photo-128193.jpeg" alt="img13">
+                            <img src="/template/new_site/img/main-block/872957.jpeg" alt="Стать партнером">
                             <figcaption>
                                 <h3>Стать партнером</h3>
                                 <p></p>

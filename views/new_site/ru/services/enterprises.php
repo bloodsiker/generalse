@@ -6,7 +6,7 @@
 
     <main class="container">
 
-        <div class="services-head" style="background-image: url('http://generalse.com/template/site/img/About/3TJ6NCTIRT.jpg');">
+        <div class="services-head" style="background-image: url('/template/new_site/img/services/48.jpg');">
             <div class="container">
                 <h1>Сотрудничество с сервисными центрами</h1>
                 <h4>Покупайте и продавайте вместе с General Services</h4>
@@ -39,7 +39,7 @@
         <section data-scroll-div="section-1" class="container">
             <div class="row ">
                 <div class="col-md-6">
-                    <img class="mw-100" src="http://generalse.com/template/site/img/About/3TJ6NCTIRT.jpg" alt="">
+                    <img class="mw-100" src="/template/new_site/img/services/night-computer-hdd-hard-drive.jpg" alt="Оригинальные комплектующие">
                 </div>
                 <div class="col-md-6">
                     <h2 class="text-uppercase mb-2">Оригинальные комплектующие</h2>
@@ -55,7 +55,7 @@
         <section data-scroll-div="section-2" class="container">
             <div class="row ">
                 <div class="col-md-6">
-                    <img class="mw-100" src="http://generalse.com/template/site/img/About/3TJ6NCTIRT.jpg" alt="">
+                    <img class="mw-100" src="/template/new_site/img/services/825262.jpeg" alt="Покупка оверстоков">
                 </div>
                 <div class="col-md-6">
                     <h2 class="text-uppercase mb-2">Покупка оверстоков</h2>

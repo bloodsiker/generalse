@@ -24,7 +24,7 @@
                 <div class="col-6 mt-5">
                     <div class="row icon-box">
                         <div class="col-4">
-                            <img class="mw-100" src="http://generalse.com/template/site/img/Directions/OurDirectionsicons/tie.svg" alt="">
+                            <img class="mw-100" src="/template/new_site/img/about/618613.jpeg" alt="Менеджмент">
                         </div>
                         <div class="col-8">
                             <div class="icon-box-title">Менеджмент</div>
@@ -37,10 +37,10 @@
                 <div class="col-6 mt-5">
                     <div class="row icon-box">
                         <div class="col-4">
-                            <img class="mw-100" src="http://generalse.com/template/site/img/Directions/OurDirectionsicons/web-development.svg" alt="">
+                            <img class="mw-100" src="/template/new_site/img/about/110.jpg" alt="Комплесный подход">
                         </div>
                         <div class="col-8">
-                            <div class="icon-box-title">Сервис полного цикла</div>
+                            <div class="icon-box-title">Комплесный подход</div>
                             <div class="icon-box-text">
                                 General Services предоставляет своим клиентам комплексные решения, которые полностью решают проблему послепродажного гарантийного обслуживания, включая: полное построение архитектуры сервиса, логистику и другие операции с запасными запчастями, ремонт техники любой сложности, услуги колл-центра. В зависимости от требований клиента, наше исчерпивающее решение может строится как на основе стандартного бизнес-процесса General Services, так внедрения действующего алгоритма нашего заказчика.
                             </div>
@@ -50,7 +50,7 @@
                 <div class="col-6 mt-5">
                     <div class="row icon-box">
                         <div class="col-4">
-                            <img class="mw-100" src="http://generalse.com/template/site/img/Directions/OurDirectionsicons/improvement.svg" alt="">
+                            <img class="mw-100" src="/template/new_site/img/about/sky-earth-space-working.jpg" alt="Независимость">
                         </div>
                         <div class="col-8">
                             <div class="icon-box-title">Независимость</div>
@@ -63,7 +63,7 @@
                 <div class="col-6 mt-5">
                     <div class="row icon-box">
                         <div class="col-4">
-                            <img class="mw-100" src="http://generalse.com/template/site/img/Directions/OurDirectionsicons/improvement.svg" alt="">
+                            <img class="mw-100" src="/template/new_site/img/about/296625.jpeg" alt="Зеленые технологии">
                         </div>
                         <div class="col-8">
                             <div class="icon-box-title">Зеленые технологии</div>

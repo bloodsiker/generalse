@@ -5,7 +5,7 @@
     <?php require_once ROOT . '/views/new_site/ru/layouts/header.php'; ?>
 
     <main class="container">
-        <img class="mw-100" src="/template/new_site/img/black-and-white-city-man-people.jpg" alt="">
+        <img class="mw-100 d-none" src="/template/new_site/img/black-and-white-city-man-people.jpg" alt="">
         <div class="row pt-5 mb-lg-5">
             <div class="col-md-6">
                 <h1 class="mt-4">Поставщикам</h1>

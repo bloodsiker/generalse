@@ -7,7 +7,7 @@
     <main class="container">
 
 
-        <div class="services-head" style="background-image: url('http://generalse.com/template/site/img/About/3TJ6NCTIRT.jpg');">
+        <div class="services-head" style="background-image: url('/template/new_site/img/services/54284.jpeg');">
             <div class="container">
                 <h1>Услуги для производителей</h1>
                 <h4>Мы предлагаем полный спектр послепродажного сервиса для IT, мобильной и бытовой техники.</h4>
@@ -79,7 +79,7 @@
         <section data-scroll-div="section-1" class="container">
             <div class="row ">
                 <div class="col-md-6">
-                    <img class="mw-100" src="http://generalse.com/template/site/img/About/3TJ6NCTIRT.jpg" alt="">
+                    <img class="mw-100" src="/template/new_site/img/services/532254.jpeg" alt="Комплексный послепродажный сервис">
                 </div>
                 <div class="col-md-6">
                     <h2 class="text-uppercase mb-2">Комплексный послепродажный сервис</h2>
@@ -98,7 +98,7 @@
         <section data-scroll-div="section-2" class="container">
             <div class="row ">
                 <div class="col-md-6">
-                    <img class="mw-100" src="http://generalse.com/template/site/img/About/3TJ6NCTIRT.jpg" alt="">
+                    <img class="mw-100" src="/template/new_site/img/services/257736.jpeg" alt="Ремонт и технические услуги">
                 </div>
                 <div class="col-md-6">
                     <h2 class="text-uppercase mb-2">Ремонт и технические услуги</h2>
@@ -118,7 +118,7 @@
         <section data-scroll-div="section-3" class="container">
             <div class="row ">
                 <div class="col-md-6">
-                    <img class="mw-100" src="http://generalse.com/template/site/img/About/3TJ6NCTIRT.jpg" alt="">
+                    <img class="mw-100" src="/template/new_site/img/services/75.jpg" alt="Операции с запасными частями">
                 </div>
                 <div class="col-md-6">
                     <h2 class="text-uppercase mb-2">Операции с запасными частями</h2>
@@ -138,7 +138,7 @@
         <section data-scroll-div="section-4" class="container">
             <div class="row ">
                 <div class="col-md-6">
-                    <img class="mw-100" src="http://generalse.com/template/site/img/About/3TJ6NCTIRT.jpg" alt="">
+                    <img class="mw-100" src="/template/new_site/img/services/825262.jpeg" alt="Утилизация оборудования">
                 </div>
                 <div class="col-md-6">
                     <h2 class="text-uppercase mb-2">Утилизация оборудования</h2>
@@ -150,7 +150,7 @@
         <section data-scroll-div="section-5" class="container">
             <div class="row ">
                 <div class="col-md-6">
-                    <img class="mw-100" src="http://generalse.com/template/site/img/About/3TJ6NCTIRT.jpg" alt="">
+                    <img class="mw-100" src="/template/new_site/img/services/193667.jpeg" alt="Логистика и дистрибуция">
                 </div>
                 <div class="col-md-6">
                     <h2 class="text-uppercase mb-2">Логистика и дистрибуция</h2>
@@ -175,7 +175,7 @@
         <section data-scroll-div="section-6" class="container">
             <div class="row ">
                 <div class="col-md-6">
-                    <img class="mw-100" src="http://generalse.com/template/site/img/About/3TJ6NCTIRT.jpg" alt="">
+                    <img class="mw-100" src="/template/new_site/img/services/10.jpg" alt="Услуги контакт-центра">
                 </div>
                 <div class="col-md-6">
                     <h2 class="text-uppercase mb-2">Услуги контакт-центра</h2>

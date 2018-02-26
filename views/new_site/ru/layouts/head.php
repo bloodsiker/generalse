@@ -14,7 +14,7 @@
     <meta property="og:title" content="<?= $seo_page['title'] ?>" />
     <meta property="og:description" content="<?= $seo_page['description'] ?>"/>
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="<?= \Josantonius\Url\Url::getBaseUrl() ?>" />
+    <meta property="og:url" content="<?= \Josantonius\Url\Url::getCurrentPage() ?>" />
     <meta property="og:image:url" content="" />
 
     <link rel="stylesheet" href="/template/new_site/css/bootstrap.min.css">
