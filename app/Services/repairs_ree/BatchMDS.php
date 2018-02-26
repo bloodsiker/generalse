@@ -4,6 +4,7 @@ namespace Umbrella\app\Services\repairs_ree;
 
 use Carbon\Carbon;
 use Umbrella\app\User;
+use Umbrella\components\Decoder;
 
 class BatchMDS
 {
@@ -58,6 +59,7 @@ class BatchMDS
 
     /**
      * @return array
+     * @throws \Exception
      */
     public function excelToArray() :array
     {
@@ -74,8 +76,8 @@ class BatchMDS
             $array[$i]['MTM'] = $value['G'];
             $array[$i]['PurchaseDate'] = $value['I'];
             $array[$i]['SOWarrantyStatus'] = $value['J'];
-            $array[$i]['FirstName'] = $value['K'];
-            $array[$i]['LastName'] = $value['L'];
+            $array[$i]['FirstName'] = !empty($value['K']) ? Decoder::strToWindows($value['K']) : null;
+            $array[$i]['LastName'] = !empty($value['K']) ? Decoder::strToWindows($value['L']) : null;
             $array[$i]['Address'] = $value['M'];
             $array[$i]['provinceORstate'] = $value['N'];
             $array[$i]['City'] = $value['O'];

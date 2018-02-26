@@ -28,7 +28,7 @@
                                     <select name="SOStatus" id="">
                                         <option <?=(isset($_POST['SOStatus']) && $_POST['SOStatus'] == 'All') ? 'selected' : null?> value="All">All</option>
                                         <option <?=(isset($_POST['SOStatus']) && $_POST['SOStatus'] == 'Closed') ? 'selected' : null?> value="Closed">Closed</option>
-                                        <option <?=(isset($_POST['SOStatus']) && $_POST['SOStatus'] == 'Repair In Progress') ? 'selected' : null?> value="Repair In Progress">In Progress</option>
+                                        <option <?=(isset($_POST['SOStatus']) && $_POST['SOStatus'] == 'Repair In Progress') ? 'selected' : null?> value="Repair In Progress">Repair In Progress</option>
                                     </select>
                                 </div>
                                 <div class="medium-3 text-left small-12 columns">
@@ -66,9 +66,15 @@
                 <?php endif;?>
                 <div class="medium-12 small-12 columns">
                     <table class="umbrella-table margin-bottom">
+                        <caption>Last recordings on
+                            <?= (isset($_POST['start']) && !empty($_POST['start'])) ? $_POST['start'] : Umbrella\components\Functions::addDays(date('Y-m-d'), '-14 days') ?> &mdash;
+                            <?= (isset($_POST['end']) && !empty($_POST['end'])) ? $_POST['end'] : date('Y-m-d') ?>
+                            <span id="count_refund" class="text-green">(<?php if (isset($allMds)) echo count($allMds) ?>)</span>
+                        </caption>
                         <thead>
                         <tr>
                             <th>Partner</th>
+                            <th>Error</th>
                             <th>SO Number</th>
                             <th>Serial Number</th>
                             <th>Partner Job Order</th>
@@ -84,6 +90,15 @@
                             <?php foreach ($allMds as $mds): ?>
                             <tr>
                                 <td><?= $mds['site_client_name'] ?></td>
+                                <td class="text-center">
+                                    <?php if($mds['error'] == 1): ?>
+                                    <i class="fi-info has-tip [tip-top]" style="font-size: 16px;"
+                                       data-tooltip aria-haspopup="true"
+                                       data-show-on="small"
+                                       data-click-open="true"
+                                       title="<?= $mds['error_text']?>"></i>
+                                    <?php endif; ?>
+                                </td>
                                 <td><?= $mds['so'] ?></td>
                                 <td><?= $mds['IMEIorSN'] ?></td>
                                 <td><?= $mds['PartnerJobOrder'] ?></td>

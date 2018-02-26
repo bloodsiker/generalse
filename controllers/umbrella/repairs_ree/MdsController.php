@@ -81,6 +81,8 @@ class MdsController extends AdminBase
             $start =  !empty(Request::post('start')) ? Request::post('start') .' 00:00' : '';
             $end =  !empty(Request::post('end')) ? Request::post('end') .' 23:59' : '';
 
+            $interval = " AND sgm.created_on >= DATEADD(day, -14, GETDATE())";
+
             if(!empty(Request::post('type_date'))){
                 $type_date = (string)addslashes(Request::post('type_date'));
                 if($type_date == 'created_on'){
@@ -88,19 +90,20 @@ class MdsController extends AdminBase
                 } elseif ($type_date == 'RepairFinishiTime'){
                     $filter .= " AND (sgm.created_on >= '{$start}' AND  sgm.created_on <= '{$end}')";
                 }
+                $interval = '';
             }
             if(!empty(Request::post('SOStatus'))){
                 if(Request::post('SOStatus') != 'All'){
                     $status = (string)addslashes(Request::post('SOStatus'));
                     $filter .= " AND sgm.SOStatus = '$status'";
                 }
-            } else {
-                $filter .= " AND sgm.SOStatus != 'Closed'";
             }
+
+            $filter .= $interval;
 
             $allMds = Decoder::arrayToUtf(Mds::getAllByPartner($user->controlUsers($user->getId()), $filter));
             $allMds = array_map(function ($value){
-                $value['created_on'] = Carbon::parse($value['created_on'])->format('Y.m.d');
+                $value['created_on'] = Carbon::parse($value['created_on'])->format('Y-m-d');
                 $value['RepairFinishiTime'] = !empty($value['RepairFinishiTime']) ? Functions::crop_str($value['RepairFinishiTime'], 10) : null;
                 return $value;
             }, $allMds);
@@ -111,6 +114,8 @@ class MdsController extends AdminBase
             $start =  !empty(Request::post('start')) ? Request::post('start') .' 00:00' : '';
             $end =  !empty(Request::post('end')) ? Request::post('end') .' 23:59' : '';
 
+            $interval = " AND sgm.created_on >= DATEADD(day, -14, GETDATE())";
+
             if(!empty(Request::post('type_date'))){
                 $type_date = (string)addslashes(Request::post('type_date'));
                 if($type_date == 'created_on'){
@@ -118,19 +123,21 @@ class MdsController extends AdminBase
                 } elseif ($type_date == 'RepairFinishiTime'){
                     $filter .= " AND (sgm.created_on >= '{$start}' AND  sgm.created_on <= '{$end}')";
                 }
+                $interval = '';
             }
             if(!empty(Request::post('SOStatus'))){
                 if(Request::post('SOStatus') != 'All'){
                     $status = (string)addslashes(Request::post('SOStatus'));
                     $filter .= " AND sgm.SOStatus = '$status'";
                 }
-            } else {
-                $filter .= " AND sgm.SOStatus != 'Closed'";
             }
 
+            $filter .= $interval;
+
             $allMds = Decoder::arrayToUtf(Mds::getAll($filter));
+            //print_r($allMds);
             $allMds = array_map(function ($value){
-                $value['created_on'] = Carbon::parse($value['created_on'])->format('Y.m.d');
+                $value['created_on'] = Carbon::parse($value['created_on'])->format('Y-m-d');
                 $value['RepairFinishiTime'] = !empty($value['RepairFinishiTime']) ? Functions::crop_str($value['RepairFinishiTime'], 10) : null;
                 return $value;
             }, $allMds);

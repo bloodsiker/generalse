@@ -47,6 +47,8 @@ class Mds
 
         $sql = "SELECT 
                 sgm.created_on,
+                sgm.error,
+                sgm.error_text,
                 sgm.so,
                 sgm.PartnerJobOrder,
                 sgm.SOStatus,
@@ -58,6 +60,7 @@ class Mds
                     ON sgm.site_account_id = sgu.site_account_id
                 WHERE 1 = 1 {$filter}
                 ORDER BY sgm.id DESC";
+        //print_r($sql);
 
         $result = $db->prepare($sql);
         $result->execute();
@@ -78,6 +81,8 @@ class Mds
 
         $sql = "SELECT 
                 sgm.created_on,
+                sgm.error,
+                sgm.error_text,
                 sgm.so,
                 sgm.PartnerJobOrder,
                 sgm.SOStatus,
