@@ -96,7 +96,7 @@ nav {
   .slide .carousel-item .img-box {
     background-color: #000; }
     .slide .carousel-item .img-box img {
-      opacity: 0.6; }
+      /*opacity: 0.6;*/ }
 
 .mt-6 {
   margin-top: 100px; }

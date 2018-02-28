@@ -21,7 +21,7 @@
                         <img class="d-block w-100" src="/template/new_site/img/slider/257736.jpg" alt="Комплексные решения">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
-                        <h2>Комплексные решения</h2>
+                        <h2>Комплексное послепродажное обслуживание техники</h2>
                         <div class="w-100 text-right">
                             <a class="btn btn-red btn-lg mt-2">Читать далее...</a>
                         </div>
@@ -32,7 +32,7 @@
                         <img class="d-block w-100" src="/template/new_site/img/slider/75.jpg" alt="Логистика запчастей">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
-                        <h2>Логистика запчастей</h2>
+                        <h2>Логистика и дистрибуция запасных частей</h2>
                         <div class="w-100 text-right">
                             <a class="btn btn-red btn-lg mt-2">Читать далее...</a>
                         </div>
@@ -43,7 +43,7 @@
                         <img class="d-block w-100" src="/template/new_site/img/slider/132700.jpeg" alt="Ремонты">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
-                        <h2>Ремонты</h2>
+                        <h2>Инжениринг и технические услуги</h2>
                         <div class="w-100 text-right">
                             <a class="btn btn-red btn-lg mt-2">Читать далее...</a>
                         </div>
@@ -54,7 +54,7 @@
                         <img class="d-block w-100" src="/template/new_site/img/slider/825262.jpg" alt="Утилизация">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
-                        <h2>Утилизация</h2>
+                        <h2>Переработка электронных отходов</h2>
                         <div class="w-100 text-right">
                             <a class="btn btn-red btn-lg mt-2">Читать далее...</a>
                         </div>
