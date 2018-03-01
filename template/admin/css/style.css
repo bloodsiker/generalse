@@ -1305,8 +1305,8 @@ td select {
   color: red;
 }
 
-#container-sub-type{
-  max-height: 200px;
+.container-filter{
+  max-height: 255px;
   width: 100%;
   padding: 10px;
   overflow-y: scroll

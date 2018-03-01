@@ -54,7 +54,9 @@
                         <th class="sort">Description</th>
                         <th class="sort">Stock name</th>
                         <th>Quantity</th>
+                        <th>Classifier</th>
                         <th>Sub type</th>
+                        <th>Producer</th>
                         <th>Serial Number</th>
                         <th class="sort">Price</th>
                     </tr>
@@ -69,7 +71,9 @@
                                 <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $goods['goods_name'])?></td>
                                 <td><?= $goods['stock_name'] ?></td>
                                 <td><?= $goods['quantity']?></td>
+                                <td><?= $goods['classifier']?></td>
                                 <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $goods['subtype_name'])?></td>
+                                <td><?= $goods['producer_name']?></td>
                                 <td><?= \Umbrella\components\Functions::replaceSearchResultUtf($search, $goods['serial_number'])?></td>
                                 <td><?=round($goods['price'], 2)?></td>
                             </tr>

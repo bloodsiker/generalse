@@ -151,10 +151,12 @@ class Group
         $userInGroup = [];
         $i = 0;
         foreach ($groupList as $group) {
-            $userInGroup[$i]['group_name'] = $group['group_name'];
-            $userInGroup[$i]['group_id'] = $group['id'];
-            $userInGroup[$i]['users'] = GroupModel::getUsersByGroup($group['id']);
-            $i++;
+            if($group['is_filter'] == 1){
+                $userInGroup[$i]['group_name'] = $group['group_name'];
+                $userInGroup[$i]['group_id'] = $group['id'];
+                $userInGroup[$i]['users'] = GroupModel::getUsersByGroup($group['id']);
+                $i++;
+            }
         }
         // Добавляем в массив пользователей без групп
         $userNotGroup[0]['group_name'] = 'Without group';

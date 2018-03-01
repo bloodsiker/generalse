@@ -4,13 +4,16 @@ namespace Umbrella\controllers\umbrella\crm;
 
 use Josantonius\Request\Request;
 use Umbrella\app\AdminBase;
+use Umbrella\app\Group;
 use Umbrella\app\Services\crm\StockService;
 use Umbrella\app\User;
 use Umbrella\components\Decoder;
 use Umbrella\models\Admin;
+use Umbrella\models\Classifier;
 use Umbrella\models\crm\Currency;
 use Umbrella\models\GroupModel;
 use Umbrella\models\crm\Stocks;
+use Umbrella\models\Producer;
 
 /**
  * Class StockController
@@ -29,6 +32,7 @@ class StockController extends AdminBase
 
     /**
      * StockController constructor.
+     * @throws \Exception
      */
     public function __construct()
     {
@@ -47,6 +51,8 @@ class StockController extends AdminBase
         $user = $this->user;
 
         $listSubType = Decoder::arrayToUtf(Stocks::getListSubType());
+        $listProducers = Decoder::arrayToUtf(Producer::allProducers());
+        $listClassifiers = Decoder::arrayToUtf(Classifier::allClassifiers());
 
         if($user->isPartner() || $user->isManager()) {
 
@@ -56,29 +62,18 @@ class StockController extends AdminBase
 
         } else if($user->isAdmin()){
 
+            $group = new Group();
+
             $list_stock = $user->renderSelectStocks($user->getId(), 'stocks');
 
             // Параметры для формирование фильтров
-            $groupList = GroupModel::getGroupList();
-            $userInGroup = [];
-            $i = 0;
-            foreach ($groupList as $group) {
-                $userInGroup[$i]['group_name'] = $group['group_name'];
-                $userInGroup[$i]['group_id'] = $group['id'];
-                $userInGroup[$i]['users'] = GroupModel::getUsersByGroup($group['id']);
-                $i++;
-            }
-            // Добавляем в массив пользователей без групп
-            $userNotGroup[0]['group_name'] = 'Without group';
-            $userNotGroup[0]['group_id'] = 'without_group';
-            $userNotGroup[0]['users'] = GroupModel::getUsersWithoutGroup();
-            $userInGroup = array_merge($userInGroup, $userNotGroup);
+            $userInGroup = $group->groupFormationForFilter();
         }
 
         $allGoodsByPartner = $this->stockService->allGoodsByClient($_REQUEST);
 
-        $this->render('admin/crm/stocks/stocks', compact('user','partnerList',
-            'allGoodsByPartner', 'userInGroup', 'list_stock', 'listSubType'));
+            $this->render('admin/crm/stocks/stocks', compact('user','partnerList',
+            'allGoodsByPartner', 'userInGroup', 'list_stock', 'listSubType', 'listProducers', 'listClassifiers'));
         return true;
     }
 
@@ -113,25 +108,14 @@ class StockController extends AdminBase
 
         } else if($user->isAdmin()){
 
+            $group = new Group();
+
             $search = Decoder::strToWindows(trim($_REQUEST['search']));
 
             $list_stock = $user->renderSelectStocks($user->getId(), 'stocks');
 
             // Параметры для формирование фильтров
-            $groupList = GroupModel::getGroupList();
-            $userInGroup = [];
-            $i = 0;
-            foreach ($groupList as $group) {
-                $userInGroup[$i]['group_name'] = $group['group_name'];
-                $userInGroup[$i]['group_id'] = $group['id'];
-                $userInGroup[$i]['users'] = GroupModel::getUsersByGroup($group['id']);
-                $i++;
-            }
-            // Добавляем в массив пользователей без групп
-            $userNotGroup[0]['group_name'] = 'Without group';
-            $userNotGroup[0]['group_id'] = 'without_group';
-            $userNotGroup[0]['users'] = GroupModel::getUsersWithoutGroup();
-            $userInGroup = array_merge($userInGroup, $userNotGroup);
+            $userInGroup = $group->groupFormationForFilter();
 
             $allGoodsByPartner = Decoder::arrayToUtf(Stocks::getSearchInStocks($search));
             $allGoodsByPartner = $this->stockService->replaceInfoProduct($allGoodsByPartner);

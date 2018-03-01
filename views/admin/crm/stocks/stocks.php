@@ -66,12 +66,14 @@
                         <th class="sort">Description</th>
                         <th class="sort">Stock name</th>
                         <th>Quantity</th>
+                        <th>Classifier</th>
                         <th>
                             Sub type
                             <select style="font-size: 12px;height: 28px;padding: 2px 20px" id="filterSuptype" onchange="filterSubtype(event)">
                                 <option value="">Not selected</option>
                             </select>
                         </th>
+                        <th>Producer</th>
                         <th>Serial Number</th>
                         <th>Price</th>
                     </tr>
@@ -89,8 +91,10 @@
                                 <td><?= $goods['part_number']?></td>
                                 <td><?= $goods['goods_name']?></td>
                                 <td><?= $goods['stock_name']?></td>
-                                <td><?=$goods['quantity']?></td>
+                                <td><?= $goods['quantity']?></td>
+                                <td><?= $goods['classifier']?></td>
                                 <td class="subtype_td"><?= $goods['subtype_name']?></td>
+                                <td><?= $goods['producer_name']?></td>
                                 <td><?= $goods['serial_number']?></td>
                                 <td><?= $goods['price']?></td>
                             </tr>
@@ -111,28 +115,68 @@
         </div>
         <form action="/adm/crm/stocks/" method="POST" id="stock_filter">
             <div class="row align-top" style="margin-left: 0; margin-right: 0;">
-                <div class="medium-8 small-12 columns">
+                <div class="medium-2 small-12 columns">
 
                     <h4 style="color: #fff">Stocks</h4>
                     <div class="row align-bottom" style="background: #323e48; padding: 10px 0; margin-right: 0;">
-                        <?php if(is_array($list_stock)):?>
-                            <?php foreach($list_stock as $stock):?>
-                                <div class="medium-4 small-4 columns">
-                                    <?php $checked = Umbrella\models\crm\Stocks::checkStocks(isset($_POST['stock']) ? $_POST['stock'] : [], $stock)?>
-                                    <input type="checkbox" <?=($checked ? 'checked' : '')?> onclick="checkColor(event)" id="<?=$stock ?>" name="stock[]" value="<?=$stock ?>">
-                                    <label for="<?=$stock ?>" style="color: <?= ($checked ? 'green' : '')?>;"><?=$stock ?></label><br>
-                                </div>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
+                        <div class="container-filter">
+                            <?php if(is_array($list_stock)):?>
+                                <?php foreach($list_stock as $stock):?>
+                                    <div>
+                                        <?php $checked = Umbrella\models\crm\Stocks::checkStocks(isset($_POST['stock']) ? $_POST['stock'] : [], $stock)?>
+                                        <input type="checkbox" <?=($checked ? 'checked' : '')?> onclick="checkColor(event)" id="<?=$stock ?>" name="stock[]" value="<?=$stock ?>">
+                                        <label for="<?=$stock ?>" style="color: <?= ($checked ? 'green' : '')?>;"><?=$stock ?></label><br>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="medium-3 small-12 columns">
+
+                    <h4 style="color: #fff">Classifiers</h4>
+                    <div class="row align-bottom" style="background: #323e48; padding: 10px 0; margin-bottom: 10px">
+
+                        <div class="container-filter">
+                            <?php if(is_array($listClassifiers)):?>
+                                <?php foreach ($listClassifiers as $classifier):?>
+                                    <div>
+                                        <input id="type-<?= $classifier['I_D']?>" type="checkbox" onclick="checkColor(event)" name="classifier[]" value="<?= $classifier['I_D']?>">
+                                        <label for="type-<?= $classifier['I_D']?>"><?= $classifier['mName']?></label>
+                                    </div>
+                                <?php endforeach;?>
+                            <?php endif;?>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="medium-3 small-12 columns">
+
+                    <h4 style="color: #fff">Producers</h4>
+                    <div class="row align-bottom" style="background: #323e48; padding: 10px 0; margin-bottom: 10px; margin-left: 0">
+
+                        <div class="container-filter">
+                            <?php if(is_array($listProducers)):?>
+                                <?php foreach ($listProducers as $producer):?>
+                                    <div>
+                                        <input id="type-<?= $producer['I_D']?>" type="checkbox" onclick="checkColor(event)" name="producer[]" value="<?= $producer['I_D']?>">
+                                        <label for="type-<?= $producer['I_D']?>"><?= $producer['ShortName']?></label>
+                                    </div>
+                                <?php endforeach;?>
+                            <?php endif;?>
+                        </div>
+
                     </div>
                 </div>
 
                 <div class="medium-4 small-12 columns">
 
                     <h4 style="color: #fff">Sub type</h4>
-                    <div class="row align-bottom" style="background: #323e48; padding: 10px 0; margin-bottom: 10px">
+                    <div class="row align-bottom" style="background: #323e48; padding: 10px 0; margin-bottom: 10px; margin-left: 0;">
 
-                            <div id="container-sub-type">
+                            <div class="container-filter">
                                 <?php if(is_array($listSubType)):?>
                                     <?php foreach ($listSubType as $type):?>
                                         <div>
@@ -149,7 +193,7 @@
 
             <div class="medium-12 small-12 columns">
                 <h4 style="color: #fff">Partners</h4>
-                <?php if($user->role == 'administrator' || $user->role == 'fin-administrator'):?>
+                <?php if($user->isAdmin()):?>
                     <div class="row align-bottom" style="background: #323e48; padding-top: 10px">
                         <div class="medium-12 small-12 columns">
                             <ul class="tabs" data-deep-link="true" data-update-history="true" data-deep-link-smudge="true" data-deep-link-smudge="500" data-tabs id="deeplinked-tabs">

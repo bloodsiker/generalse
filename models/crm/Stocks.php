@@ -11,79 +11,6 @@ class Stocks
 {
 
     /**
-     *  Показываем всетовары на складах
-     * @param $id_partner
-     * @return array
-     */
-    public static function getAllGoodsByPartner($id_partner)
-    {
-        $db = MsSQL::getConnection();
-
-        $sql = "SELECT
-                 sgt.stock_name,
-                 sgt.goods_name,
-                 sgt.goods_name_id,
-                 sgt.part_number,
-                 sgt.type_name,
-                 sgt.subtype_name,
-                 sgt.quantity,
-                 sgt.serial_number,
-                 sgt.price,
-                 sgt.stock_id,
-                 sgu.site_client_name
-                FROM site_gm_stocks sgt
-                INNER JOIN tbl_Users tu
-                    ON sgt.site_account_id = tu.site_gs_account_id
-                INNER JOIN site_gm_users sgu
-                    ON sgu.id = tu.site_gs_account_id
-                WHERE sgu.site_account_id = :id_user";
-
-        $result = $db->prepare($sql);
-        $result->bindParam(':id_user', $id_partner, PDO::PARAM_INT);
-        $result->execute();
-        return $result->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-
-    /**
-     * Показываем товары на определенном складе
-     * @param $id_partner
-     * @param $stock_name
-     * @return array
-     */
-    public static function getGoodsInStockByPartner($id_partner, $stock_name)
-    {
-        $db = MsSQL::getConnection();
-        $sql = "SELECT
-                 sgt.goods_name_id,
-                 sgt.stock_name,
-                 sgt.goods_name,
-                 sgt.goods_name_id,
-                 sgt.part_number,
-                 sgt.type_name,
-                 sgt.subtype_name,
-                 sgt.quantity,
-                 sgt.serial_number,
-                 sgt.price,
-                 sgt.stock_id,
-                 sgu.site_client_name
-                FROM site_gm_stocks sgt
-                INNER JOIN tbl_Users tu 
-                    ON sgt.site_account_id = tu.site_gs_account_id
-                INNER JOIN site_gm_users sgu 
-                    ON sgu.id = tu.site_gs_account_id
-                WHERE sgu.site_account_id = :id_user
-                AND stock_name = :stock_name";
-
-        $result = $db->prepare($sql);
-        $result->bindParam(':id_user', $id_partner, PDO::PARAM_INT);
-        $result->bindParam(':stock_name', $stock_name, PDO::PARAM_STR);
-        $result->execute();
-        return $result->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-
-    /**
      * find serial number by stocks
      * @param $id_partner
      * @param $stock_name
@@ -145,8 +72,16 @@ class Stocks
                  sgt.serial_number,
                  sgt.price,
                  sgt.stock_id,
-                 sgu.site_client_name
+                 sgu.site_client_name,
+                 tbl_Classifier.mName as classifier,
+                 tbl_Produsers.ShortName as producer_name
                 FROM site_gm_stocks sgt
+                INNER JOIN tbl_GoodsNames
+                  ON sgt.goods_name_id = tbl_GoodsNames.I_D
+                INNER JOIN tbl_Classifier
+                  ON tbl_GoodsNames.ClassifierID = tbl_Classifier.I_D
+                INNER JOIN tbl_Produsers
+                  ON tbl_GoodsNames.ProduserID = tbl_Produsers.I_D
                 INNER JOIN tbl_Users tu
                   ON sgt.site_account_id = tu.site_gs_account_id
                 INNER JOIN site_gm_users sgu
@@ -194,8 +129,16 @@ class Stocks
                  sgt.serial_number,
                  sgt.price,
                  sgt.stock_id,
-                 sgu.site_client_name
+                 sgu.site_client_name,
+                 tbl_Classifier.mName as classifier,
+                 tbl_Produsers.ShortName as producer_name
                 FROM site_gm_stocks sgt
+                INNER JOIN tbl_GoodsNames
+                    ON sgt.goods_name_id = tbl_GoodsNames.I_D
+                INNER JOIN tbl_Classifier
+                    ON tbl_GoodsNames.ClassifierID = tbl_Classifier.I_D
+                INNER JOIN tbl_Produsers
+                    ON tbl_GoodsNames.ProduserID = tbl_Produsers.I_D
                 INNER JOIN tbl_Users tu
                     ON sgt.site_account_id = tu.site_gs_account_id
                 INNER JOIN site_gm_users sgu
@@ -310,12 +253,20 @@ class Stocks
                     sgt.serial_number,
                     sgt.price,
                     sgt.stock_id,
-                    sgu.site_client_name
+                    sgu.site_client_name,
+                    tbl_Classifier.mName as classifier,
+                    tbl_Produsers.ShortName as producer_name
                 FROM site_gm_stocks sgt
+                INNER JOIN tbl_GoodsNames
+                    ON sgt.goods_name_id = tbl_GoodsNames.I_D
+                INNER JOIN tbl_Classifier
+                    ON tbl_GoodsNames.ClassifierID = tbl_Classifier.I_D
+                INNER JOIN tbl_Produsers
+                    ON tbl_GoodsNames.ProduserID = tbl_Produsers.I_D
                 INNER JOIN tbl_Users tu
-                  ON sgt.site_account_id = tu.site_gs_account_id
+                    ON sgt.site_account_id = tu.site_gs_account_id
                 INNER JOIN site_gm_users sgu
-                  ON sgu.id = tu.site_gs_account_id
+                    ON sgu.id = tu.site_gs_account_id
                 WHERE 1 = 1 {$filter}
                 AND (sgu.site_client_name LIKE ?
                 OR sgt.goods_name LIKE ?
