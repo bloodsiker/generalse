@@ -185,15 +185,10 @@ $(document).ready(function () {
                     success: function(data){
                         let obj = jQuery.parseJSON(data);
                         if(obj.code == 1){
-
                             showNotification(obj.log, 'error');
-
                             $(".password_umbrella").val("");
-
                         } else if(obj.code == 3) {
-
                             showNotification(obj.log, 'warning');
-
                         } else {
                             window.location = '/' + obj.log;
                         }
@@ -206,49 +201,86 @@ $(document).ready(function () {
     });
 
 
-    // Sign Up
-    $('#sign-up-form').submit(function(e) {
-        e.preventDefault();
-        if ($('#sign-up-form input').hasClass('is-invalid-input')) {
-            return false;
-        } else {
-            let newForm = $(this).serializeObject(); // получение данных в объекте
-            let json = JSON.stringify(newForm); // json
-            console.log(json); // send to server json AJAX
-            $.ajax({
-                url: "/sign_up",
-                type: "POST",
-                data: {json : json},
-                cache: false,
-                success: function (response) {
-                    console.log(response);
-                    if(response == 1){
-                        setTimeout(function () {
-                            $('#sign-up').foundation('close');
-                            $('#sign-up-form').trigger("reset");
-                        }, 500);
-                        var html_error = "<div class='umbrella-alert'>"
-                            + "<span>Ваша заявка отправлена на рассмотрение. Наш менеджер свяжется с Вами в ближайшее время</span>"
-                            + "</div>";
+    (function( $ ){
 
-                        $('body').append(html_error);
+        $(function() {
 
-                        setTimeout(remove_elem, 10000);
-                    } else if(response == 0){
+            $('#sign-up-form').each(function(){
+                let form = $(this),
+                    btn = form.find('#btn-sign-up');
 
-                        var html_error = "<div class='umbrella-alert'>"
-                            + "<span>Произошла ошибка при отправке заявки. Свяжитесь пожалуйста с нами по адресу <a href='mailto:sales@generalse.com'>sales@generalse.com</a></span>"
-                            + "</div>";
+                form.find('.required').addClass('empty_field');
 
-                        $('body').append(html_error);
-
-                        setTimeout(remove_elem, 10000);
-                    }
+                // Функция проверки полей формы
+                function checkInput(){
+                    form.find('.required').each(function(){
+                        if($(this).val() != ''){
+                            $(this).removeClass('empty_field');
+                        } else {
+                            $(this).addClass('empty_field');
+                        }
+                    });
                 }
+
+                // Функция подсветки незаполненных полей
+                function lightEmpty(){
+                    form.find('.empty_field').css({'border-color':'red', 'background': '#ff00001a'});
+                    setTimeout(function(){
+                        form.find('.empty_field').removeAttr('style');
+                    },2000);
+                }
+
+                // Проверка в режиме реального времени
+                setInterval(function(){
+                    checkInput();
+                    let sizeEmpty = form.find('.empty_field').length;
+                    // Вешаем условие-тригер на кнопку отправки формы
+                    if(sizeEmpty > 0){
+                        if(btn.hasClass('disabled')){
+                            return false
+                        } else {
+                            btn.addClass('disabled')
+                        }
+                    } else {
+                        btn.removeClass('disabled')
+                    }
+                },500);
+
+                // Событие клика по кнопке отправить
+                btn.click(function(){
+                    if($(this).hasClass('disabled')){
+                        lightEmpty();
+                        return false
+                    } else {
+                        let newForm = form.serializeObject(); // получение данных в объекте
+                        let json = JSON.stringify(newForm); // json
+                        $.ajax({
+                            url: "/sign_up",
+                            type: "POST",
+                            data: {json : json},
+                            cache: false,
+                            success: function (response) {
+                                console.log(response);
+                                if(response == 1){
+                                    setTimeout(function () {
+                                        $('#registrationModal').modal('hide');
+                                        $('#thank').modal('show');
+                                        $('#sign-up-form').trigger("reset");
+                                    }, 500);
+                                    $('.thank-container').html('<h5>Ваша заявка отправлена на рассмотрение. Наш менеджер свяжется с Вами в ближайшее время</h5>');
+                                } else if(response == 0){
+                                    $('.thank-container').html('<h5>Произошла ошибка при отправке заявки. Свяжитесь пожалуйста с нами по адресу <a href=\'mailto:sales@generalse.com\'>sales@generalse.com</a></h5>');
+                                }
+                            }
+                        });
+                        return false;
+                    }
+                });
             });
-            return false;
-        }
-    });
+        });
+
+    })( jQuery );
+
 
     toastr.options.timeOut = '15000';
     let showNotification = function (message, type) {

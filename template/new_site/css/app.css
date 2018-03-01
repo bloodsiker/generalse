@@ -13,7 +13,7 @@ h2 {
 h4 a {
   color: initial; }
 
-.form-control[required] {
+.form-control.required {
   border-left: 4px solid #c1433c; }
 
 .lang {

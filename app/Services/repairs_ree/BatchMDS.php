@@ -90,7 +90,8 @@ class BatchMDS
             $array[$i]['ServiceType'] = $value['V'];
             $array[$i]['TrackingNumberIn'] = $value['W'];
 
-            $array[$i]['CarryInTime'] = !empty($value['AA']) ? Carbon::parse($value['AA'])->format('Y.m.d H:i') : null;
+            //$array[$i]['CarryInTime'] = !empty($value['AA']) ? Carbon::parse($value['AA'])->format('Y.m.d H:i') : null;
+            $array[$i]['CarryInTime'] = $value['AA'];
             $array[$i]['ComplaintCode'] = $value['AC'];
             $array[$i]['ServiceNotes'] = $value['AD'];
             $array[$i]['Earphone'] = $value['AE'];
@@ -178,7 +179,7 @@ class BatchMDS
             $array[$i]['PartStatus'] = null; ////////////
             $array[$i]['RepairFinishiTime'] = !empty($value['AX']) ? Carbon::parse($value['AX'])->format('Y-m-d H:i') : null;
             $array[$i]['TrackingNumberOut'] = $value['AY'];
-            $array[$i]['PickupTime'] = !empty($value['AX']) ? Carbon::parse($value['BB'])->format('Y-m-d H:i') : null;
+            $array[$i]['PickupTime'] = !empty($value['BB']) ? Carbon::parse($value['BB'])->format('Y-m-d H:i') : null;
 
             $i++;
         }

@@ -89,27 +89,27 @@
                     </div>
                     <div class="form-group">
                         <label>ФИО</label>
-                        <input type="text" class="form-control" name="fio" required autocomplete="off">
+                        <input type="text" class="form-control required" name="fio" autocomplete="off">
                     </div>
                     <div class="form-group">
                         <label>Наименование компании</label>
-                        <input type="text" class="form-control" required name="company">
+                        <input type="text" class="form-control required" name="company">
                     </div>
                     <div class="form-group">
                         <label>Email</label>
-                        <input type="email" class="form-control" required name="email">
+                        <input type="email" class="form-control required" name="email">
                     </div>
                     <div class="form-group">
                         <label>Логин</label>
-                        <input type="text" class="form-control" required name="login">
+                        <input type="text" class="form-control required" name="login">
                     </div>
                     <div class="form-group">
                         <label>Телефон</label>
-                        <input type="text" name="phone" placeholder="(099) 999-99-99" class="phone required form-control" required="" autocomplete="off" maxlength="15">
+                        <input type="text" name="phone" placeholder="(099) 999-99-99" class="phone required form-control" autocomplete="off" maxlength="15">
                     </div>
                     <div class="form-group">
                         <label>Адрес</label>
-                        <input type="text" name="address" class="form-control" required="" autocomplete="off">
+                        <input type="text" name="address" class="form-control required" autocomplete="off">
                     </div>
                     <div class="form-group">
                         <label>Какие интересуют группы товаров</label>
@@ -119,8 +119,9 @@
                         <label>Комментарий</label>
                         <textarea name="message" class="form-control" cols="30" rows="2"></textarea>
                     </div>
+                    <input type="hidden" name="lang" value="ru">
                     <input type="hidden" name="sign_up" value="true">
-                    <button type="submit" class="btn btn-red float-right">Отправить</button>
+                    <button type="submit" id="btn-sign-up" class="btn btn-red float-right">Отправить</button>
                 </form>
             </div>
         </div>
@@ -167,7 +168,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div style="padding: 30px; text-align: center">
+                <div style="padding: 30px; text-align: center" class="thank-container">
                     <h5>Заявка отправлена! <br> Ожидайте, с Вами свяжуться в ближайшее время</h5>
                 </div>
             </div>
