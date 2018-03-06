@@ -172,8 +172,8 @@ class BatchMDS
             $array[$i]['PartsOrder10'] = $value['DQ'];
             $array[$i]['PartStatusofPart10'] = $value['DR'];
 
-            $array[$i]['NewIMEI1'] = $value['AT'];
-            $array[$i]['NewIMEI2'] = $value['AU'];
+            $array[$i]['NewIMEI1'] = !empty($value['AT']) ? (int)$value['AT'] : null;
+            $array[$i]['NewIMEI2'] = !empty($value['AU']) ? (int)$value['AU'] : null;
             $array[$i]['NewSN'] = $value['AV'];
             $array[$i]['NewSoftwareVersion'] = $value['AW'];
             $array[$i]['PartStatus'] = null; ////////////
