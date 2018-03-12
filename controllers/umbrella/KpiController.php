@@ -25,6 +25,7 @@ class KpiController extends AdminBase
 
     /**
      * KpiController constructor.
+     * @throws \Exception
      */
     public function __construct()
     {
@@ -61,6 +62,7 @@ class KpiController extends AdminBase
 
     /**
      * @return bool
+     * @throws \Exception
      */
     public function actionUsage()
     {
@@ -108,6 +110,7 @@ class KpiController extends AdminBase
 
     /**
      * @return bool
+     * @throws \Exception
      */
     public function actionImport()
     {
@@ -298,7 +301,8 @@ class KpiController extends AdminBase
 
                     Logger::getInstance()->log($user->getId(), "посмотрел отчет KPI с " . $start . " по " . $end . " для всех партнеров");
 
-                    $this->render('admin/kpi/result_all_partner', compact('user', 'KPI', 'lastData', 'firstData', 'listPartner', 'start', 'end'));
+                    $this->render('admin/kpi/result_all_partner',
+                        compact('user', 'KPI', 'lastData', 'firstData', 'listPartner', 'start', 'end'));
 
                 } else {
 
@@ -309,7 +313,8 @@ class KpiController extends AdminBase
 
                     Logger::getInstance()->log($user->getId(), "посмотрел отчет KPI с " . $start . " по " . $end . " для " . $name_partner);
 
-                    $this->render('admin/kpi/result_one_partner', compact('user','KPI', 'lastData', 'firstData', 'name_partner', 'listPartner', 'start', 'end'));
+                    $this->render('admin/kpi/result_one_partner',
+                        compact('user','KPI', 'lastData', 'firstData', 'name_partner', 'listPartner', 'start', 'end'));
                 }
             }
         }

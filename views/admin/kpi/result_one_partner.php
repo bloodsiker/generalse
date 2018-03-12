@@ -55,42 +55,6 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <?php $email_CSAT = $KPI->email_CSAT()?>
-                            <td>email CSAT</td>
-                            <td></td>
-                            <td><?=$KPI::email_CSAT ?>%</td>
-                            <td
-                                data-partner="<?=$name_partner?>"
-                                data-kpi="email CSAT"
-                                class="<?=$KPI->controlTargetUp($email_CSAT, $KPI::email_CSAT)?>">
-                                <?=$email_CSAT?>
-                            </td>
-                        </tr>
-                        <tr>
-                            <?php $call_CSAT = $KPI->call_CSAT()?>
-                            <td>call CSAT</td>
-                            <td></td>
-                            <td><?=$KPI::call_CSAT ?>%</td>
-                            <td
-                                data-partner="<?=$name_partner?>"
-                                data-kpi="call CSAT"
-                                class="<?=$KPI->controlTargetUp($call_CSAT, $KPI::call_CSAT)?>">
-                                <?=$call_CSAT?>
-                            </td>
-                        </tr>
-                        <tr>
-                            <?php $ECR = $KPI->ECR()?>
-                            <td>ECR</td>
-                            <td></td>
-                            <td><?=$KPI::ECR ?>%</td>
-                            <td
-                                data-partner="<?=$name_partner?>"
-                                data-kpi="ECR"
-                                class="<?=$KPI->controlTargetUp($ECR, $KPI::ECR)?>">
-                                <?=$ECR?>
-                            </td>
-                        </tr>
-                        <tr>
                             <?php $Order_TAT = $KPI->Order_TAT()?>
                             <td>Order TAT</td>
                             <td>1 business day</td>
@@ -146,7 +110,7 @@
                             <td
                                 data-partner="<?=$name_partner?>"
                                 data-kpi="L0 Rate"
-                                class="<?=$KPI->controlTargetUp($L0_Rate, $KPI::L0_Rate)?>">
+                                class="<?=$KPI->controlTargetL0Rate($L0_Rate, $KPI::L0_Rate)?>">
                                 <?=$L0_Rate?>
                             </td>
                         </tr>
@@ -195,7 +159,7 @@
                                 data-partner="<?=$name_partner?>"
                                 data-kpi="FTF 30 days"
                                 class="<?=$KPI->controlTargetDown($FTP_30_DAYS, $KPI::FTP_30_days)?>">
-                                <?=$FTP_30_DAYS?>
+                                <?= str_replace('.',',', $FTP_30_DAYS)?>
                             </td>
                         </tr>
                         <tr>
@@ -207,7 +171,7 @@
                                 data-partner="<?=$name_partner?>"
                                 data-kpi="FTF 90 days"
                                 class="<?=$KPI->controlTargetDown($FTP_90_DAYS, $KPI::FTP_90_days)?>">
-                                <?=$FTP_90_DAYS?>
+                                <?= str_replace('.',',', $FTP_90_DAYS)?>
                             </td>
                         </tr>
                         <tr>

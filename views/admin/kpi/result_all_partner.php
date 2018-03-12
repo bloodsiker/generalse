@@ -63,42 +63,6 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td>email CSAT</td>
-                            <td></td>
-                            <td><?=$KPI::email_CSAT ?>%</td>
-                            <?php if (is_array($listPartner)): ?>
-                                <?php foreach ($listPartner as $partner): ?>
-                                    <?php $KPI = new Umbrella\components\KPI($partner['name_partner'], $start, $end);?>
-                                    <?php $email_CSAT = $KPI->email_CSAT()?>
-                                    <td class="<?=$KPI->controlTargetUp($email_CSAT, $KPI::email_CSAT)?>"><?=$email_CSAT ?></td>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </tr>
-                        <tr>
-                            <td>call CSAT</td>
-                            <td></td>
-                            <td><?=$KPI::call_CSAT ?>%</td>
-                            <?php if (is_array($listPartner)): ?>
-                                <?php foreach ($listPartner as $partner): ?>
-                                    <?php $KPI = new Umbrella\components\KPI($partner['name_partner'], $start, $end);?>
-                                    <?php $call_CSAT = $KPI->call_CSAT()?>
-                                    <td class="<?=$KPI->controlTargetUp($call_CSAT, $KPI::call_CSAT)?>"><?= $call_CSAT ?></td>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </tr>
-                        <tr>
-                            <td>ECR</td>
-                            <td></td>
-                            <td><?=$KPI::ECR ?>%</td>
-                            <?php if (is_array($listPartner)): ?>
-                                <?php foreach ($listPartner as $partner): ?>
-                                    <?php $KPI = new Umbrella\components\KPI($partner['name_partner'], $start, $end);?>
-                                    <?php $ECR = $KPI->ECR()?>
-                                    <td class="<?= $KPI->controlTargetUp($ECR, $KPI::ECR) ?>"><?= $ECR ?></td>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </tr>
-                        <tr>
                             <td>Order TAT</td>
                             <td>1 business day</td>
                             <td><?=$KPI::Order_TAT ?>%</td>
@@ -154,7 +118,7 @@
                                 <?php foreach ($listPartner as $partner): ?>
                                     <?php $KPI = new Umbrella\components\KPI($partner['name_partner'], $start, $end);?>
                                     <?php $L0_Rate = $KPI->L0_Rate()?>
-                                    <td class="<?= $KPI->controlTargetUp($L0_Rate, $KPI::L0_Rate) ?>"><?= $L0_Rate ?></td>
+                                    <td class="<?= $KPI->controlTargetL0Rate($L0_Rate, $KPI::L0_Rate) ?>"><?= $L0_Rate ?></td>
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </tr>
@@ -202,7 +166,7 @@
                                 <?php foreach ($listPartner as $partner): ?>
                                     <?php $KPI = new Umbrella\components\KPI($partner['name_partner'], $start, $end);?>
                                     <?php $FTP_30_DAYS = $KPI->FTP_30_DAYS()?>
-                                    <td class="<?=$KPI->controlTargetDown($FTP_30_DAYS, $KPI::FTP_30_days)?>"><?= $FTP_30_DAYS?></td>
+                                    <td class="<?=$KPI->controlTargetDown($FTP_30_DAYS, $KPI::FTP_30_days)?>"><?= str_replace('.',',', $FTP_30_DAYS)?></td>
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </tr>
@@ -214,7 +178,7 @@
                                 <?php foreach ($listPartner as $partner): ?>
                                     <?php $KPI = new Umbrella\components\KPI($partner['name_partner'], $start, $end);?>
                                     <?php $FTP_90_DAYS = $KPI->FTP_90_DAYS()?>
-                                    <td class="<?=$KPI->controlTargetDown($FTP_90_DAYS, $KPI::FTP_90_days)?>"><?=$FTP_90_DAYS?></td>
+                                    <td class="<?=$KPI->controlTargetDown($FTP_90_DAYS, $KPI::FTP_90_days)?>"><?= str_replace('.',',', $FTP_90_DAYS)?></td>
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </tr>

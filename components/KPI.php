@@ -18,7 +18,7 @@ class KPI
     const Repair_TAT = 90;
     const SW_repair_TAT = 90;
     const SO_creation_TAT = 95;
-    const L0_Rate = 30;
+    const L0_Rate = 15;
     const PPl = '1,15';
     const LongTail_14_days = 90;
     const LongTail_21_days = 5;
@@ -366,7 +366,7 @@ class KPI
         } else {
             $result = round($i / (self::KBP() / 100), self::ROUND_TO_THE_POINT);
         }
-        return str_replace('.',',', $result);
+        return $result;
     }
 
 
@@ -430,7 +430,7 @@ class KPI
         } else {
             $result = round($i / (self::KBP() / 100), self::ROUND_TO_THE_POINT);
         }
-        return str_replace('.',',', $result);
+        return $result;
     }
 
 
@@ -497,7 +497,7 @@ class KPI
      */
     public function controlTargetUp($result, $target){
 
-        if( $result > ($target)){
+        if( $result > $target){
             echo "green";
         } elseif($result <= $target){
             if($result >= ($target - 1) && $result <= $target){
@@ -516,7 +516,7 @@ class KPI
      */
     public function controlTargetDown($result, $target){
 
-        if( $result <= ($target)){
+        if( $result <= $target){
             echo "green";
         } elseif($result > $target){
             if($result < ($target + 1) && $result > $target){
@@ -535,10 +535,26 @@ class KPI
      */
     public function controlTargetPPl($result, $target){
 
-        if( $result <= ($target)){
+        if( $result <= $target){
             echo "green";
         } elseif($result > $target){
             echo "red problem";
+        }
+    }
+
+
+    /**
+     * @param $result
+     * @param $target
+     */
+    public function controlTargetL0Rate($result, $target){
+
+        if( $result > $target + 1){
+            echo "green";
+        } elseif($result <= $target + 1 && $result >= $target - 1){
+            echo "yellow";
+        } elseif ($result < $target - 1){
+            echo "red";
         }
     }
 
