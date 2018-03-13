@@ -201,6 +201,7 @@ return [
     'adm/crm/returns/filter/([a-z0-9-_?&]+)' => 'umbrella/crm/Return@filterReturns/$1',
     'adm/crm/returns/s/([a-z0-9-_?&]+)' => 'umbrella/crm/Return@search/$1',
     'adm/crm/import_returns' => 'umbrella/crm/Return@importReturns',
+    'adm/crm/returns_upload' => 'umbrella/crm/Return@returnsUpload',
     'adm/crm/returns_ajax' => 'umbrella/crm/Return@returnsAjax',
     'adm/crm/returns' => 'umbrella/crm/Return@returns',
 

@@ -17,6 +17,9 @@ hr{
 .no-margin{
   margin: 0!important;
 }
+.tool-tip{
+    font-size: 16px;
+}
 .margin-bottom{
   margin-bottom: 35px!important;
 }

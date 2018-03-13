@@ -9,7 +9,7 @@ $('#add-return-file').click(function(){
     $('.purchase-file-send').slideToggle();
 });
 
-$('table').tablesort();
+//$('table').tablesort();
 
 $('.apply-cout').attr('disabled', '');
 
@@ -20,40 +20,100 @@ $(document).on('change', '[name="stock"]', function (event) {
 });
 
 // подтвердить корзину
-$('body').on('click', '.apply-cout', function(e) {
+let dataReturn = null;
+$('.umbrella-table').on('click', '.apply-cout', function(e) {
     var parents = $(this).parents('tr');
-    var dataReturn = parents.attr('data-return');
-    var answer = confirm("Apply checkout, service order: " + dataReturn + " ?");
-    if (answer) {
-        var stock = parents.find('[name="stock"]').val();
-        var action = 'update';
-        //var json = JSON.stringify(); // json
-        //console.log(stock + ' - ' + dataReturn); // send to server json
-
-        $.ajax({
-            url: "/adm/crm/returns_ajax",
-            type: "POST",
-            data: {stock : stock, id_return : dataReturn, action : action},
-            cache: false,
-            success: function (response) {
-                //alert(response);
-                console.log(response);
-                var obj = JSON.parse(response);
-                if(obj.status == 'ok'){
-                    parents.find('.status_return').text('В обработке');
-                    parents.find('.status_return').removeClass('yellow').addClass('green');
-                    parents.find('button').remove();
-                    parents.find('[name="stock"]').remove();
-                    parents.find('.selectInTable').addClass('stock').removeClass('selectInTable');
-                    parents.find('.stock').text(obj.stock);
-                }
-            }
-        });
-
-    } else {
-        return false;
-    }
+    dataReturn = parents.attr('data-return');
+    $('#note-modal').foundation('open');
 });
+
+$('#send-return').click(function() {
+    var note = $('#note').val();
+    var _this = $('[data-return="' + dataReturn + '"]');
+
+    let stock = _this.find('[name="stock"]').val();
+
+    $.ajax({
+        url: "/adm/crm/returns_ajax",
+        type: "POST",
+        data: {stock : stock, id_return : dataReturn, action : 'update', note : note},
+        cache: false,
+        success: function (response) {
+            $('#note-modal').foundation('close');
+            var obj = JSON.parse(response);
+            if(obj.status == 'ok'){
+                if(note != ''){
+                    var tooltip = '<i class="fi-info tool-tip has-tip [tip-top]" data-tooltip title="' + note + '"></i>';
+                    _this.find('.return-note').html(tooltip);
+                }
+                _this.find('.status_return').text('В обработке');
+                _this.find('.status_return').removeClass('yellow').addClass('green');
+                _this.find('button').remove();
+                _this.find('[name="stock"]').remove();
+                _this.find('.selectInTable').addClass('stock').removeClass('selectInTable');
+                _this.find('.stock').text(obj.stock);
+                $('#note').val('');
+                showNotification('Return successfully created', 'success');
+            } else {
+                showNotification('Could not return, contact the manager', 'error');
+            }
+        }
+    });
+});
+
+// При открытии модального окна для загрузки файла, цепляем id записи
+$('.umbrella-table').on('click', '[data-open="open-upload-return"]', function () {
+    var parents = $(this).parents('tr');
+    var return_id = parents.attr('data-return');
+    $('form#return-upload').find('[name="return_id"]').val(return_id);
+    showUploadDocumentInReturn(return_id);
+});
+
+// Send return document
+$("#return-upload").submit(function(e){
+    e.preventDefault();
+
+    let $that = $(this),
+        formData = new FormData($that.get(0));
+
+    $.ajax({
+        url: "/adm/crm/returns_upload",
+        type: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        cache: false,
+        success: function (response) {
+            console.log(response);
+            var obj = JSON.parse(response);
+            if(obj.ok == 1){
+                $('#open-upload-return').foundation('close');
+                $('form#return-upload').trigger('reset');
+                $('[data-return="' + obj.return_id + '"]').find('.return-document').removeClass('red blue').addClass('blue');
+                showNotification(obj.text, obj.type);
+            } else {
+                showNotification(obj.text, obj.type);
+            }
+        }
+    });
+    return false;
+});
+
+// Show upload document
+let showUploadDocumentInReturn = (return_id) => {
+    $('form#return-upload').find('.container-upload-file').html('');
+    $.ajax({
+        url: "/adm/crm/returns_ajax",
+        type: "POST",
+        data: {return_id : return_id, action : 'show_document'},
+        cache: false,
+        success: function (response) {
+            console.log(response);
+            $('form#return-upload').find('.container-upload-file').html(response);
+        }
+    });
+    return false;
+};
 
 
 // Подтверждение заказов
@@ -73,10 +133,11 @@ $(document).on('click', '.return-accept', function(e) {
             var obj = JSON.parse(response);
             if(obj.ok == 1){
                 self.parents('td').parents('tr').addClass("blue");
-                self.parents('td').parents('tr').find('td').eq(8).removeClass().addClass(obj.class).text(obj.text);
+                self.parents('td').parents('tr').find('td.status_return').removeClass().addClass(obj.class).text(obj.text);
                 self.parents('td').find('a').remove();
+                showNotification(obj.success, 'success');
             } else {
-                alert(obj.error);
+                showNotification(obj.error, 'error');
             }
         }
     });
@@ -117,11 +178,12 @@ $(document).on('click', '.return-dismiss', function(e) {
                 console.log((response));
                 var obj = JSON.parse(response);
                 if(obj.ok == 1){
-                    self.parents('td').parents('tr').find('td').eq(8).removeClass().addClass(obj.class).text(obj.text);
+                    self.parents('td').parents('tr').find('td.status_return').removeClass().addClass(obj.class).text(obj.text);
                     self.parents('td').find('a').remove();
                     $('.dismiss-container').remove();
+                    showNotification(obj.success, 'success');
                 } else {
-                    alert(obj.error);
+                    showNotification(obj.error, 'error');
                 }
             }
         });

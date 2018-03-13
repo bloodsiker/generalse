@@ -206,14 +206,17 @@ class Functions
 
     /**
      * Совпадение по поисковой строке - подсвечиваем
+     *
      * @param $search
      * @param $result
      * @param string $charset
+     *
      * @return mixed
+     * @throws \Exception
      */
     public static function replaceSearchResult($search, $result, $charset = 'windows')
     {
-        if($charset = 'windows'){
+        if($charset == 'windows'){
             $search = Decoder::strToUtf($search);
             $result = Decoder::strToUtf($result);
         }

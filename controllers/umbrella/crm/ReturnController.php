@@ -2,21 +2,30 @@
 
 namespace Umbrella\controllers\umbrella\crm;
 
+use Josantonius\Request\Request;
 use Josantonius\Session\Session;
 use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
 use Umbrella\app\User;
 use Umbrella\components\Decoder;
+use Umbrella\components\Functions;
 use Umbrella\components\ImportExcel;
 use Umbrella\components\Logger;
 use Umbrella\models\Admin;
 use Umbrella\models\crm\Returns;
+use upload as FileUpload;
 
 /**
  * Class ReturnController
  */
 class ReturnController extends AdminBase
 {
+
+    /**
+     *  Path to the upload file for the return
+     */
+    const UPLOAD_PATH_RETURN = '/upload/attach_return/';
+
     /**
      * @var User
      */
@@ -54,7 +63,7 @@ class ReturnController extends AdminBase
             }
 
             $interval .= " AND sgs.created_on >= DATEADD(day, -7, GETDATE())";
-            $allReturnsByPartner = Returns::getReturnsByPartner($user->controlUsers($user->getId()), $interval);
+            $allReturnsByPartner = Decoder::arrayToUtf(Returns::getReturnsByPartner($user->controlUsers($user->getId()), $interval));
 
         } else if($user->isAdmin()){
 
@@ -62,7 +71,7 @@ class ReturnController extends AdminBase
             $status_2 = Decoder::strToWindows('В обработке');
             $interval = " AND (sgs.status_name = '$status_1' OR sgs.status_name = '$status_2')";
             $interval .= " AND sgs.created_on >= DATEADD(day, -7, GETDATE())";
-            $allReturnsByPartner = Returns::getAllReturns($interval);
+            $allReturnsByPartner = Decoder::arrayToUtf(Returns::getAllReturns($interval));
         }
 
         $this->render('admin/crm/returns/returns', compact('user','partnerList', 'arr_error_return', 'allReturnsByPartner'));
@@ -83,11 +92,12 @@ class ReturnController extends AdminBase
             $response = [];
             $stock = $_REQUEST['stock'];
             $id_return = $_REQUEST['id_return'];
+            $note = Decoder::strToWindows($_REQUEST['note']);
 
             $response['stock'] = $stock;
             $stock_name = Decoder::strToWindows($stock);
-            //$ok = Returns::updateStatusReturns($id_return, $stock);
-            $ok = Returns::updateStatusAndStockReturns($id_return, $stock_name);
+
+            $ok = Returns::updateStatusAndStockReturns($id_return, $stock_name, $note);
             if($ok){
                 $response['status'] = 'ok';
                 Logger::getInstance()->log($user->getId(), 'сделал возврат в Returns ' . $id_return);
@@ -105,9 +115,10 @@ class ReturnController extends AdminBase
                 $status['ok'] = 1;
                 $status['class'] = 'green';
                 $status['text'] = 'Принят';
+                $status['success'] = 'Return assess successfully';
             } else {
                 $status['ok'] = 0;
-                $status['error'] = 'Ошибка подтверждения!';
+                $status['error'] = 'Error. failed to accept return';
             }
             echo json_encode($status);
         }
@@ -121,12 +132,62 @@ class ReturnController extends AdminBase
                 $status['ok'] = 1;
                 $status['class'] = 'red';
                 $status['text'] = 'Отказано';
+                $status['success'] = 'Return dismiss successfully';
             } else {
                 $status['ok'] = 0;
-                $status['error'] = 'Ошибка подтверждения!';
+                $status['error'] = 'Error. failed to dismiss return';
             }
             echo json_encode($status);
         }
+
+        if($_REQUEST['action'] == 'show_document'){
+            $return_id = $_REQUEST['return_id'];
+
+            $return = Returns::getReturnById($return_id);
+            $filePath = explode('/', $return['document']);
+            $fileName = end($filePath);
+
+            $this->render('/admin/crm/returns/_part/show_details_document', compact('return', 'fileName'));
+        }
+        return true;
+    }
+
+    /**
+     * Upload returns document
+     * @return bool
+     */
+    public function actionReturnsUpload()
+    {
+        $user = $this->user;
+
+        $return_id = $_REQUEST['return_id'];
+        $status['return_id'] = $return_id;
+        if (!empty($_FILES['attach_return']['name'])) {
+            $handle = new FileUpload($_FILES['attach_return']);
+            if ($handle->uploaded) {
+                $handle->file_new_name_body = Functions::strUrl($user->getName());
+                $handle->file_name_body_add = '-' . substr_replace(sha1(microtime(true)), '', 15);
+                $file_name = self::UPLOAD_PATH_RETURN . $handle->file_new_name_body . $handle->file_name_body_add . '.' . $handle->file_src_name_ext;
+                $handle->process(ROOT . self::UPLOAD_PATH_RETURN);
+                if ($handle->processed) {
+                    Returns::attachDocumentReturnsGM($return_id, $file_name);
+                    Logger::getInstance()->log($user->getId(),"Загрузил документ к Return # {$return_id}");
+                    $handle->clean();
+                    $status['ok'] = 1;
+                    $status['type'] = 'success';
+                    $status['text'] = 'Document success uploaded';
+                } else {
+                    $status['ok'] = 0;
+                    $status['type'] = 'error';
+                    $status['text'] = 'Error. Document not uploaded';
+                }
+            }
+        } else {
+            $status['ok'] = 0;
+            $status['type'] = 'error';
+            $status['text'] = 'You need to attach a file!';
+        }
+        echo json_encode($status);
         return true;
     }
 
@@ -189,11 +250,13 @@ class ReturnController extends AdminBase
     }
 
 
-
     /**
      * Фильтр возвратов
+     *
      * @param string $filter
+     *
      * @return bool
+     * @throws \Exception
      */
     public function actionFilterReturns($filter = "")
     {
@@ -212,7 +275,7 @@ class ReturnController extends AdminBase
                 $end = $_GET['end']. " 23:59";
                 $filter .= " AND sgs.created_on BETWEEN '$start' AND '$end'";
             }
-            $allReturnsByPartner = Returns::getReturnsByPartner($user->controlUsers($user->getId()), $filter);
+            $allReturnsByPartner = Decoder::arrayToUtf(Returns::getReturnsByPartner($user->controlUsers($user->getId()), $filter));
 
         } else if($user->isAdmin()){
 
@@ -223,7 +286,7 @@ class ReturnController extends AdminBase
                 $end = $_GET['end']. " 23:59";
                 $filter .= " AND sgs.created_on BETWEEN '$start' AND '$end'";
             }
-            $allReturnsByPartner = Returns::getAllReturns($filter);
+            $allReturnsByPartner = Decoder::arrayToUtf(Returns::getAllReturns($filter));
         }
 
         $this->render('admin/crm/returns/returns', compact('user','partnerList', 'arr_error_return', 'allReturnsByPartner'));
@@ -297,12 +360,12 @@ class ReturnController extends AdminBase
 
             $search = Decoder::strToWindows(trim($_REQUEST['search']));
 
-            $user_ids = $user->controlUsers($user->id_user);
+            $user_ids = $user->controlUsers($user->getId());
             $partnerList = Admin::getPartnerControlUsers($user_ids);
 
             $idS = implode(',', $user_ids);
             $filter = " AND sgs.site_account_id IN ($idS)";
-            $allReturnsByPartner = Returns::getSearchInReturns($search, $filter);
+            $allReturnsByPartner = Decoder::arrayToUtf(Returns::getSearchInReturns($search, $filter));
 
         } else if($user->isAdmin()){
 
@@ -310,7 +373,7 @@ class ReturnController extends AdminBase
 
             $partnerList = Admin::getAllPartner();
 
-            $allReturnsByPartner = Returns::getSearchInReturns($search);
+            $allReturnsByPartner = Decoder::arrayToUtf(Returns::getSearchInReturns($search));
         }
 
         $this->render('admin/crm/returns/returns_search', compact('user','partnerList',

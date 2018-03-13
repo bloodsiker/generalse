@@ -40,8 +40,29 @@ class Returns
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $id_partner, PDO::PARAM_INT);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    /**
+     * find return by id
+     * @param $return_id
+     *
+     * @return array
+     */
+    public static function getReturnById($return_id)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "SELECT TOP 1
+                 document
+                FROM site_gm_stockreturns
+                WHERE stock_return_id = :stock_return_id";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':stock_return_id', $return_id, PDO::PARAM_INT);
+        $result->execute();
+        return $result->fetch(PDO::FETCH_ASSOC);
     }
 
 
@@ -70,23 +91,28 @@ class Returns
 
     /**
      * Обновляем статус и склад для возврата
+     *
      * @param $id_return
      * @param $stock
+     * @param $note
+     *
      * @return bool
      */
-    public static function updateStatusAndStockReturns($id_return, $stock)
+    public static function updateStatusAndStockReturns($id_return, $stock, $note)
     {
         $db = MsSQL::getConnection();
 
         $sql = "UPDATE site_gm_stockreturns
             SET
                 stock_name = :stock,
-                update_status_from_site = 2
+                update_status_from_site = 2,
+                note = :note
             WHERE stock_return_id = :id_return";
 
         $result = $db->prepare($sql);
         $result->bindParam(':id_return', $id_return, PDO::PARAM_INT);
         $result->bindParam(':stock', $stock, PDO::PARAM_INT);
+        $result->bindParam(':note', $note, PDO::PARAM_STR);
         return $result->execute();
     }
 
@@ -136,8 +162,7 @@ class Returns
         $result->bindParam(':so_number', $options['so_number'], PDO::PARAM_INT);
         $result->bindParam(':order_number', $options['order_number'], PDO::PARAM_INT);
         $result->execute();
-        $count = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $count;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -163,10 +188,13 @@ class Returns
                  sgs.so_number,
                  sgs.update_status_from_site,
                  sgs.update_stock_from_site,
+                 sgs.note,
+                 sgs.document,
                  sgse.part_number,
                  sgse.goods_name,
                  sgse.order_number,
                  sgse.so_number,
+                 sgse.order_type,
                  sgu.site_client_name
                 FROM site_gm_stockreturns sgs
                 INNER JOIN site_gm_stockreturns_elements sgse
@@ -178,8 +206,7 @@ class Returns
 
         $result = $db->prepare($sql);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -204,10 +231,13 @@ class Returns
                               sgs.update_status_from_site,
                               sgs.update_stock_from_site,
                               sgs.command,
+                              sgs.note,
+                              sgs.document,
                               sgse.part_number,
                               sgse.goods_name,
                               sgse.order_number,
                               sgse.so_number,
+                              sgse.order_type,
                               sgu.site_client_name
                              FROM site_gm_stockreturns sgs
                              INNER JOIN site_gm_stockreturns_elements sgse
@@ -250,8 +280,7 @@ class Returns
         $result->bindParam(':start', $start, PDO::PARAM_STR);
         $result->bindParam(':end', $end, PDO::PARAM_STR);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -287,8 +316,30 @@ class Returns
         $result->bindParam(':start', $start, PDO::PARAM_STR);
         $result->bindParam(':end', $end, PDO::PARAM_STR);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    /**
+     * Attach document for return_id
+     * @param $stock_return_id
+     * @param $document
+     *
+     * @return bool
+     */
+    public static function attachDocumentReturnsGM($stock_return_id, $document)
+    {
+        $db = MsSQL::getConnection();
+
+        $sql = "UPDATE site_gm_stockreturns
+            SET
+                document = :document
+            WHERE stock_return_id = :stock_return_id";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':stock_return_id', $stock_return_id, PDO::PARAM_INT);
+        $result->bindParam(':document', $document, PDO::PARAM_STR);
+        return $result->execute();
     }
 
     /**
@@ -353,6 +404,7 @@ class Returns
                     sgse.goods_name,
                     sgse.order_number,
                     sgse.so_number,
+                    sgse.order_type,
                     sgu.site_client_name
                 FROM site_gm_stockreturns sgs
                 INNER JOIN site_gm_stockreturns_elements sgse
@@ -370,8 +422,7 @@ class Returns
 
         $result = $db->prepare($sql);
         $result->execute(array("%$search%", "%$search%", "%$search%", "%$search%", "%$search%", "%$search%"));
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 }

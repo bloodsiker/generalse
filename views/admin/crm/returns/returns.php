@@ -104,15 +104,18 @@
                         </caption>
                         <thead>
                         <tr>
-                            <th class="sort">Return Number</th>
-                            <th class="sort">Partner</th>
-                            <th class="sort">Order Number</th>
-                            <th class="sort">Service Order</th>
-                            <th class="sort">Stock</th>
-                            <th class="sort">Date</th>
-                            <th class="sort">Part Number</th>
-                            <th class="sort">Description</th>
-                            <th class="sort">Status</th>
+                            <th>Return Number</th>
+                            <th>Partner</th>
+                            <th>Order Number</th>
+                            <th>Service Order</th>
+                            <th>Stock</th>
+                            <th>Date</th>
+                            <th>Part Number</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>File</th>
+                            <th>Note</th>
+                            <th>Status</th>
                             <th class="text-center no-sort"><i class="fi-check"></i></th>
                         </tr>
                         </thead>
@@ -120,28 +123,42 @@
                         <?php if (is_array($allReturnsByPartner)): ?>
                             <?php foreach ($allReturnsByPartner as $return): ?>
                                 <tr data-return="<?=$return['stock_return_id']?>" class="goods">
-                                    <td><?=$return['stock_return_id']?></td>
-                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $return['site_client_name'])?></td>
-                                    <td><?=$return['order_number']?></td>
-                                    <td><?=iconv('WINDOWS-1251', 'UTF-8', $return['so_number'])?></td>
+                                    <td><?= $return['stock_return_id']?></td>
+                                    <td><?= $return['site_client_name']?></td>
+                                    <td><?= $return['order_number']?></td>
+                                    <td><?= $return['so_number']?></td>
                                     <?php if(empty($return['stock_name'])):?>
                                         <td class="selectInTable">
                                             <select name="stock" class="required" required>
                                                 <option value="" selected disabled>none</option>
-                                                <?php foreach ($user->renderSelectStocks($user->id_user, 'returns') as $stock):?>
+                                                <?php foreach ($user->renderSelectStocks($user->getId(), 'returns') as $stock):?>
                                                     <option value="<?= $stock?>"><?= $stock?></option>
                                                 <?php endforeach;?>
                                             </select>
                                         </td>
                                     <?php else:?>
                                         <td class="stock">
-                                            <?=iconv('WINDOWS-1251' , 'UTF-8', $return['stock_name']);?>
+                                            <?= $return['stock_name'];?>
                                         </td>
                                     <?php endif;?>
-                                    <td><?=Umbrella\components\Functions::formatDate($return['created_on'])?></td>
-                                    <td><?=$return['part_number']?></td>
-                                    <td><?=iconv('WINDOWS-1251', 'UTF-8', $return['goods_name'])?></td>
-                                    <?php $status_name = iconv('WINDOWS-1251', 'UTF-8', $return['status_name'])?>
+                                    <td><?= Umbrella\components\Functions::formatDate($return['created_on'])?></td>
+                                    <td><?= $return['part_number']?></td>
+                                    <td><?= $return['order_type']?></td>
+                                    <td><?= $return['goods_name']?></td>
+                                    <td class="text-center return-document <?= (empty($return['document']) || $return['document'] == ' ') ? 'red' : 'blue' ?>">
+                                        <button data-open="open-upload-return">
+                                            <i class="fa fa-paperclip" aria-hidden="true"></i>
+                                        </button>
+                                    </td>
+                                    <td class="text-center return-note">
+                                        <?php if(!empty($return['note'])): ?>
+                                            <i class="fi-info tool-tip has-tip [tip-top]"
+                                               data-tooltip
+                                               title="<?= $return['note'] ?>"></i>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td></td>
+                                    <?php $status_name = $return['status_name']?>
                                     <td class="status_return <?= Umbrella\models\crm\Returns::getStatusRequest($status_name)?>"><?= $status_name?></td>
                                     <td class="text-center">
                                         <?php if($return['update_status_from_site'] != 2):?>
@@ -164,15 +181,18 @@
 
                         <thead>
                         <tr>
-                            <th class="sort">Return Number</th>
-                            <th class="sort">Partner</th>
-                            <th class="sort">Order Number</th>
-                            <th width="150px" class="sort">Service Order</th>
-                            <th class="sort">Stock</th>
-                            <th class="sort">Date</th>
-                            <th class="sort">Part Number</th>
-                            <th class="sort">Description</th>
-                            <th class="sort">Status</th>
+                            <th>Return Number</th>
+                            <th>Partner</th>
+                            <th>Order Number</th>
+                            <th width="150px">Service Order</th>
+                            <th>Stock</th>
+                            <th>Date</th>
+                            <th>Part Number</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>File</th>
+                            <th>Note</th>
+                            <th>Status</th>
                             <th class="text-center no-sort"><i class="fi-check"></i></th>
                             <th>Action</th>
                         </tr>
@@ -181,28 +201,41 @@
                         <?php if (is_array($allReturnsByPartner)): ?>
                             <?php foreach ($allReturnsByPartner as $return): ?>
                                 <tr data-return="<?=$return['stock_return_id']?>" class="goods">
-                                    <td><?=$return['stock_return_id']?></td>
-                                    <td><?= iconv('WINDOWS-1251', 'UTF-8', $return['site_client_name'])?></td>
-                                    <td><?=$return['order_number']?></td>
-                                    <td><?=iconv('WINDOWS-1251', 'UTF-8', $return['so_number'])?></td>
+                                    <td><?= $return['stock_return_id']?></td>
+                                    <td><?= $return['site_client_name']?></td>
+                                    <td><?= $return['order_number']?></td>
+                                    <td><?= $return['so_number']?></td>
                                     <?php if(empty($return['stock_name'])):?>
                                         <td class="selectInTable">
                                             <select name="stock" class="required" required>
                                                 <option value="" selected disabled>none</option>
-                                                <?php foreach ($user->renderSelectStocks($user->id_user, 'returns') as $stock):?>
+                                                <?php foreach ($user->renderSelectStocks($user->getId(), 'returns') as $stock):?>
                                                     <option value="<?= $stock?>"><?= $stock?></option>
                                                 <?php endforeach;?>
                                             </select>
                                         </td>
                                     <?php else:?>
                                         <td class="stock">
-                                            <?=iconv('WINDOWS-1251' , 'UTF-8', $return['stock_name']);?>
+                                            <?= $return['stock_name'];?>
                                         </td>
                                     <?php endif;?>
                                     <td><?= Umbrella\components\Functions::formatDate($return['created_on'])?></td>
-                                    <td><?=$return['part_number']?></td>
-                                    <td><?=iconv('WINDOWS-1251', 'UTF-8', $return['goods_name'])?></td>
-                                    <?php $status_name = iconv('WINDOWS-1251', 'UTF-8', $return['status_name'])?>
+                                    <td><?= $return['part_number']?></td>
+                                    <td><?= $return['order_type']?></td>
+                                    <td><?= $return['goods_name']?></td>
+                                    <td class="text-center return-document <?= (empty($return['document']) || $return['document'] == ' ') ? 'red' : 'blue' ?>">
+                                        <button data-open="open-upload-return">
+                                            <i class="fa fa-paperclip" aria-hidden="true"></i>
+                                        </button>
+                                    </td>
+                                    <td class="text-center return-note">
+                                        <?php if(!empty($return['note'])): ?>
+                                            <i class="fi-info tool-tip has-tip [tip-top]"
+                                               data-tooltip
+                                               title="<?= $return['note'] ?>"></i>
+                                        <?php endif; ?>
+                                    </td>
+                                    <?php $status_name = $return['status_name']?>
                                     <td class="status_return <?= Umbrella\models\crm\Returns::getStatusRequest($status_name)?>"><?= $status_name?></td>
                                     <td class="text-center">
                                         <?php if($return['update_status_from_site'] != 2):?>
@@ -281,6 +314,74 @@
             </div>
             <div class="medium-12 small-12 columns">
                 <button type="submit" class="button primary">Generate</button>
+            </div>
+        </div>
+    </form>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="reveal" id="note-modal" data-reveal>
+    <div class="row align-bottom">
+        <div class="medium-12 small-12 columns">
+            <h3>Note</h3>
+        </div>
+        <div class="medium-12 small-12 columns">
+            <div class="row">
+                <div class="medium-12 small-12 columns">
+                    <label for="note">Note</label>
+                    <textarea name="note" id="note" cols="30" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="medium-6 medium-offset-6 small-12 columns">
+            <button type="submit" id="send-return" class="button primary">Apply</button>
+        </div>
+    </div>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+
+<div class="reveal" id="open-upload-return" data-reveal>
+    <form action="" id="return-upload" method="post" class="form" enctype="multipart/form-data" data-abide
+          novalidate>
+        <div class="row align-bottom">
+            <div class="medium-12 small-12 columns">
+                <h3>Upload document</h3>
+            </div>
+            <div class="medium-12 small-12 columns">
+                <div class="row">
+
+                    <div class="medium-12 small-12 columns">
+                        <div class="container-upload-file">
+
+                        </div>
+                    </div>
+
+                    <div class="medium-12 small-12 columns">
+                        <div class="row align-bottom ">
+                            <div class="medium-12 small-12 columns">
+                                <label for="attach_return" class="button primary">Attach</label>
+                                <input type="file" id="attach_return" class="show-for-sr" name="attach_return" required>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="medium-12 small-12 columns">
+                        <div class="row">
+                            <div class="medium-6 small-12 columns">
+                                <input type="hidden" name="return_id" value="">
+                            </div>
+                            <div class="medium-6 small-12 columns">
+                                <button type="submit" id="return-upload-send" class="button primary">Upload File</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </form>
