@@ -289,6 +289,4 @@ return [
     'adm/site/vacancy/add' => 'umbrella/site/Vacancy@add',
     'adm/site/vacancy' => 'umbrella/site/Vacancy@allVacancy',
 
-
-
 ];

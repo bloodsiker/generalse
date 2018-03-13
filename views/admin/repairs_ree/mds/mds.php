@@ -16,7 +16,7 @@
                     <div class="medium-3 small-12 columns">
                         <div class="row align-bottom">
                             <div class="medium-12 small-12 columns">
-                                <button data-open="create-so-modal" class="button primary tool"><i class="fi-plus"></i> Create SO</button>
+                                <button disabled data-open="create-so-modal" class="button primary tool"><i class="fi-plus"></i> Create SO</button>
                             </div>
                         </div>
                     </div>

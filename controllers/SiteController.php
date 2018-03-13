@@ -89,9 +89,13 @@ class SiteController extends Controller
         $ok = Client::registrationClient($options);
         if($ok){
             RegisterClient::getInstance()->sendEmailWithNewClient($options);
-            print_r(1);
+            $result['code'] = 200;
+            $result['message'] = '<span>Ваша заявка отправлена на рассмотрение. Наш менеджер свяжется с Вами в ближайшее время</span>';
+            print_r(json_encode($result));
         } else {
-            print_r(0);
+            $result['code'] = 503;
+            $result['message'] = '<span>Произошла ошибка при отправке заявки. Свяжитесь пожалуйста с нами по адресу <a href=\'mailto:sales@generalse.com\'>sales@generalse.com</a></span>';
+            print_r(json_encode($result));
         }
         return true;
     }

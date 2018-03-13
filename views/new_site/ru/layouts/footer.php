@@ -65,7 +65,7 @@
             </div>
         </div>
 
-        <div class="text-center">General Services Europe. 2016</div>
+        <div class="text-center">General Services Europe. 2018</div>
     </div>
 
 
@@ -82,7 +82,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="sign-up-form" action="#" method="post">
+                <form id="sign-up-form" data-form="send" action="/sign_up" method="post">
                     <div class="form-group">
                         <label>Страна</label>
                         <input type="text" class="form-control" name="country">

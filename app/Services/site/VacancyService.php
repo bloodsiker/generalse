@@ -47,13 +47,16 @@ class VacancyService
     {
         $vacancy = Vacancy::getVacancyBySlug($slug);
 
-        $result['slug'] = $vacancy['slug'];
-        $result['title'] = $vacancy[$this->lang .'_title'];
-        $result['department'] = $vacancy[$this->lang .'_department'];
-        $result['location'] = $vacancy[$this->lang .'_location'];
-        $result['employment'] = $vacancy[$this->lang .'_employment'];
-        $result['text'] = $vacancy[$this->lang .'_text'];
-
+        if($vacancy){
+            $result['slug'] = $vacancy['slug'];
+            $result['title'] = $vacancy[$this->lang .'_title'];
+            $result['department'] = $vacancy[$this->lang .'_department'];
+            $result['location'] = $vacancy[$this->lang .'_location'];
+            $result['employment'] = $vacancy[$this->lang .'_employment'];
+            $result['text'] = $vacancy[$this->lang .'_text'];
+        } else {
+            $result = false;
+        }
         return  $result;
     }
 

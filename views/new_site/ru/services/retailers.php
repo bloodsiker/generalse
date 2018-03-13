@@ -47,7 +47,9 @@
             </div>
 
         </div>
-        <section data-scroll-div="section-1" class="container">
+
+        <div id="repair" style="margin-bottom: 100px"></div>
+        <section data-scroll-div="section-1" class="container" style="margin: 0">
             <div class="row ">
                 <div class="col-md-6">
                     <img class="mw-100" src="/template/new_site/img/services/257736.jpeg" alt="Ремонт и технические услуги">
@@ -67,7 +69,8 @@
             </div>
         </section>
 
-        <section data-scroll-div="section-2" class="container">
+        <div id="recycling" style="margin-bottom: 100px"></div>
+        <section data-scroll-div="section-2" class="container" style="margin: 0">
             <div class="row ">
                 <div class="col-md-6">
                     <img class="mw-100" src="/template/new_site/img/services/825262.jpeg" alt="Утилизация оборудования">
@@ -79,14 +82,15 @@
             </div>
         </section>
 
-        <section data-scroll-div="section-3" class="container">
+        <div id="logistics" style="margin-bottom: 100px"></div>
+        <section data-scroll-div="section-3" class="container" style="margin: 0">
             <div class="row ">
                 <div class="col-md-6">
                     <img class="mw-100" src="/template/new_site/img/services/193667.jpeg" alt="Логистика">
                 </div>
                 <div class="col-md-6">
                     <h2 class="text-uppercase mb-2">Логистика</h2>
-                    <p>General Services является профессиональным логистическим провайдером в сегменте запасных частей и комлектующих для потребительской электроники. Мы обеспечиваем полный цикл цепочки поставок, от завода до сервисного центра. Но кроме этого, мы предоставляем услуги возвратной логистики для торговых сетей: сбор нерабочей техники из точек продажи и их доставка в сервисный центр производителя. Наши логистические услуги для розничных сетей включают:</p>
+                    <p>General Services является профессиональным логистическим провайдером в сегменте запасных частей и комплектующих для потребительской электроники. Мы обеспечиваем полный цикл цепочки поставок от завода до сервисного центра. Но, кроме этого, мы предоставляем услуги возвратной логистики для торговых сетей: сбор нерабочей техники из точек продажи и их доставка в сервисный центр производителя. Наши логистические услуги для розничных сетей включают:</p>
                     <ul>
                         <li>Сбор клиентской техники в точках продажи</li>
                         <li>Проверку и диагностику оборудования</li>

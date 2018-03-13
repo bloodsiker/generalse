@@ -2,20 +2,20 @@
 namespace Umbrella\controllers\site;
 
 use Umbrella\app\Services\site\SeoMetaService;
-use Umbrella\vendor\controller\Controller;
+use Umbrella\controllers\BaseSiteController;
 
 /**
- * Class ContactsController
+ * Class Recycling
  * @package Umbrella\controllers\site
  */
-class ContactsController extends Controller
+class RecyclingController extends BaseSiteController
 {
     private $curr_lang;
 
     private $seo;
 
     /**
-     * ContactsController constructor.
+     * Recycling constructor.
      */
     public function __construct()
     {
@@ -29,8 +29,8 @@ class ContactsController extends Controller
      */
     public function actionIndex()
     {
-        $seo_page = $this->seo->getSeoForPage('contact');
-        $this->render("new_site/{$this->curr_lang}/contact", compact('seo_page'));
+        $seo_page = $this->seo->getSeoForPage('recycling');
+        $this->render("new_site/{$this->curr_lang}/recycling", compact('seo_page'));
         return true;
     }
 }

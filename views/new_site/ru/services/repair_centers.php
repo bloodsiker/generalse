@@ -45,7 +45,9 @@
             </div>
 
         </div>
-        <section data-scroll-div="section-1" class="container">
+
+        <div id="original" style="margin-bottom: 100px"></div>
+        <section data-scroll-div="section-1" class="container" style="margin: 0">
             <div class="row ">
                 <div class="col-md-6">
                     <img class="mw-100" src="/template/new_site/img/services/night-computer-hdd-hard-drive.jpg" alt="Оригинальные комплектующие">
@@ -60,7 +62,8 @@
             </div>
         </section>
 
-        <section data-scroll-div="section-2" class="container">
+        <div id="repair" style="margin-bottom: 100px"></div>
+        <section data-scroll-div="section-2" class="container" style="margin: 0">
             <div class="row ">
                 <div class="col-md-6">
                     <img class="mw-100" src="/template/new_site/img/services/257736.jpeg" alt="Ремонт и технические услуги">
@@ -79,7 +82,8 @@
             </div>
         </section>
 
-        <section data-scroll-div="section-3" class="container">
+        <div id="recycling" style="margin-bottom: 100px"></div>
+        <section data-scroll-div="section-3" class="container" style="margin: 0">
             <div class="row ">
                 <div class="col-md-6">
                     <img class="mw-100" src="/template/new_site/img/services/825262.jpeg" alt="Утилизация оборудования">

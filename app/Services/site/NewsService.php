@@ -42,13 +42,15 @@ class NewsService
     public function findBySlug($slug)
     {
         $new = News::getNewBySlug($slug);
-
-        $result['image'] = $new['image'];
-        $result['slug'] = $new['slug'];
-        $result['title'] = $new[$this->lang .'_title'];
-        $result['text'] = $new[$this->lang .'_text'];
-        $result['created_at'] = Carbon::parse($new['created_at'])->format('d.m.Y');
-
+        if($new){
+            $result['image'] = $new['image'];
+            $result['slug'] = $new['slug'];
+            $result['title'] = $new[$this->lang .'_title'];
+            $result['text'] = $new[$this->lang .'_text'];
+            $result['created_at'] = Carbon::parse($new['created_at'])->format('d.m.Y');
+        } else {
+            $result = false;
+        }
         return  $result;
     }
 

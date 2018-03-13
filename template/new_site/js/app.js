@@ -205,11 +205,13 @@ $(document).ready(function () {
 
         $(function() {
 
-            $('#sign-up-form').each(function(){
-                let form = $(this),
-                    btn = form.find('#btn-sign-up');
+            $('form[data-form="send"]').submit(function(e){
+                e.preventDefault();
+
+                let form = $(this);
 
                 form.find('.required').addClass('empty_field');
+                checkInput();
 
                 // Функция проверки полей формы
                 function checkInput(){
@@ -230,55 +232,47 @@ $(document).ready(function () {
                     },2000);
                 }
 
+
+                let sizeEmpty = form.find('.empty_field').length;
                 // Проверка в режиме реального времени
                 setInterval(function(){
                     checkInput();
-                    let sizeEmpty = form.find('.empty_field').length;
-                    // Вешаем условие-тригер на кнопку отправки формы
                     if(sizeEmpty > 0){
-                        if(btn.hasClass('disabled')){
-                            return false
-                        } else {
-                            btn.addClass('disabled')
-                        }
-                    } else {
-                        btn.removeClass('disabled')
+                        return false
                     }
                 },500);
 
-                // Событие клика по кнопке отправить
-                btn.click(function(){
-                    if($(this).hasClass('disabled')){
-                        lightEmpty();
-                        return false
-                    } else {
-                        let newForm = form.serializeObject(); // получение данных в объекте
-                        let json = JSON.stringify(newForm); // json
-                        $.ajax({
-                            url: "/sign_up",
-                            type: "POST",
-                            data: {json : json},
-                            cache: false,
-                            success: function (response) {
-                                console.log(response);
-                                if(response == 1){
-                                    setTimeout(function () {
-                                        $('#registrationModal').modal('hide');
-                                        $('#thank').modal('show');
-                                        $('#sign-up-form').trigger("reset");
-                                    }, 500);
-                                    $('.thank-container').html('<h5>Ваша заявка отправлена на рассмотрение. Наш менеджер свяжется с Вами в ближайшее время</h5>');
-                                } else if(response == 0){
-                                    $('.thank-container').html('<h5>Произошла ошибка при отправке заявки. Свяжитесь пожалуйста с нами по адресу <a href=\'mailto:sales@generalse.com\'>sales@generalse.com</a></h5>');
-                                }
+
+                if(sizeEmpty > 0){
+                    lightEmpty();
+                    return false
+                } else {
+                    let newForm = form.serializeObject(); // получение данных в объекте
+                    let json = JSON.stringify(newForm); // json
+                    let url = form.attr('action');
+                    $.ajax({
+                        url: url,
+                        type: "POST",
+                        data: {json : json},
+                        cache: false,
+                        success: function (response) {
+                            let obj = jQuery.parseJSON(response);
+                            if(obj.code == 200){
+                                setTimeout(function () {
+                                    $('#registrationModal').modal('hide');
+                                    $('#thank').modal('show');
+                                    form.trigger("reset");
+                                }, 500);
+                                $('.thank-container').html(obj.message);
+                            } else if(obj.code == 503){
+                                $('.thank-container').html(obj.message);
                             }
-                        });
-                        return false;
-                    }
-                });
+                        }
+                    });
+                    return false;
+                }
             });
         });
-
     })( jQuery );
 
 

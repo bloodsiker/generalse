@@ -117,23 +117,24 @@ $('#sign-up-form').submit(function(e) {
             data: {json : json},
             cache: false,
             success: function (response) {
+                let obj = jQuery.parseJSON(response);
                 console.log(response);
-                if(response == 1){
+                if(obj.code == 200){
                     setTimeout(function () {
                         $('#sign-up').foundation('close');
                         $('#sign-up-form').trigger("reset");
                     }, 500);
                     var html_error = "<div class='umbrella-alert'>"
-                        + "<span>Ваша заявка отправлена на рассмотрение. Наш менеджер свяжется с Вами в ближайшее время</span>"
+                        + obj.message
                         + "</div>";
 
                     $('body').append(html_error);
 
                     setTimeout(remove_elem, 10000);
-                } else if(response == 0){
+                } else if(obj.code == 503){
 
                     var html_error = "<div class='umbrella-alert'>"
-                        + "<span>Произошла ошибка при отправке заявки. Свяжитесь пожалуйста с нами по адресу <a href='mailto:sales@generalse.com'>sales@generalse.com</a></span>"
+                        + obj.message
                         + "</div>";
 
                     $('body').append(html_error);

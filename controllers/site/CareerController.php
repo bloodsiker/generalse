@@ -1,11 +1,12 @@
 <?php
 namespace Umbrella\controllers\site;
 
+use Josantonius\Url\Url;
 use Umbrella\app\Services\site\SeoMetaService;
 use Umbrella\app\Services\site\VacancyService;
-use Umbrella\vendor\controller\Controller;
+use Umbrella\controllers\BaseSiteController;
 
-class CareerController extends Controller
+class CareerController extends BaseSiteController
 {
 
     private $curr_lang;
@@ -46,6 +47,10 @@ class CareerController extends Controller
         $vacancy = new VacancyService($this->curr_lang);
         $info_vacancy = $vacancy->findBySlug($slug);
         $seo_page['title'] .= ' – ' . $info_vacancy['title'];
+
+        if(!$info_vacancy){
+            Url::redirect('/ru/404');
+        }
 
         $this->render("new_site/{$this->curr_lang}/career/show_vacancy", compact('seo_page', 'info_vacancy'));
         return true;

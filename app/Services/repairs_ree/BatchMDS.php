@@ -74,7 +74,7 @@ class BatchMDS
             $array[$i]['IMEI2'] = $value['E'];
             $array[$i]['SN'] = $value['F'];
             $array[$i]['MTM'] = $value['G'];
-            $array[$i]['PurchaseDate'] = $value['I'];
+            $array[$i]['PurchaseDate'] = !empty($value['I']) ? Carbon::parse($value['I'])->format('Y/m/d') : null;
             $array[$i]['SOWarrantyStatus'] = $value['J'];
             $array[$i]['FirstName'] = !empty($value['K']) ? Decoder::strToWindows($value['K']) : null;
             $array[$i]['LastName'] = !empty($value['K']) ? Decoder::strToWindows($value['L']) : null;
@@ -90,8 +90,8 @@ class BatchMDS
             $array[$i]['ServiceType'] = $value['V'];
             $array[$i]['TrackingNumberIn'] = $value['W'];
 
-            //$array[$i]['CarryInTime'] = !empty($value['AA']) ? Carbon::parse($value['AA'])->format('Y.m.d H:i') : null;
-            $array[$i]['CarryInTime'] = $value['AA'];
+            $array[$i]['CarryInTime'] = !empty($value['AA']) ? Carbon::parse($value['AA'])->format('Y/m/d H:i') : null;
+            //$array[$i]['CarryInTime'] = $value['AA'];
             $array[$i]['ComplaintCode'] = $value['AC'];
             $array[$i]['ServiceNotes'] = $value['AD'];
             $array[$i]['Earphone'] = $value['AE'];
@@ -177,9 +177,9 @@ class BatchMDS
             $array[$i]['NewSN'] = $value['AV'];
             $array[$i]['NewSoftwareVersion'] = $value['AW'];
             $array[$i]['PartStatus'] = null; ////////////
-            $array[$i]['RepairFinishiTime'] = !empty($value['AX']) ? Carbon::parse($value['AX'])->format('Y-m-d H:i') : null;
+            $array[$i]['RepairFinishiTime'] = !empty($value['AX']) ? Carbon::parse($value['AX'])->format('Y/m/d H:i') : null;
             $array[$i]['TrackingNumberOut'] = $value['AY'];
-            $array[$i]['PickupTime'] = !empty($value['BB']) ? Carbon::parse($value['BB'])->format('Y-m-d H:i') : null;
+            $array[$i]['PickupTime'] = !empty($value['BB']) ? Carbon::parse($value['BB'])->format('Y/m/d H:i') : null;
 
             $i++;
         }

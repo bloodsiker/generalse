@@ -27,6 +27,45 @@
         <!-- body -->
         <div class="body-content">
             <div class="row">
+                <div class="medium-12 small-12 columns">
+                    <table class="umbrella-table margin-bottom">
+                        <thead>
+                        <tr>
+                            <th class="text-center" colspan="8">KPI</th>
+                        </tr>
+                        <tr>
+                            <th class="text-center">KPI</th>
+                            <th>Condition</th>
+                            <th>Target</th>
+                            <th>Weight</th>
+                            <th>Result</th>
+                            <th>Coef.</th>
+                            <th>Rate</th>
+                            <th>Бонус</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($newKpi as $kpi): ?>
+                        <tr>
+                            <td class="umbrella-tr-td"><?= $kpi['name'] ?></td>
+                            <td><?= $kpi['condition'] ?></td>
+                            <td><?= $kpi['target'] ?>%</td>
+                            <td><?= $kpi['weight'] ?></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <?php endforeach; ?>
+                        <tr>
+                            <td colspan="6"></td>
+                            <td>0,00</td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
                 <div class="medium-7 small-12 columns">
 
                     <table class="umbrella-table margin-bottom">
@@ -107,100 +146,6 @@
                         </tbody>
                     </table>
 
-                    <table class="umbrella-table margin-bottom">
-                        <thead>
-                        <tr>
-                            <th class="text-center" colspan="8">KPI</th>
-                        </tr>
-                        <tr>
-                            <th class="text-center">KPI</th>
-                            <th>Condition</th>
-                            <th>Target</th>
-                            <th>Weight</th>
-                            <th>Result</th>
-                            <th>Coef.</th>
-                            <th>Rate</th>
-                            <th>Бонус</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="umbrella-tr-td">SW repair TAT</td>
-                                <td>1 business day</td>
-                                <td>90%</td>
-                                <td>0,15</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td class="umbrella-tr-td">Engineer Order TAT</td>
-                                <td>1 business day</td>
-                                <td>95%</td>
-                                <td>0,15</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>Выплата</td>
-                            </tr>
-                            <tr>
-                                <td class="umbrella-tr-td">Repair TAT</td>
-                                <td>1 business day</td>
-                                <td>90%</td>
-                                <td>0,15</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td class="umbrella-tr-td">FTF 30 days</td>
-                                <td>no more</td>
-                                <td>4%</td>
-                                <td>0,15</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td class="umbrella-tr-td">FTF 90 days</td>
-                                <td>no more</td>
-                                <td>6%</td>
-                                <td>0,1</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td class="umbrella-tr-td">L2 rate</td>
-                                <td>more</td>
-                                <td>30%</td>
-                                <td>0,15</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td class="umbrella-tr-td">Return Spare Parts</td>
-                                <td>1 business day</td>
-                                <td>95%</td>
-                                <td>0,15</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td colspan="6"></td>
-                                <td>0,00</td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
 
                     <table class="umbrella-table margin-bottom">
                         <thead>

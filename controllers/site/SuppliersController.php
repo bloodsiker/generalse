@@ -6,10 +6,10 @@ use Josantonius\Url\Url;
 use Umbrella\app\Mail\Site\SendSupplier;
 use Umbrella\app\Services\site\SeoMetaService;
 use Umbrella\components\Functions;
-use Umbrella\vendor\controller\Controller;
+use Umbrella\controllers\BaseSiteController;
 use upload as FileUpload;
 
-class SuppliersController extends Controller
+class SuppliersController extends BaseSiteController
 {
 
     private $curr_lang;
@@ -46,6 +46,7 @@ class SuppliersController extends Controller
         $options['email'] = Request::post('email');
         $options['company'] = Request::post('company');
         $options['message'] = Request::post('message');
+        $options['upload_file'] = false;
 
         if (!empty(Request::files('file-price'))) {
             $handle = new FileUpload(Request::files('file-price'));

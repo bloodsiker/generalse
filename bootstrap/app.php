@@ -39,6 +39,5 @@ josegonzalez\Dotenv\Loader::load([
 ]);
 
 //Router run
-require_once(components_path('Router.php'));
 $router = new Umbrella\components\Router();
 $router->run();

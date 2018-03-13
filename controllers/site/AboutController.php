@@ -2,11 +2,10 @@
 namespace Umbrella\controllers\site;
 
 use Umbrella\app\Services\site\SeoMetaService;
-use Umbrella\components\ImportExcel;
+use Umbrella\controllers\BaseSiteController;
 use Umbrella\models\site\ServiceCenter;
-use Umbrella\vendor\controller\Controller;
 
-class AboutController extends Controller
+class AboutController extends BaseSiteController
 {
 
     private $curr_lang;

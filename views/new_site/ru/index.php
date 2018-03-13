@@ -23,7 +23,7 @@
                     <div class="carousel-caption d-none d-md-block text-left">
                         <h2>Комплексное послепродажное обслуживание техники</h2>
                         <div class="w-100 text-right">
-                            <a class="btn btn-red btn-lg mt-2">Читать далее...</a>
+                            <a href="/ru/new/services/manufacturers#complex" class="btn btn-red btn-lg mt-2">Читать далее...</a>
                         </div>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
                     <div class="carousel-caption d-none d-md-block text-left">
                         <h2>Логистика и дистрибуция запасных частей</h2>
                         <div class="w-100 text-right">
-                            <a class="btn btn-red btn-lg mt-2">Читать далее...</a>
+                            <a href="/ru/new/services/manufacturers#logistics" class="btn btn-red btn-lg mt-2">Читать далее...</a>
                         </div>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                     <div class="carousel-caption d-none d-md-block text-left">
                         <h2>Инжениринг и технические услуги</h2>
                         <div class="w-100 text-right">
-                            <a class="btn btn-red btn-lg mt-2">Читать далее...</a>
+                            <a href="/ru/new/services/manufacturers#repair" class="btn btn-red btn-lg mt-2">Читать далее...</a>
                         </div>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                     <div class="carousel-caption d-none d-md-block text-left">
                         <h2>Переработка электронных отходов</h2>
                         <div class="w-100 text-right">
-                            <a class="btn btn-red btn-lg mt-2">Читать далее...</a>
+                            <a href="/ru/new/services/retailers#recycling" class="btn btn-red btn-lg mt-2">Читать далее...</a>
                         </div>
                     </div>
                 </div>
@@ -137,7 +137,7 @@
                             <figcaption>
                                 <h3>Продать нерабочее устройство</h3>
                                 <p></p>
-                                <a href="">View more</a>
+                                <a href="/ru/new/recycling">View more</a>
                             </figcaption>
                         </figure>
                     </div>

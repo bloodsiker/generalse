@@ -3,9 +3,9 @@ namespace Umbrella\controllers\site;
 
 use Josantonius\Url\Url;
 use Umbrella\app\Services\site\SeoMetaService;
-use Umbrella\vendor\controller\Controller;
+use Umbrella\controllers\BaseSiteController;
 
-class MainController extends Controller
+class MainController extends BaseSiteController
 {
 
     private $curr_lang;
@@ -27,7 +27,7 @@ class MainController extends Controller
      */
     public function actionIndex()
     {
-        $seo_page = $this->seo->getSeoForPage('contact');
+        $seo_page = $this->seo->getSeoForPage('main');
 
         if($this->curr_lang == 'en'){
             Url::redirect('/ru/new');

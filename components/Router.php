@@ -23,6 +23,10 @@ class Router
      */
     private $uri;
 
+    /**
+     * @var array
+     */
+
 
     /**
      * Router constructor.
@@ -66,10 +70,10 @@ class Router
 
             // Сравниваем $uriPattern и $uri
             if (preg_match("~$uriPattern~", $this->uri)) {
-                
+
                 // Получаем внутренний путь из внешнего согласно правилу.
                 $internalRoute = preg_replace("~$uriPattern~", $path, $this->uri);
-                                
+
                 // Определить контроллер, action, параметры
 
                 $segments = explode('@', $internalRoute);
@@ -101,7 +105,17 @@ class Router
                 $controllerObject = new $newControllerName();
 
                 $result = call_user_func_array(array($controllerObject, $actionName), $parameters);
-                
+
+                //Если последняя ошибка в файле Router, показываем 404
+                $last_error = error_get_last();
+                if($last_error){
+                    $pathFileError = explode('/', $last_error['file']);
+                    $fileError = end($pathFileError);
+                    if($last_error['type'] == 2 && $fileError == 'Router.php'){
+                        \Josantonius\Url\Url::redirect('/ru/404');
+                    }
+                }
+
                 if ($result != null) {
                     break;
                 }

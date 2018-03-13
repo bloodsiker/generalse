@@ -7,10 +7,10 @@ return [
     'ru/new/suppliers/send_form' => 'site/Suppliers@sendForm',
     'ru/new/suppliers' => 'site/Suppliers@index',
 
-    'ru/new/career/([a-z0-9-_?&\.]+)' => 'site/Career@show/$1',
+    'ru/new/career/([a-z0-9-_?&]+)' => 'site/Career@show/$1',
     'ru/new/career' => 'site/Career@index',
 
-    'ru/new/news/([a-z0-9-_?&\.]+)' => 'site/News@new/$1',
+    'ru/new/news/([a-z0-9-_?&]+)' => 'site/News@new/$1',
     'ru/new/news' => 'site/News@index',
 
     'ru/new/recycling' => 'site/Recycling@index',
@@ -36,10 +36,10 @@ return [
 
     'new/suppliers' => 'site/Suppliers@index',
 
-    'new/career/([a-z0-9-_?&\.]+)' => 'site/Career@show/$1',
+    'new/career/([a-z0-9-_?&]+)' => 'site/Career@show/$1',
     'new/career' => 'site/Career@index',
 
-    'new/news/([a-z0-9-_?&\.]+)' => 'site/News@new/$1',
+    'new/news/([a-z0-9-_?&]+)' => 'site/News@new/$1',
     'new/news' => 'site/News@index',
 
     'new/recycling' => 'site/Recycling@index',

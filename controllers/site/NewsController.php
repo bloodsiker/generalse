@@ -1,11 +1,13 @@
 <?php
 namespace Umbrella\controllers\site;
 
+use Josantonius\Url\Url;
 use Umbrella\app\Services\site\NewsService;
 use Umbrella\app\Services\site\SeoMetaService;
-use Umbrella\vendor\controller\Controller;
+use Umbrella\components\Router;
+use Umbrella\controllers\BaseSiteController;
 
-class NewsController extends Controller
+class NewsController extends BaseSiteController
 {
 
     private $curr_lang;
@@ -48,6 +50,10 @@ class NewsController extends Controller
         $news = new NewsService($this->curr_lang);
         $info_news = $news->findBySlug($slug);
         $seo_page['title'] .= ' – ' . $info_news['title'];
+
+        if(!$info_news){
+            Url::redirect('/ru/404');
+        }
 
         $this->render("new_site/{$this->curr_lang}/news/show_new", compact('seo_page', 'info_news'));
         return true;

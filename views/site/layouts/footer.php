@@ -154,7 +154,7 @@
 <script src="/template/admin/js/app.js"></script>
 <script src="/template/site/js/parallax.min.js"></script>
 <script src="/template/site/js/object.js"></script>
-<script src="/template/site/js/main.js?v.1.5.3"></script>
+<script src="/template/site/js/main.js?v.1.5.5"></script>
 <script src="http://mynameismatthieu.com/WOW/dist/wow.min.js"></script>
 
 <script src="/template/site/js/html2canvas.js"></script>

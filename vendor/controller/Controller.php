@@ -14,15 +14,12 @@ class Controller
      */
     public $view;
 
-    public $lang;
-
     /**
      * Controller constructor.
      */
     public function __construct()
     {
         $this->view = new View();
-        $this->lang = new Language();
     }
 
 

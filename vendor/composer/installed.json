@@ -115,122 +115,6 @@
         ]
     },
     {
-        "name": "symfony/polyfill-mbstring",
-        "version": "v1.6.0",
-        "version_normalized": "1.6.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/polyfill-mbstring.git",
-            "reference": "2ec8b39c38cb16674bbf3fea2b6ce5bf117e1296"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/2ec8b39c38cb16674bbf3fea2b6ce5bf117e1296",
-            "reference": "2ec8b39c38cb16674bbf3fea2b6ce5bf117e1296",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "suggest": {
-            "ext-mbstring": "For best performance"
-        },
-        "time": "2017-10-11T12:05:26+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.6-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Symfony\\Polyfill\\Mbstring\\": ""
-            },
-            "files": [
-                "bootstrap.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Nicolas Grekas",
-                "email": "p@tchwork.com"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "https://symfony.com/contributors"
-            }
-        ],
-        "description": "Symfony polyfill for the Mbstring extension",
-        "homepage": "https://symfony.com",
-        "keywords": [
-            "compatibility",
-            "mbstring",
-            "polyfill",
-            "portable",
-            "shim"
-        ]
-    },
-    {
-        "name": "nesbot/carbon",
-        "version": "1.22.1",
-        "version_normalized": "1.22.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/briannesbitt/Carbon.git",
-            "reference": "7cdf42c0b1cc763ab7e4c33c47a24e27c66bfccc"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/7cdf42c0b1cc763ab7e4c33c47a24e27c66bfccc",
-            "reference": "7cdf42c0b1cc763ab7e4c33c47a24e27c66bfccc",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.0",
-            "symfony/translation": "~2.6 || ~3.0"
-        },
-        "require-dev": {
-            "friendsofphp/php-cs-fixer": "~2",
-            "phpunit/phpunit": "~4.0 || ~5.0"
-        },
-        "time": "2017-01-16T07:55:07+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.23-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Carbon\\": "src/Carbon/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Brian Nesbitt",
-                "email": "brian@nesbot.com",
-                "homepage": "http://nesbot.com"
-            }
-        ],
-        "description": "A simple API extension for DateTime.",
-        "homepage": "http://carbon.nesbot.com",
-        "keywords": [
-            "date",
-            "datetime",
-            "time"
-        ]
-    },
-    {
         "name": "josantonius/request",
         "version": "1.1.7",
         "version_normalized": "1.1.7.0",
@@ -408,17 +292,17 @@
     },
     {
         "name": "josantonius/url",
-        "version": "1.1.9",
-        "version_normalized": "1.1.9.0",
+        "version": "1.2.0",
+        "version_normalized": "1.2.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/Josantonius/PHP-Url.git",
-            "reference": "4fbf4f3c2f27a7c9cb65e2a187bf2358941cf22f"
+            "reference": "c3723fddfbc1afb470709d526cf4207c2616379c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Josantonius/PHP-Url/zipball/4fbf4f3c2f27a7c9cb65e2a187bf2358941cf22f",
-            "reference": "4fbf4f3c2f27a7c9cb65e2a187bf2358941cf22f",
+            "url": "https://api.github.com/repos/Josantonius/PHP-Url/zipball/c3723fddfbc1afb470709d526cf4207c2616379c",
+            "reference": "c3723fddfbc1afb470709d526cf4207c2616379c",
             "shasum": ""
         },
         "require": {
@@ -430,7 +314,7 @@
             "phpunit/phpunit": "^5.7 || ^6.0",
             "squizlabs/php_codesniffer": "^3.0"
         },
-        "time": "2018-01-07T15:35:31+00:00",
+        "time": "2018-02-22T03:29:32+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -466,35 +350,96 @@
         ]
     },
     {
-        "name": "symfony/translation",
-        "version": "v3.4.3",
-        "version_normalized": "3.4.3.0",
+        "name": "symfony/polyfill-mbstring",
+        "version": "v1.7.0",
+        "version_normalized": "1.7.0.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/symfony/translation.git",
-            "reference": "17b5962d252b2d6d1d37a2485ebb7ddc5b2bef0a"
+            "url": "https://github.com/symfony/polyfill-mbstring.git",
+            "reference": "78be803ce01e55d3491c1397cf1c64beb9c1b63b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/translation/zipball/17b5962d252b2d6d1d37a2485ebb7ddc5b2bef0a",
-            "reference": "17b5962d252b2d6d1d37a2485ebb7ddc5b2bef0a",
+            "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/78be803ce01e55d3491c1397cf1c64beb9c1b63b",
+            "reference": "78be803ce01e55d3491c1397cf1c64beb9c1b63b",
             "shasum": ""
         },
         "require": {
-            "php": "^5.5.9|>=7.0.8",
+            "php": ">=5.3.3"
+        },
+        "suggest": {
+            "ext-mbstring": "For best performance"
+        },
+        "time": "2018-01-30T19:27:44+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.7-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Polyfill\\Mbstring\\": ""
+            },
+            "files": [
+                "bootstrap.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Nicolas Grekas",
+                "email": "p@tchwork.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony polyfill for the Mbstring extension",
+        "homepage": "https://symfony.com",
+        "keywords": [
+            "compatibility",
+            "mbstring",
+            "polyfill",
+            "portable",
+            "shim"
+        ]
+    },
+    {
+        "name": "symfony/translation",
+        "version": "v4.0.4",
+        "version_normalized": "4.0.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/translation.git",
+            "reference": "a9c4e4cc56f7eff0960c4f6c157da8f6b13211fc"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/translation/zipball/a9c4e4cc56f7eff0960c4f6c157da8f6b13211fc",
+            "reference": "a9c4e4cc56f7eff0960c4f6c157da8f6b13211fc",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^7.1.3",
             "symfony/polyfill-mbstring": "~1.0"
         },
         "conflict": {
-            "symfony/config": "<2.8",
+            "symfony/config": "<3.4",
             "symfony/dependency-injection": "<3.4",
             "symfony/yaml": "<3.4"
         },
         "require-dev": {
             "psr/log": "~1.0",
-            "symfony/config": "~2.8|~3.0|~4.0",
+            "symfony/config": "~3.4|~4.0",
             "symfony/dependency-injection": "~3.4|~4.0",
             "symfony/finder": "~2.8|~3.0|~4.0",
-            "symfony/intl": "^2.8.18|^3.2.5|~4.0",
+            "symfony/intl": "~3.4|~4.0",
             "symfony/yaml": "~3.4|~4.0"
         },
         "suggest": {
@@ -502,11 +447,11 @@
             "symfony/config": "",
             "symfony/yaml": ""
         },
-        "time": "2018-01-03T07:37:34+00:00",
+        "time": "2018-01-18T22:19:33+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "3.4-dev"
+                "dev-master": "4.0-dev"
             }
         },
         "installation-source": "dist",
@@ -536,23 +481,80 @@
         "homepage": "https://symfony.com"
     },
     {
+        "name": "nesbot/carbon",
+        "version": "1.23.0",
+        "version_normalized": "1.23.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/briannesbitt/Carbon.git",
+            "reference": "4a874a39b2b00d7e0146cd46fab6f47c41ce9e65"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/4a874a39b2b00d7e0146cd46fab6f47c41ce9e65",
+            "reference": "4a874a39b2b00d7e0146cd46fab6f47c41ce9e65",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0",
+            "symfony/translation": "~2.6 || ~3.0 || ~4.0"
+        },
+        "require-dev": {
+            "friendsofphp/php-cs-fixer": "~2",
+            "phpunit/phpunit": "^4.8.35 || ^5.7"
+        },
+        "time": "2018-02-28T09:22:05+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.23-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Carbon\\": "src/Carbon/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Brian Nesbitt",
+                "email": "brian@nesbot.com",
+                "homepage": "http://nesbot.com"
+            }
+        ],
+        "description": "A simple API extension for DateTime.",
+        "homepage": "http://carbon.nesbot.com",
+        "keywords": [
+            "date",
+            "datetime",
+            "time"
+        ]
+    },
+    {
         "name": "roave/security-advisories",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
         "source": {
             "type": "git",
             "url": "https://github.com/Roave/SecurityAdvisories.git",
-            "reference": "a54d4cf91890993ee599c446e2eb3dba3f9eae32"
+            "reference": "850500f4412bae7fedb387ca2389d9cd0c90204f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/a54d4cf91890993ee599c446e2eb3dba3f9eae32",
-            "reference": "a54d4cf91890993ee599c446e2eb3dba3f9eae32",
+            "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/850500f4412bae7fedb387ca2389d9cd0c90204f",
+            "reference": "850500f4412bae7fedb387ca2389d9cd0c90204f",
             "shasum": ""
         },
         "conflict": {
+            "3f/pygmentize": "<1.2",
             "adodb/adodb-php": "<5.20.6",
             "amphp/artax": "<1.0.6|>=2,<2.0.6",
+            "asymmetricrypt/asymmetricrypt": ">=0,<9.9.99",
             "aws/aws-sdk-php": ">=3,<3.2.1",
             "bugsnag/bugsnag-laravel": ">=2,<2.0.2",
             "cakephp/cakephp": ">=1.3,<1.3.18|>=2,<2.4.99|>=2.5,<2.5.99|>=2.6,<2.6.12|>=2.7,<2.7.6|>=3,<3.0.15|>=3.1,<3.1.4",
@@ -561,9 +563,10 @@
             "codeigniter/framework": "<=3.0.6",
             "composer/composer": "<=1.0.0-alpha11",
             "contao-components/mediaelement": ">=2.14.2,<2.21.1",
-            "contao/core": ">=2,<3.5.31",
+            "contao/core": ">=2,<3.5.32",
             "contao/core-bundle": ">=4,<4.4.8",
             "contao/listing-bundle": ">=4,<4.4.8",
+            "contao/newsletter-bundle": ">=4,<4.1",
             "doctrine/annotations": ">=1,<1.2.7",
             "doctrine/cache": ">=1,<1.3.2|>=1.4,<1.4.2",
             "doctrine/common": ">=2,<2.4.3|>=2.5,<2.5.1",
@@ -576,7 +579,8 @@
             "dompdf/dompdf": ">=0.6,<0.6.2",
             "drupal/core": ">=8,<8.3.7",
             "drupal/drupal": ">=8,<8.3.7",
-            "ezsystems/ezpublish-legacy": ">=5.3,<5.3.12.2|>=5.4,<5.4.10.1|>=2017.8,<2017.8.1.1",
+            "erusev/parsedown": "<1.7",
+            "ezsystems/ezpublish-legacy": ">=5.3,<5.3.12.3|>=5.4,<5.4.11.3|>=2017.8,<2017.8.1.1|>=2017.12,<2017.12.2.1",
             "firebase/php-jwt": "<2",
             "friendsofsymfony/rest-bundle": ">=1.2,<1.2.2",
             "friendsofsymfony/user-bundle": ">=1.2,<1.3.5",
@@ -596,21 +600,27 @@
             "onelogin/php-saml": "<2.10.4",
             "oro/crm": ">=1.7,<1.7.4",
             "oro/platform": ">=1.7,<1.7.4",
+            "padraic/humbug_get_contents": "<1.1.2",
+            "pagarme/pagarme-php": ">=0,<9.9.99",
+            "paragonie/random_compat": "<2",
             "phpmailer/phpmailer": ">=5,<5.2.24",
             "phpunit/phpunit": ">=4.8.19,<4.8.28|>=5.0.10,<5.6.3",
             "phpxmlrpc/extras": "<0.6.1",
+            "propel/propel": ">=2.0.0-alpha1,<=2.0.0-alpha7",
+            "propel/propel1": ">=1,<=1.7.1",
             "pusher/pusher-php-server": "<2.2.1",
             "sabre/dav": ">=1.6,<1.6.99|>=1.7,<1.7.11|>=1.8,<1.8.9",
-            "shopware/shopware": "<5.2.25",
+            "shopware/shopware": "<5.3.7",
             "silverstripe/cms": ">=3,<=3.0.11|>=3.1,<3.1.11",
             "silverstripe/forum": "<=0.6.1|>=0.7,<=0.7.3",
             "silverstripe/framework": ">=3,<3.3",
             "silverstripe/userforms": "<3",
-            "simplesamlphp/saml2": "<1.8.1|>=1.9,<1.9.1|>=1.10,<1.10.3|>=2,<2.3.3",
-            "simplesamlphp/simplesamlphp": "<1.14.16",
+            "simplesamlphp/saml2": "<1.10.4|>=2,<2.3.5|>=3,<3.1.1",
+            "simplesamlphp/simplesamlphp": "<1.15.2",
             "simplesamlphp/simplesamlphp-module-infocard": "<1.0.1",
             "socalnick/scn-social-auth": "<1.15.2",
             "squizlabs/php_codesniffer": ">=1,<2.8.1",
+            "stormpath/sdk": ">=0,<9.9.99",
             "swiftmailer/swiftmailer": ">=4,<5.4.5",
             "symfony/dependency-injection": ">=2,<2.0.17",
             "symfony/form": ">=2.3,<2.3.35|>=2.4,<2.6.12|>=2.7,<2.7.38|>=2.8,<2.8.31|>=3,<3.2.14|>=3.3,<3.3.13",
@@ -630,16 +640,17 @@
             "symfony/web-profiler-bundle": ">=2,<2.3.19|>=2.4,<2.4.9|>=2.5,<2.5.4",
             "symfony/yaml": ">=2,<2.0.22|>=2.1,<2.1.7",
             "thelia/backoffice-default-template": ">=2.1,<2.1.2",
-            "thelia/thelia": ">=2.1,<2.1.2|>=2.1.0-beta1,<2.1.3",
+            "thelia/thelia": ">=2.1.0-beta1,<2.1.3|>=2.1,<2.1.2",
+            "titon/framework": ">=0,<9.9.99",
             "twig/twig": "<1.20",
             "typo3/cms": ">=6.2,<6.2.30|>=7,<7.6.22|>=8,<8.7.5",
             "typo3/flow": ">=1,<1.0.4|>=1.1,<1.1.1|>=2,<2.0.1|>=2.3,<2.3.16|>=3,<3.0.10|>=3.1,<3.1.7|>=3.2,<3.2.7|>=3.3,<3.3.5",
             "typo3/neos": ">=1.1,<1.1.3|>=1.2,<1.2.13|>=2,<2.0.4",
             "willdurand/js-translation-bundle": "<2.1.1",
             "yiisoft/yii": ">=1.1.14,<1.1.15",
-            "yiisoft/yii2": "<2.0.5",
+            "yiisoft/yii2": "<2.0.14",
             "yiisoft/yii2-bootstrap": "<2.0.4",
-            "yiisoft/yii2-dev": "<2.0.4",
+            "yiisoft/yii2-dev": "<2.0.14",
             "yiisoft/yii2-gii": "<2.0.4",
             "yiisoft/yii2-jui": "<2.0.4",
             "zendframework/zend-cache": ">=2.4,<2.4.8|>=2.5,<2.5.3",
@@ -666,7 +677,7 @@
             "zfcampus/zf-apigility-doctrine": ">=1,<1.0.3",
             "zfr/zfr-oauth2-server-module": "<0.1.2"
         },
-        "time": "2018-01-13T18:31:46+00:00",
+        "time": "2018-02-28T15:25:30+00:00",
         "type": "metapackage",
         "notification-url": "https://packagist.org/downloads/",
         "license": [
@@ -688,18 +699,18 @@
         "source": {
             "type": "git",
             "url": "https://github.com/verot/class.upload.php.git",
-            "reference": "d63b7568513edb5947ddd77ff082e6258796244b"
+            "reference": "54a225d01a4b658fe05852ee5a3b7b3829467a2a"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/verot/class.upload.php/zipball/d63b7568513edb5947ddd77ff082e6258796244b",
-            "reference": "d63b7568513edb5947ddd77ff082e6258796244b",
+            "url": "https://api.github.com/repos/verot/class.upload.php/zipball/54a225d01a4b658fe05852ee5a3b7b3829467a2a",
+            "reference": "54a225d01a4b658fe05852ee5a3b7b3829467a2a",
             "shasum": ""
         },
         "require": {
             "php": ">=4"
         },
-        "time": "2018-01-09T22:13:42+00:00",
+        "time": "2018-02-11T18:40:29+00:00",
         "type": "library",
         "installation-source": "source",
         "autoload": {
@@ -709,7 +720,7 @@
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "GPLv2"
+            "GPL-2.0-only"
         ],
         "authors": [
             {

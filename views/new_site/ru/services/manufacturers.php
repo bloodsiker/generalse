@@ -76,7 +76,9 @@
             </div>
 
         </div>
-        <section data-scroll-div="section-1" class="container">
+
+        <div id="complex" style="margin-bottom: 100px"></div>
+        <section data-scroll-div="section-1" class="container" style="margin: 0;">
             <div class="row ">
                 <div class="col-md-6">
                     <img class="mw-100" src="/template/new_site/img/services/532254.jpeg" alt="Комплексный послепродажный сервис">
@@ -88,14 +90,15 @@
                         <li>Планирование и процесс закупки запасных частей</li>
                         <li>Полный цикл логистики запчастей</li>
                         <li>Складское хранение и дистрибуцию комплектующих</li>
-                        <li>Ремонтом техники в гарантийный и послегарантийных период</li>
+                        <li>Ремонтом техники в гарантийный и послегарантийный период</li>
                         <li>Техническую и информационную поддержку клиентов.</li>
                     </ul>
                 </div>
             </div>
         </section>
 
-        <section data-scroll-div="section-2" class="container">
+        <div id="repair" style="margin-bottom: 100px"></div>
+        <section data-scroll-div="section-2" class="container" style="margin: 0;">
             <div class="row ">
                 <div class="col-md-6">
                     <img class="mw-100" src="/template/new_site/img/services/257736.jpeg" alt="Ремонт и технические услуги">
@@ -115,7 +118,8 @@
             </div>
         </section>
 
-        <section data-scroll-div="section-3" class="container">
+        <div id="spare" style="margin-bottom: 100px"></div>
+        <section data-scroll-div="section-3" class="container" style="margin: 0;">
             <div class="row ">
                 <div class="col-md-6">
                     <img class="mw-100" src="/template/new_site/img/services/75.jpg" alt="Операции с запасными частями">
@@ -135,7 +139,8 @@
             </div>
         </section>
 
-        <section data-scroll-div="section-4" class="container">
+        <div id="recycling" style="margin-bottom: 100px"></div>
+        <section data-scroll-div="section-4" class="container" style="margin: 0;">
             <div class="row ">
                 <div class="col-md-6">
                     <img class="mw-100" src="/template/new_site/img/services/825262.jpeg" alt="Утилизация оборудования">
@@ -147,14 +152,15 @@
             </div>
         </section>
 
-        <section data-scroll-div="section-5" class="container">
+        <div id="logistics" style="margin-bottom: 100px"></div>
+        <section data-scroll-div="section-5" class="container" style="margin: 0;">
             <div class="row ">
                 <div class="col-md-6">
                     <img class="mw-100" src="/template/new_site/img/services/193667.jpeg" alt="Логистика и дистрибуция">
                 </div>
                 <div class="col-md-6">
                     <h2 class="text-uppercase mb-2">Логистика и дистрибуция</h2>
-                    <p>General Services является профессиональным логистическим провайдером в сегменте запасных частей и комлектующих для потребительской электроники. Мы обеспечиваем полный цикл цепочки поставок для компаний-производителей, от завода до сервисного центра. Индивидуальный подход к каждому заказчику позволяет достичь оптимального баланса между стоимостью логистических операций и их эффективностью. Наши логистические услуги включают:</p>
+                    <p>General Services является профессиональным логистическим провайдером в сегменте запасных частей и комплектующих для потребительской электроники. Мы обеспечиваем полный цикл цепочки поставок для компаний-производителей от завода до сервисного центра. Индивидуальный подход к каждому заказчику позволяет достичь оптимального баланса между стоимостью логистических операций и их эффективностью. Наши логистические услуги включают:</p>
                     <ul>
                         <li>Переговоры с поставщиками запасных частей</li>
                         <li>Обеспечение бесперебойного процесса закупок</li>
@@ -164,7 +170,7 @@
                         <li>Профессиональное складское хранение</li>
                         <li>Внутреннюю логистику в сервисные центры производителя</li>
                         <li>Возвратную логистику использованых запасных частей из сервисных центров производителя</li>
-                        <li>Визуальную и техническую инспекцию использованных запасных часте</li>
+                        <li>Визуальную и техническую инспекцию использованных запасных частей</li>
                         <li>Оформление экспорта использованных запасных частей</li>
                     </ul>
                     <p>В зависимости от требований заказчика, General Services также обеспечивает дистрибуцию товаров компании-производителя, включая готовую продукцию, комплектующие, аксессуары.</p>
@@ -172,7 +178,7 @@
             </div>
         </section>
 
-        <section data-scroll-div="section-6" class="container">
+        <section data-scroll-div="section-6" id="contact_center" class="container">
             <div class="row ">
                 <div class="col-md-6">
                     <img class="mw-100" src="/template/new_site/img/services/10.jpg" alt="Услуги контакт-центра">

@@ -2,13 +2,13 @@
 namespace Umbrella\controllers\site;
 
 use Umbrella\app\Services\site\SeoMetaService;
-use Umbrella\vendor\controller\Controller;
+use Umbrella\controllers\BaseSiteController;
 
 /**
  * Class ContactsController
  * @package Umbrella\controllers\site
  */
-class ContactsController extends Controller
+class ContactsController extends BaseSiteController
 {
     private $curr_lang;
 

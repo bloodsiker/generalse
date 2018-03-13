@@ -85,10 +85,43 @@ class DashboardController extends  AdminBase
             return $value;
         }, $intervalMonths);
 
+        $nameKpi = Decoder::arrayToUtf(Dashboard::getNameKPI($month, $year));
+
+        $kpi = Decoder::arrayToUtf(Dashboard::getKPI($month, $year));
+
+        $nameEngineers = Decoder::arrayToUtf(Dashboard::getNameEngineer($month, $year));
+
+        $newKpi = [];
+        $i = 0;
+        foreach ($nameKpi as $name){
+            $newKpi[$i]['name'] = $name['name'];
+            $newKpi[$i]['condition'] = $name['condition'];
+            $newKpi[$i]['target'] = $name['target'];
+            $newKpi[$i]['weight'] = $name['weight'];
+            foreach ($nameEngineers as $engineer){
+                foreach ($kpi as $value){
+                    if($name['name'] == $value['name'] && $engineer['worker_id'] == $value['worker_id']){
+                        $newKpi[$i][$engineer['worker_id']] = [
+                            'worker_name' => $value['worker_name'],
+                            'result' => $value['result'],
+                            'coef' => $value['coef'],
+                            'rate' => $value['rate'],
+                        ];
+                    }
+                }
+            }
+            $i++;
+        }
+
+        echo "<pre>";
+        print_r($newKpi);
+
+
         $this->render('admin/engineers/dashboard/dashboard',
             compact('user', 'movementDevicesProducer', 'movementDevicesClassifier', 'intervalYears',
                 'intervalMonths', 'year', 'month', 'totalDeviceClassifier', 'totalDeviceProducer', 'disassemblyProducer',
-                'disassemblyClassifier', 'totalDisassemblyProducer', 'totalDisassemblyClassifier', 'repairs', 'totalRepairs'));
+                'disassemblyClassifier', 'totalDisassemblyProducer', 'totalDisassemblyClassifier', 'repairs', 'totalRepairs',
+                'newKpi'));
         return true;
     }
 

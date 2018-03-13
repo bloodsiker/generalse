@@ -154,7 +154,7 @@
                             <figcaption>
                                 <h3>Sell your defective assets</h3>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                <a href="../../../index.php">View more</a>
+                                <a href="/new/recycling">View more</a>
                             </figcaption>
                         </figure>
                     </div>
