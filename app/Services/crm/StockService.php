@@ -326,4 +326,36 @@ class StockService
         }
         return array_unique($newArrayStocks);
     }
+
+
+    /**
+     * Replace stockName in Returns
+     * @param $stock
+     *
+     * @return mixed
+     */
+    public function replaceStock($stock)
+    {
+        $stocksReplace = [
+            ['Electrolux' => 'OK (KVAZAR)'],
+            ['БУ(UA)' => ['KVAZAR, Киев\б/у', 'PEX, Киев\б/у']],
+            ['НОВЫЙ(UA)' => ['KVAZAR, Киев\OK', 'PEX, Киев\OK', 'PEX, Киев\Квазар']]
+        ];
+
+        foreach ($stocksReplace as $stocks){
+            if(array_key_exists($stock, $stocks)){
+                $stocksOrArray = $stocks[$stock];
+                if(is_array($stocksOrArray)){
+                    $rand_keys = array_rand($stocksOrArray, 1);
+                    $stockName = $stocksOrArray[$rand_keys];
+                } else {
+                    $stockName = $stocks[$stock];
+                }
+                break;
+            } else {
+                $stockName = $stock;
+            }
+        }
+        return $stockName;
+    }
 }

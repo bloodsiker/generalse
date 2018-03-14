@@ -6,6 +6,7 @@ use Josantonius\Request\Request;
 use Josantonius\Session\Session;
 use Josantonius\Url\Url;
 use Umbrella\app\AdminBase;
+use Umbrella\app\Services\crm\StockService;
 use Umbrella\app\User;
 use Umbrella\components\Decoder;
 use Umbrella\components\Functions;
@@ -95,7 +96,9 @@ class ReturnController extends AdminBase
             $note = Decoder::strToWindows($_REQUEST['note']);
 
             $response['stock'] = $stock;
-            $stock_name = Decoder::strToWindows($stock);
+            $replaceStock = new StockService();
+            $newStockName = $replaceStock->replaceStock($stock);
+            $stock_name = Decoder::strToWindows($newStockName);
 
             $ok = Returns::updateStatusAndStockReturns($id_return, $stock_name, $note);
             if($ok){

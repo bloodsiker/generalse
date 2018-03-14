@@ -157,7 +157,6 @@
                                                title="<?= $return['note'] ?>"></i>
                                         <?php endif; ?>
                                     </td>
-                                    <td></td>
                                     <?php $status_name = $return['status_name']?>
                                     <td class="status_return <?= Umbrella\models\crm\Returns::getStatusRequest($status_name)?>"><?= $status_name?></td>
                                     <td class="text-center">
