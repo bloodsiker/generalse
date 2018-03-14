@@ -133,19 +133,29 @@ $(document).ready(function () {
 
     //link-to-scroll
 
+    // (function () {
+    //     $(document).on('click', '[data-scroll]', e => {
+    //         const scrollTo = id => {
+    //             $('html, body').animate({
+    //                 scrollTop: $(document).find('[data-scroll-div="' + id + '"]').offset().top - 120
+    //             }, 1000);
+    //         };
+    //         if (e.target && e.target.className === 'services-head-link') {
+    //             scrollTo($(e.target).data('scroll-link'));
+    //         } else {
+    //             scrollTo($(e.target).parents('[data-scroll]').data('scroll-link'));
+    //         }
+    //     })
+    // })();
+
     (function () {
-        $(document).on('click', '[data-scroll]', e => {
-            const scrollTo = id => {
-                $('html, body').animate({
-                    scrollTop: $(document).find('[data-scroll-div="' + id + '"]').offset().top - 120
-                }, 1000);
-            };
-            if (e.target && e.target.className === 'services-head-link') {
-                scrollTo($(e.target).data('scroll-link'));
-            } else {
-                scrollTo($(e.target).parents('[data-scroll]').data('scroll-link'));
-            }
-        })
+        $(document).on("click", "[data-scroll]", function () {
+
+            var id  = $(this).attr('data-scroll-link');
+            var top = $(document).find('[data-scroll-div="' + id + '"]').offset().top - 120;
+
+            $('body,html').animate({scrollTop: top}, 1000);
+        });
     })();
 
 
