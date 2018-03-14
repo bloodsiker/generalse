@@ -24,7 +24,7 @@
 <!-- switch  -->
 <?php
 if (Umbrella\components\Url::Is_url('/dashboard')) echo "<script src='/template/admin/js/dashboard.js'></script>";
-if (Umbrella\components\Url::Is_url('/user')) echo "<script src='/template/admin/js/users.js?v.1.9.4'></script>";
+if (Umbrella\components\Url::Is_url('/user')) echo "<script src='/template/admin/js/users.js?v.1.9.5'></script>";
 if (Umbrella\components\Url::Is_url('/crm/stocks')) echo "<script src='/template/admin/js/stocks.js?v.1.9.1'></script>";
 if (Umbrella\components\Url::Is_url('/crm/returns')) echo "<script src='/template/admin/js/returns.js?.1.5.1'></script>";
 if (Umbrella\components\Url::Is_url('/crm/orders')) echo "<script src='/template/admin/js/orders.js?v.1.9'></script>";

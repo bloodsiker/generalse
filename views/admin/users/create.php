@@ -140,10 +140,24 @@
                                 </label>
                             </div>
                         </div>
+
+                        <div class="row hide" id="control-manager">
+                            <div class="large-12 columns">
+                                <label>Под управление менеджера</label>
+                                <div style="border: 2px solid #323e48; padding: 5px; max-height: 130px; overflow-y: scroll">
+                                    <?php if (is_array($managerList)): ?>
+                                        <?php foreach ($managerList as $manager): ?>
+                                            <input id="manager-<?= $manager['id_user']?>" type="checkbox" name="managers[]" value="<?= $manager['id_user']?>">
+                                            <label for="manager-<?= $manager['id_user']?>"><?= $manager['name_partner']?></label>
+                                            <br>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-
-
+                    
                     <div class="medium-6 small-12 columns hide" id="register-gm" style="background: #EFEFEF; border: 1px solid #323e48; padding-bottom: 10px">
                         <h2 class="text-center">Информация для GM</h2>
 

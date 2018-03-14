@@ -121,6 +121,7 @@ $('select[name="role"]').change(function(event) {
     switch(event.target.value) {
         case "2":
             $('#register-gm').removeClass('hide');
+            $('#control-manager').removeClass('hide');
             $('#register-umbrella').removeClass('medium-offset-3');
             $('#register-user').removeClass('medium-offset-3 medium-6').addClass('medium-12');
             $('select[name="curency_id"]').attr('required', 'required').addClass('required');
@@ -131,6 +132,7 @@ $('select[name="role"]').change(function(event) {
             break;
         default:
             $('#register-gm').addClass('hide');
+            $('#control-manager').addClass('hide');
             $('#register-umbrella').addClass('medium-offset-3');
             $('#register-user').removeClass('medium-offset-3 medium-12').addClass('medium-6 medium-offset-3');
             $('select[name="curency_id"]').removeAttr('required').removeClass('required');

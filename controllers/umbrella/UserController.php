@@ -14,6 +14,7 @@ use Umbrella\models\Admin;
 use Umbrella\models\Branch;
 use Umbrella\models\Country;
 use Umbrella\models\crm\Orders;
+use Umbrella\models\crm\Price;
 use Umbrella\models\DeliveryAddress;
 use Umbrella\models\Denied;
 use Umbrella\models\GroupModel;
@@ -147,12 +148,8 @@ class UserController extends AdminBase
             if($user->isAdmin() || $user->isManager()){
                 $id_user = $_REQUEST['id_user'];
                 $usersIds = $_REQUEST['delete_users'];
-                var_dump($id_user);
-                if(is_array($usersIds)){
-                    foreach ($usersIds as $id){
-                        Admin::deleteUserControl($id_user, $id);
-                    }
-                }
+                $implodeIds = implode(',', $usersIds);
+                Admin::deleteUserControl($id_user, $implodeIds);
             } else {
                 echo "<script>alert('У вас нету прав на удаление')</script>";
             }
@@ -179,11 +176,12 @@ class UserController extends AdminBase
         } else if($user->isAdmin() || $user->isManager()){
 
             $roleList = Admin::getRoleList();
-            $currencyList = Admin::getCurrencyList();
-            $ADBCPriceList = Admin::getABSDPriceList();
+            $managerList = Admin::getAllManager();
+            $currencyList = Price::getCurrencyList();
+            $ADBCPriceList = Price::getABSDPriceList();
             $staffList = Admin::getStaffList();
-            $stockPlaceList = Admin::getStockPlaceList();
-            $regionList = Admin::getRegionsList();
+            $stockPlaceList = Stocks::getStockPlaceList();
+            $regionList = Stocks::getRegionsList();
             $stocksToPartners = Decoder::arrayToUtf(Stocks::getAllStocksToPartner());
 
             $countryList = Country::getAllCountry();
@@ -239,6 +237,17 @@ class UserController extends AdminBase
                         }
                     }
                     if($id_user){
+
+                        //Добавляем пользователя под управление менеджеров
+                        if(isset($_POST['managers']) && !empty($_POST['managers'])){
+                            $arrayManagers = $_POST['managers'];
+                            if(is_array($arrayManagers)){
+                                foreach ($arrayManagers as $manager_id){
+                                    Admin::addUserControl($manager_id, $id_user);
+                                }
+                            }
+                        }
+
                         if(!empty($_REQUEST['id_group'])){
                             //Добавляем пользователя в выбранную группу
                             $ok_group = GroupModel::addUserGroup($_REQUEST['id_group'], $id_user);
@@ -255,7 +264,8 @@ class UserController extends AdminBase
                 }
             }
             $this->render('admin/users/create', compact('user', 'roleList', 'countryList', 'groupList',
-                'currencyList', 'ADBCPriceList', 'staffList', 'stockPlaceList', 'regionList', 'stocksToPartners', 'orderType'));
+                'currencyList', 'ADBCPriceList', 'staffList', 'stockPlaceList', 'regionList', 'stocksToPartners', 'orderType',
+                'managerList'));
         }
         return true;
     }

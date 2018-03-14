@@ -109,7 +109,7 @@ class Admin
         $sql = "SELECT
                  gucs.control_user_id,
                  gu.name_partner
-                 FROM gs_user_control_accaunt gucs
+                 FROM gs_user_control_account gucs
                 INNER JOIN gs_user gu
                  ON gucs.control_user_id = gu.id_user
                  WHERE gucs.id_user = :id_user";
@@ -117,9 +117,7 @@ class Admin
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $id_user, PDO::PARAM_STR);
         $result->execute();
-
-        $user = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $user;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
@@ -132,7 +130,7 @@ class Admin
     {
         $db = MySQL::getConnection();
 
-        $sql = 'INSERT INTO gs_user_control_accaunt '
+        $sql = 'INSERT INTO gs_user_control_account '
             . '(id_user, control_user_id)'
             . 'VALUES '
             . '(:id_user, :control_user_id)';
@@ -150,18 +148,17 @@ class Admin
     /**
      * Удаляем пользователя из списка управляемых пользователем
      * @param $id_user
-     * @param $control_user_id
+     * @param $usersIds
      * @return bool
      */
-    public static function deleteUserControl($id_user, $control_user_id)
+    public static function deleteUserControl($id_user, $usersIds)
     {
         $db = MySQL::getConnection();
 
-        $sql = 'DELETE FROM gs_user_control_accaunt WHERE id_user = :id_user AND control_user_id = :control_user_id';
+        $sql = "DELETE FROM gs_user_control_account WHERE id_user = :id_user AND control_user_id IN ({$usersIds})";
 
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $id_user, PDO::PARAM_INT);
-        $result->bindParam(':control_user_id', $control_user_id, PDO::PARAM_INT);
         return $result->execute();
     }
 
@@ -220,14 +217,38 @@ class Admin
     {
         $db = MySQL::getConnection();
 
-        $data = $db->query("SELECT 
-                                      * 
-                                      FROM gs_user 
-                                      INNER JOIN gs_country gc 
-                                        ON gs_user.id_country = gc.id_country 
-                                      WHERE id_role = 2 ORDER BY name_partner ASC")->fetchAll(PDO::FETCH_ASSOC);
+        $sql = "SELECT 
+                  * 
+                  FROM gs_user 
+                  INNER JOIN gs_country gc 
+                    ON gs_user.id_country = gc.id_country 
+                  WHERE id_role = 2 
+                  ORDER BY name_partner ASC";
 
-        return $data;
+        $result = $db->prepare($sql);
+        $result->execute();
+        return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    /**
+     * Список менеджеров
+     * @return array
+     */
+    public static function getAllManager()
+    {
+        $db = MySQL::getConnection();
+
+        $sql = "SELECT
+                 id_user,
+                 name_partner
+                 FROM gs_user
+                 WHERE id_role = 3 
+                 ORDER BY name_partner ASC";
+
+        $result = $db->prepare($sql);
+        $result->execute();
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
@@ -467,7 +488,6 @@ class Admin
         $result = $db->prepare($sql);
         $result->bindParam(':site_account_id', $id_user, PDO::PARAM_INT);
         $result->bindParam(':stock_id', $stock_id, PDO::PARAM_INT);
-
         return $result->execute();
     }
 
@@ -624,18 +644,6 @@ class Admin
 
 
     /**
-     * Получаем список валюты из GM
-     * @return array
-     */
-    public static function getCurrencyList()
-    {
-        $db = MsSQL::getConnection();
-
-        $result = $db->query("SELECT number, shortName FROM tbl_Curency")->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
-    }
-
-    /**
      * @param $shortName
      * @return \PDOStatement
      */
@@ -657,19 +665,6 @@ class Admin
 
 
     /**
-     * Список цен для партнеров
-     * @return array
-     */
-    public static function getABSDPriceList()
-    {
-        $db = MsSQL::getConnection();
-
-        $result = $db->query("SELECT number, priceName FROM tbl_ABCD")->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
-    }
-
-
-    /**
      * Список ответственных
      * @return array
      */
@@ -678,32 +673,6 @@ class Admin
         $db = MsSQL::getConnection();
 
         $result = $db->query("SELECT i_d, displayName FROM tbl_Users WHERE isDeleted = 0")->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
-    }
-
-
-    /**
-     * Список местоположений складов
-     * @return array
-     */
-    public static function getStockPlaceList()
-    {
-        $db = MsSQL::getConnection();
-
-        $result = $db->query("SELECT stockPlaceID, stockPlaceName FROM tbl_2_StockPlaces WHERE isInner = 1 AND isDeleted = 0")->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
-    }
-
-
-    /**
-     * Список регионов
-     * @return array
-     */
-    public static function getRegionsList()
-    {
-        $db = MsSQL::getConnection();
-
-        $result = $db->query("SELECT i_d, mname FROM tbl_Regions")->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
 

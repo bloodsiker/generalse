@@ -604,4 +604,29 @@ class Stocks
         $result->execute(array("%$search%", "%$search%"));
         return $result->fetchAll(PDO::FETCH_ASSOC);
     }
+
+
+    /**
+     * Список местоположений складов
+     * @return array
+     */
+    public static function getStockPlaceList()
+    {
+        $db = MsSQL::getConnection();
+
+        $result = $db->query("SELECT stockPlaceID, stockPlaceName FROM tbl_2_StockPlaces WHERE isInner = 1 AND isDeleted = 0")->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    /**
+     * Список регионов
+     * @return array
+     */
+    public static function getRegionsList()
+    {
+        $db = MsSQL::getConnection();
+
+        $result = $db->query("SELECT i_d, mname FROM tbl_Regions")->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
 }

@@ -111,4 +111,30 @@ class Price
         $result->execute();
         return $result->fetchAll(PDO::FETCH_ASSOC);
     }
+
+
+    /**
+     * Получаем список валюты из GM
+     * @return array
+     */
+    public static function getCurrencyList()
+    {
+        $db = MsSQL::getConnection();
+
+        $result = $db->query("SELECT number, shortName FROM tbl_Curency")->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+
+    /**
+     * Список цен для партнеров
+     * @return array
+     */
+    public static function getABSDPriceList()
+    {
+        $db = MsSQL::getConnection();
+
+        $result = $db->query("SELECT number, priceName FROM tbl_ABCD")->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
 }
