@@ -16,7 +16,7 @@
                         <div class="row align-bottom">
                             <div class="medium-3 small-12 columns">
                                 <?php if (Umbrella\app\AdminBase::checkDenied('adm.psr.create', 'view')): ?>
-                                    <button class="button primary tool" disabled id="add-psr"><i class="fi-plus"></i> Create</button>
+                                    <button class="button primary tool" id="add-psr"><i class="fi-plus"></i> Create</button>
                                 <?php endif;?>
 
                                 <button data-open="export-modal" class="button primary tool"><i class="fi-page-export"></i> Export to Excel</button>
