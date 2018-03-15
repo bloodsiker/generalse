@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
     <link rel="stylesheet" href="/template/new_site/css/fonts.css">
-    <link rel="stylesheet" href="/template/new_site/css/app.css?v.1.0.0">
+    <link rel="stylesheet" href="/template/new_site/css/app.css?v.1.0.1">
     <link rel="stylesheet" href="/template/new_site/css/box-effect.css">
 </head>
 <body>

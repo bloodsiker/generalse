@@ -149,12 +149,16 @@ $(document).ready(function () {
     // })();
 
     (function () {
-        $(document).on("click", "[data-scroll]", function () {
+        $(document).on("click", ".scroll", function () {
 
-            var id  = $(this).attr('data-scroll-link');
-            var top = $(document).find('[data-scroll-div="' + id + '"]').offset().top - 120;
+            var id  = $(this).attr('href');
+            // var top = $(document).find('[data-scroll-div="' + id + '"]').offset().top - 120;
+            //
+            // $('body,html').animate({scrollTop: top}, 1000);
 
+            var top = $(id).offset().top;
             $('body,html').animate({scrollTop: top}, 1000);
+
         });
     })();
 

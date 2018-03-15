@@ -12,34 +12,40 @@
                 <h4>Оптимизация расходов на сервис и компенсация стоимости основных средств для бизнеса</h4>
                 <div class="row mt-5 justify-content-center">
                     <div class="col-md-4 mb-3">
-                        <div data-scroll data-scroll-link="section-1" class="services-head-link">
-                            <div class="services-head-image-box">
-                                <img class="mw-100" src="http://generalse.com/template/site/img/About/OurDirectionsicons/1market-analysis.svg" alt="">
+                        <a href="#original" class="scroll">
+                            <div data-scroll data-scroll-link="original" class="services-head-link">
+                                <div class="services-head-image-box">
+                                    <img class="mw-100" src="http://generalse.com/template/site/img/About/OurDirectionsicons/1market-analysis.svg" alt="">
+                                </div>
+                                <div>
+                                    Оригинальные комплектующие
+                                </div>
                             </div>
-                            <div>
-                                Оригинальные комплектующие
-                            </div>
-                        </div>
+                        </a>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <div data-scroll data-scroll-link="section-2" class="services-head-link">
-                            <div class="services-head-image-box">
-                                <img class="mw-100" src="http://generalse.com/template/site/img/About/OurDirectionsicons/improvement.svg" alt="">
+                        <a href="#repair" class="scroll">
+                            <div data-scroll data-scroll-link="repair" class="services-head-link">
+                                <div class="services-head-image-box">
+                                    <img class="mw-100" src="http://generalse.com/template/site/img/About/OurDirectionsicons/improvement.svg" alt="">
+                                </div>
+                                <div>
+                                    Ремонт и технические услуги
+                                </div>
                             </div>
-                            <div>
-                                Ремонт и технические услуги
-                            </div>
-                        </div>
+                        </a>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <div data-scroll data-scroll-link="section-3" class="services-head-link">
-                            <div class="services-head-image-box">
-                                <img class="mw-100" src="http://generalse.com/template/site/img/About/OurDirectionsicons/improvement.svg" alt="">
+                        <a href="#recycling" class="scroll">
+                            <div data-scroll data-scroll-link="recycling" class="services-head-link">
+                                <div class="services-head-image-box">
+                                    <img class="mw-100" src="http://generalse.com/template/site/img/About/OurDirectionsicons/improvement.svg" alt="">
+                                </div>
+                                <div>
+                                    Утилизация оборудования
+                                </div>
                             </div>
-                            <div>
-                                Утилизация оборудования
-                            </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -47,7 +53,7 @@
         </div>
 
         <div id="original" style="margin-bottom: 100px"></div>
-        <section data-scroll-div="section-1" class="container" style="margin: 0">
+        <section data-scroll-div="original" class="container" style="margin: 0">
             <div class="row ">
                 <div class="col-md-6">
                     <img class="mw-100" src="/template/new_site/img/services/night-computer-hdd-hard-drive.jpg" alt="Оригинальные комплектующие">
@@ -83,7 +89,7 @@
         </section>
 
         <div id="recycling" style="margin-bottom: 100px"></div>
-        <section data-scroll-div="section-3" class="container" style="margin: 0">
+        <section data-scroll-div="recycling" class="container" style="margin: 0">
             <div class="row ">
                 <div class="col-md-6">
                     <img class="mw-100" src="/template/new_site/img/services/825262.jpeg" alt="Утилизация оборудования">

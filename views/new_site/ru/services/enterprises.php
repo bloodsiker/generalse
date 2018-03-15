@@ -12,24 +12,29 @@
                 <h4>Покупайте и продавайте вместе с General Services</h4>
                 <div class="row justify-content-center mt-5">
                     <div class="col-md-4">
-                        <div data-scroll data-scroll-link="section-1" class="services-head-link">
-                            <div class="services-head-image-box">
-                                <img class="mw-100" src="http://generalse.com/template/site/img/About/OurDirectionsicons/1market-analysis.svg" alt="">
+                        <a href="#original" class="scroll">
+                            <div data-scroll data-scroll-link="original" class="services-head-link">
+                                <div class="services-head-image-box">
+                                    <img class="mw-100" src="http://generalse.com/template/site/img/About/OurDirectionsicons/1market-analysis.svg" alt="">
+                                </div>
+                                <div>
+                                    Оригинальные комплектующие
+                                </div>
                             </div>
-                            <div>
-                                Оригинальные комплектующие
-                            </div>
-                        </div>
+                        </a>
+
                     </div>
                     <div class="col-md-4">
-                        <div data-scroll data-scroll-link="section-2" class="services-head-link">
-                            <div class="services-head-image-box">
-                                <img class="mw-100" src="http://generalse.com/template/site/img/About/OurDirectionsicons/improvement.svg" alt="">
+                        <a href="#overstock" class="scroll">
+                            <div data-scroll data-scroll-link="overstock" class="services-head-link">
+                                <div class="services-head-image-box">
+                                    <img class="mw-100" src="http://generalse.com/template/site/img/About/OurDirectionsicons/improvement.svg" alt="">
+                                </div>
+                                <div>
+                                    Покупка оверстоков
+                                </div>
                             </div>
-                            <div>
-                                Покупка оверстоков
-                            </div>
-                        </div>
+                        </a>
                     </div>
 
                 </div>
@@ -37,7 +42,7 @@
 
         </div>
         <div id="original" style="margin-bottom: 100px"></div>
-        <section data-scroll-div="section-1" class="container" style="margin: 0">
+        <section data-scroll-div="original" class="container" style="margin: 0">
             <div class="row ">
                 <div class="col-md-6">
                     <img class="mw-100" src="/template/new_site/img/services/night-computer-hdd-hard-drive.jpg" alt="Оригинальные комплектующие">
@@ -54,7 +59,7 @@
         </section>
 
         <div id="overstock" style="margin-bottom: 100px"></div>
-        <section data-scroll-div="section-2"  class="container" style="margin: 0">
+        <section data-scroll-div="overstock"  class="container" style="margin: 0">
             <div class="row ">
                 <div class="col-md-6">
                     <img class="mw-100" src="/template/new_site/img/services/825262.jpeg" alt="Покупка оверстоков">

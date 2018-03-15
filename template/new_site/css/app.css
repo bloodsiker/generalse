@@ -253,3 +253,12 @@ footer {
   .sertificate-box:hover{
     box-shadow: 2px 2px 3px #ddd;
   }
+
+  /**  **/
+.scroll{
+  color: #fff;
+}
+.scroll:hover{
+  text-decoration: none;
+  color: #fff;
+}

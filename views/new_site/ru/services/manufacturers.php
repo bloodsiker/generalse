@@ -13,64 +13,76 @@
                 <h4>Мы предлагаем полный спектр послепродажного сервиса для IT, мобильной и бытовой техники.</h4>
                 <div class="row mt-5">
                     <div class="col-md-4 mb-3">
-                        <div data-scroll data-scroll-link="section-1" class="services-head-link">
-                            <div class="services-head-image-box">
-                                <img class="mw-100" src="http://generalse.com/template/site/img/About/OurDirectionsicons/1market-analysis.svg" alt="">
+                        <a href="#complex" class="scroll">
+                            <div data-scroll data-scroll-link="complex" class="services-head-link">
+                                <div class="services-head-image-box">
+                                    <img class="mw-100" src="http://generalse.com/template/site/img/About/OurDirectionsicons/1market-analysis.svg" alt="">
+                                </div>
+                                <div>
+                                    Комплексный послепродажный сервис
+                                </div>
                             </div>
-                            <div>
-                                Комплексный послепродажный сервис
-                            </div>
-                        </div>
+                        </a>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <div data-scroll data-scroll-link="section-2" class="services-head-link">
-                            <div class="services-head-image-box">
-                                <img class="mw-100" src="http://generalse.com/template/site/img/About/OurDirectionsicons/improvement.svg" alt="">
+                        <a href="#repair" class="scroll">
+                            <div data-scroll data-scroll-link="repair" class="services-head-link">
+                                <div class="services-head-image-box">
+                                    <img class="mw-100" src="http://generalse.com/template/site/img/About/OurDirectionsicons/improvement.svg" alt="">
+                                </div>
+                                <div>
+                                    Ремонт и технические услуги
+                                </div>
                             </div>
-                            <div>
-                                Ремонт и технические услуги
-                            </div>
-                        </div>
+                        </a>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <div data-scroll data-scroll-link="section-3" class="services-head-link">
-                            <div class="services-head-image-box">
-                                <img class="mw-100" src="http://generalse.com/template/site/img/About/OurDirectionsicons/1market-analysis.svg" alt="">
+                        <a href="#spare" class="scroll">
+                            <div data-scroll data-scroll-link="spare" class="services-head-link">
+                                <div class="services-head-image-box">
+                                    <img class="mw-100" src="http://generalse.com/template/site/img/About/OurDirectionsicons/1market-analysis.svg" alt="">
+                                </div>
+                                <div>
+                                    Операции с запасными частями
+                                </div>
                             </div>
-                            <div>
-                                Операции с запасными частями
-                            </div>
-                        </div>
+                        </a>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <div data-scroll data-scroll-link="section-4" class="services-head-link">
-                            <div class="services-head-image-box">
-                                <img class="mw-100" src="http://generalse.com/template/site/img/About/OurDirectionsicons/1market-analysis.svg" alt="">
+                        <a href="#recycling" class="scroll">
+                            <div data-scroll data-scroll-link="recycling" class="services-head-link">
+                                <div class="services-head-image-box">
+                                    <img class="mw-100" src="http://generalse.com/template/site/img/About/OurDirectionsicons/1market-analysis.svg" alt="">
+                                </div>
+                                <div>
+                                    Утилизация оборудования
+                                </div>
                             </div>
-                            <div>
-                                Утилизация оборудования
-                            </div>
-                        </div>
+                        </a>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <div data-scroll data-scroll-link="section-5" class="services-head-link">
-                            <div class="services-head-image-box">
-                                <img class="mw-100" src="http://generalse.com/template/site/img/About/OurDirectionsicons/1market-analysis.svg" alt="">
+                        <a href="#logistics" class="scroll">
+                            <div data-scroll data-scroll-link="logistics" class="services-head-link">
+                                <div class="services-head-image-box">
+                                    <img class="mw-100" src="http://generalse.com/template/site/img/About/OurDirectionsicons/1market-analysis.svg" alt="">
+                                </div>
+                                <div>
+                                    Логистика и дистрибуция
+                                </div>
                             </div>
-                            <div>
-                                Логистика и дистрибуция
-                            </div>
-                        </div>
+                        </a>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <div data-scroll data-scroll-link="section-6" class="services-head-link">
-                            <div class="services-head-image-box">
-                                <img class="mw-100" src="http://generalse.com/template/site/img/About/OurDirectionsicons/1market-analysis.svg" alt="">
+                        <a href="#contact_center" class="scroll">
+                            <div data-scroll data-scroll-link="contact_center" class="services-head-link">
+                                <div class="services-head-image-box">
+                                    <img class="mw-100" src="http://generalse.com/template/site/img/About/OurDirectionsicons/1market-analysis.svg" alt="">
+                                </div>
+                                <div>
+                                    Услуги контакт-центра
+                                </div>
                             </div>
-                            <div>
-                                Услуги контакт-центра
-                            </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -78,7 +90,7 @@
         </div>
 
         <div id="complex" style="margin-bottom: 100px"></div>
-        <section data-scroll-div="section-1" class="container" style="margin: 0;">
+        <section data-scroll-div="complex" class="container" style="margin: 0;">
             <div class="row ">
                 <div class="col-md-6">
                     <img class="mw-100" src="/template/new_site/img/services/532254.jpeg" alt="Комплексный послепродажный сервис">
@@ -98,7 +110,7 @@
         </section>
 
         <div id="repair" style="margin-bottom: 100px"></div>
-        <section data-scroll-div="section-2" class="container" style="margin: 0;">
+        <section data-scroll-div="repair" class="container" style="margin: 0;">
             <div class="row ">
                 <div class="col-md-6">
                     <img class="mw-100" src="/template/new_site/img/services/257736.jpeg" alt="Ремонт и технические услуги">
@@ -119,7 +131,7 @@
         </section>
 
         <div id="spare" style="margin-bottom: 100px"></div>
-        <section data-scroll-div="section-3" class="container" style="margin: 0;">
+        <section data-scroll-div="spare" class="container" style="margin: 0;">
             <div class="row ">
                 <div class="col-md-6">
                     <img class="mw-100" src="/template/new_site/img/services/75.jpg" alt="Операции с запасными частями">
@@ -140,7 +152,7 @@
         </section>
 
         <div id="recycling" style="margin-bottom: 100px"></div>
-        <section data-scroll-div="section-4" class="container" style="margin: 0;">
+        <section data-scroll-div="recycling" class="container" style="margin: 0;">
             <div class="row ">
                 <div class="col-md-6">
                     <img class="mw-100" src="/template/new_site/img/services/825262.jpeg" alt="Утилизация оборудования">
@@ -153,7 +165,7 @@
         </section>
 
         <div id="logistics" style="margin-bottom: 100px"></div>
-        <section data-scroll-div="section-5" class="container" style="margin: 0;">
+        <section data-scroll-div="logistics" class="container" style="margin: 0;">
             <div class="row ">
                 <div class="col-md-6">
                     <img class="mw-100" src="/template/new_site/img/services/193667.jpeg" alt="Логистика и дистрибуция">
@@ -178,7 +190,8 @@
             </div>
         </section>
 
-        <section data-scroll-div="section-6" id="contact_center" class="container">
+        <div id="contact_center" style="margin-bottom: 100px"></div>
+        <section data-scroll-div="contact_center" class="container">
             <div class="row ">
                 <div class="col-md-6">
                     <img class="mw-100" src="/template/new_site/img/services/10.jpg" alt="Услуги контакт-центра">

@@ -200,7 +200,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
 <script src="/template/new_site/js/object.js"></script>
-<script src="/template/new_site/js/app.js?v.1.5.0"></script>
+<script src="/template/new_site/js/app.js?v.1.5.1"></script>
 
 </body>
 </html>
