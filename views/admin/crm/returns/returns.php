@@ -108,7 +108,7 @@
                             <th>Partner</th>
                             <th>Order Number</th>
                             <th>Service Order</th>
-                            <th>Stock</th>
+                            <th width="150">Stock</th>
                             <th>Date</th>
                             <th>Part Number</th>
                             <th>Type</th>
@@ -183,8 +183,8 @@
                             <th>Return Number</th>
                             <th>Partner</th>
                             <th>Order Number</th>
-                            <th width="150px">Service Order</th>
-                            <th>Stock</th>
+                            <th width="150">Service Order</th>
+                            <th width="150">Stock</th>
                             <th>Date</th>
                             <th>Part Number</th>
                             <th>Type</th>

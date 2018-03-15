@@ -16,7 +16,7 @@
                         <div class="row align-bottom">
                             <div class="medium-3 small-12 columns">
                                 <?php if (Umbrella\app\AdminBase::checkDenied('adm.psr.create', 'view')): ?>
-                                    <button class="button primary tool" id="add-psr"><i class="fi-plus"></i> Create</button>
+                                    <button class="button primary tool" disabled id="add-psr"><i class="fi-plus"></i> Create</button>
                                 <?php endif;?>
 
                                 <button data-open="export-modal" class="button primary tool"><i class="fi-page-export"></i> Export to Excel</button>
@@ -62,6 +62,13 @@
         <!-- body -->
         <div class="body-content checkout">
              <div class="row">
+                 <div class="medium-12 small-12 columns" style="text-align: center">
+                     <div class="red" style="margin: 0 auto 10px; padding: 10px">
+                         <p style="font-size: 18px;">
+                             Просим принять во внимание, что с 15.03.2018 компания Lenovo закрывает проект ПСР для мобильных телефонов Lenovo/Motorola. Клиентов, просьба, направлять в торговую сеть.
+                         </p>
+                     </div>
+                 </div>
                  <?php if(isset($message_success) && !empty($message_success)):?>
                      <div class="medium-12 small-12 columns" style="text-align: center">
                          <div class="<?= $class ?>" style="margin: 0px auto 10px;"><?= $message_success ?></div>
