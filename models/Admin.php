@@ -185,17 +185,11 @@ class Admin
                                         gr.id_role,
                                         gr.role,
                                         gr.name_role,
-                                        gb.id_branch,
-                                        gb.branch_name,
                                         gc.short_name,
                                         gc.full_name
                                     FROM gs_user gu
                                         INNER JOIN gs_role gr
                                             ON gu.id_role = gr.id_role
-                                        LEFT JOIN gs_branch_users gbu
-                                            ON gu.id_user = gbu.id_user
-                                        LEFT JOIN gs_branch gb
-                                            ON gb.id_branch = gbu.id_branch
                                         LEFT JOIN gs_group_user ggu
                                             ON ggu.id_user = gu.id_user
                                         LEFT JOIN gs_group gg

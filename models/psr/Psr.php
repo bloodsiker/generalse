@@ -130,8 +130,7 @@ class Psr
         $result = $db->prepare($sql);
         //$result->bindParam(':id_user', $id_user, PDO::PARAM_INT);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -167,8 +166,7 @@ class Psr
         $result = $db->prepare($sql);
         $result->execute(array("%$search%", "%$search%", "%$search%", "%$search%", "%$search%", "%$search%"));
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -196,8 +194,7 @@ class Psr
 
         $result = $db->prepare($sql);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -222,8 +219,7 @@ class Psr
         $result = $db->prepare($sql);
         $result->bindParam(':id', $id_psr, PDO::PARAM_INT);
         $result->execute();
-        $all = $result->fetch(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetch(PDO::FETCH_ASSOC);
     }
 
 
@@ -295,8 +291,7 @@ class Psr
         $result = $db->prepare($sql);
         $result->bindParam(':psr_id', $psr_id, PDO::PARAM_INT);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 

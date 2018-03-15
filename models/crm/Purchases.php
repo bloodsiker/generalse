@@ -29,7 +29,6 @@ class Purchases
         $result->bindParam(':so_number', $options['so_number'], PDO::PARAM_STR);
         $result->bindParam(':ready', $options['ready'], PDO::PARAM_INT);
         $result->bindParam(':file_attache', $options['file_attache'], PDO::PARAM_STR);
-
         return $result->execute();
     }
 
@@ -55,7 +54,6 @@ class Purchases
         $result->bindParam(':quantity', $options['quantity'], PDO::PARAM_INT);
         $result->bindParam(':price', $options['price'], PDO::PARAM_STR);
         $result->bindParam(':so_number', $options['so_number'], PDO::PARAM_STR);
-
         return $result->execute();
     }
 
@@ -80,7 +78,6 @@ class Purchases
         $result->bindParam(':stock_name', $options['stock_name'], PDO::PARAM_STR);
         $result->bindParam(':so_number', $options['so_number'], PDO::PARAM_STR);
         $result->bindParam(':ready', $options['ready'], PDO::PARAM_INT);
-
         return $result->execute();
     }
 
@@ -105,7 +102,6 @@ class Purchases
         $result->bindParam(':quantity', $options['quantity'], PDO::PARAM_INT);
         $result->bindParam(':price', $options['price'], PDO::PARAM_STR);
         $result->bindParam(':so_number', $options['so_number'], PDO::PARAM_STR);
-
         return $result->execute();
     }
 
@@ -203,8 +199,7 @@ class Purchases
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $id_partner, PDO::PARAM_INT);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 	
 	
@@ -237,8 +232,7 @@ class Purchases
         $result = $db->prepare($sql);
         $result->bindParam(':id_user', $id_partner, PDO::PARAM_INT);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -259,8 +253,7 @@ class Purchases
         $result = $db->prepare($sql);
         $result->bindParam(':purchase_id', $purchase_id, PDO::PARAM_INT);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 	
 
@@ -283,8 +276,7 @@ class Purchases
         $result = $db->prepare($sql);
         $result->bindParam(':site_id', $site_id, PDO::PARAM_INT);
         $result->execute();
-        $status = $result->fetch();
-        return $status;
+        return $result->fetch(PDO::FETCH_ASSOC);
     }
 
 
@@ -325,8 +317,7 @@ class Purchases
         $result->bindParam(':start', $start, PDO::PARAM_STR);
         $result->bindParam(':end', $end, PDO::PARAM_STR);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -367,8 +358,7 @@ class Purchases
 
         $result = $db->prepare($sql);
         $result->execute(array("%$search%", "%$search%", "%$search%", "%$search%", "%$search%", "%$search%"));
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 

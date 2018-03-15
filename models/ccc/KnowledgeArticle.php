@@ -98,9 +98,7 @@ class KnowledgeArticle
         $result = $db->prepare($sql);
         $result->bindParam(':id', $id, PDO::PARAM_INT);
         $result->execute();
-
-        $all = $result->fetch(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetch(PDO::FETCH_ASSOC);
     }
 
 
@@ -137,8 +135,7 @@ class KnowledgeArticle
 
         $result = $db->prepare($sql);
         $result->execute();
-        $all = $result->fetchaLL(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchaLL(PDO::FETCH_ASSOC);
     }
 
 
@@ -172,9 +169,7 @@ class KnowledgeArticle
 
         $result = $db->prepare($sql);
         $result->execute();
-
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -210,9 +205,7 @@ class KnowledgeArticle
         $result = $db->prepare($sql);
         $result->bindParam(':id_category', $id_category, PDO::PARAM_INT);
         $result->execute();
-
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -230,7 +223,6 @@ class KnowledgeArticle
                 delete_article = 1
             WHERE id = :id";
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id', $id, PDO::PARAM_INT);
         return $result->execute();
@@ -270,7 +262,6 @@ class KnowledgeArticle
 
         $result = $db->prepare($sql);
         $result->execute(array($customer, "%$search%", "%$search%", "%$search%"));
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 }

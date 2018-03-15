@@ -45,9 +45,7 @@ class KnowledgeCatalog
         $result = $db->prepare($sql);
         $result->bindParam(':customer', $customer, PDO::PARAM_STR);
         $result->execute();
-
-        $user = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $user;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -171,9 +169,7 @@ class KnowledgeCatalog
         $result = $db->prepare($sql);
         $result->bindParam(':id_category', $id_category, PDO::PARAM_INT);
         $result->execute();
-
-        $all = $result->fetch(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetch(PDO::FETCH_ASSOC);
     }
 
 
@@ -192,9 +188,7 @@ class KnowledgeCatalog
 
         $result = $db->prepare($sql);
         $result->execute();
-
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -227,9 +221,7 @@ class KnowledgeCatalog
         $result->bindParam(':id_user', $id_user, PDO::PARAM_INT);
         $result->bindParam(':limit', $limit, PDO::PARAM_INT);
         $result->execute();
-
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -273,8 +265,7 @@ class KnowledgeCatalog
         $result = $db->prepare($sql);
         $result->bindParam(':p_id', $p_id, PDO::PARAM_INT);
         $result->execute();
-        $category = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $category;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -297,8 +288,7 @@ class KnowledgeCatalog
         $result = $db->prepare($sql);
         $result->bindParam(':p_id', $p_id, PDO::PARAM_INT);
         $result->execute();
-        $category = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $category;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -324,8 +314,7 @@ class KnowledgeCatalog
         $result->bindParam(':p_id', $p_id, PDO::PARAM_INT);
         $result->bindParam(':customer', $customer, PDO::PARAM_INT);
         $result->execute();
-        $category = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $category;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 

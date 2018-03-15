@@ -104,7 +104,6 @@ class Orders
         $result->bindParam(':stock_name', $options['stock_name'], PDO::PARAM_STR);
         $result->bindParam(':quantity', $options['quantity'], PDO::PARAM_INT);
         $result->bindParam(':is_supply', $is_supply, PDO::PARAM_INT);
-
         return $result->execute();
     }
 

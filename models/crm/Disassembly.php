@@ -220,7 +220,6 @@ class Disassembly
         $result->bindParam(':stockName', $options['stockName'], PDO::PARAM_STR);
         $result->bindParam(':ready', $options['ready'], PDO::PARAM_INT);
         $result->bindParam(':note', $options['note'], PDO::PARAM_INT);
-
         return $result->execute();
     }
 
@@ -555,7 +554,6 @@ class Disassembly
                 return 'yellow';
                 break;
         }
-
         return true;
     }
 }

@@ -307,7 +307,6 @@ class Lithographer
                 return 'Unpublished';
                 break;
         }
-
         return true;
     }
 
@@ -328,7 +327,6 @@ class Lithographer
                 return 'red';
                 break;
         }
-
         return true;
     }
 

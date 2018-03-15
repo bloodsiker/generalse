@@ -66,7 +66,6 @@ class UserController extends AdminBase
 
         $groupList = GroupModel::getGroupList();
         $countryList = Country::getAllCountry();
-        $branchList = Branch::getBranchList();
 
         if($user->isPartner()){
 
@@ -75,7 +74,7 @@ class UserController extends AdminBase
         } else if($user->isAdmin() || $user->isManager()){
 
             $this->render('admin/users/index', compact('user', 'listUsers', 'groupList',
-                'countryList', 'branchList', 'message'));
+                'countryList', 'message'));
         }
         return true;
     }

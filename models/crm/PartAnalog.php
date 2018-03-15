@@ -51,8 +51,7 @@ class PartAnalog
         $result = $db->prepare($sql);
         //$result->bindParam(':type_part', $type_part, PDO::PARAM_STR);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -77,8 +76,7 @@ class PartAnalog
         $result = $db->prepare($sql);
         $result->bindParam(':part_number', $part_number, PDO::PARAM_STR);
         $result->execute();
-        $all = $result->fetch(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetch(PDO::FETCH_ASSOC);
     }
 
 
@@ -140,7 +138,6 @@ class PartAnalog
         $result = $db->prepare($sql);
         $result->bindParam(':part_number', $part_number, PDO::PARAM_STR);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 }

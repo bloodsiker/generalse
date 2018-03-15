@@ -17,7 +17,6 @@ class Supply
     {
         $db = MsSQL::getConnection();
 
-        //$sql = "SELECT site_id FROM gm_purchases ORDER BY id DESC LIMIT 1";
         $sql = "SELECT MAX(site_id) as site_id FROM site_gm_supplies";
 
         $result = $db->prepare($sql);
@@ -51,7 +50,6 @@ class Supply
         $result->bindParam(':manufacture_country', $options['manufacture_country'], PDO::PARAM_STR);
         $result->bindParam(':partner', $options['partner'], PDO::PARAM_STR);
         $result->bindParam(':paydesk_id', $options['paydesk_id'], PDO::PARAM_INT);
-
         return $result->execute();
     }
 
@@ -100,7 +98,6 @@ class Supply
         $result->bindParam(':manufacture_country', $options['manufacture_country'], PDO::PARAM_STR);
         $result->bindParam(':partner', $options['partner'], PDO::PARAM_STR);
         $result->bindParam(':manufacturer', $options['manufacturer'], PDO::PARAM_STR);
-
         return $result->execute();
     }
 

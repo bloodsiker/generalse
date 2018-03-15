@@ -69,9 +69,6 @@
         </div>
         <div class="medium-8 small-12 columns">
             <ul class="menu align-right">
-                <?php if (Umbrella\app\AdminBase::checkDenied('adm.dashboard', 'view')): ?>
-                    <li><a href="/adm/dashboard" class="hide <?= Umbrella\components\Url::IsActive('/dashboard', 'active') ?>">Dashboard</a></li>
-                <?php endif; ?>
 
                 <?php if (Umbrella\app\AdminBase::checkDenied('adm.users', 'view')): ?>
                     <li><a href="/adm/users" class="<?= Umbrella\components\Url::IsActive('/user', 'active') ?>">Users</a></li>

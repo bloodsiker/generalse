@@ -63,8 +63,7 @@ class OtherRequest
         $result = $db->prepare($sql);
         //$result->bindParam(':id_user', $id_user, PDO::PARAM_INT);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -87,8 +86,7 @@ class OtherRequest
 
         $result = $db->prepare($sql);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -120,8 +118,7 @@ class OtherRequest
         $result = $db->prepare($sql);
         $result->bindParam(':id', $id, PDO::PARAM_INT);
         $result->execute();
-        $row = $result->fetch(PDO::FETCH_ASSOC);
-        return $row;
+        return $result->fetch(PDO::FETCH_ASSOC);
     }
 
 
@@ -133,16 +130,13 @@ class OtherRequest
      */
     public static function editPriceToRequestById($id, $price)
     {
-        // Соединение с БД
         $db = MySQL::getConnection();
 
-        // Текст запроса к БД
         $sql = "UPDATE gs_other_request
             SET
                 price = :price
             WHERE id = :id";
 
-        // Получение и возврат результатов. Используется подготовленный запрос
         $result = $db->prepare($sql);
         $result->bindParam(':id', $id, PDO::PARAM_INT);
         $result->bindParam(':price', $price, PDO::PARAM_INT);

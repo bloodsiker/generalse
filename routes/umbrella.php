@@ -80,25 +80,6 @@ return [
     'adm/country/add' => 'umbrella/Country@addCountry',
 
 
-    /*********** BRANCH  ***********/
-    'adm/branch/delete/([0-9]+)/([0-9]+)' => 'umbrella/Branch@delete/$1/$2',
-    'adm/branch/view/([0-9]+)' => 'umbrella/Branch@view/$1',
-    'adm/branch/add' => 'umbrella/Branch@addBranch',
-
-
-    /*********** DASHBOARD  ***********/
-    'adm/dashboard/balance-u/([0-9]+)/([a-z0-9-_?&]+)' => 'umbrella/Dashboard@userBalance/$1/$2',
-    'adm/dashboard/balance-u/([0-9]+)' => 'umbrella/Dashboard@userBalance/$1',
-    'adm/dashboard/request-payment' => 'umbrella/Dashboard@requestPayment',
-    'adm/dashboard/task' => 'umbrella/Dashboard@task',
-    'adm/dashboard/b-users' => 'umbrella/Dashboard@users',
-    'adm/dashboard/ajax_balance' => 'umbrella/Dashboard@ajaxBalance',
-    'adm/dashboard/ajax_show_info' => 'umbrella/Dashboard@ajaxShowInfo',
-    'adm/dashboard/pay' => 'umbrella/Dashboard@postPay',
-    'adm/dashboard/([a-z0-9-_?&]+)' => 'umbrella/Dashboard@index/$1',
-    'adm/dashboard' => 'umbrella/Dashboard@index',
-
-
     /*********** PSR  ***********/
     'adm/psr/activity' => 'umbrella/psr/PsrActivity@index',
 

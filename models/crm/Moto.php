@@ -87,8 +87,6 @@ class Moto
         $result->bindParam(':site_id', $options['site_id'], PDO::PARAM_INT);
         $result->bindParam(':file_name', $options['file_name'], PDO::PARAM_STR);
         $result->bindParam(':file_data', $options['file_data']);
-
-
         return $result->execute();
     }
 
@@ -212,7 +210,6 @@ class Moto
         $result->bindParam(':repair_level', $options['repair_level'], PDO::PARAM_STR);
         $result->bindParam(':operation_type', $options['operation_type'], PDO::PARAM_INT);
         $result->bindParam(':ready', $options['ready'], PDO::PARAM_INT);
-
         return $result->execute();
     }
 

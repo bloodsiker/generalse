@@ -117,34 +117,6 @@
                 </table>
 
                 <div style="margin-bottom: 50px"></div>
-                <h2 class="float-left">Branch</h2>
-                <?php if (Umbrella\app\AdminBase::checkDenied('branch.add', 'view')): ?>
-                    <a href="/adm/branch/add" class="button small float-right"><i class="fi-plus"></i> Добавить</a>
-                <?php endif;?>
-                <div class="clearfix"></div>
-                <table class="umbrella-table" border="1" cellspacing="0" cellpadding="5">
-                    <thead>
-                    <tr>
-                        <th>Branch</th>
-                        <th width="100px">Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php if (is_array($branchList)): ?>
-                        <?php foreach ($branchList as $branch): ?>
-                            <tr>
-                                <td><?= $branch['branch_name']?></td>
-                                <td>
-                                    <a href="/adm/branch/view/<?= $branch['id_branch'] ?>" class="button no-margin small"><i
-                                            class="fi-eye"></i></a>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                    </tbody>
-                </table>
-
-                <div style="margin-bottom: 50px"></div>
                 <h2 class="float-left">Country</h2>
                 <?php if (Umbrella\app\AdminBase::checkDenied('country.add', 'view')): ?>
                     <a href="/adm/country/add" class="button small float-right"><i class="fi-plus"></i> Добавить</a>

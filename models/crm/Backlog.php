@@ -43,8 +43,7 @@ class Backlog
         $result->bindParam(':part_number', $part_number, PDO::PARAM_STR);
         $result->bindParam(':sub_type', $sub_type, PDO::PARAM_STR);
         $result->execute();
-        $all = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $all;
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
