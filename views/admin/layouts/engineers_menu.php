@@ -3,6 +3,10 @@
     <li><a href="/adm/engineers/dashboard" class="<?= Umbrella\components\Url::IsActive('/adm/engineers/dashboard', 'active') ?>">Dashboard</a></li>
 <?php endif; ?>
 
+<?php if (Umbrella\app\AdminBase::checkDenied('adm.engineers.kpi', 'view')): ?>
+    <li><a href="/adm/engineers/kpi" class="<?= Umbrella\components\Url::IsActive('/adm/engineers/kpi', 'active') ?>">KPI</a></li>
+<?php endif; ?>
+
 <?php if (Umbrella\app\AdminBase::checkDenied('adm.engineers.repairs', 'view')): ?>
     <li><a href="/adm/engineers/repairs" class="<?= Umbrella\components\Url::IsActive('/adm/engineers/repairs', 'active') ?>">Repairs</a></li>
 <?php endif; ?>

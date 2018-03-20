@@ -2,7 +2,6 @@
 namespace Umbrella\controllers;
 
 use Umbrella\app\Services\Language;
-use Umbrella\components\Router;
 use Umbrella\vendor\controller\Controller;
 
 /**

@@ -27,44 +27,6 @@
         <!-- body -->
         <div class="body-content">
             <div class="row">
-                <div class="medium-12 small-12 columns">
-                    <table class="umbrella-table margin-bottom">
-                        <thead>
-                        <tr>
-                            <th class="text-center" colspan="8">KPI</th>
-                        </tr>
-                        <tr>
-                            <th class="text-center">KPI</th>
-                            <th>Condition</th>
-                            <th>Target</th>
-                            <th>Weight</th>
-                            <th>Result</th>
-                            <th>Coef.</th>
-                            <th>Rate</th>
-                            <th>Бонус</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php foreach ($newKpi as $kpi): ?>
-                        <tr>
-                            <td class="umbrella-tr-td"><?= $kpi['name'] ?></td>
-                            <td><?= $kpi['condition'] ?></td>
-                            <td><?= $kpi['target'] ?>%</td>
-                            <td><?= $kpi['weight'] ?></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <?php endforeach; ?>
-                        <tr>
-                            <td colspan="6"></td>
-                            <td>0,00</td>
-                            <td></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
 
                 <div class="medium-7 small-12 columns">
 
