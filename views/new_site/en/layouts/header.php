@@ -23,9 +23,9 @@
 
                     <li class="nav-item dropdown active">
                         <a class="nav-link dropdown-toggle" href="#" id="aboutDropdown" role="button" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">About</a>
+                           aria-haspopup="true" aria-expanded="false">About company</a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="aboutDropdown">
-                            <a class="dropdown-item" href="/new/about/company-information">Company information</a>
+                            <a class="dropdown-item" href="/new/about/company-information">Profile</a>
                             <a class="dropdown-item" href="/new/about/geography">Geography</a>
                             <a class="dropdown-item" href="/new/about/responsibility">Responsibility</a>
                             <a class="dropdown-item" href="/new/about/certificates">Certificates</a>
@@ -36,19 +36,19 @@
                         <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">Services</a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="servicesDropdown">
-                            <a class="dropdown-item" href="/new/services/manufacturers">For manufacturers</a>
-                            <a class="dropdown-item" href="/new/services/retailers">For retailers</a>
-                            <a class="dropdown-item" href="/new/services/repair-centers">For repair centers</a>
-                            <a class="dropdown-item" href="/new/services/enterprises">For enterprises</a>
+                            <a class="dropdown-item" href="/new/services/manufacturers">Manufacturers</a>
+                            <a class="dropdown-item" href="/new/services/retailers">Retail networks</a>
+                            <a class="dropdown-item" href="/new/services/repair-centers">Corporate clients</a>
+                            <a class="dropdown-item" href="/new/services/enterprises">Service Centers</a>
                         </div>
                     </li>
 
-                    <li class="nav-item d-none"><a class="nav-link" href="#">Recycling</a></li>
+                    <li class="nav-item d-none"><a class="nav-link" href="#">Trade-In</a></li>
                     <li class="nav-item"><a class="nav-link" href="/new/news">News</a></li>
                     <li class="nav-item"><a class="nav-link" href="/new/career">Career</a></li>
 
 
-                    <li class="nav-item"><a class="nav-link" href="/new/suppliers">Suppliers</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/new/suppliers">For Suppliers</a></li>
                     <li class="nav-item"><a class="nav-link" href="/new/contacts">Contacts</a></li>
 
                     <?php if(\Josantonius\Session\Session::get('user')):?>
@@ -57,7 +57,7 @@
                         <li class="nav-item dropdown dropdown-not-hover ml-4  login-item-menu">
                             <a class="nav-link dropdown-toggle" href="#" id="careerDropdown" role="button" data-toggle="dropdown"
                                aria-haspopup="true" aria-expanded="false">
-                                Login in
+                                Sign in
                             </a>
                             <div style="border-radius: 0px;border: none;box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);" class="dropdown-menu dropdown-menu-right p-3 hidden-md-down" aria-labelledby="careerDropdown">
                                 <form action="" method="post" id="form-auth" style="width: 250px;">

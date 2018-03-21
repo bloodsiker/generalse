@@ -262,3 +262,13 @@ footer {
   text-decoration: none;
   color: #fff;
 }
+#noscript{
+  text-align: center;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  padding: 10px;
+  background: orange;
+  color: #fff;
+  z-index: 999;
+}

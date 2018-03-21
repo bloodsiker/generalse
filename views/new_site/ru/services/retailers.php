@@ -7,7 +7,7 @@
     <main class="container">
 
 
-        <div class="services-head" style="background-image: url('/template/new_site/img/services/210990.jpeg');">
+        <div class="services-head" style="background-image: url('/template/new_site/img/services/210990.jpg');">
             <div class="container">
                 <h1>Услуги для розничных сетей</h1>
                 <h4>Оптимизация расходов и компенсация стоимости основных средств для розничных сетей и дистрибуторов</h4>
@@ -58,7 +58,7 @@
         <section data-scroll-div="repair" class="container" style="margin: 0">
             <div class="row ">
                 <div class="col-md-6">
-                    <img class="mw-100" src="/template/new_site/img/services/257736.jpeg" alt="Ремонт и технические услуги">
+                    <img class="mw-100" src="/template/new_site/img/services/257736.jpg" alt="Ремонт и технические услуги">
                 </div>
                 <div class="col-md-6">
                     <h2 class="text-uppercase mb-2">Ремонт и технические услуги</h2>
@@ -79,7 +79,7 @@
         <section data-scroll-div="recycling" class="container" style="margin: 0">
             <div class="row ">
                 <div class="col-md-6">
-                    <img class="mw-100" src="/template/new_site/img/services/825262.jpeg" alt="Утилизация оборудования">
+                    <img class="mw-100" src="/template/new_site/img/services/825262.jpg" alt="Утилизация оборудования">
                 </div>
                 <div class="col-md-6">
                     <h2 class="text-uppercase mb-2">Утилизация оборудования</h2>
@@ -89,10 +89,10 @@
         </section>
 
         <div id="logistics" style="margin-bottom: 100px"></div>
-        <section data-scroll-div="section-3" class="container" style="margin: 0">
+        <section data-scroll-div="section-3" class="container mb-5" style="margin: 0">
             <div class="row ">
                 <div class="col-md-6">
-                    <img class="mw-100" src="/template/new_site/img/services/193667.jpeg" alt="Логистика">
+                    <img class="mw-100" src="/template/new_site/img/services/193667.jpg" alt="Логистика">
                 </div>
                 <div class="col-md-6">
                     <h2 class="text-uppercase mb-2">Логистика</h2>

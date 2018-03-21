@@ -14,7 +14,7 @@
                     <div class="card-block p-3">
                         <ul class="list-group list-group-flush career-box-list">
                             <li class="list-group-item justify-content-lg-between d-flex">
-                                <div class="text-danger w-100">Location:</div>
+                                <div class="text-danger w-100">Country:</div>
                                 <div><?= $info_vacancy['location'] ?></div>
                             </li>
                             <li class="list-group-item justify-content-lg-between d-flex">
@@ -22,7 +22,7 @@
                                 <div class="text-right"><?= $info_vacancy['department'] ?></div>
                             </li>
                             <li class="list-group-item justify-content-lg-between d-flex">
-                                <div class="text-danger w-100">Employment type:</div>
+                                <div class="text-danger w-100">Type of employment:</div>
                                 <div class="text-right"><?= $info_vacancy['employment'] ?></div>
                             </li>
                         </ul>

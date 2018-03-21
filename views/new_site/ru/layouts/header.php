@@ -81,7 +81,7 @@
                     <?php endif;?>
 
 
-                    <li class="nav-item dropdown ml-4 nav-langs d-none">
+                    <li class="nav-item dropdown ml-4 nav-langs">
                         <a class="nav-link dropdown-toggle" href="/lang/ru" id="servicesDropdown" role="button" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">Рус</a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="servicesDropdown">

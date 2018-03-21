@@ -18,49 +18,45 @@
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <div class="img-box">
-                        <img class="d-block w-100" src="/template/new_site/img/black-and-white-city-man-people.jpg" alt="First slide">
+                        <img class="d-block w-100" src="/template/new_site/img/slider/257736.jpg" alt="Comprehensive after-sales service of equipment">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
-                        <h2>End-to-end Aftersale Service for IT, Mobile and MDA industries</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquid commodi consequatur dignissimos, expedita hic itaque laudantium minus modi mollitia nemo odit optio repudiandae sequi sint sit unde veritatis vero!</p>
+                        <h2>Comprehensive after-sales service of equipment</h2>
                         <div class="w-100 text-right">
-                            <a class="btn btn-red btn-lg mt-2 text-uppercase">lean more</a>
+                            <a href="/new/services/manufacturers#complex" class="btn btn-red btn-lg mt-2 text-uppercase">lean more</a>
                         </div>
                     </div>
                 </div>
                 <div class="carousel-item">
                     <div class="img-box">
-                        <img class="d-block w-100" src="/template/new_site/img/black-and-white-city-man-people.jpg" alt="First slide">
+                        <img class="d-block w-100" src="/template/new_site/img/slider/75.jpg" alt="Logistics and distribution of spare parts">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
-                        <h2>Parts Logistics and distribution</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquid commodi consequatur dignissimos, expedita hic itaque laudantium minus modi mollitia nemo odit optio repudiandae sequi sint sit unde veritatis vero!</p>
+                        <h2>Logistics and distribution of spare parts</h2>
                         <div class="w-100 text-right">
-                            <a class="btn btn-red btn-lg mt-2 text-uppercase">lean more</a>
+                            <a href="/new/services/manufacturers#logistics" class="btn btn-red btn-lg mt-2 text-uppercase">lean more</a>
                         </div>
                     </div>
                 </div>
                 <div class="carousel-item">
                     <div class="img-box">
-                        <img class="d-block w-100" src="/template/new_site/img/black-and-white-city-man-people.jpg" alt="First slide">
+                        <img class="d-block w-100" src="/template/new_site/img/slider/132700.jpg" alt="Engineering and technical services">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
                         <h2>Engineering and technical services</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquid commodi consequatur dignissimos, expedita hic itaque laudantium minus modi mollitia nemo odit optio repudiandae sequi sint sit unde veritatis vero!</p>
                         <div class="w-100 text-right">
-                            <a class="btn btn-red btn-lg mt-2 text-uppercase">lean more</a>
+                            <a href="/new/services/manufacturers#repair" class="btn btn-red btn-lg mt-2 text-uppercase">lean more</a>
                         </div>
                     </div>
                 </div>
                 <div class="carousel-item">
                     <div class="img-box">
-                        <img class="d-block w-100" src="/template/new_site/img/black-and-white-city-man-people.jpg" alt="First slide">
+                        <img class="d-block w-100" src="/template/new_site/img/slider/825262.jpg" alt="Recycling of electronic waste">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
-                        <h2>Hardware recycling</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquid commodi consequatur dignissimos, expedita hic itaque laudantium minus modi mollitia nemo odit optio repudiandae sequi sint sit unde veritatis vero!</p>
+                        <h2>Recycling of electronic waste</h2>
                         <div class="w-100 text-right">
-                            <a class="btn btn-red btn-lg mt-2 text-uppercase">lean more</a>
+                            <a href="/new/services/retailers#recycling" class="btn btn-red btn-lg mt-2 text-uppercase">lean more</a>
                         </div>
                     </div>
                 </div>
@@ -79,12 +75,13 @@
 
         <section>
             <h1 class="text-uppercase mb-5">General services europe</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi nemo odit sunt vero vitae voluptatem! Amet est
-                et, excepturi, ipsam itaque maiores, nisi non quod ratione repellendus sequi tempora veniam? Lorem ipsum dolor
-                sit amet, consectetur adipisicing elit. Aliquam doloremque eius nam omnis quaerat quia suscipit! Accusantium
-                sit amet, consectetur adipisicing elit. Aliquam doloremque eius nam omnis quaerat quia suscipit! Accusantium
-                sit amet, consectetur adipisicing elit. Aliquam doloremque eius nam omnis quaerat quia suscipit! Accusantium
-                cumque, exercitationem incidunt natus possimus quae soluta totam voluptatum. Ab fugiat ipsum optio?</p>
+            <p>General Services Europe (GSE) is an international service provider for consumer electronics
+                manufacturing companies. Founded in 2006, the company provides a full range of logistics operations
+                with spare parts and components, repair of products of any complexity, processing and disposal of
+                non-repairable equipment, outsourcing call center services. Geography of General Services covers
+                Estonia, Ukraine, Belarus, Moldova, Georgia, Armenia, and the company's customers are the largest
+                manufacturers and distributors of computer equipment and household appliances.
+            </p>
 
         </section>
 
@@ -93,11 +90,11 @@
                 <div class="col col-lg-4">
                     <div class="grid">
                         <figure class="effect-sarah">
-                            <img src="/template/new_site/img/pexels-photo-128193.jpeg" alt="img13">
+                            <img src="/template/new_site/img/main-block/ForManufacturers.jpg" alt="Manufacturers">
                             <figcaption>
-                                <h3>For Retailers and Distributors</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                <a href="../../../index.php">View more</a>
+                                <h3>Manufacturers</h3>
+                                <p></p>
+                                <a href="/new/services/manufacturers">View more</a>
                             </figcaption>
                         </figure>
                     </div>
@@ -105,11 +102,11 @@
                 <div class="col col-lg-4">
                     <div class="grid">
                         <figure class="effect-sarah">
-                            <img src="/template/new_site/img/pexels-photo-128193.jpeg" alt="img13">
+                            <img src="/template/new_site/img/main-block/forRetailers.jpg" alt="Retail networks">
                             <figcaption>
-                                <h3>For manufacturers</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                <a href="../../../index.php">View more</a>
+                                <h3>Retail networks</h3>
+                                <p></p>
+                                <a href="/new/services/retailers">View more</a>
                             </figcaption>
                         </figure>
                     </div>
@@ -117,11 +114,11 @@
                 <div class="col col-lg-4">
                     <div class="grid">
                         <figure class="effect-sarah">
-                            <img src="/template/new_site/img/pexels-photo-128193.jpeg" alt="img13">
+                            <img src="/template/new_site/img/main-block/forEnterprise.jpg" alt="Corporate customers">
                             <figcaption>
-                                <h3>For End-users</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                <a href="../../../index.php">View more</a>
+                                <h3>Corporate customers</h3>
+                                <p></p>
+                                <a href="/new/services/repair-centers">View more</a>
                             </figcaption>
                         </figure>
                     </div>
@@ -138,22 +135,10 @@
                 <div class="col col-lg-4">
                     <div class="grid">
                         <figure class="effect-sarah">
-                            <img src="/template/new_site/img/pexels-photo-128193.jpeg" alt="img13">
+                            <img src="/template/new_site/img/main-block/288479.jpg" alt="Sell ​​a non-operational device">
                             <figcaption>
-                                <h3>Depot Center</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                <a href="../../../index.php">View more</a>
-                            </figcaption>
-                        </figure>
-                    </div>
-                </div>
-                <div class="col col-lg-4">
-                    <div class="grid">
-                        <figure class="effect-sarah">
-                            <img src="/template/new_site/img/pexels-photo-128193.jpeg" alt="img13">
-                            <figcaption>
-                                <h3>Sell your defective assets</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                <h3>Sell ​​a non-operational device</h3>
+                                <p></p>
                                 <a href="/new/recycling">View more</a>
                             </figcaption>
                         </figure>
@@ -162,11 +147,23 @@
                 <div class="col col-lg-4">
                     <div class="grid">
                         <figure class="effect-sarah">
-                            <img src="/template/new_site/img/pexels-photo-128193.jpeg" alt="img13">
+                            <img src="/template/new_site/img/main-block/117729.jpg" alt="Buy spare parts">
                             <figcaption>
-                                <h3>Shop parts online</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                <a href="../../../index.php">View more</a>
+                                <h3>Buy spare parts</h3>
+                                <p></p>
+                                <a href="http://pex.com.ua/" target="_blank">View more</a>
+                            </figcaption>
+                        </figure>
+                    </div>
+                </div>
+                <div class="col col-lg-4">
+                    <div class="grid">
+                        <figure class="effect-sarah">
+                            <img src="/template/new_site/img/main-block/872957.jpg" alt="Become a partner">
+                            <figcaption>
+                                <h3>Become a partner</h3>
+                                <p></p>
+                                <a href="/new/suppliers">View more</a>
                             </figcaption>
                         </figure>
                     </div>

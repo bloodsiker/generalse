@@ -40,7 +40,7 @@
                 </div>
                 <div class="carousel-item">
                     <div class="img-box">
-                        <img class="d-block w-100" src="/template/new_site/img/slider/132700.jpeg" alt="Ремонты">
+                        <img class="d-block w-100" src="/template/new_site/img/slider/132700.jpg" alt="Ремонты">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
                         <h2>Инжениринг и технические услуги</h2>
@@ -88,7 +88,7 @@
                 <div class="col col-lg-4">
                     <div class="grid">
                         <figure class="effect-sarah">
-                            <img src="/template/new_site/img/main-block/ForManufacturers.jpeg" alt="Производителям">
+                            <img src="/template/new_site/img/main-block/ForManufacturers.jpg" alt="Производителям">
                             <figcaption style="padding: 2em 1em">
                                 <h3>Производителям</h3>
                                 <p></p>
@@ -133,7 +133,7 @@
                 <div class="col col-lg-4">
                     <div class="grid">
                         <figure class="effect-sarah">
-                            <img src="/template/new_site/img/main-block/288479.jpeg" alt="Продать нерабочее устройство">
+                            <img src="/template/new_site/img/main-block/288479.jpg" alt="Продать нерабочее устройство">
                             <figcaption>
                                 <h3>Продать нерабочее устройство</h3>
                                 <p></p>
@@ -145,7 +145,7 @@
                 <div class="col col-lg-4">
                     <div class="grid">
                         <figure class="effect-sarah">
-                            <img src="/template/new_site/img/main-block/117729.jpeg" alt="Купить запасные части">
+                            <img src="/template/new_site/img/main-block/117729.jpg" alt="Купить запасные части">
                             <figcaption>
                                 <h3>Купить запасные части</h3>
                                 <p></p>
@@ -157,7 +157,7 @@
                 <div class="col col-lg-4">
                     <div class="grid">
                         <figure class="effect-sarah">
-                            <img src="/template/new_site/img/main-block/872957.jpeg" alt="Стать партнером">
+                            <img src="/template/new_site/img/main-block/872957.jpg" alt="Стать партнером">
                             <figcaption>
                                 <h3>Стать партнером</h3>
                                 <p></p>

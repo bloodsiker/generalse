@@ -3,26 +3,25 @@
     <div class="container">
         <div class="row align-justify">
             <div class="col-md-4">
-                <h5><b>General Services Inc. – International
-                        Parts Logistics, Repair & Recycling</b></h5>
-                <p>
+                <h5><b>General Services Europe - an international service provider</b></h5>
+                <p class="d-none">
                     General Services Ukraine LLC<br>
                     1-3, Severosuretskaya street, <br>
                     04116, Kiev, Ukraine<br>
                     0 800 501 279 <br>
                     044 338 25 59 <br>
-                    <a href="../../../../index.php">es@generalse.com</a>
+                    <a href="mailto:es@generalse.com">es@generalse.com</a>
                 </p>
             </div>
             <div class="col-md-3">
                 <h5><b>Services</b></h5>
                 <ul class="mb-3">
-                    <li><a href="#">Parts logistics</a></li>
-                    <li><a href="#">Repair services</a></li>
-                    <li><a href="#">Recycling</a></li>
-                    <li><a href="#">Sell your device</a></li>
-                    <li><a href="#">Contact Center</a></li>
-                    <li><a href="#">Shop online</a></li>
+                    <li><a href="/new/services/manufacturers">Spare parts logistics</a></li>
+                    <li><a href="/new/services/repair-centers">Repair of equipment</a></li>
+                    <li><a href="/new/services/retailers">Recycling</a></li>
+                    <li><a href="/new/services/enterprises">Purchase of equipment</a></li>
+                    <li><a href="/new/services/manufacturers">Call center services</a></li>
+                    <li><a href="http://pex.com.ua/" target="_blank">Online store</a></li>
                 </ul>
             </div>
             <div class="col-md-3">
@@ -30,19 +29,18 @@
                     <b>General Services Europe</b>
                 </h5>
                 <p>
-                    Estonia <br>
-                    4, Narva mnt, Tallin <br>
-                    10117, Estonia <br>
-                    <a href="../../../../index.php">ee@generalse.com</a>
+                    4, Narva road,<br>
+                    Tallinn, Estonia<br>
+                    Tel: 044-338-25-59<br>
+                    <a href="mailto:hq@generalse.com">hq@generalse.com</a>
                 </p>
             </div>
             <div class="col-md-2">
 
                 <h5>
-                    <b>Connect with us!</b>
+                    <b>Follow us!</b>
                 </h5>
-                <p>Stay in touch with our most useful
-                    Insights personally for you</p>
+                <p>Keep abreast of our new ideas created especially for you.</p>
                 <div class="socialMenu">
 
                     <div class="social-menu">
@@ -67,7 +65,7 @@
             </div>
         </div>
 
-        <div class="text-center">Copyright © 2018 General Services LLC</div>
+        <div class="text-center">General Services Europe. 2018</div>
     </div>
 
 </footer>
@@ -76,53 +74,53 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Отправить заявку на регистрацию аккаунта</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Send a request for account registration</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="sign-up-form" action="#" method="post">
+
+                <form id="sign-up-form" data-form="send" action="/sign_up" method="post">
                     <div class="form-group">
-                        <label>Страна</label>
+                        <label>Country</label>
                         <input type="text" class="form-control" name="country">
                     </div>
                     <div class="form-group">
-                        <label>ФИО</label>
-                        <input type="text" class="form-control" name="fio" required autocomplete="off">
+                        <label>First Name and Last Name</label>
+                        <input type="text" class="form-control required" name="fio" autocomplete="off">
                     </div>
                     <div class="form-group">
-                        <label>Наименование компании</label>
-                        <input type="text" class="form-control" required name="company">
+                        <label>Company name</label>
+                        <input type="text" class="form-control required" name="company">
                     </div>
                     <div class="form-group">
                         <label>Email</label>
-                        <input type="email" class="form-control" required name="email">
+                        <input type="email" class="form-control required" name="email">
                     </div>
                     <div class="form-group">
-                        <label>Логин</label>
-                        <input type="text" class="form-control" required name="login">
+                        <label>Login</label>
+                        <input type="text" class="form-control required" name="login">
                     </div>
                     <div class="form-group">
-                        <label>Телефон</label>
-                        <input type="text" name="phone" placeholder="(099) 999-99-99" class="phone required form-control" required="" autocomplete="off" maxlength="15">
+                        <label>Phone</label>
+                        <input type="text" name="phone" placeholder="(099) 999-99-99" class="phone required form-control" autocomplete="off" maxlength="15">
                     </div>
                     <div class="form-group">
-                        <label>Адрес</label>
-                        <input type="text" name="address" class="form-control" required="" autocomplete="off">
+                        <label>Address</label>
+                        <input type="text" name="address" class="form-control required" autocomplete="off">
                     </div>
                     <div class="form-group">
-                        <label>Какие интересуют группы товаров</label>
+                        <label>What are the groups of products</label>
                         <input type="text" name="group_products" class="form-control" autocomplete="off">
                     </div>
                     <div class="form-group">
-                        <label>Комментарий</label>
+                        <label>Comments</label>
                         <textarea name="message" class="form-control" cols="30" rows="2"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-red float-right">Отправить</button>
-
+                    <input type="hidden" name="lang" value="en">
                     <input type="hidden" name="sign_up" value="true">
-
+                    <button type="submit" id="btn-sign-up" class="btn btn-red float-right">Отправить</button>
                 </form>
             </div>
         </div>
@@ -170,7 +168,9 @@
             </div>
             <div class="modal-body">
                 <div style="padding: 30px; text-align: center">
-                    <h5>Заявка отправлена! <br> Ожидайте, с Вами свяжуться в ближайшее время</h5>
+                    <h5>The request has been sent!
+                        <br> Expect, you will be contacted in the near future
+                    </h5>
                 </div>
             </div>
         </div>
@@ -192,7 +192,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqvmap/1.5.1/jquery.vmap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqvmap/1.5.1/maps/jquery.vmap.europe.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqvmap/1.5.1/maps/jquery.vmap.world.js"></script>
-<script src="/template/new_site/js/jquery.vmap.sampledata.js"></script>
+<script src="/template/new_site/js/jquery.vmap.sampledata.js?v.1.0.1"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lettering.js/0.7.0/jquery.lettering.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/textillate/0.4.0/jquery.textillate.min.js"></script>
@@ -201,7 +201,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
 <script src="/template/new_site/js/object.js"></script>
-<script src="/template/new_site/js/app.js"></script>
+<script src="/template/new_site/js/app.js?v.1.5.1"></script>
 
 </body>
 </html>

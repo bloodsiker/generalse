@@ -8,17 +8,23 @@ use Umbrella\components\Db\MySQL;
 class ServiceCenter
 {
 
+    /**
+     * @return array
+     */
     public static function getCountrySC()
     {
         $db = MySQL::getConnection();
 
-        $sql = 'SELECT DISTINCT country_code, country_ru FROM site_service_center';
+        $sql = 'SELECT DISTINCT country_code, country_ru, country_en FROM site_service_center';
 
         $result = $db->prepare($sql);
         $result->execute();
         return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * @return array
+     */
     public static function getAllServiceCenter ()
     {
         $db = MySQL::getConnection();
@@ -31,6 +37,9 @@ class ServiceCenter
     }
 
 
+    /**
+     * @param $options
+     */
     public static function addData($options)
     {
         $db = MySQL::getConnection();

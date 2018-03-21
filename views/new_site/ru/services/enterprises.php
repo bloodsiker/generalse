@@ -59,10 +59,10 @@
         </section>
 
         <div id="overstock" style="margin-bottom: 100px"></div>
-        <section data-scroll-div="overstock"  class="container" style="margin: 0">
+        <section data-scroll-div="overstock"  class="container mb-5" style="margin: 0">
             <div class="row ">
                 <div class="col-md-6">
-                    <img class="mw-100" src="/template/new_site/img/services/825262.jpeg" alt="Покупка оверстоков">
+                    <img class="mw-100" src="/template/new_site/img/services/825262.jpg" alt="Покупка оверстоков">
                 </div>
                 <div class="col-md-6">
                     <h2 class="text-uppercase mb-2">Покупка оверстоков</h2>

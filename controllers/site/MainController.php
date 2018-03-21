@@ -29,9 +29,9 @@ class MainController extends BaseSiteController
     {
         $seo_page = $this->seo->getSeoForPage('main');
 
-        if($this->curr_lang == 'en'){
-            Url::redirect('/ru/new');
-        }
+//        if($this->curr_lang == 'en'){
+//            Url::redirect('/ru/new');
+//        }
 
         $this->render("new_site/{$this->curr_lang}/index", compact('seo_page'));
         return true;

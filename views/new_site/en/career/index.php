@@ -6,7 +6,7 @@
 
     <main class="container">
 
-        <h1 class="mb-5 mt-6">Career</h1>
+        <h1 class="mb-5 mt-6">Our job offers</h1>
 
         <div class="row mt-5 mb-5">
             <?php if(is_array($all_vacancy)): ?>
@@ -18,7 +18,7 @@
 
                                 <ul class="list-group list-group-flush career-box-list">
                                     <li class="list-group-item justify-content-lg-between d-flex">
-                                        <div class="text-danger w-100">Location:</div>
+                                        <div class="text-danger w-100">Country:</div>
                                         <div><?= $vacancy['location'] ?></div>
                                     </li>
                                     <li class="list-group-item justify-content-lg-between d-flex">
@@ -26,7 +26,7 @@
                                         <div class="text-right"><?= $vacancy['department'] ?></div>
                                     </li>
                                     <li class="list-group-item justify-content-lg-between d-flex">
-                                        <div class="text-danger w-100">Employment type:</div>
+                                        <div class="text-danger w-100">Type of employment:</div>
                                         <div class="text-right"><?= $vacancy['employment'] ?></div>
                                     </li>
                                 </ul>

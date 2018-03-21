@@ -9,6 +9,7 @@
     <link rel="shortcut icon" href="" type="image/x-icon"/>
     <meta name="description" content="<?= $seo_page['description'] ?>">
     <meta name="keywords" content="<?= $seo_page['keywords'] ?>">
+    <meta name="lang" content="ru">
 
     <meta property="og:site_name" content="Generalse Inc." />
     <meta property="og:title" content="<?= $seo_page['title'] ?>" />
@@ -26,7 +27,9 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
     <link rel="stylesheet" href="/template/new_site/css/fonts.css">
-    <link rel="stylesheet" href="/template/new_site/css/app.css?v.1.0.1">
+    <link rel="stylesheet" href="/template/new_site/css/app.css?v.1.0.2">
     <link rel="stylesheet" href="/template/new_site/css/box-effect.css">
+
 </head>
 <body>
+<noscript><div id="noscript">Для корректной работы сайта, включите в настройках своего браузера выполнение JavaScript</div></noscript>

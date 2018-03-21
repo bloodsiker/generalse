@@ -6,7 +6,7 @@
 
     <main class="container">
 
-        <div class="services-head" style="background-image: url('/template/new_site/img/services/618613.jpeg');">
+        <div class="services-head" style="background-image: url('/template/new_site/img/services/618613.jpg');">
             <div class="container">
                 <h1>Услуги для корпоративных клиентов</h1>
                 <h4>Оптимизация расходов на сервис и компенсация стоимости основных средств для бизнеса</h4>
@@ -72,7 +72,7 @@
         <section data-scroll-div="section-2" class="container" style="margin: 0">
             <div class="row ">
                 <div class="col-md-6">
-                    <img class="mw-100" src="/template/new_site/img/services/257736.jpeg" alt="Ремонт и технические услуги">
+                    <img class="mw-100" src="/template/new_site/img/services/257736.jpg" alt="Ремонт и технические услуги">
                 </div>
                 <div class="col-md-6">
                     <h2 class="text-uppercase mb-2">Ремонт и технические услуги</h2>
@@ -89,10 +89,10 @@
         </section>
 
         <div id="recycling" style="margin-bottom: 100px"></div>
-        <section data-scroll-div="recycling" class="container" style="margin: 0">
+        <section data-scroll-div="recycling" class="container mb-5" style="margin: 0">
             <div class="row ">
                 <div class="col-md-6">
-                    <img class="mw-100" src="/template/new_site/img/services/825262.jpeg" alt="Утилизация оборудования">
+                    <img class="mw-100" src="/template/new_site/img/services/825262.jpg" alt="Утилизация оборудования">
                 </div>
                 <div class="col-md-6">
                     <h2 class="text-uppercase mb-2">Утилизация оборудования</h2>

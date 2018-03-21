@@ -6,7 +6,7 @@
 
     <main class="container">
 
-        <h1 class="mb-5 mt-6">General Services News</h1>
+        <h1 class="mb-5 mt-6">News of General Services</h1>
 
         <?php if(is_array($all_news)): ?>
             <?php foreach ($all_news as $new): ?>
