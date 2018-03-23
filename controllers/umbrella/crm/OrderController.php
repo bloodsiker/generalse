@@ -447,10 +447,21 @@ class OrderController extends AdminBase
         $rateCurrencyUsd = Currency::getRatesCurrencyPerDay('usd', $dateOrder)['OutputRate'];
         $rateCurrencyEuro = Currency::getRatesCurrencyPerDay('euro', $dateOrder)['OutputRate'];
         if($user->isPartner()){
-            $ordersElements = array_map(function ($value) use ($user, $rateCurrencyEuro) {
-                $value['price_euro'] = round($value['price'] / $rateCurrencyEuro, 2);
+            $ordersElements = array_map(function ($value) use ($user, $rateCurrencyUsd, $rateCurrencyEuro) {
+                if($user->getUserCurrencyGM() == 'usd'){
+                    $value['price_usd'] = round($value['price'], 2);
+                    $value['price_uah'] = round($value['price'] * $rateCurrencyUsd, 2);
+                } elseif ($user->getUserCurrencyGM() == 'uah'){
+                    $value['price_usd'] = round($value['price'] / $rateCurrencyUsd, 2);
+                    $value['price_uah'] = round($value['price'], 2);
+                    $value['price_euro'] = round($value['price'] / $rateCurrencyEuro, 2);
+                }  elseif ($user->getUserCurrencyGM() == 'euro'){
+                    $value['price_euro'] = round($value['price'], 2);
+                    $value['price_uah'] = round($value['price'] * $rateCurrencyEuro, 2);
+                } else {
+                    $value['price'] = round($value['price'], 2);
+                }
                 $value['stock_name'] = Stocks::replaceNameStockInResultTable($value['stock_name'], $user->getRole());
-                $value['price'] = round($value['price'], 2);
                 return $value;
             }, $ordersElements);
 

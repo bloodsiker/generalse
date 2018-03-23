@@ -17,9 +17,18 @@
             <th>Service Order</th>
             <th>Stock name</th>
             <th>Quantity</th>
-            <th class="text-center">Price uah</th>
-            <?php if($user->getGroupName() == 'Electrolux'):?>
+            <?php if($user->getUserCurrencyGM() == 'usd'):?>
+                <th class="text-center">Price uah</th>
+                <th class="text-center">Price usd</th>
+            <?php elseif ($user->getUserCurrencyGM() == 'uah'): ?>
+                <th class="text-center">Price uah</th>
+                <th class="text-center">Price usd</th>
                 <th class="text-center">Price euro</th>
+            <?php elseif ($user->getUserCurrencyGM() == 'euro'): ?>
+                <th class="text-center">Price uah</th>
+                <th class="text-center">Price euro</th>
+            <?php else:?>
+                <th class="text-center">Price</th>
             <?php endif?>
         </tr>
         </thead>
@@ -32,9 +41,18 @@
                 <td><?= $element['so_number'] ?></td>
                 <td><?= $element['stock_name'] ?></td>
                 <td><?= $element['quantity'] ?></td>
-                <td class="text-center"><?= $element['price'] ?></td>
-                <?php if($user->getGroupName() == 'Electrolux'):?>
+                <?php if($user->getUserCurrencyGM() == 'usd'):?>
+                    <td class="text-center"><?= $element['price_uah'] ?></td>
+                    <td class="text-center"><?= $element['price_usd'] ?></td>
+                <?php elseif ($user->getUserCurrencyGM() == 'uah'): ?>
+                    <td class="text-center"><?= $element['price_uah'] ?></td>
+                    <td class="text-center"><?= $element['price_usd'] ?></td>
                     <td class="text-center"><?= $element['price_euro'] ?></td>
+                <?php elseif ($user->getUserCurrencyGM() == 'euro'): ?>
+                    <td class="text-center"><?= $element['price_uah'] ?></td>
+                    <td class="text-center"><?= $element['price_euro'] ?></td>
+                <?php else: ?>
+                    <td class="text-center"><?= $element['price'] ?></td>
                 <?php endif?>
             </tr>
         <?php endforeach;; ?>

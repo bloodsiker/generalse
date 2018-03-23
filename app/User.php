@@ -263,6 +263,18 @@ class User
         return false;
     }
 
+    /**
+     * Partner currency
+     * @return bool
+     */
+    public function getUserCurrencyGM()
+    {
+        if($this->infoUser['gm']){
+            return $this->infoUser['gm']['ShortName'];
+        }
+        return false;
+    }
+
 
     /**
      * Blocked auth user in Umbrella from GM
