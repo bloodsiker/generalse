@@ -26,7 +26,7 @@
                            aria-haspopup="true" aria-expanded="false">О компании</a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="aboutDropdown">
                             <a class="dropdown-item" href="/ru/new/about/company-information">Профайл</a>
-                            <a class="dropdown-item" href="/ru/new/about/geography">Георграфия</a>
+                            <a class="dropdown-item" href="/ru/new/about/geography">География</a>
                             <a class="dropdown-item" href="/ru/new/about/responsibility">Ответственность</a>
                             <a class="dropdown-item" href="/ru/new/about/certificates">Сертификаты</a>
                         </div>
