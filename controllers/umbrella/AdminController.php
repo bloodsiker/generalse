@@ -22,9 +22,10 @@ class AdminController extends AdminBase
      * @return bool
      * @throws \Exception
      */
-    public function actionAuth(){
+    public function actionAuth(): bool
+    {
 
-        if(Request::post('action') == 'login'){
+        if(Request::post('action') === 'login'){
             $lang = 'ru';
             $login = Request::post('login');
             $password = Functions::hashPass(Request::post('password'));
@@ -33,12 +34,11 @@ class AdminController extends AdminBase
 
 
             //$server = 'down'; // down || up
-            if(config('app')['server'] == 'up'){
+            if(config('app')['server'] === 'up'){
                 //Проверяем существует ли пользователь
                 $userId = Admin::checkAdminData($login, $password);
 
                 if($userId == false){
-                    //$errors['log'] = $lang;
                     $errors['log'] = config('app')['notification'][$lang]['login_false'];
                     $errors['code'] = 1;
                     echo json_encode($errors);
@@ -48,7 +48,7 @@ class AdminController extends AdminBase
                     // Доступ к проекту
                     if ($user->getAuthProject('umbrella')){
                         //Проверка на проплату в GM
-                        if($user->getUserBlockedGM() == 'active'){
+                        if($user->getUserBlockedGM() === 'active'){
                             if($user->isActive() == 1){
                                 Admin::auth($user);
 
@@ -87,11 +87,12 @@ class AdminController extends AdminBase
     /**
      * Доступ закрыт
      * @return bool
+     * @throws \Exception
      */
-    public function actionAccess()
+    public function actionAccess(): bool
     {
         self::checkAdmin();
-        $userId = Admin::CheckLogged();
+        $userId = Admin::checkLogged();
         $user = new User($userId);
 
         $this->render('admin/access_denied', compact('user'));
@@ -101,17 +102,19 @@ class AdminController extends AdminBase
     /**
      * Авторизируем админа\менеджера в кабинет партнера без запроса пароля
      * @return bool
+     * @throws \Exception
      */
-    public function actionReLogin()
+    public function actionReLogin(): bool
     {
-        $userId = Admin::CheckLogged();
+        $userId = Admin::checkLogged();
         $user = new User($userId);
 
         $listPartner = Admin::getAllPartner();
         $error = false;
 
+
         if($user->isAdmin() || $user->isManager() || $user->getReLogin()['access'] == 1){
-            if(Request::post('re-login') == 'true'){
+            if(Request::post('re-login') === 'true'){
                 $idPartner = Request::post('id_partner');
                 Session::destroy('user');
                 Session::destroy('info_user');
@@ -135,10 +138,11 @@ class AdminController extends AdminBase
     /**
      * Возвращаем админа\менеджера в свой кабинет
      * @return bool
+     * @throws \Exception
      */
-    public function actionReturnMyAccount()
+    public function actionReturnMyAccount(): bool
     {
-        Admin::CheckLogged();
+        Admin::checkLogged();
 
         if(Session::get('re_login')['my_account'] == 0){
 
@@ -162,7 +166,7 @@ class AdminController extends AdminBase
      */
     public function actionLogout()
     {
-        $userId = Admin::CheckLogged();
+        $userId = Admin::checkLogged();
 
         Session::destroy('user');
         Session::destroy('_token');

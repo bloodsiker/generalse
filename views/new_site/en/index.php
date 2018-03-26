@@ -127,7 +127,7 @@
         </section>
 
         <div class="embed-responsive embed-responsive-16by9">
-            <iframe class="embed-responsive-item"  src="https://www.youtube.com/embed/1H2aFW1z8KY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            <iframe src='https://onedrive.live.com/embed?resid=7207244EA2B65AE5%21849&authkey=%21AJjEGCMG0yYQSSI&em=2&wdAr=1.7777777777777777' width='100%' height='691px' frameborder='0'>Это внедренный файл <a target='_blank' href='https://office.com'>Microsoft Office</a> на платформе <a target='_blank' href='https://office.com/webapps'>Office Online</a>.</iframe>
         </div>
 
         <section style="margin-bottom: 70px;">
