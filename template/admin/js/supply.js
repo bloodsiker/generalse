@@ -29,14 +29,14 @@ $('#add-parts-supply-form').submit(function(e) {
 
 
 //ID SUPPLY SEARCH
-$('[name="site_id"]').keyup(function(e) {
+$('[name="supply_id"]').keyup(function(e) {
     //ajax e.target.value
-    var site_id = e.target.value;
+    var supply_id = e.target.value;
     var action = 'search_site_id';
     $.ajax({
         url: "/adm/crm/supply_action_ajax",
         type: "POST",
-        data: {site_id : site_id, action : action},
+        data: {supply_id : supply_id, action : action},
         cache: false,
         success: function (response) {
             console.log(response);
@@ -115,12 +115,11 @@ send = function (event, site_id) {
 
 // Показываем в модальном окне, продукты покупки
 $(document).on('dblclick', '.checkout tbody tr', function(e) {
-    var site_id = $(this).attr('data-siteid');
-    //alert(site_id);
+    var supply_id = $(this).attr('data-supply-id');
     $.ajax({
         url: "/adm/crm/show_supply",
         type: "POST",
-        data: {site_id : site_id},
+        data: {supply_id : supply_id},
         cache: false,
         success: function (response) {
             //alert(response);
@@ -130,7 +129,7 @@ $(document).on('dblclick', '.checkout tbody tr', function(e) {
             $.ajax({
                 url: "/adm/crm/supply_action_ajax",
                 type: "POST",
-                data: {site_id : site_id, action : 'quantity'},
+                data: {supply_id : supply_id, action : 'quantity'},
                 cache: false,
                 success: function (resp) {
                     var obj = JSON.parse(resp);
@@ -148,21 +147,20 @@ $(document).on('dblclick', '.checkout tbody tr', function(e) {
 $(document).on('click', '.supply-bind-gm', function(e) {
     e.preventDefault();
 
-    var site_id = $(this).parent('td').parent('tr').data('siteid');
+    var supply_id = $(this).parent('td').parent('tr').data('supply-id');
     var action = 'bind_gm';
 
     console.log(site_id);
     $.ajax({
         url: "/adm/crm/supply_action_ajax",
         type: "POST",
-        data: {site_id : site_id, action : action},
+        data: {supply_id : supply_id, action : action},
         cache: false,
         success: function (response) {
             console.log(response);
             if(response == 200){
 
-                $('[data-siteid="' + site_id + '"]').find('.td-bind-gm').text('success').css('color', 'green');
-                //$('[data-siteid="' + site_id + '"]').find('.status-supply').text('Подтверждена').addClass('green');
+                $('[data-supply-id="' + supply_id + '"]').find('.td-bind-gm').text('success').css('color', 'green');
 
             } else {
                 alert('Ошибка! Не удалось привязать к GM!');
@@ -177,20 +175,19 @@ $(document).on('click', '.supply-bind-gm', function(e) {
 $(document).on('click', '.supply-delete', function(e) {
     e.preventDefault();
 
-    var site_id = $(this).parent('td').parent('tr').data('siteid');
+    var supply_id = $(this).parent('td').parent('tr').data('supply-id');
     var action = 'delete_supply';
 
-    console.log(site_id);
     $.ajax({
         url: "/adm/crm/supply_action_ajax",
         type: "POST",
-        data: {site_id : site_id, action : action},
+        data: {supply_id : supply_id, action : action},
         cache: false,
         success: function (response) {
             console.log(response);
             if(response == 200){
 
-                var tr = $('[data-siteid="' + site_id + '"]');
+                var tr = $('[data-supply-id="' + supply_id + '"]');
                 tr.css('background', '#ccc');
                 tr.find('.td-supply-delete').text('deleted!').css('color', 'red');
                 tr.find('.td-bind-gm').text('');

@@ -115,7 +115,6 @@
                     <table class="umbrella-table">
                         <thead>
                         <tr>
-                            <th class="sort">ID</th>
                             <th class="sort">Partner</th>
                             <th class="sort">Number</th>
                             <th class="sort">Name</th>
@@ -136,8 +135,7 @@
                         <?php if(is_array($allSupply)):?>
                             <?php foreach ($allSupply as $supply):?>
                                 <?php $status = iconv('WINDOWS-1251', 'UTF-8', $supply['status_name'])?>
-                                <tr data-siteid="<?=$supply['site_id']?>" class="">
-                                    <td><?=$supply['site_id']?></td>
+                                <tr data-siteid="<?=$supply['site_id']?>" data-supply-id="<?=$supply['supply_id']?>" class="">
                                     <td><?=$supply['site_client_name']?></td>
                                     <td><?=$supply['supply_id']?></td>
                                     <td><?=$supply['name']?></td>
@@ -255,7 +253,7 @@
                         <div class="row align-bottom ">
                             <div class="medium-12 small-12 columns">
                                 <label>ID <span class="supply_site_id"></span></label>
-                                <input type="text" class="required" name="site_id" required>
+                                <input type="text" class="required" name="supply_id" required>
                             </div>
                             <div class="medium-12 small-12 columns">
                                 <label for="upload_file_add_parts_form" class="button primary">Attach</label>

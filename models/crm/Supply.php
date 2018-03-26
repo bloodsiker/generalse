@@ -55,21 +55,21 @@ class Supply
 
 
     /**
-     * @param $site_id
+     * @param $supply_id
      * @param $ready
      * @return bool
      */
-    public static function updateReady($site_id, $ready)
+    public static function updateReady($supply_id, $ready)
     {
         $db = MsSQL::getConnection();
 
         $sql = "UPDATE site_gm_supplies
             SET
                 ready = :ready
-            WHERE site_id = :site_id";
+            WHERE supply_id = :supply_id";
 
         $result = $db->prepare($sql);
-        $result->bindParam(':site_id', $site_id, PDO::PARAM_INT);
+        $result->bindParam(':supply_id', $supply_id, PDO::PARAM_INT);
         $result->bindParam(':ready', $ready, PDO::PARAM_INT);
         return $result->execute();
     }
@@ -159,10 +159,10 @@ class Supply
 
     /**
      * Получаем товары находящиеся в поставке
-     * @param $site_idS
+     * @param $supply_id
      * @return array
      */
-    public static function getSupplyPartsByIdS($site_idS)
+    public static function getSupplyPartsByIdS($supply_id)
     {
         $db = MsSQL::getConnection();
 
@@ -176,7 +176,7 @@ class Supply
                  FROM site_gm_supplies_parts sgsp
                     INNER JOIN site_gm_supplies sgs
                         ON sgsp.site_id = sgs.site_id
-                 WHERE sgsp.site_id IN ($site_idS)";
+                 WHERE sgsp.supply_id IN ($supply_id)";
 
         $result = $db->prepare($sql);
         $result->execute();
@@ -184,20 +184,20 @@ class Supply
     }
 
     /**
-     * @param $site_id
+     * @param $supply_id
      * @return array
      */
-    public static function getShowDetailsSupply($site_id)
+    public static function getShowDetailsSupply($supply_id)
     {
         $db = MsSQL::getConnection();
 
         $sql = "SELECT
 				  *
                  FROM dbo.site_gm_supplies_parts
-                 WHERE site_id = :site_id";
+                 WHERE supply_id = :supply_id";
 
         $result = $db->prepare($sql);
-        $result->bindParam(':site_id', $site_id, PDO::PARAM_INT);
+        $result->bindParam(':supply_id', $supply_id, PDO::PARAM_INT);
         $result->execute();
         return $result->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -205,10 +205,10 @@ class Supply
 
     /**
      * Кол-во деталей в поставке
-     * @param $site_id
+     * @param $supply_id
      * @return array
      */
-    public static function getCountDetailsInSupply($site_id)
+    public static function getCountDetailsInSupply($supply_id)
     {
         $db = MsSQL::getConnection();
 
@@ -216,10 +216,10 @@ class Supply
 				  sum(quantity) as count,
                   sum(quantity_reserv) as count_reserv
                  FROM dbo.site_gm_supplies_parts
-                 WHERE site_id = :site_id";
+                 WHERE supply_id = :supply_id";
 
         $result = $db->prepare($sql);
-        $result->bindParam(':site_id', $site_id, PDO::PARAM_INT);
+        $result->bindParam(':supply_id', $supply_id, PDO::PARAM_INT);
         $result->execute();
         return $result->fetch(PDO::FETCH_ASSOC);
     }
@@ -265,21 +265,21 @@ class Supply
 
     /**
      * Обновляем склад и команду check
-     * @param $site_id
+     * @param $supply_id
      * @param $command
      * @return bool
      */
-    public static function updateCommand($site_id, $command)
+    public static function updateCommand($supply_id, $command)
     {
         $db = MsSQL::getConnection();
 
         $sql = "UPDATE site_gm_supplies
             SET
                 command = :command
-            WHERE site_id = :site_id";
+            WHERE supply_id = :supply_id";
 
         $result = $db->prepare($sql);
-        $result->bindParam(':site_id', $site_id, PDO::PARAM_INT);
+        $result->bindParam(':supply_id', $supply_id, PDO::PARAM_INT);
         $result->bindParam(':command', $command, PDO::PARAM_INT);
         return $result->execute();
     }
@@ -330,20 +330,20 @@ class Supply
 
 
     /**
-     * @param $site_id
+     * @param $supply_id
      * @return mixed
      */
-    public static function getInfoSupply($site_id)
+    public static function getInfoSupply($supply_id)
     {
         $db = MsSQL::getConnection();
 
         $sql = "SELECT
 				  *
                  FROM dbo.site_gm_supplies
-                 WHERE site_id = :site_id";
+                 WHERE supply_id = :supply_id";
 
         $result = $db->prepare($sql);
-        $result->bindParam(':site_id', $site_id, PDO::PARAM_INT);
+        $result->bindParam(':supply_id', $supply_id, PDO::PARAM_INT);
         $result->execute();
         return $result->fetch(PDO::FETCH_ASSOC);
     }
@@ -358,10 +358,10 @@ class Supply
     {
         $db = MsSQL::getConnection();
 
-        $sql = 'DELETE FROM site_gm_supplies WHERE site_id = :site_id';
+        $sql = 'DELETE FROM site_gm_supplies WHERE supply_id = :supply_id';
 
         $result = $db->prepare($sql);
-        $result->bindParam(':site_id', $id, PDO::PARAM_INT);
+        $result->bindParam(':supply_id', $id, PDO::PARAM_INT);
         return $result->execute();
     }
 
@@ -374,10 +374,10 @@ class Supply
     {
         $db = MsSQL::getConnection();
 
-        $sql = 'DELETE FROM site_gm_supplies_parts WHERE site_id = :site_id';
+        $sql = 'DELETE FROM site_gm_supplies_parts WHERE supply_id = :supply_id';
 
         $result = $db->prepare($sql);
-        $result->bindParam(':site_id', $id, PDO::PARAM_INT);
+        $result->bindParam(':supply_id', $id, PDO::PARAM_INT);
         return $result->execute();
     }
 

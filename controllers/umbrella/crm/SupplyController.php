@@ -199,8 +199,8 @@ class SupplyController extends AdminBase
 
         $group = new Group();
 
-        $site_id = $_REQUEST['site_id'];
-        $array_supply = Supply::getSupplyPartsByIdS($site_id);
+        $supply_id = $_REQUEST['supply_id'];
+        $array_supply = Supply::getSupplyPartsByIdS($supply_id);
 
         foreach ($array_supply as $item){
 
@@ -228,7 +228,7 @@ class SupplyController extends AdminBase
             }
             Supply::updateStock($item['id'], $stock);
         }
-        $ok = Supply::updateCommand($site_id, 1);
+        $ok = Supply::updateCommand($supply_id, 1);
         if($ok){
             echo 200;
         }
@@ -244,8 +244,8 @@ class SupplyController extends AdminBase
      */
     public function actionShowDetailSupply()
     {
-        $site_id = $_REQUEST['site_id'];
-        $data = Decoder::arrayToUtf(Supply::getShowDetailsSupply($site_id), ['quantity','quantity_reserv', 'price']);
+        $supply_id = $_REQUEST['supply_id'];
+        $data = Decoder::arrayToUtf(Supply::getShowDetailsSupply($supply_id), ['quantity','quantity_reserv', 'price']);
         $html = "";
         foreach($data as $item){
             $color = Functions::compareQuantity($item['quantity'], $item['quantity_reserv']);
@@ -275,8 +275,8 @@ class SupplyController extends AdminBase
     {
         // Поиск поставки по site_id
         if($_REQUEST['action'] == 'search_site_id'){
-            $site_id = $_REQUEST['site_id'];
-            $data = Supply::getInfoSupply($site_id);
+            $supply_id = $_REQUEST['supply_id'];
+            $data = Supply::getInfoSupply($supply_id);
             $status = Decoder::strToUtf($data['status_name']);
             if ($data == false) {
                 $result['name'] = "Supply not found";
@@ -294,8 +294,8 @@ class SupplyController extends AdminBase
 
         // Привязываем поставку к GM для дальнейшей обработки
         if($_REQUEST['action'] == 'quantity'){
-            $site_id = $_REQUEST['site_id'];
-            $result = Supply::getCountDetailsInSupply($site_id);
+            $supply_id = $_REQUEST['supply_id'];
+            $result = Supply::getCountDetailsInSupply($supply_id);
             $count['supply'] = $result['count'];
             $count['reserve'] = $result['count_reserv'];
             echo json_encode($count);
@@ -303,8 +303,8 @@ class SupplyController extends AdminBase
 
         // Привязываем поставку к GM для дальнейшей обработки
         if($_REQUEST['action'] == 'bind_gm'){
-            $site_id = $_REQUEST['site_id'];
-            $ok = Supply::updateReady($site_id, 1);
+            $supply_id = $_REQUEST['supply_id'];
+            $ok = Supply::updateReady($supply_id, 1);
             if ($ok == false) {
                 $status = 404;
             } else {
@@ -315,14 +315,14 @@ class SupplyController extends AdminBase
 
         // Привязываем поставку к GM для дальнейшей обработки
         if($_REQUEST['action'] == 'delete_supply'){
-            $site_id = $_REQUEST['site_id'];
-            $data = Supply::getInfoSupply($site_id);
+            $supply_id = $_REQUEST['supply_id'];
+            $data = Supply::getInfoSupply($supply_id);
             $status = Decoder::strToUtf($data['status_name']);
             if($status == 'Подтверждена'){
                 $status = 403;
             } else {
-                $ok = Supply::deleteSupplyBySiteId($site_id);
-                $okk = Supply::deleteSupplyPartsBySiteId($site_id);
+                $ok = Supply::deleteSupplyBySiteId($supply_id);
+                $okk = Supply::deleteSupplyPartsBySiteId($supply_id);
                 if ($ok == false) {
                     $status = 404;
                 } else {
