@@ -5,6 +5,7 @@ namespace Umbrella\models;
 use Josantonius\Session\Session;
 use PDO;
 use Umbrella\app\Api\Token;
+use Umbrella\app\DIContainer;
 use Umbrella\app\User;
 use Umbrella\components\Db\MySQL;
 use Umbrella\components\Db\MsSQL;
@@ -13,9 +14,11 @@ use Umbrella\components\Logger;
 
 class Admin
 {
+
     /**
      * @param $login
      * @param $password
+     *
      * @return bool
      */
     public static function checkAdminData($login, $password)
@@ -29,7 +32,7 @@ class Admin
         $result->bindParam(':password', $password, PDO::PARAM_INT);
         $result->execute();
 
-        $admin = $result->fetch();
+        $admin = $result->fetch(PDO::FETCH_ASSOC);
 
         if ($admin) {
             return $admin['id_user'];
@@ -52,7 +55,7 @@ class Admin
         $result->bindParam(':login', $login, PDO::PARAM_STR);
         $result->execute();
 
-        $count = $result->fetch();
+        $count = $result->fetch(PDO::FETCH_ASSOC);
         return $count['count'];
     }
 

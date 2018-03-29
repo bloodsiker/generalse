@@ -53,7 +53,6 @@ class UserDenied
      */
     public function deniedSection($id_user)
     {
-        $list_denied = Denied::getDeniedByUser($id_user);
-        return $list_denied;
+        return Denied::getDeniedByUser($id_user);
     }
 }

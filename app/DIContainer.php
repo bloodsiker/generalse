@@ -8,7 +8,7 @@ class DIContainer
     /**
      * @var array
      */
-    protected $register = [];
+    protected static $register = [];
 
 
     /**
@@ -16,9 +16,9 @@ class DIContainer
      * @param $value
      * @return mixed
      */
-    public function bind($key, $value)
+    public static function bind($key, $value)
     {
-        return $this->register[$key] = $value;
+        return static::$register[$key] = $value;
     }
 
 
@@ -27,11 +27,11 @@ class DIContainer
      * @return mixed
      * @throws \Exception
      */
-    public function get($key)
+    public static function get($key)
     {
-        if(!array_key_exists($key, $this->register)){
+        if(!array_key_exists($key, static::$register)){
             throw new \Exception("No {$key} is bound in the container");
         }
-        return $this->register[$key];
+        return static::$register[$key];
     }
 }

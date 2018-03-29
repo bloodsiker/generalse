@@ -3,6 +3,7 @@ namespace Umbrella\controllers;
 
 use Umbrella\app\Mail\Site\RegisterClient;
 use Umbrella\app\Mail\Site\SendCareer;
+use Umbrella\components\ImportExcel;
 use Umbrella\models\site\Client;
 use Umbrella\vendor\controller\Controller;
 

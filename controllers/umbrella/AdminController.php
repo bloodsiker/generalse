@@ -29,7 +29,7 @@ class AdminController extends AdminBase
             $lang = 'ru';
             $login = Request::post('login');
             $password = Functions::hashPass(Request::post('password'));
-            $lang = Request::post('lang');
+            //$lang = Request::post('lang');
             //$lang = ($current_lang == 'ru' || $current_lang == 'en') ? $current_lang : $default_lang;
 
 

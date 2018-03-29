@@ -48,7 +48,7 @@
                         <?php foreach ($country['service_center'] as $service): ?>
 
                             <tr>
-                                <td><?= $service['company_name'] ?></td>
+                                <td><?= $service['company_name_en'] ?></td>
                                 <td><?= $service['city_en'] ?></td>
                                 <td><?= $service['address_en'] ?></td>
                                 <td><?= $service['phone'] ?></td>

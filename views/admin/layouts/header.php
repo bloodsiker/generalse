@@ -54,6 +54,9 @@
                     <a href="/adm/risks" class="text-red">Внимание!</a>
                 <?php endif;?>
                 <span class="user-name"><?=$user->getName()?></span>
+                <?php if($user->isAdmin() || $user->isManager()): ?>
+                    <a href="/adm/site/news" class="re-login">Site</a>
+                <?php endif;?>
                 <?php if($user->isAdmin() || $user->isManager() || (isset($user->getReLogin()['access']) && $user->getReLogin()['access'] == 1)): ?>
                     <a href="/adm/re-login" class="re-login">Re-Login</a>
                 <?php endif;?>

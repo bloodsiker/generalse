@@ -342,8 +342,8 @@ class User
     {
         $array_stock = self::controlUsers($id_user);
         $option = '';
-        foreach ($array_stock as $key => $id_user){
-            $option .=  "<option value='{$id_user}'>" . Admin::getNameById($id_user) . "</option>";
+        foreach ($array_stock as $key => $userId){
+            $option .=  "<option value='{$userId}'>" . Admin::getNameById($userId) . "</option>";
         }
         echo $option;
     }

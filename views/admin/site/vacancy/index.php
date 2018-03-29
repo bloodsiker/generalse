@@ -3,7 +3,7 @@
     <div class="medium-10 small-12 columns">
         <ul class="admin_menu float-right">
 
-            <?php require_once ROOT . '/views/admin/layouts/admin_menu.php' ?>
+            <?php require_once ROOT . '/views/admin/layouts/site_menu.php' ?>
 
         </ul>
     </div>

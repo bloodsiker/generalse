@@ -5,7 +5,7 @@ require_once (ROOT . '/components/helpers.php');
 // Main config
 $config = config('app');
 
-if($config['debug'] == true) {
+if($config['debug'] === true) {
     ini_set('display_errors', 1);
     error_reporting(E_ALL);
 } else {
@@ -21,15 +21,15 @@ ini_set('memory_limit', '512M');
 
 
 // Include file system
-require_once(ROOT . '/vendor/autoload.php');
+require_once ROOT . '/vendor/autoload.php';
 
 // Start session
 Josantonius\Session\Session::init();
 
 //Static Environment Definition
-if($config['env'] == 'local') {
+if($config['env'] === 'local') {
     $env = __DIR__ . '/../.env.local';
-} elseif ($config['env'] == 'production') {
+} elseif ($config['env'] === 'production') {
     $env = __DIR__ . '/../.env';
 }
 

@@ -263,6 +263,11 @@ return [
 
     /*********** Admin site  ***********/
 
+    'adm/site/service-center/delete/([0-9]+)' => 'umbrella/site/ServiceCenter@delete/$1',
+    'adm/site/service-center/edit/([0-9]+)' => 'umbrella/site/ServiceCenter@edit/$1',
+    'adm/site/service-center/add' => 'umbrella/site/ServiceCenter@add',
+    'adm/site/service-center' => 'umbrella/site/ServiceCenter@all',
+
     'adm/site/news/delete/([a-z0-9-_?&\.]+)' => 'umbrella/site/News@delete/$1',
     'adm/site/news/edit/([a-z0-9-_?&\.]+)' => 'umbrella/site/News@edit/$1',
     'adm/site/news/add' => 'umbrella/site/News@add',
