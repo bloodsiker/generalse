@@ -6,6 +6,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/template/new_site/favicon.png" type="image/x-icon"/>
+    <link rel="shortcut icon" href="/template/new_site/favicon.png" type="image/x-icon"/>
     <title>GS Umbrella</title>
     <?php if (Umbrella\components\Url::Is_url(['/adm/crm/request', '/adm/psr', '/adm/ccc/'])): ?>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
