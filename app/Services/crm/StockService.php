@@ -84,19 +84,19 @@ class StockService
 
         if($this->user->isPartner() || $this->user->isManager()){
 
-            if(isset($request['classifier']) && sizeof($request['classifier']) > 0){
+            if(isset($request['classifier']) && count($request['classifier']) > 0){
                 $classifier = $request['classifier'];
                 $classifier = implode(', ', $classifier);
                 $filters .= " AND tbl_Classifier.I_D IN({$classifier})";
             }
 
-            if(isset($request['producer']) && sizeof($request['producer']) > 0){
+            if(isset($request['producer']) && count($request['producer']) > 0){
                 $producers = $request['producer'];
                 $producers = implode(', ', $producers);
                 $filters .= " AND tbl_Produsers.I_D IN({$producers})";
             }
 
-            if(isset($request['sub_type']) && sizeof($request['sub_type']) > 0){
+            if(isset($request['sub_type']) && count($request['sub_type']) > 0){
                 $subType = $request['sub_type'];
                 $subType = Decoder::strToWindows(implode('\' , \'', $subType));
                 $filters .= " AND sgt.subtype_name IN('{$subType}')";
@@ -111,19 +111,19 @@ class StockService
 
         } elseif ($this->user->isAdmin()){
 
-            if(isset($request['sub_type']) && sizeof($request['sub_type']) > 0){
+            if(isset($request['sub_type']) && count($request['sub_type']) > 0){
                 $subType = $request['sub_type'];
                 $subType = Decoder::strToWindows(implode('\' , \'', $subType));
                 $filters .= " AND sgt.subtype_name IN('{$subType}')";
             }
 
-            if(isset($request['classifier']) && sizeof($request['classifier']) > 0){
+            if(isset($request['classifier']) && count($request['classifier']) > 0){
                 $classifier = $request['classifier'];
                 $classifier = implode(', ', $classifier);
                 $filters .= " AND tbl_Classifier.I_D IN({$classifier})";
             }
 
-            if(isset($request['producer']) && sizeof($request['producer']) > 0){
+            if(isset($request['producer']) && count($request['producer']) > 0){
                 $producers = $request['producer'];
                 $producers = implode(', ', $producers);
                 $filters .= " AND tbl_Produsers.I_D IN({$producers})";
