@@ -14,21 +14,10 @@
                 <?= $info_news['text'] ?>
             </div>
 
-            <div class="social-menu pull-right">
-
-                <ul class="nav">
-
-                    <li class="menu-item">
-                        <a target="_blank" href="#">
-                            <img src="../img/icon-facebook.svg" width="30px" alt="">
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a target="_blank" href="#">
-                            <img src="../img/icon-linkedin.svg" width="30px" alt="">
-                        </a>
-                    </li>
-                </ul>
+            <div class="social-menu pull-right d-none">
+                <div class="social-news pull-right">
+                    <div class="pull-left mr-2">Share</div>
+                </div>
             </div>
         </section>
 

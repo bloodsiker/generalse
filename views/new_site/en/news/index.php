@@ -13,7 +13,9 @@
                 <section>
                     <div class="row ">
                         <div class="col-md-4">
-                            <img class="mw-100" src="<?= $new['image'] ?>" alt="<?= $new['title'] ?>">
+                            <a href="/new/news/<?= $new['slug'] ?>">
+                                <img class="mw-100" src="<?= $new['image'] ?>" alt="<?= $new['title'] ?>">
+                            </a>
                         </div>
                         <div class="col-md-8">
                             <h2><a href="/new/news/<?= $new['slug'] ?>"><?= $new['title'] ?></a></h2>
@@ -21,23 +23,8 @@
                             <p><?= $new['description'] ?></p>
                             <a href="/new/news/<?= $new['slug'] ?>" class="btn btn-red text-right">read more</a>
                             <div class="social-menu pull-right">
-                                <ul class="nav">
-
-                                    <li class="menu-item">
-                                        <a target="_blank" href="#">
-                                            <img src="/template/new_site/img/icon-facebook.svg" width="30px" alt="">
-                                        </a>
-                                    </li>
-
-                                    <li class="menu-item">
-                                        <a target="_blank" href="#">
-                                            <img src="/template/new_site/img/icon-linkedin.svg" width="30px" alt="">
-                                        </a>
-                                    </li>
-                                </ul>
 
                             </div>
-
                         </div>
                     </div>
                     <hr class="mt-5 mb-5">
