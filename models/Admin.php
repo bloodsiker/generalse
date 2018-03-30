@@ -583,27 +583,6 @@ class Admin
         return $result->execute();
     }
 
-    /**
-     * Обновляем каждый день коеффициент кпи
-     * @param $id
-     * @param $kpi_coefficient
-     * @return bool
-     */
-    public static function updateUserCoefficient($id, $kpi_coefficient)
-    {
-        $db = MySQL::getConnection();
-
-        $sql = "UPDATE gs_user
-            SET
-                kpi_coefficient = :kpi_coefficient
-            WHERE id_user = :id_user";
-
-        $result = $db->prepare($sql);
-        $result->bindParam(':id_user', $id, PDO::PARAM_INT);
-        $result->bindParam(':kpi_coefficient', $kpi_coefficient, PDO::PARAM_STR);
-        return $result->execute();
-    }
-
 
     /**
      * Lock user

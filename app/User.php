@@ -53,7 +53,6 @@ class User
         $this->country = $this->infoUser['full_name'];
         $this->id_group = $this->infoUser['id_group'];
         $this->group_name = $this->infoUser['group_name'];
-        $this->coefficient = $this->infoUser['kpi_coefficient'];
         $this->login_url = $this->infoUser['login_url'];
         $this->is_active = $this->infoUser['is_active'];
         $this->token = $this->getToken();

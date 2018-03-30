@@ -22,7 +22,7 @@ class AdminController extends AdminBase
      * @return bool
      * @throws \Exception
      */
-    public function actionAuth(): bool
+    public function actionAuth()
     {
 
         if(Request::post('action') === 'login'){
@@ -89,7 +89,7 @@ class AdminController extends AdminBase
      * @return bool
      * @throws \Exception
      */
-    public function actionAccess(): bool
+    public function actionAccess()
     {
         self::checkAdmin();
         $userId = Admin::checkLogged();
@@ -104,32 +104,43 @@ class AdminController extends AdminBase
      * @return bool
      * @throws \Exception
      */
-    public function actionReLogin(): bool
+    public function actionReLogin()
     {
-        $userId = Admin::checkLogged();
-        $user = new User($userId);
-
-        $listPartner = Admin::getAllPartner();
-        $error = false;
-
-
-        if($user->isAdmin() || $user->isManager() || $user->getReLogin()['access'] == 1){
-            if(Request::post('re-login') === 'true'){
-                $idPartner = Request::post('id_partner');
-                Session::destroy('user');
-                Session::destroy('info_user');
-                $userPartner = new User($idPartner);
-                Session::set('user', $userPartner->getId());
-
-                $reLogin = Session::get('re_login');
-                $reLogin['my_account'] = 0;
-                Session::set('re_login', $reLogin);
-                Logger::getInstance()->log($user->getReLogin()['id'], 'зашел в кабинет партнера ' . $userPartner->getName());
-                Url::redirect('/' . $userPartner->getUrlAfterLogin());
+        $user = null;
+        if(Request::get('auth_url') == 'true'){
+            $listPartner = Admin::getAllUsers(' gr.id_role IN (1,3)');
+            if(Request::get('user')){
+                $user = new User(Request::get('user'));
+                Admin::auth($user);
             }
         } else {
-            $error = true;
+            $userId = Admin::checkLogged();
+            $user = new User($userId);
+            $listPartner = Admin::getAllPartner();
         }
+
+        $error = false;
+
+        if($user instanceof User){
+            if($user->isAdmin() || $user->isManager() || $user->getReLogin()['access'] == 1){
+                if(Request::post('re-login') === 'true'){
+                    $idPartner = Request::post('id_partner');
+                    Session::destroy('user');
+                    Session::destroy('info_user');
+                    $userPartner = new User($idPartner);
+                    Session::set('user', $userPartner->getId());
+
+                    $reLogin = Session::get('re_login');
+                    $reLogin['my_account'] = 0;
+                    Session::set('re_login', $reLogin);
+                    Logger::getInstance()->log($user->getReLogin()['id'], 'зашел в кабинет партнера ' . $userPartner->getName());
+                    Url::redirect('/' . $userPartner->getUrlAfterLogin());
+                }
+            } else {
+                $error = true;
+            }
+        }
+
 
         $this->render('admin/re_login', compact('user', 'listPartner', 'error'));
         return true;
@@ -140,7 +151,7 @@ class AdminController extends AdminBase
      * @return bool
      * @throws \Exception
      */
-    public function actionReturnMyAccount(): bool
+    public function actionReturnMyAccount()
     {
         Admin::checkLogged();
 

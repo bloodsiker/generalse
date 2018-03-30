@@ -5,5 +5,4 @@
 define('ROOT', dirname(__FILE__));
 
 //Запускаем приложение
-require_once(ROOT . '/bootstrap/app.php');
-
+require_once ROOT . '/bootstrap/app.php';
