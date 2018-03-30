@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" prefix="og: http://ogp.me/ns#">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title><?= $seo_page['title'] ?></title>
-    <link rel="icon" href="" type="image/x-icon"/>
-    <link rel="shortcut icon" href="" type="image/x-icon"/>
+    <link rel="icon" href="/template/new_site/favicon.png" type="image/x-icon"/>
+    <link rel="shortcut icon" href="/template/new_site/favicon.png" type="image/x-icon"/>
     <meta name="description" content="<?= $seo_page['description'] ?>">
     <meta name="keywords" content="<?= $seo_page['keywords'] ?>">
     <meta name="lang" content="en">

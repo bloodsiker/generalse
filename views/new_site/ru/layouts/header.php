@@ -21,7 +21,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto align-items-lg-center">
 
-                    <li class="nav-item dropdown active">
+                    <li class="nav-item dropdown <?= Umbrella\components\Url::IsActive('/ru/new/about', 'active') ?>">
                         <a class="nav-link dropdown-toggle" href="#" id="aboutDropdown" role="button" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">О компании</a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="aboutDropdown">
@@ -32,7 +32,7 @@
                         </div>
                     </li>
 
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown <?= Umbrella\components\Url::IsActive('/ru/new/services', 'active') ?>">
                         <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">Услуги</a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="servicesDropdown">
@@ -43,13 +43,13 @@
                         </div>
                     </li>
 
-                    <li class="nav-item d-none"><a class="nav-link" href="#">Переработка</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/ru/new/news">Новости</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/ru/new/career">Карьера</a></li>
+                    <li class="nav-item d-none <?= Umbrella\components\Url::IsActive('/ru/new/recycling', 'active') ?>"><a class="nav-link" href="/ru/new/recycling">Переработка</a></li>
+                    <li class="nav-item <?= Umbrella\components\Url::IsActive('/ru/new/news', 'active') ?>"><a class="nav-link" href="/ru/new/news">Новости</a></li>
+                    <li class="nav-item <?= Umbrella\components\Url::IsActive('/ru/new/career', 'active') ?>"><a class="nav-link" href="/ru/new/career">Карьера</a></li>
 
 
-                    <li class="nav-item"><a class="nav-link" href="/ru/new/suppliers">Поставщикам</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/ru/new/contacts">Контакты</a></li>
+                    <li class="nav-item <?= Umbrella\components\Url::IsActive('/ru/new/suppliers', 'active') ?>"><a class="nav-link" href="/ru/new/suppliers">Поставщикам</a></li>
+                    <li class="nav-item <?= Umbrella\components\Url::IsActive('/ru/new/contacts', 'active') ?>"><a class="nav-link" href="/ru/new/contacts">Контакты</a></li>
 
                     <?php if(\Josantonius\Session\Session::get('user')):?>
                         <li class="nav-item"><a class="nav-link" href="/adm/crm/">Кабинет</a></li>

@@ -21,7 +21,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto align-items-lg-center">
 
-                    <li class="nav-item dropdown active">
+                    <li class="nav-item dropdown <?= Umbrella\components\Url::IsActive('/new/about', 'active') ?>">
                         <a class="nav-link dropdown-toggle" href="#" id="aboutDropdown" role="button" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">About company</a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="aboutDropdown">
@@ -32,7 +32,7 @@
                         </div>
                     </li>
 
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown <?= Umbrella\components\Url::IsActive('/new/services', 'active') ?>">
                         <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">Services</a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="servicesDropdown">
@@ -43,13 +43,13 @@
                         </div>
                     </li>
 
-                    <li class="nav-item d-none"><a class="nav-link" href="#">Trade-In</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/new/news">News</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/new/career">Career</a></li>
+                    <li class="nav-item d-none <?= Umbrella\components\Url::IsActive('/new/recycling', 'active') ?>"><a class="nav-link" href="/new/recycling">Trade-In</a></li>
+                    <li class="nav-item <?= Umbrella\components\Url::IsActive('/new/news', 'active') ?>"><a class="nav-link" href="/new/news">News</a></li>
+                    <li class="nav-item <?= Umbrella\components\Url::IsActive('/new/career', 'active') ?>"><a class="nav-link" href="/new/career">Career</a></li>
 
 
-                    <li class="nav-item"><a class="nav-link" href="/new/suppliers">For Suppliers</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/new/contacts">Contacts</a></li>
+                    <li class="nav-item <?= Umbrella\components\Url::IsActive('/new/suppliers', 'active') ?>"><a class="nav-link" href="/new/suppliers">For Suppliers</a></li>
+                    <li class="nav-item <?= Umbrella\components\Url::IsActive('/new/contacts', 'active') ?>"><a class="nav-link" href="/new/contacts">Contacts</a></li>
 
                     <?php if(\Josantonius\Session\Session::get('user')):?>
                         <li class="nav-item"><a class="nav-link" href="/adm/crm/">Cabinet</a></li>
