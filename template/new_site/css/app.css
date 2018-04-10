@@ -91,12 +91,15 @@ nav {
 .slide {
   margin-bottom: 60px; }
   .slide .carousel-caption {
-    right: 25%;
+    right: 3%;
     left: 10%; }
   .slide .carousel-item .img-box {
     background-color: #000; }
     .slide .carousel-item .img-box img {
       /*opacity: 0.6;*/ }
+a.carousel-control-next{
+  width: 0;
+}
 
 .mt-6 {
   margin-top: 100px; }

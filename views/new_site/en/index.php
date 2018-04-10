@@ -18,45 +18,45 @@
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <div class="img-box">
-                        <img class="d-block w-100" src="/template/new_site/img/slider/257736.jpg" alt="Comprehensive after-sales service of equipment">
+                        <img class="d-block w-100" src="/template/new_site/img/slider_n/257736en.jpg" alt="Comprehensive after-sales service of equipment">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
-                        <h2>Comprehensive after-sales service of equipment</h2>
+                        <h2 class="d-none">Comprehensive after-sales service of equipment</h2>
                         <div class="w-100 text-right">
-                            <a href="/new/services/manufacturers#complex" class="btn btn-red btn-lg mt-2 text-uppercase">lean more</a>
+                            <a href="/new/services/manufacturers#complex" class="btn btn-red btn-lg mt-2">Read more..</a>
                         </div>
                     </div>
                 </div>
                 <div class="carousel-item">
                     <div class="img-box">
-                        <img class="d-block w-100" src="/template/new_site/img/slider/75.jpg" alt="Logistics and distribution of spare parts">
+                        <img class="d-block w-100" src="/template/new_site/img/slider_n/75en.jpg" alt="Logistics and distribution of spare parts">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
-                        <h2>Logistics and distribution of spare parts</h2>
+                        <h2 class="d-none">Logistics and distribution of spare parts</h2>
                         <div class="w-100 text-right">
-                            <a href="/new/services/manufacturers#logistics" class="btn btn-red btn-lg mt-2 text-uppercase">lean more</a>
+                            <a href="/new/services/manufacturers#logistics" class="btn btn-red btn-lg mt-2">Read more..</a>
                         </div>
                     </div>
                 </div>
                 <div class="carousel-item">
                     <div class="img-box">
-                        <img class="d-block w-100" src="/template/new_site/img/slider/132700.jpg" alt="Engineering and technical services">
+                        <img class="d-block w-100" src="/template/new_site/img/slider_n/132700en.jpg" alt="Engineering and technical services">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
-                        <h2>Engineering and technical services</h2>
+                        <h2 class="d-none">Engineering and technical services</h2>
                         <div class="w-100 text-right">
-                            <a href="/new/services/manufacturers#repair" class="btn btn-red btn-lg mt-2 text-uppercase">lean more</a>
+                            <a href="/new/services/manufacturers#repair" class="btn btn-red btn-lg mt-2">Read more..</a>
                         </div>
                     </div>
                 </div>
                 <div class="carousel-item">
                     <div class="img-box">
-                        <img class="d-block w-100" src="/template/new_site/img/slider/825262.jpg" alt="Recycling of electronic waste">
+                        <img class="d-block w-100" src="/template/new_site/img/slider_n/825262en.jpg" alt="Recycling of electronic waste">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
-                        <h2>Recycling of electronic waste</h2>
+                        <h2 class="d-none">Recycling of electronic waste</h2>
                         <div class="w-100 text-right">
-                            <a href="/new/services/retailers#recycling" class="btn btn-red btn-lg mt-2 text-uppercase">lean more</a>
+                            <a href="/new/services/retailers#recycling" class="btn btn-red btn-lg mt-2">Read more..</a>
                         </div>
                     </div>
                 </div>

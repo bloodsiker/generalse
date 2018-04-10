@@ -63,7 +63,7 @@
         <div class="body-content checkout">
              <div class="row">
                  <div class="medium-12 small-12 columns" style="text-align: center">
-                     <div class="red" style="margin: 0 auto 10px; padding: 10px">
+                     <div class="red hide" style="margin: 0 auto 10px; padding: 10px">
                          <p style="font-size: 18px;">
                              Просим принять во внимание, что с 15.03.2018 компания Lenovo закрывает проект ПСР для мобильных телефонов Lenovo/Motorola. Клиентов, просьба, направлять в торговую сеть.
                          </p>

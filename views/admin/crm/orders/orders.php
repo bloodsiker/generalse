@@ -19,11 +19,11 @@
                         <div class="row align-bottom">
                             <div class="medium-5 small-12 columns">
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.add', 'view')): ?>
-                                    <button class="button primary tool" <?= $user->getUserBlockedGM() == 'blocked' ? 'disabled' : null ?> id="add-checkout-button"><i class="fi-plus"></i> Add</button>
+                                    <button class="button primary tool" id="add-checkout-button"><i class="fi-plus"></i> Add</button>
                                 <?php endif;?>
 
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.attach', 'view')): ?>
-                                    <button data-open="add-order-import-modal" <?= $user->getUserBlockedGM() == 'blocked' ? 'disabled' : null ?> class="button primary tool" id="add-order-file"><i class="fi-plus"></i> Attach File</button>
+                                    <button data-open="add-order-import-modal" class="button primary tool" id="add-order-file"><i class="fi-plus"></i> Attach File</button>
                                 <?php endif;?>
 
                                 <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.export', 'view')): ?>
@@ -286,9 +286,7 @@
 </div>
 
 <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.add', 'view')): ?>
-    <?php if($user->getUserBlockedGM() != 'blocked'): ?>
-        <?php require(views_path('admin/crm/orders/_part/add_order.php'))?>
-    <?php endif; ?>
+    <?php require(views_path('admin/crm/orders/_part/add_order.php'))?>
 <?php endif; ?>
 
 <!--=== EXPORT EXCEL ====-->
@@ -304,9 +302,7 @@
 
 
 <?php if (Umbrella\app\AdminBase::checkDenied('crm.orders.attach', 'view')): ?>
-    <?php if($user->getUserBlockedGM() != 'blocked'): ?>
-        <?php require(views_path('admin/crm/orders/_part/add_order_import.php'))?>
-    <?php endif; ?>
+    <?php require(views_path('admin/crm/orders/_part/add_order_import.php'))?>
 <?php endif; ?>
 
 

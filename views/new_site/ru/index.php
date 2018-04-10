@@ -18,10 +18,10 @@
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <div class="img-box">
-                        <img class="d-block w-100" src="/template/new_site/img/slider/257736.jpg" alt="Комплексные решения">
+                        <img class="d-block w-100" src="/template/new_site/img/slider_n/257736.jpg" alt="Комплексные решения">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
-                        <h2>Комплексное послепродажное обслуживание техники</h2>
+                        <h2 class="d-none">Комплексное послепродажное обслуживание техники</h2>
                         <div class="w-100 text-right">
                             <a href="/ru/new/services/manufacturers#complex" class="btn btn-red btn-lg mt-2">Читать далее...</a>
                         </div>
@@ -29,10 +29,10 @@
                 </div>
                 <div class="carousel-item">
                     <div class="img-box">
-                        <img class="d-block w-100" src="/template/new_site/img/slider/75.jpg" alt="Логистика запчастей">
+                        <img class="d-block w-100" src="/template/new_site/img/slider_n/75.jpg" alt="Логистика запчастей">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
-                        <h2>Логистика и дистрибуция запасных частей</h2>
+                        <h2 class="d-none">Логистика и дистрибуция запасных частей</h2>
                         <div class="w-100 text-right">
                             <a href="/ru/new/services/manufacturers#logistics" class="btn btn-red btn-lg mt-2">Читать далее...</a>
                         </div>
@@ -40,10 +40,10 @@
                 </div>
                 <div class="carousel-item">
                     <div class="img-box">
-                        <img class="d-block w-100" src="/template/new_site/img/slider/132700.jpg" alt="Ремонты">
+                        <img class="d-block w-100" src="/template/new_site/img/slider_n/132700.jpg" alt="Ремонты">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
-                        <h2>Инжениринг и технические услуги</h2>
+                        <h2 class="d-none">Инжениринг и технические услуги</h2>
                         <div class="w-100 text-right">
                             <a href="/ru/new/services/manufacturers#repair" class="btn btn-red btn-lg mt-2">Читать далее...</a>
                         </div>
@@ -51,10 +51,10 @@
                 </div>
                 <div class="carousel-item">
                     <div class="img-box">
-                        <img class="d-block w-100" src="/template/new_site/img/slider/825262.jpg" alt="Утилизация">
+                        <img class="d-block w-100" src="/template/new_site/img/slider_n/825262.jpg" alt="Утилизация">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
-                        <h2>Переработка электронных отходов</h2>
+                        <h2 class="d-none">Переработка электронных отходов</h2>
                         <div class="w-100 text-right">
                             <a href="/ru/new/services/retailers#recycling" class="btn btn-red btn-lg mt-2">Читать далее...</a>
                         </div>
