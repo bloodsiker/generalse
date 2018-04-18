@@ -1,12 +1,10 @@
 <header>
     <nav class="navbar navbar-expand-lg navbar-light box-shadow scrolled">
         <div class="container  align-items-end">
-            <a class="navbar-brand" href="/ru/new">
+            <a class="navbar-brand" href="/ru">
                 <img class="site-logo" src="/template/new_site/img/logo.svg" alt="generalse">
             </a>
             <div class="d-flex align-items-center">
-                <a class="border-0 lang active navbar-toggler" href="#"><img width="20px" src="/template/new_site/img/rus-flug.svg" alt=""></a>
-                <a class="border-0 lang navbar-toggler " href="#"><img width="20px" src="/template/new_site/img/uk-flug.svg" alt=""></a>
 
                 <button class="navbar-toggler border-0" type="button" data-toggle="modal" data-target="#loginModal">
                     <i class="fa fa-sign-in" aria-hidden="true"></i>
@@ -21,35 +19,35 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto align-items-lg-center">
 
-                    <li class="nav-item dropdown <?= Umbrella\components\Url::IsActive('/ru/new/about', 'active') ?>">
+                    <li class="nav-item dropdown <?= Umbrella\components\Url::IsActive('/ru/about', 'active') ?>">
                         <a class="nav-link dropdown-toggle" href="#" id="aboutDropdown" role="button" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">О компании</a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="aboutDropdown">
-                            <a class="dropdown-item" href="/ru/new/about/company-information">Профайл</a>
-                            <a class="dropdown-item" href="/ru/new/about/geography">География</a>
-                            <a class="dropdown-item" href="/ru/new/about/responsibility">Ответственность</a>
-                            <a class="dropdown-item" href="/ru/new/about/certificates">Сертификаты</a>
+                            <a class="dropdown-item" href="/ru/about/company-information">Профайл</a>
+                            <a class="dropdown-item" href="/ru/about/geography">География</a>
+                            <a class="dropdown-item" href="/ru/about/responsibility">Ответственность</a>
+                            <a class="dropdown-item" href="/ru/about/certificates">Сертификаты</a>
                         </div>
                     </li>
 
-                    <li class="nav-item dropdown <?= Umbrella\components\Url::IsActive('/ru/new/services', 'active') ?>">
+                    <li class="nav-item dropdown <?= Umbrella\components\Url::IsActive('/ru/services', 'active') ?>">
                         <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">Услуги</a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="servicesDropdown">
-                            <a class="dropdown-item" href="/ru/new/services/manufacturers">Производителям</a>
-                            <a class="dropdown-item" href="/ru/new/services/retailers">Розничным сетям</a>
-                            <a class="dropdown-item" href="/ru/new/services/repair-centers">Корпоративным клиентам</a>
-                            <a class="dropdown-item" href="/ru/new/services/enterprises">Сервисным центрам</a>
+                            <a class="dropdown-item" href="/ru/services/manufacturers">Производителям</a>
+                            <a class="dropdown-item" href="/ru/services/retailers">Розничным сетям</a>
+                            <a class="dropdown-item" href="/ru/services/repair-centers">Корпоративным клиентам</a>
+                            <a class="dropdown-item" href="/ru/services/enterprises">Сервисным центрам</a>
                         </div>
                     </li>
 
-                    <li class="nav-item d-none <?= Umbrella\components\Url::IsActive('/ru/new/recycling', 'active') ?>"><a class="nav-link" href="/ru/new/recycling">Переработка</a></li>
-                    <li class="nav-item <?= Umbrella\components\Url::IsActive('/ru/new/news', 'active') ?>"><a class="nav-link" href="/ru/new/news">Новости</a></li>
-                    <li class="nav-item <?= Umbrella\components\Url::IsActive('/ru/new/career', 'active') ?>"><a class="nav-link" href="/ru/new/career">Карьера</a></li>
+                    <li class="nav-item d-none <?= Umbrella\components\Url::IsActive('/ru/recycling', 'active') ?>"><a class="nav-link" href="/ru/recycling">Переработка</a></li>
+                    <li class="nav-item <?= Umbrella\components\Url::IsActive('/ru/news', 'active') ?>"><a class="nav-link" href="/ru/news">Новости</a></li>
+                    <li class="nav-item <?= Umbrella\components\Url::IsActive('/ru/career', 'active') ?>"><a class="nav-link" href="/ru/career">Карьера</a></li>
 
 
-                    <li class="nav-item <?= Umbrella\components\Url::IsActive('/ru/new/suppliers', 'active') ?>"><a class="nav-link" href="/ru/new/suppliers">Поставщикам</a></li>
-                    <li class="nav-item <?= Umbrella\components\Url::IsActive('/ru/new/contacts', 'active') ?>"><a class="nav-link" href="/ru/new/contacts">Контакты</a></li>
+                    <li class="nav-item <?= Umbrella\components\Url::IsActive('/ru/suppliers', 'active') ?>"><a class="nav-link" href="/ru/suppliers">Поставщикам</a></li>
+                    <li class="nav-item <?= Umbrella\components\Url::IsActive('/ru/contacts', 'active') ?>"><a class="nav-link" href="/ru/contacts">Контакты</a></li>
 
                     <?php if(\Josantonius\Session\Session::get('user')):?>
                         <li class="nav-item"><a class="nav-link" href="/adm/crm/">Кабинет</a></li>
@@ -60,7 +58,7 @@
                                 Войти
                             </a>
                             <div style="border-radius: 0px;border: none;box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);" class="dropdown-menu dropdown-menu-right p-3 hidden-md-down" aria-labelledby="careerDropdown">
-                                <form action="" method="post" id="form-auth" style="width: 250px;">
+                                <form action="/auth" method="post" id="form-auth" style="width: 250px;">
                                     <strong >Войти в Umbrella</strong>
                                     <div class="mt-3 form-group">
                                         <label for="login">Логин</label>
@@ -72,6 +70,7 @@
                                     </div>
                                     <div class="d-flex">
                                         <input type="hidden" name="lang" value="ru">
+                                        <input type="hidden" name="action" value="post_login">
                                         <button class="btn btn-white w-100 mr-2" type="button" data-toggle="modal" data-target="#registrationModal">Регистрация</button>
                                         <button class="btn btn-red" id="login_umbrella" type="submit">Войти</button>
                                     </div>
@@ -82,10 +81,10 @@
 
 
                     <li class="nav-item dropdown ml-4 nav-langs">
-                        <a class="nav-link dropdown-toggle" href="/lang/ru" id="servicesDropdown" role="button" data-toggle="dropdown"
+                        <a class="nav-link dropdown-toggle" href="/lang/ru/change" id="servicesDropdown" role="button" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">Рус</a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="servicesDropdown">
-                            <a class="dropdown-item" href="/lang/en">Eng</a>
+                            <a class="dropdown-item" href="/lang/en/change">Eng</a>
                         </div>
                     </li>
 

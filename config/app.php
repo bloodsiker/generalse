@@ -33,6 +33,15 @@ return [
         ]
     ],
 
+    'errors' => [
+        'ru' => [
+            'empty_login' => 'Логин или пароль не могут быть пустыми'
+        ],
+        'en' => [
+            'empty_login' => 'Login or password can not be empty'
+        ]
+    ],
+
 
     /**
      * Перенаправление пользователей

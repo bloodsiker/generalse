@@ -26,19 +26,16 @@ class AdminController extends AdminBase
     {
 
         if(Request::post('action') === 'login'){
-            $lang = 'ru';
             $login = Request::post('login');
             $password = Functions::hashPass(Request::post('password'));
-            //$lang = Request::post('lang');
-            //$lang = ($current_lang == 'ru' || $current_lang == 'en') ? $current_lang : $default_lang;
-
+            $lang = Request::post('lang');
 
             //$server = 'down'; // down || up
             if(config('app')['server'] === 'up'){
                 //Проверяем существует ли пользователь
                 $userId = Admin::checkAdminData($login, $password);
 
-                if($userId == false){
+                if($userId === false){
                     $errors['log'] = config('app')['notification'][$lang]['login_false'];
                     $errors['code'] = 1;
                     echo json_encode($errors);
@@ -78,6 +75,54 @@ class AdminController extends AdminBase
                 $errors['log'] = config('app')['notification'][$lang]['server_down'];
                 $errors['code'] = 3;
                 echo json_encode($errors);
+            }
+        }
+
+        if(Request::post('action') == 'post_login'){
+            $login = Request::post('login');
+            $password = Functions::hashPass(Request::post('password'));
+            $lang = Request::post('lang');
+
+            if(empty($login) || empty($password)){
+                Session::set('error', config('app')['errors'][$lang]['empty_login']);
+                Url::redirect($lang === 'ru' ? '/ru/login' : '/login');
+            } else {
+                if(config('app')['server'] === 'up'){
+                    $userId = Admin::checkAdminData($login, $password);
+
+                    if($userId === false){
+                        Session::set('error', config('app')['notification'][$lang]['login_false']);
+                        Url::redirect($lang === 'ru' ? '/ru/login' : '/login');
+                    } else {
+                        //Если данные правильные, запоминаем пользователя в сессию
+                        $user = new User($userId);
+                        // Доступ к проекту
+                        if ($user->getAuthProject('umbrella')){
+                            //Проверка на проплату в GM
+                            if($user->getUserBlockedGM() === 'active'){
+                                if($user->isActive() == 1){
+                                    Admin::auth($user);
+
+                                    //Перенаправляем пользователя в закрытую часть – кабинет
+                                    Url::redirect($user->getUrlAfterLogin());
+                                } elseif ($user->isActive() == 0) {
+                                    Session::destroy('info_user');
+                                    Session::set('error', config('app')['notification'][$lang]['user_is_active']);
+                                    Url::redirect($lang === 'ru' ? '/ru/login' : '/login');
+                                }
+                            } else {
+                                Admin::auth($user);
+                                Url::redirect(config('app')['url_redirect']['user_risk']);
+                            }
+                        } else {
+                            Session::set('error', config('app')['notification'][$lang]['project_denied']);
+                            Url::redirect($lang === 'ru' ? '/ru/login' : '/login');
+                        }
+                    }
+                } else {
+                    Session::set('error', config('app')['notification'][$lang]['server_down']);
+                    Url::redirect($lang === 'ru' ? '/ru/login' : '/login');
+                }
             }
         }
         return true;

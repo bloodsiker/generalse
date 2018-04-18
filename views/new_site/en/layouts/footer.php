@@ -16,11 +16,11 @@
             <div class="col-md-3">
                 <h5><b>Services</b></h5>
                 <ul class="mb-3">
-                    <li><a href="/new/services/manufacturers">Spare parts logistics</a></li>
-                    <li><a href="/new/services/repair-centers">Repair of equipment</a></li>
-                    <li><a href="/new/services/retailers">Recycling</a></li>
-                    <li><a href="/new/services/enterprises">Purchase of equipment</a></li>
-                    <li><a href="/new/services/manufacturers">Call center services</a></li>
+                    <li><a href="/services/manufacturers">Spare parts logistics</a></li>
+                    <li><a href="/services/repair-centers">Repair of equipment</a></li>
+                    <li><a href="/recycling">Recycling</a></li>
+                    <li><a href="/services/enterprises">Purchase of equipment</a></li>
+                    <li><a href="/services/manufacturers">Call center services</a></li>
                     <li><a href="http://pex.com.ua/" target="_blank">Online store</a></li>
                 </ul>
             </div>
@@ -138,7 +138,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="" >
+                <form action="/auth" method="post">
                     <strong >Login to Umbrella Project</strong>
                     <div class="mt-3 form-group">
                         <label for="login">Login</label>
@@ -149,6 +149,8 @@
                         <input type="password" class="form-control" name="password">
                     </div>
                     <div class="d-flex">
+                        <input type="hidden" name="lang" value="en">
+                        <input type="hidden" name="action" value="post_login">
                         <button class="btn btn-white w-100 mr-2" type="button" data-toggle="modal" data-target="#registrationModal">Registrations</button>
                         <button class="btn btn-red" type="submit">Login</button>
                     </div>
@@ -201,7 +203,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
 <script src="/template/new_site/js/object.js"></script>
-<script src="/template/new_site/js/app.js?v.1.5.1"></script>
+<script src="/template/new_site/js/app.js?v.1.5.2"></script>
 
 </body>
 </html>

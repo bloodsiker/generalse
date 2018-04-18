@@ -56,7 +56,6 @@
                     <table class="umbrella-table">
                         <thead>
                         <tr>
-                            <th class="sort">ID</th>
                             <th class="sort">Number</th>
                             <th class="sort">Name</th>
                             <th class="sort">Arriving Date</th>
@@ -76,8 +75,7 @@
                         <?php if(is_array($allSupply)):?>
                             <?php foreach ($allSupply as $supply):?>
                                 <?php $status = iconv('WINDOWS-1251', 'UTF-8', $supply['status_name'])?>
-                                <tr data-siteid="<?=$supply['site_id']?>" class="">
-                                    <td><?=$supply['site_id']?></td>
+                                <tr data-siteid="<?=$supply['site_id']?>" data-supply-id="<?=$supply['supply_id']?>" class="">
                                     <td><?=$supply['supply_id']?></td>
                                     <td><?=$supply['name']?></td>
                                     <td><?= Umbrella\components\Functions::formatDate($supply['expected_arriving_date'])?></td>

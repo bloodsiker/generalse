@@ -16,11 +16,11 @@
             <div class="col-md-3">
                 <h5><b>Услуги</b></h5>
                 <ul class="mb-3">
-                    <li><a href="/ru/new/services/manufacturers">Логистика запасных частей</a></li>
-                    <li><a href="/ru/new/services/repair-centers">Ремонт техники</a></li>
-                    <li><a href="/ru/new/services/retailers">Утилизация</a></li>
-                    <li><a href="/ru/new/services/enterprises">Выкуп оборудования</a></li>
-                    <li><a href="/ru/new/services/manufacturers">Услуги колл-центра</a></li>
+                    <li><a href="/ru/services/manufacturers">Логистика запасных частей</a></li>
+                    <li><a href="/ru/services/repair-centers">Ремонт техники</a></li>
+                    <li><a href="/ru/services/retailers">Утилизация</a></li>
+                    <li><a href="/ru/recycling">Выкуп оборудования</a></li>
+                    <li><a href="/ru/services/manufacturers">Услуги колл-центра</a></li>
                     <li><a href="http://pex.com.ua/" target="_blank">Интернет-магазин</a></li>
                 </ul>
             </div>
@@ -133,25 +133,27 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Sign in</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Войти</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form action="" >
-                    <strong >Login to Umbrella Project</strong>
+                <form action="/auth" method="post">
+                    <strong >Войти в Umbrella</strong>
                     <div class="mt-3 form-group">
-                        <label for="login">Login</label>
+                        <label for="login">Логин</label>
                         <input type="text" class="form-control" name="login">
                     </div>
                     <div class="form-group">
-                        <label for="login">Password</label>
+                        <label for="login">Пароль</label>
                         <input type="password" class="form-control" name="password">
                     </div>
                     <div class="d-flex">
-                        <button class="btn btn-white w-100 mr-2" type="button" data-toggle="modal" data-target="#registrationModal">Registrations</button>
-                        <button class="btn btn-red" type="submit">Login</button>
+                        <input type="hidden" name="lang" value="en">
+                        <input type="hidden" name="action" value="post_login">
+                        <button class="btn btn-white w-100 mr-2" type="button" data-toggle="modal" data-target="#registrationModal">Регистрация</button>
+                        <button class="btn btn-red" type="submit">Войти</button>
                     </div>
                 </form>
             </div>
@@ -200,7 +202,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
 <script src="/template/new_site/js/object.js"></script>
-<script src="/template/new_site/js/app.js?v.1.5.1"></script>
+<script src="/template/new_site/js/app.js?v.1.5.2"></script>
 
 </body>
 </html>

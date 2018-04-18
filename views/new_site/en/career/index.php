@@ -14,7 +14,7 @@
                     <div class="col-md-4 p-3">
                         <div class="card h-100 justify-content-lg-between">
                             <div class="card-block p-3">
-                                <h4 class="card-title"><a href="/new/career/<?= $vacancy['slug'] ?>"><?= $vacancy['title'] ?></a></h4>
+                                <h4 class="card-title"><a href="/career/<?= $vacancy['slug'] ?>"><?= $vacancy['title'] ?></a></h4>
 
                                 <ul class="list-group list-group-flush career-box-list">
                                     <li class="list-group-item justify-content-lg-between d-flex">
@@ -32,7 +32,7 @@
                                 </ul>
                             </div>
                             <div class="card-footer text-right">
-                                <a href="/new/career/<?= $vacancy['slug'] ?>" class="btn btn-sm btn-red">read more</a>
+                                <a href="/career/<?= $vacancy['slug'] ?>" class="btn btn-sm btn-red">read more</a>
 
                             </div>
                         </div>

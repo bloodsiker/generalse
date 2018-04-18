@@ -133,7 +133,7 @@ class Router
 
         $result = array();
 
-        $cdir = scandir($dir);
+        $cdir = scandir($dir, SCANDIR_SORT_NONE);
         foreach ($cdir as $key => $value)
         {
             if (!in_array($value,array(".","..")))

@@ -18,45 +18,45 @@
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <div class="img-box">
-                        <img class="d-block w-100" src="/template/new_site/img/slider_n/257736en.jpg" alt="Comprehensive after-sales service of equipment">
+                        <img class="d-block w-100" src="/template/new_site/img/slider_n/257736en.jpg?v.1.0" alt="Comprehensive after-sales service of equipment">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
                         <h2 class="d-none">Comprehensive after-sales service of equipment</h2>
                         <div class="w-100 text-right">
-                            <a href="/new/services/manufacturers#complex" class="btn btn-red btn-lg mt-2">Read more..</a>
+                            <a href="/services/manufacturers#complex" class="btn btn-red btn-lg mt-2">Read more..</a>
                         </div>
                     </div>
                 </div>
                 <div class="carousel-item">
                     <div class="img-box">
-                        <img class="d-block w-100" src="/template/new_site/img/slider_n/75en.jpg" alt="Logistics and distribution of spare parts">
+                        <img class="d-block w-100" src="/template/new_site/img/slider_n/75en.jpg?v.1.0" alt="Logistics and distribution of spare parts">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
                         <h2 class="d-none">Logistics and distribution of spare parts</h2>
                         <div class="w-100 text-right">
-                            <a href="/new/services/manufacturers#logistics" class="btn btn-red btn-lg mt-2">Read more..</a>
+                            <a href="/services/manufacturers#logistics" class="btn btn-red btn-lg mt-2">Read more..</a>
                         </div>
                     </div>
                 </div>
                 <div class="carousel-item">
                     <div class="img-box">
-                        <img class="d-block w-100" src="/template/new_site/img/slider_n/132700en.jpg" alt="Engineering and technical services">
+                        <img class="d-block w-100" src="/template/new_site/img/slider_n/132700en.jpg?v.1.0" alt="Engineering and technical services">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
                         <h2 class="d-none">Engineering and technical services</h2>
                         <div class="w-100 text-right">
-                            <a href="/new/services/manufacturers#repair" class="btn btn-red btn-lg mt-2">Read more..</a>
+                            <a href="/services/manufacturers#repair" class="btn btn-red btn-lg mt-2">Read more..</a>
                         </div>
                     </div>
                 </div>
                 <div class="carousel-item">
                     <div class="img-box">
-                        <img class="d-block w-100" src="/template/new_site/img/slider_n/825262en.jpg" alt="Recycling of electronic waste">
+                        <img class="d-block w-100" src="/template/new_site/img/slider_n/825262en.jpg?v.1.0" alt="Recycling of electronic waste">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
                         <h2 class="d-none">Recycling of electronic waste</h2>
                         <div class="w-100 text-right">
-                            <a href="/new/services/retailers#recycling" class="btn btn-red btn-lg mt-2">Read more..</a>
+                            <a href="/services/retailers#recycling" class="btn btn-red btn-lg mt-2">Read more..</a>
                         </div>
                     </div>
                 </div>
@@ -94,7 +94,7 @@
                             <figcaption>
                                 <h3>Manufacturers</h3>
                                 <p></p>
-                                <a href="/new/services/manufacturers">View more</a>
+                                <a href="/services/manufacturers">View more</a>
                             </figcaption>
                         </figure>
                     </div>
@@ -106,7 +106,7 @@
                             <figcaption>
                                 <h3>Retail networks</h3>
                                 <p></p>
-                                <a href="/new/services/retailers">View more</a>
+                                <a href="/services/retailers">View more</a>
                             </figcaption>
                         </figure>
                     </div>
@@ -118,7 +118,7 @@
                             <figcaption>
                                 <h3>Corporate customers</h3>
                                 <p></p>
-                                <a href="/new/services/repair-centers">View more</a>
+                                <a href="/services/repair-centers">View more</a>
                             </figcaption>
                         </figure>
                     </div>
@@ -139,7 +139,7 @@
                             <figcaption>
                                 <h3>Sell ​​a non-operational device</h3>
                                 <p></p>
-                                <a href="/new/recycling">View more</a>
+                                <a href="/recycling">View more</a>
                             </figcaption>
                         </figure>
                     </div>
@@ -163,7 +163,7 @@
                             <figcaption>
                                 <h3>Become a partner</h3>
                                 <p></p>
-                                <a href="/new/suppliers">View more</a>
+                                <a href="/suppliers">View more</a>
                             </figcaption>
                         </figure>
                     </div>

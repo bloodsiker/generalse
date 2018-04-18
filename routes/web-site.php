@@ -1,70 +1,77 @@
 <?php
 return [
+
+    'lang/ru/change' => 'site/Language@changeLang',
+    'lang/en/change' => 'site/Language@changeLang',
+
     /*********** NEW SITE RU  ***********/
 
-    'ru/new/contacts' => 'site/Contacts@index',
+    'ru/contacts' => 'site/Contacts@index',
 
-    'ru/new/suppliers/send_form' => 'site/Suppliers@sendForm',
-    'ru/new/suppliers' => 'site/Suppliers@index',
+    'ru/suppliers/send_form' => 'site/Suppliers@sendForm',
+    'ru/suppliers' => 'site/Suppliers@index',
 
-    'ru/new/career/([a-z0-9-_?&]+)' => 'site/Career@show/$1',
-    'ru/new/career' => 'site/Career@index',
+    'ru/career/([a-z0-9-_?&]+)' => 'site/Career@show/$1',
+    'ru/career' => 'site/Career@index',
 
-    'ru/new/news/([a-z0-9-_?&]+)' => 'site/News@new/$1',
-    'ru/new/news' => 'site/News@index',
+    'ru/news/([a-z0-9-_?&]+)' => 'site/News@new/$1',
+    'ru/news' => 'site/News@index',
 
-    'ru/new/recycling' => 'site/Recycling@index',
+    'ru/recycling' => 'site/Recycling@index',
 
-    'ru/new/services/manufacturers' => 'site/Services@manufacturers',
-    'ru/new/services/retailers' => 'site/Services@retailers',
-    'ru/new/services/repair-centers' => 'site/Services@repairCenters',
-    'ru/new/services/enterprises' => 'site/Services@enterprises',
+    'ru/services/manufacturers' => 'site/Services@manufacturers',
+    'ru/services/retailers' => 'site/Services@retailers',
+    'ru/services/repair-centers' => 'site/Services@repairCenters',
+    'ru/services/enterprises' => 'site/Services@enterprises',
 
-    'ru/new/about/company-information' => 'site/About@companyInfo',
-    'ru/new/about/geography' => 'site/About@geography',
-    'ru/new/about/responsibility' => 'site/About@responsibility',
-    'ru/new/about/certificates' => 'site/About@certificates',
+    'ru/about/company-information' => 'site/About@companyInfo',
+    'ru/about/geography' => 'site/About@geography',
+    'ru/about/responsibility' => 'site/About@responsibility',
+    'ru/about/certificates' => 'site/About@certificates',
+
+    'ru/login' => 'site/Auth@login',
 
     'ru/404/send' => 'site/NotFound@send',
     'ru/404' => 'site/NotFound@index',
 
-    'ru/new' => 'site/Main@index',
+    'ru' => 'site/Main@index',
 
     /*********** NEW SITE EN  ***********/
 
-    'new/contacts' => 'site/Contacts@index',
+    'contacts' => 'site/Contacts@index',
 
-    'new/suppliers' => 'site/Suppliers@index',
+    'suppliers' => 'site/Suppliers@index',
 
-    'new/career/([a-z0-9-_?&]+)' => 'site/Career@show/$1',
-    'new/career' => 'site/Career@index',
+    'career/([a-z0-9-_?&]+)' => 'site/Career@show/$1',
+    'career' => 'site/Career@index',
 
-    'new/news/([a-z0-9-_?&]+)' => 'site/News@new/$1',
-    'new/news' => 'site/News@index',
+    'news/([a-z0-9-_?&]+)' => 'site/News@new/$1',
+    'news' => 'site/News@index',
 
-    'new/recycling' => 'site/Recycling@index',
+    'recycling' => 'site/Recycling@index',
 
-    'new/services/manufacturers' => 'site/Services@manufacturers',
-    'new/services/retailers' => 'site/Services@retailers',
-    'new/services/repair-centers' => 'site/Services@repairCenters',
-    'new/services/enterprises' => 'site/Services@enterprises',
+    'services/manufacturers' => 'site/Services@manufacturers',
+    'services/retailers' => 'site/Services@retailers',
+    'services/repair-centers' => 'site/Services@repairCenters',
+    'services/enterprises' => 'site/Services@enterprises',
 
-    'new/about/company-information' => 'site/About@companyInfo',
-    'new/about/geography' => 'site/About@geography',
-    'new/about/responsibility' => 'site/About@responsibility',
-    'new/about/certificates' => 'site/About@certificates',
+    'about/company-information' => 'site/About@companyInfo',
+    'about/geography' => 'site/About@geography',
+    'about/responsibility' => 'site/About@responsibility',
+    'about/certificates' => 'site/About@certificates',
 
-    'new' => 'site/Main@index',
+    'login' => 'site/Auth@login',
 
-    'lang/en' => 'site/Language@changeLang',
-    'lang/ru' => 'site/Language@changeLang',
+    'main' => 'site/Main@index',
 
-    /*********** SITE  ***********/
-    'sign_up' => 'Site@signUp',
-    'contact_form' => 'Site@contactForm',
-    'contact' => 'Site@contact',
-    'career' => 'Site@career',
-    'directions' => 'Site@directions',
-    'for_business' => 'Site@forBusiness',
-    'main' => 'Site@index', // actionIndex в SiteController
+
+    /*********** OLD SITE  ***********/
+
+    'old/sign_up' => 'Site@signUp',
+    'old/contact_form' => 'Site@contactForm',
+    'old/contact' => 'Site@contact',
+    'old/career' => 'Site@career',
+    'old/directions' => 'Site@directions',
+    'old/for_business' => 'Site@forBusiness',
+    'old/main' => 'Site@index', // actionIndex в SiteController
 ];

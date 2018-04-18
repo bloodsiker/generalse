@@ -163,56 +163,53 @@ $(document).ready(function () {
     })();
 
 
+    $('#form-auth').on('click', '#login_umbrella', function (e) {
 
+        let error_login = false;
 
-    $(document).ready(function () {
-        $('#form-auth').on('click', '#login_umbrella', function (e) {
+        let login = $('.login_umbrella').val();
+        if (login.length == "") {
+            error_login = true;
+            $(".login_umbrella").css({'border-color': 'red', 'background': '#ff00001a'});
+        } else {
+            $(".login_umbrella").removeAttr('style');
+        }
 
-            let error_login = false;
+        let password = $('.password_umbrella').val();
+        if (password.length == "") {
+            error_login = true;
+            $(".password_umbrella").css({'border-color': 'red', 'background': '#ff00001a'});
+        } else {
+            $(".password_umbrella").removeAttr('style')
+        }
 
-            let login = $('.login_umbrella').val();
-            if (login.length == "") {
-                error_login = true;
-                $(".login_umbrella").css({'border-color':'red', 'background': '#ff00001a'});
-            } else {
-                $(".login_umbrella").removeAttr('style');
-            }
+        if (error_login == false) {
 
-            let password = $('.password_umbrella').val();
-            if (password.length == "") {
-                error_login = true;
-                $(".password_umbrella").css({'border-color':'red', 'background': '#ff00001a'});
-            } else {
-                $(".password_umbrella").removeAttr('style')
-            }
+            let lang = $('#form-auth').find("input[name='lang']").val();
+            //let data = "action=login&login=" + login + "&password=" + password;
 
-            if (error_login == false) {
-
-                let lang = $('#form-auth').find("input[name='lang']").val();
-                //let data = "action=login&login=" + login + "&password=" + password;
-
-                $.ajax({
-                    url: "/auth",
-                    type: "POST",
-                    data: {action: 'login', login: login, password: password, lang: lang},
-                    cache: false,
-                    success: function(data){
-                        let obj = jQuery.parseJSON(data);
-                        if(obj.code == 1){
-                            showNotification(obj.log, 'error');
-                            $(".password_umbrella").val("");
-                        } else if(obj.code == 3) {
-                            showNotification(obj.log, 'warning');
-                        } else {
-                            window.location = '/' + obj.log;
-                        }
+            $.ajax({
+                url: "/auth",
+                type: "POST",
+                data: {action: 'login', login: login, password: password, lang: lang},
+                cache: false,
+                success: function (data) {
+                    let obj = jQuery.parseJSON(data);
+                    if (obj.code == 1) {
+                        showNotification(obj.log, 'error');
+                        $(".password_umbrella").val("");
+                    } else if (obj.code == 3) {
+                        showNotification(obj.log, 'warning');
+                    } else {
+                        window.location = '/' + obj.log;
                     }
-                });
-                return false;
-            }
-            e.preventDefault();
-        });
+                }
+            });
+            return false;
+        }
+        e.preventDefault();
     });
+
 
 
     (function( $ ){
@@ -345,7 +342,7 @@ $("#form-suppliers").submit(function (e) {
             formData = new FormData($that.get(0));
 
         $.ajax({
-            url: "/ru/new/suppliers/send_form",
+            url: "/ru/suppliers/send_form",
             type: "POST",
             data: formData,
             processData: false,

@@ -13,15 +13,15 @@
                 <section>
                     <div class="row ">
                         <div class="col-md-4">
-                            <a href="/new/news/<?= $new['slug'] ?>">
+                            <a href="/news/<?= $new['slug'] ?>">
                                 <img class="mw-100" src="<?= $new['image'] ?>" alt="<?= $new['title'] ?>">
                             </a>
                         </div>
                         <div class="col-md-8">
-                            <h2><a href="/new/news/<?= $new['slug'] ?>"><?= $new['title'] ?></a></h2>
+                            <h2><a href="/news/<?= $new['slug'] ?>"><?= $new['title'] ?></a></h2>
                             <div class="text-muted mb-2"><?= $new['created_at'] ?></div>
                             <p><?= $new['description'] ?></p>
-                            <a href="/new/news/<?= $new['slug'] ?>" class="btn btn-red text-right">read more</a>
+                            <a href="/news/<?= $new['slug'] ?>" class="btn btn-red text-right">read more</a>
                             <div class="social-menu pull-right">
 
                             </div>

@@ -18,45 +18,45 @@
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <div class="img-box">
-                        <img class="d-block w-100" src="/template/new_site/img/slider_n/257736.jpg" alt="Комплексные решения">
+                        <img class="d-block w-100" src="/template/new_site/img/slider_n/257736.jpg?v.1.0" alt="Комплексные решения">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
                         <h2 class="d-none">Комплексное послепродажное обслуживание техники</h2>
                         <div class="w-100 text-right">
-                            <a href="/ru/new/services/manufacturers#complex" class="btn btn-red btn-lg mt-2">Читать далее...</a>
+                            <a href="/ru/services/manufacturers#complex" class="btn btn-red btn-lg mt-2">Читать далее...</a>
                         </div>
                     </div>
                 </div>
                 <div class="carousel-item">
                     <div class="img-box">
-                        <img class="d-block w-100" src="/template/new_site/img/slider_n/75.jpg" alt="Логистика запчастей">
+                        <img class="d-block w-100" src="/template/new_site/img/slider_n/75.jpg?v.1.0" alt="Логистика запчастей">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
                         <h2 class="d-none">Логистика и дистрибуция запасных частей</h2>
                         <div class="w-100 text-right">
-                            <a href="/ru/new/services/manufacturers#logistics" class="btn btn-red btn-lg mt-2">Читать далее...</a>
+                            <a href="/ru/services/manufacturers#logistics" class="btn btn-red btn-lg mt-2">Читать далее...</a>
                         </div>
                     </div>
                 </div>
                 <div class="carousel-item">
                     <div class="img-box">
-                        <img class="d-block w-100" src="/template/new_site/img/slider_n/132700.jpg" alt="Ремонты">
+                        <img class="d-block w-100" src="/template/new_site/img/slider_n/132700.jpg?v.1.0" alt="Ремонты">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
                         <h2 class="d-none">Инжениринг и технические услуги</h2>
                         <div class="w-100 text-right">
-                            <a href="/ru/new/services/manufacturers#repair" class="btn btn-red btn-lg mt-2">Читать далее...</a>
+                            <a href="/ru/services/manufacturers#repair" class="btn btn-red btn-lg mt-2">Читать далее...</a>
                         </div>
                     </div>
                 </div>
                 <div class="carousel-item">
                     <div class="img-box">
-                        <img class="d-block w-100" src="/template/new_site/img/slider_n/825262.jpg" alt="Утилизация">
+                        <img class="d-block w-100" src="/template/new_site/img/slider_n/825262.jpg?v.1.0" alt="Утилизация">
                     </div>
                     <div class="carousel-caption d-none d-md-block text-left">
                         <h2 class="d-none">Переработка электронных отходов</h2>
                         <div class="w-100 text-right">
-                            <a href="/ru/new/services/retailers#recycling" class="btn btn-red btn-lg mt-2">Читать далее...</a>
+                            <a href="/ru/services/retailers#recycling" class="btn btn-red btn-lg mt-2">Читать далее...</a>
                         </div>
                     </div>
                 </div>
@@ -92,7 +92,7 @@
                             <figcaption style="padding: 2em 1em">
                                 <h3>Производителям</h3>
                                 <p></p>
-                                <a href="/ru/new/services/manufacturers">View more</a>
+                                <a href="/ru/services/manufacturers">View more</a>
                             </figcaption>
                         </figure>
                     </div>
@@ -104,7 +104,7 @@
                             <figcaption>
                                 <h3>Розничным сетям</h3>
                                 <p></p>
-                                <a href="/ru/new/services/retailers">View more</a>
+                                <a href="/ru/services/retailers">View more</a>
                             </figcaption>
                         </figure>
                     </div>
@@ -116,7 +116,7 @@
                             <figcaption style="padding: 2em 1em">
                                 <h3>Корпоративным клиентам</h3>
                                 <p></p>
-                                <a href="/ru/new/services/repair-centers">View more</a>
+                                <a href="/ru/services/repair-centers">View more</a>
                             </figcaption>
                         </figure>
                     </div>
@@ -138,7 +138,7 @@
                             <figcaption>
                                 <h3>Продать нерабочее устройство</h3>
                                 <p></p>
-                                <a href="/ru/new/recycling">View more</a>
+                                <a href="/ru/recycling">View more</a>
                             </figcaption>
                         </figure>
                     </div>
@@ -162,7 +162,7 @@
                             <figcaption>
                                 <h3>Стать партнером</h3>
                                 <p></p>
-                                <a href="/ru/new/suppliers">View more</a>
+                                <a href="/ru/suppliers">View more</a>
                             </figcaption>
                         </figure>
                     </div>
