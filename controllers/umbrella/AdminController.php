@@ -104,7 +104,7 @@ class AdminController extends AdminBase
                                     Admin::auth($user);
 
                                     //Перенаправляем пользователя в закрытую часть – кабинет
-                                    Url::redirect($user->getUrlAfterLogin());
+                                    Url::redirect('/' . $user->getUrlAfterLogin());
                                 } elseif ($user->isActive() == 0) {
                                     Session::destroy('info_user');
                                     Session::set('error', config('app')['notification'][$lang]['user_is_active']);
@@ -124,6 +124,8 @@ class AdminController extends AdminBase
                     Url::redirect($lang === 'ru' ? '/ru/login' : '/login');
                 }
             }
+        } else {
+            Url::redirect($lang === 'ru' ? '/ru/login' : '/login');
         }
         return true;
     }
