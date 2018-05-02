@@ -3,6 +3,7 @@ namespace Umbrella\models\engineer;
 
 use PDO;
 use Umbrella\components\Db\MsSQL;
+use Umbrella\components\Decoder;
 
 class Dashboard
 {
@@ -141,7 +142,7 @@ class Dashboard
                 $name = 'Декабрь';
                 break;
             default:
-                $name = 'Не изместный месяц';
+                $name = 'Не известный месяц';
         }
         return $name;
     }
@@ -219,14 +220,12 @@ class Dashboard
      *
      * @return array
      */
-    public static function getRepairs($month, $year)
+    public static function getRepairsClass($month, $year)
     {
         $db = MsSQL::getConnection();
 
         $sql = "SELECT
-                    class_name,
-                    SUM(quantity_open) as quantity_open,
-                    SUM(quantity_close) as quantity_close
+                    class_name
                 FROM site_gm_depot_data_03
                 WHERE month = :month 
                 AND year = :year
@@ -237,5 +236,38 @@ class Dashboard
         $result->bindParam(':year', $year, PDO::PARAM_INT);
         $result->execute();
         return $result->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    /**
+     * @param $month
+     * @param $year
+     * @param $class
+     * @param $subType
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public static function getRepairsByClass($month, $year, $class, $subType)
+    {
+        $db = MsSQL::getConnection();
+
+        $subType = Decoder::strToWindows($subType);
+
+        $sql = "SELECT
+                    quantity_open,
+                    quantity_close
+                FROM site_gm_depot_data_03
+                WHERE month = :month 
+                AND year = :year
+                AND class_name = :class_name
+                AND subtype_name IN ('{$subType}')";
+
+        $result = $db->prepare($sql);
+        $result->bindParam(':month', $month, PDO::PARAM_INT);
+        $result->bindParam(':year', $year, PDO::PARAM_INT);
+        $result->bindParam(':class_name', $class, PDO::PARAM_STR);
+        $result->execute();
+        return $result->fetch(PDO::FETCH_ASSOC);
     }
 }

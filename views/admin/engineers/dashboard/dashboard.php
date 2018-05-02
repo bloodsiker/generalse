@@ -25,7 +25,7 @@
         </div>
 
         <!-- body -->
-        <div class="body-content">
+        <div class="body-content" style="margin-bottom: 100px">
             <div class="row">
 
                 <div class="medium-7 small-12 columns">
@@ -240,31 +240,51 @@
                     <table class="umbrella-table margin-bottom">
                         <thead>
                         <tr>
-                            <th class="text-center" colspan="3">РЕМОНТЫ (<?= \Umbrella\models\engineer\Dashboard::nameMonth($month) ?>/<?= $year ?>)</th>
-                        </tr>
-                        <tr>
-                            <th class="text-center">Наименование техники</th>
-                            <th class="text-center">Открытые ремонты</th>
-                            <th class="text-center">Закрытые ремонты</th>
+                            <th class="text-center" colspan="7">РЕМОНТЫ (<?= \Umbrella\models\engineer\Dashboard::nameMonth($month) ?>/<?= $year ?>)</th>
                         </tr>
                         </thead>
                         <tbody>
+                            <tr>
+                                <th rowspan="2" class="text-center">Наименование техники</th>
+                                <th colspan="3" class="text-center">Открытые ремонты</th>
+                                <th colspan="3" class="text-center">Закрытые ремонты</th>
+                            </tr>
+                            <tr>
+                                <td>Устройство</td>
+                                <td>Материнская плата</td>
+                                <td>Дисплей</td>
+                                <td>Устройство</td>
+                                <td>Материнская плата</td>
+                                <td>Дисплей</td>
+                            </tr>
 
-                        <?php if(is_array($repairs)): ?>
-                            <?php foreach ($repairs as $value): ?>
+                        <?php if(is_array($arrayRepairs)): ?>
+                            <?php foreach ($arrayRepairs as $value): ?>
                                 <tr>
                                     <td class="umbrella-tr-td"><?= $value['class_name'] ?></td>
-                                    <td><?= $value['quantity_open'] ?></td>
-                                    <td><?= $value['quantity_close'] ?></td>
+                                    <td><?= is_array($value['device']) ? $value['device']['quantity_open'] : null ?></td>
+                                    <td><?= is_array($value['mat']) ? $value['mat']['quantity_open'] : null ?></td>
+                                    <td><?= is_array($value['lcd']) ? $value['lcd']['quantity_open'] : null ?></td>
+                                    <td><?= is_array($value['device']) ? $value['device']['quantity_close'] : null ?></td>
+                                    <td><?= is_array($value['mat']) ? $value['mat']['quantity_close'] : null ?></td>
+                                    <td><?= is_array($value['lcd']) ? $value['lcd']['quantity_close'] : null ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         <?php endif; ?>
-
-                        <tr>
-                            <td class="umbrella-tr-td text-center">Всего:</td>
-                            <td><?= $totalRepairs['quantity_open'] ?></td>
-                            <td><?= $totalRepairs['quantity_close'] ?></td>
-                        </tr>
+                            <tr>
+                                <td class="text-center">Всего:</td>
+                                <td><?= isset($totalRepair['device']) && is_array($totalRepair['device']) ? $totalRepair['device']['open'] : null ?></td>
+                                <td><?= isset($totalRepair['mat']) && is_array($totalRepair['mat']) ? $totalRepair['mat']['open'] : null ?></td>
+                                <td><?= isset($totalRepair['lcd']) && is_array($totalRepair['lcd']) ? $totalRepair['lcd']['open'] : null ?></td>
+                                <td><?= isset($totalRepair['device']) && is_array($totalRepair['device']) ? $totalRepair['device']['close'] : null ?></td>
+                                <td><?= isset($totalRepair['mat']) && is_array($totalRepair['mat']) ? $totalRepair['mat']['close'] : null ?></td>
+                                <td><?= isset($totalRepair['lcd']) && is_array($totalRepair['lcd']) ? $totalRepair['lcd']['close'] : null ?></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">В сумме:</td>
+                                <td class="text-center" colspan="3"><?= $totlaRepairsSum['open'] ?? null ?></td>
+                                <td class="text-center" colspan="3"><?= $totlaRepairsSum['close'] ?? null ?></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

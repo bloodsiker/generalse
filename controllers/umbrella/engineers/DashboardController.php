@@ -74,9 +74,68 @@ class DashboardController extends  AdminBase
         $totalDisassemblyClassifier['quantity_ok'] = array_sum(array_column($disassemblyClassifier, 'quantity_ok'));
         $totalDisassemblyClassifier['quantity_bad'] = array_sum(array_column($disassemblyClassifier, 'quantity_bad'));
 
-        $repairs = Decoder::arrayToUtf(Dashboard::getRepairs($month, $year), ['quantity_open', 'quantity_close']);
-        $totalRepairs['quantity_open'] = array_sum(array_column($repairs, 'quantity_open'));
-        $totalRepairs['quantity_close'] = array_sum(array_column($repairs, 'quantity_close'));
+
+        $repairsClass = Dashboard::getRepairsClass($month, $year);
+
+        $arrayRepairs = [];
+        $i = 0;
+        foreach ($repairsClass as $class){
+            $class = $class['class_name'];
+            $arrayRepairs[$i]['class_name'] = $class;
+            $arrayRepairs[$i]['device'] = Dashboard::getRepairsByClass($month, $year, $class, 'Устройство');
+            $arrayRepairs[$i]['mat'] = Dashboard::getRepairsByClass($month, $year, $class, 'Материнская плата');
+            $arrayRepairs[$i]['lcd'] = Dashboard::getRepairsByClass($month, $year, $class, 'Дисплей');
+            $i++;
+        }
+        $arrayRepairs = Decoder::arrayToUtf($arrayRepairs);
+
+        $totalRepair = [];
+        foreach ($arrayRepairs as $repair){
+            if(is_array($repair['device'])){
+                if(isset($totalRepair['device']['open']) || isset($totalRepair['device']['close'])){
+                    $totalRepair['device']['open'] += $repair['device']['quantity_open'];
+                    $totalRepair['device']['close'] += $repair['device']['quantity_close'];
+                } else {
+                    $totalRepair['device']['open'] = $repair['device']['quantity_open'];
+                    $totalRepair['device']['close'] = $repair['device']['quantity_close'];
+                }
+            }
+            if(is_array($repair['mat'])){
+                if(isset($totalRepair['mat']['open']) || isset($totalRepair['mat']['close'])){
+                    $totalRepair['mat']['open'] += $repair['mat']['quantity_open'];
+                    $totalRepair['mat']['close'] += $repair['mat']['quantity_close'];
+                } else {
+                    $totalRepair['mat']['open'] = $repair['mat']['quantity_open'];
+                    $totalRepair['mat']['close'] = $repair['mat']['quantity_close'];
+                }
+            }
+            if(is_array($repair['lcd'])){
+                if(isset($totalRepair['lcd']['open']) || isset($totalRepair['lcd']['close'])){
+                    $totalRepair['lcd']['open'] += $repair['lcd']['quantity_open'];
+                    $totalRepair['lcd']['close'] += $repair['lcd']['quantity_close'];
+                } else {
+                    $totalRepair['lcd']['open'] = $repair['lcd']['quantity_open'];
+                    $totalRepair['lcd']['close'] = $repair['lcd']['quantity_close'];
+                }
+            }
+        }
+
+        $totlaRepairsSum = [];
+        foreach ($totalRepair as $totalSum){
+            if(isset($totalSum) && is_array($totalSum)){
+                if(isset($totlaRepairsSum['open'])){
+                    $totlaRepairsSum['open'] += $totalSum['open'];
+                } else {
+                    $totlaRepairsSum['open'] = $totalSum['open'];
+                }
+                if(isset($totlaRepairsSum['close'])){
+                    $totlaRepairsSum['close'] += $totalSum['close'];
+                } else {
+                    $totlaRepairsSum['close'] = $totalSum['close'];
+                }
+            }
+
+        }
 
         $intervalYears = Dashboard::getYears();
         $intervalMonths = Dashboard::getMonths();
@@ -89,7 +148,8 @@ class DashboardController extends  AdminBase
         $this->render('admin/engineers/dashboard/dashboard',
             compact('user', 'movementDevicesProducer', 'movementDevicesClassifier', 'intervalYears',
                 'intervalMonths', 'year', 'month', 'totalDeviceClassifier', 'totalDeviceProducer', 'disassemblyProducer',
-                'disassemblyClassifier', 'totalDisassemblyProducer', 'totalDisassemblyClassifier', 'repairs', 'totalRepairs'));
+                'disassemblyClassifier', 'totalDisassemblyProducer', 'totalDisassemblyClassifier',
+                'arrayRepairs', 'totalRepair', 'totlaRepairsSum'));
         return true;
     }
 

@@ -24,7 +24,6 @@ class AdminController extends AdminBase
      */
     public function actionAuth()
     {
-
         if(Request::post('action') === 'login'){
             $login = Request::post('login');
             $password = Functions::hashPass(Request::post('password'));
@@ -124,8 +123,6 @@ class AdminController extends AdminBase
                     Url::redirect($lang === 'ru' ? '/ru/login' : '/login');
                 }
             }
-        } else {
-            Url::redirect($lang === 'ru' ? '/ru/login' : '/login');
         }
         return true;
     }
