@@ -94,7 +94,7 @@ class PsrController extends AdminBase
                 $file_name = $handle->file_new_name_body . $handle->file_name_body_add . '.' . $handle->file_src_name_ext;
                 $handle->process(ROOT . self::UPLOAD_PATH_PSR);
                 if ($handle->processed) {
-                    Psr::addDocumentInPsrMsSQL($_REQUEST['psr_id'], 'http://generalse.com' . self::UPLOAD_PATH_PSR, $file_name, 1);
+                    Psr::addDocumentInPsrMsSQL($_REQUEST['psr_id'], 'https://generalse.com' . self::UPLOAD_PATH_PSR, $file_name, 1);
                     Logger::getInstance()->log($user->getId(),"Загрузил квитанцию к ПСР # {$_REQUEST['psr_id']}");
                     $handle->clean();
                     Session::set('psr_success', 'The warranty card is attached');

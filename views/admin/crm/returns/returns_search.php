@@ -272,7 +272,7 @@
                     </div>
                 </div>
 
-            <?php elseif($user->isMasnsger()):?>
+            <?php elseif($user->isManager()):?>
 
                 <div class="medium-12 small-12 columns">
                     <div class="row">

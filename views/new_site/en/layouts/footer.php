@@ -4,14 +4,9 @@
         <div class="row align-justify">
             <div class="col-md-4">
                 <h5><b>General Services Europe - an international service provider</b></h5>
-                <p class="d-none">
-                    General Services Ukraine LLC<br>
-                    1-3, Severosuretskaya street, <br>
-                    04116, Kiev, Ukraine<br>
-                    0 800 501 279 <br>
-                    044 338 25 59 <br>
-                    <a href="mailto:es@generalse.com">es@generalse.com</a>
-                </p>
+                <ul>
+                    <li><a href="/storage/policy.pdf">﻿Policy</a></li>
+                </ul>
             </div>
             <div class="col-md-3">
                 <h5><b>Services</b></h5>
