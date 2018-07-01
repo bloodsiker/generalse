@@ -52,6 +52,7 @@
     <div class="header-user-menu">
         <div class="row">
             <div class="medium-12 small-12 column text-right">
+                <a href="https://generalse.bitrix24.ua/pub/form/12_obrashchenie_forma_obratnoy_svyazi/w9idg0/" target="_blank" class="re-login">﻿Обратная связь</a>
                 <?php if($user->getUserBlockedGM() == 'tomorrow' || $user->getUserBlockedGM() == 'blocked'):?>
                     <a href="/adm/risks" class="text-red">Внимание!</a>
                 <?php endif;?>

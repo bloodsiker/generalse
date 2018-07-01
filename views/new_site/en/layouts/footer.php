@@ -27,7 +27,8 @@
                     4, Narva road,<br>
                     Tallinn, Estonia<br>
                     Tel: 044-338-25-59<br>
-                    <a href="mailto:hq@generalse.com">hq@generalse.com</a>
+                    <a href="mailto:hq@generalse.com">hq@generalse.com</a><br>
+                    <a href="https://generalse.bitrix24.ua/pub/form/12_obrashchenie_forma_obratnoy_svyazi/w9idg0/" target="_blank">﻿Feedback</a>
                 </p>
             </div>
             <div class="col-md-2">
